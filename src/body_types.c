@@ -203,22 +203,17 @@ static PyObject* build_mag(double raw)
 static int body_obj_cir(BodyObject *body, char *fieldname, unsigned threshold)
 {
      if (!body->obj_valid) {
-	  switch (body->now_valid) {
-	  case 0:
-	       PyErr_Format(PyExc_RuntimeError,
-			    "field %s undefined until first compute()",
-			    fieldname);
+	  if (body->now_valid == 0) {
+	       if (fieldname)
+		    PyErr_Format(PyExc_RuntimeError,
+				 "field %s undefined until first compute()",
+				 fieldname);
 	       return -1;
-	  case 1:
-	       pref_set(PREF_EQUATORIAL, PREF_GEO);
-	       body->obj_valid = 1;
-	       break;
-	  case 2:
-	       pref_set(PREF_EQUATORIAL, PREF_TOPO);
-	       body->obj_valid = 2;
-	       break;
 	  }
+	  pref_set(PREF_EQUATORIAL,
+		   body->now_valid == 1 ? PREF_GEO : PREF_TOPO);
 	  obj_cir(& body->now, & body->obj);
+	  body->obj_valid = body->now_valid;
      }
      if (body->obj_valid < threshold) {
 	  PyErr_Format(PyExc_RuntimeError,

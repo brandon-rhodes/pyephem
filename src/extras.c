@@ -173,9 +173,16 @@ static PyObject* constellation
 			       "coordinates");
 	       goto fail;
 	  }
+	  if (b->obj_valid == 0 && body_obj_cir(b, 0, 0) == -1) {
+	       PyErr_SetString(PyExc_TypeError, "you cannot ask about "
+			       "the constellation in which a body "
+			       "lies until you have used compute() to "
+			       "determine its position");
+	       goto fail;
+	  }
 	  ra = b->obj.s_ra;
 	  dec = b->obj.s_dec;
-	  /*epoch = b->epoch;*/
+	  epoch = b->now.n_epoch;
      } else {
 	  if (!PySequence_Check(position_arg)) {
 	       PyErr_SetString(PyExc_TypeError, "you must specify a position "
