@@ -1,16 +1,14 @@
 PyEphem
-Version 3.5.2a
-4 March 2003
+Version 3.6.1a
+24 October 2004
 
 PyEphem provides an `ephem' module providing many astronomical
 computation routines accessible from the Python scripting language.
-It is written and maintained by Brandon Craig Rhodes, whom you can
-find at:
+You can find the most recent version at
 
-	brandon@rhodesmill.org
-	http://www.rhodesmill.org/brandon/
+   http://www.rhodesmill.org/brandon/projects/pyephem.html
 
-The computation routines themselves were extracted from the XEphem
+The computation routines behind PyEphem were extracted from the XEphem
 program of Elwood Charles Downey (ecdowney@ClearSkyInstitute.com),
 available from http://iraf.noao.edu/~ecdowney/xephem.html.
 
@@ -18,14 +16,15 @@ See the COPYING file in this directory for copyright information.
 
 INSTALLING
 
-Change directory to pyephem-3.5.2a and use the setup.py script to
-build or install the package.  Typically, entering
+Building and installing this module requires Python, your C compiler,
+and the standard Python distutils.  You can run the setup.py script in
+this directory to build or install the package.  Typically, entering
 
 	python setup.py install
 
-(which you will probably need to do as root, unless you have your own
-version of Python in your home directory) will both build and install
-the module, which you can use in your Python programs with either an
+(which you will probably need to do as root, unless you have Python
+installed in your home directory) will both build and install the
+module, which you can use in your Python programs with either an
 
 	import ephem
 
@@ -40,13 +39,13 @@ system.
 DOCUMENTATION
 
 See the manual under doc/pyephem-manual.html and look online at
-http://www.rhodesmill.org/brandon/projects/pyephem for information
-about programming with PyEphem.
+http://www.rhodesmill.org/brandon/projects/pyephem for a description
+of programming with PyEphem.
 
 CONTRIBUTING
 
 If you write useful scripts with PyEphem, please consider submitting
 them to be considered for the `examples/' directory.  In particular,
 there will probably be interest in algorithms that search for various
-celestial circumstances like eclipses or conjunctions; not needing
+celestial circumstances, like eclipses or conjunctions; not needing
 such routines myself, however, I have not endeavored to produce any.

@@ -1,16 +1,21 @@
-The libastro library from XEphem is distributed with this module with
-the generous permission of Elwood Charles Downey; the license under
-which it may be otherwise used and distributed is in the file named
-Copyright in the libastro/ directory.
+The libastro library, provided here in the ./libastro-3.6.1 directory,
+is the work of Elwood Charles Downey, who has generously allowed me to
+redistribute his code within PyEphem.  If you want to use the libastro
+library for anything other than compiling PyEphem, however, you will
+need to seek his permission yourself; see the Copyright file in the
+libastro directory for his general license terms.
 
-The SWIG wrapping code, documentation, and example scripts are
+Everything outside of the ./libastro-3.6.1 directory is part of
+the PyEphem code base itself, and is
 
-	Copyright 2003 by Brandon Craig Rhodes
-	Licensed under the terms of the GNU General Public License
-	(whose text appears below)
+   Copyright 2004 by Brandon Craig Rhodes
+   Licensed under the terms of the GNU General Public License
+   (whose text appears below)
 
-Brandon makes no warranty regarding nor assumes any liability for the
-behavior of this code.  But he hopes you benefit from it anyway.
+I make no warranty regarding, nor assume any liability for, the
+behavior of this code, but hope you benefit from it anyway.
+
+   - Brandon Craig Rhodes
 
 ----------------------------------------------------------------------
 		    GNU GENERAL PUBLIC LICENSE
