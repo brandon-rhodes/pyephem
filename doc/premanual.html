@@ -984,59 +984,67 @@ Returns a new copy of the body.
 <h3>6. Body Attributes</h3>
 
 <a name="bodyattrs">These attributes</a>
-store the results of the most recent <tt>compute()</tt>
-that you have performed on a body;
-before the first call, most of these values are zero.
+present the results of the most recent <tt>compute()</tt>
+that you have performed on a body.
+The units of each attribute are shown in parenthesis.
 
 <dl>
-<dt><b>Absolute Position</b>
-(always computed)
-<dd><code><i>body</i>.ra, <i>body</i>.dec</code> --- equatorial coordinates
- in hours of right ascension and degrees of declination
-<br><code><i>body</i>.elong</code> --- angle in degrees
- between the position of the sun and the body
+<dt><b>Position</b>
+<dd><code><i>body</i>.ra</code> --- right ascension
+ (radians that print as hours of arc)
+<br><code><i>body</i>.dec</code> --- declination
+ (radians that print as degrees)
+<br><code><i>body</i>.elong</code> --- angular distance from the sun
+ (radians that print as degrees)
 <br><code><i>body</i>.mag</code> --- visual magnitude
-<br><code><i>body</i>.size</code> --- visual size of object in arc seconds
+<br><code><i>body</i>.size</code> --- visual size (arc seconds)
 
-<dt><b>Position for an Observer</b>
-(computed when an <tt>Observer</tt> is provided to <tt>compute()</tt>)
-<dd><code><i>body</i>.az, <i>body</i>.alt</code>
- --- position in the sky for the observer,
- measured in degrees azimuth east of north,
- and degrees altitude above the horizon
-<br><code><i>body</i>.apparent_ra, <i>body</i>.apparent_dec</code>
- --- the apparent position of the object,
- in hours of right ascension and degrees of declination,
- when viewed by an observer through the distorting lens of the atmosphere
- (which typically increases the altitude
-  of objects near the edge of the horizon)
+<dt><b>Position Relative to an Observer</b><br>
+These are only available
+when you provided an <tt>Observer</tt> to <tt>compute()</tt>.
+<dd><code><i>body</i>.az</code> --- azimuth, measured east from true north
+ (radians that print as degrees)
+<br><code><i>body</i>.alt</code> --- altitude above the horizon
+ (radians that print as degrees)
 <br>
-<br><code><i>body</i>.rise_time, <i>body</i>.rise_az,
-<br><i>body</i>.transit_time, <i>body</i>.transit_alt,
-<br><i>body</i>.set_time, <i>body</i>.set_az,
-<br><i>body</i>.circumpolar, <i>body</i>.neverup</code>
-<br>--- these attributes establish when and where the object rises,
-transits, and sets on the day for which its position has been computed.
-Any of the times or positions might be <tt>None</tt>
-if PyEphem does not find that the object rose, passed the meridian, or set
-on the given day.
-Both <tt>circumpolar</tt> and <tt>neverup</tt> are booleans,
-indicating respectively whether the object stayed above the horizon all day,
-or remained below the horizon all day.
+<br><code><i>body</i>.circumpolar</code> --- whether the body remains up
+ all day (boolean)
+<br><code><i>body</i>.neverup</code> --- whether the body never rises
+ above the horizon (boolean)
+<br>
+<br><code><i>body</i>.rise_time</code> --- the time at which the body rises
+<br><code><i>body</i>.rise_az</code> --- the position on the horizon
+ where the body rises (radians that print as degrees)
+<br>(these are both <tt>None</tt> on days the body does not rise)
+<br>
+<br><code><i>body</i>.transit_time</code> --- the time at which the body
+ transits
+<br><code><i>body</i>.transit_alt</code> --- the altitude at which the
+ body transits (radians that print as degrees)
+<br>(these are both <tt>None</tt> on days the body does not transit)
+<br>
+<br><code><i>body</i>.set_time</code> --- the time at which the body sets
+<br><code><i>body</i>.set_az</code> --- the position on the horizon
+ where the body sets (radians that print as degrees)
+<br>(these are both <tt>None</tt> on days the body does not set)
 
-<dt><b>Solar System Position</b>
-(available for all objects that orbit the sun)
-<dd><code><i>body</i>.hlong, <i>body</i>.hlat</code> --- heliocentric
- position given in degrees of longitude and latitude
-<br><code><i>body</i>.sun_distance</code> --- distance from the sun in~AU
-<br><code><i>body</i>.earth_distance</code> --- distance from earth in~AU
+<dt><b>Position in the Solar System</b>
+<br>These are available for all bodies that orbit the Sun.
+<dd><code><i>body</i>.hlong</code> --- heliocentric longitude
+ (radians that print as degrees)
+<dd><code><i>body</i>.hlat</code> --- heliocentric latitude
+ (radians that print as degrees)
+<br><code><i>body</i>.sun_distance</code> --- distance from the sun~(AU)
+<br><code><i>body</i>.earth_distance</code> --- distance from earth~(AU)
 <br><code><i>body</i>.phase</code> --- percent of the body illuminated
  when viewed from earth
 
 <dt><b>Saturn Attributes</b>
-<dd><code><i>body</i>.earth_tilt, <i>body</i>.sun_tilt</code> ---
- the degrees southward by which Saturn's rings are tilted
- when Saturn is viewed respectively from the earth and from the sun
+<dd><code><i>body</i>.earth_tilt</code> ---
+ tilt of rings toward Earth (radians that print as degrees)
+<dd><code><i>body</i>.sun_tilt</code> ---
+ tilt of rings toward the Sun (radians that print as degrees)
+<br>(these are positive for a southward tilt and negative for northward)
 <br><code>
 
 <dt><b>Attributes of Earth's Moon</b>
@@ -1046,10 +1054,12 @@ or remained below the horizon all day.
   than the <tt>phase</tt> attribute the Moon shares with other Planet objects)
 <br><code><i>body</i>.colong</code> ---
  the co-longitude of (360&deg; minus) the lunar meridian experiencing sunrise
+ (radians that print as degrees)
 <br><code><i>body</i>.subsolar_lat</code> --- the lunar latitude
- of the location where the sun is directly overhead
+ at which the Sun is overhead (radians that print as degrees)
 <br><code><i>body</i>.libration_lat, <i>body</i>.libration_long</code> ---
  the latitude and longitude of the point on the lunar surface facing the earth
+ (radians that print as degrees)
 
 <dt><b>Attributes of other moons</b>
 
@@ -1060,24 +1070,24 @@ or remained below the horizon all day.
  <tt>y</tt> gives the distance north or south (south is positive),
  and <tt>z</tt> indicates distance toward or away from the Earth
  relative to the distance of its planet (closer to Earth is positive)
-<br><code><i>body</i>.earth_visible</code> --- boolean indicating
- whether the moon is visible from the Earth
-<br><code><i>body</i>.sun_visible</code> --- boolean indicating
- whether the moon is visible from the Sun
- (and therefore, whether it will be illuminated or dark)
+<br><code><i>body</i>.earth_visible</code> ---
+ whether the moon is visible from Earth (boolean)
+<br><code><i>body</i>.sun_visible</code> ---
+ whether the moon is visible from the Sun (boolean)
 
 <dt><a name="satellite-attributes"><b>Earth Satellite Attributes</b></a>
 <dd><code><i>body</i>.sublat, <i>body</i>.sublong</code> ---
- the degrees latitude and longitude of the point on earth
- above which the satellite is positioned
-<br><code><i>body</i>.elevation</code> --- the height of the satellite
- above sea level in meters
-<br><code><i>body</i>.range</code> --- the distance in meters
- between the observer and the satellite
-<br><code><i>body</i>.range_velocity</code> --- the rate in meters per second
- at which the distance between the observer and the satellite is changing
+ the point on Earth above which the satellite is positioned
+ (radians that print as degrees)
+<br><code><i>body</i>.elevation</code> --- height of the satellite
+ above sea level (meters)
+<br><code><i>body</i>.range</code> --- distance between the observer
+ and the satellite (meters)
+<br><code><i>body</i>.range_velocity</code> --- rate at which
+ the distance between the observer and the satellite is changing
+ (meters per second)
 <br><code><i>body</i>.eclipsed</code> --- whether the satellite lies
- in the earth's shadow
+ in the shadow of Earth (boolean)
 </dl>
 
 <a name="orbital-elements"><h3>7. Orbital Elements</h3></a>

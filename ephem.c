@@ -1311,21 +1311,24 @@ static int Set_gk(PyObject *self, PyObject *value, void *v)
 static PyGetSetDef Body_getset[] = {
      {"name", Get_name, Set_name, "object name (up to 20 characters)"},
 
-     {"ra", Get_ra, 0, "right ascension (hours of arc)"},
-     {"dec", Get_dec, 0, "declination (degrees)"},
-     {"elong", Get_elong, 0, "elongation (degrees)"},
+     {"ra", Get_ra, 0, "right ascension (radians that print as hours of arc)"},
+     {"dec", Get_dec, 0, "declination (radians that print as degrees)"},
+     {"elong", Get_elong, 0, "elongation (radians that print as degrees)"},
      {"mag", Get_mag, 0, "magnitude"},
-     {"size", Get_size, 0, "visual size (arcseconds)"},
+     {"size", Get_size, 0, "visual size (seconds of arc)"},
 
-     {"az", Get_az, 0, "azimuth (degrees)"},
-     {"alt", Get_alt, 0, "altitude (degrees)"},
+     {"az", Get_az, 0, "azimuth (radians that print as degrees)"},
+     {"alt", Get_alt, 0, "altitude (radians that print as degrees)"},
 
      {"rise_time", Get_rise_time, 0, "rise time"},
-     {"rise_az", Get_rise_az, 0, "rise azimuth (degrees)"},
+     {"rise_az", Get_rise_az, 0, "rise azimuth"
+      " (radians that print as degrees)"},
      {"transit_time", Get_transit_time, 0, "transit time"},
-     {"transit_alt", Get_transit_alt, 0, "transit altitude (degrees)"},
+     {"transit_alt", Get_transit_alt, 0, "transit altitude"
+      " (radians that print as degrees)"},
      {"set_time", Get_set_time, 0, "set time"},
-     {"set_az", Get_set_az, 0, "set azimuth (degrees)"},
+     {"set_az", Get_set_az, 0, "set azimuth"
+      " (radians that print as degrees)"},
      {"circumpolar", Get_circumpolar, 0,
       "whether object remains above the horizon this day"},
      {"neverup", Get_neverup, 0,
@@ -1334,8 +1337,10 @@ static PyGetSetDef Body_getset[] = {
 };
 
 static PyGetSetDef Planet_getset[] = {
-     {"hlong", Get_hlong, 0, "heliocentric longitude (degrees)"},
-     {"hlat", Get_hlat, 0, "heliocentric latitude (degrees)"},
+     {"hlong", Get_hlong, 0, "heliocentric longitude"
+      " (radians that print as degrees)"},
+     {"hlat", Get_hlat, 0, "heliocentric latitude"
+      " (radians that print as degrees)"},
      {"sun_distance", Get_sun_distance, 0, "distance from sun (AU)"},
      {"earth_distance", Get_earth_distance, 0, "distance from earth (AU)"},
      {"phase", Get_phase, 0, "phase (percent illuminated)"},
@@ -1351,20 +1356,20 @@ static PyGetSetDef Planet_getset[] = {
 static PyGetSetDef PlanetMoon_getset[] = {
      {"name", Get_name, Set_name, "arbitrary name of up to 20 characters"},
 
-     {"ra", Get_ra, 0, "right ascension (in hours of arc)"},
-     {"dec", Get_dec, 0, "declination (in degrees)"},
-     {"mag", Get_mag, 0, "magnitude"},
+     {"ra", Get_ra, 0, "right ascension (radians that print as hours of arc)"},
+     {"dec", Get_dec, 0, "declination (radians that print as degrees)"},
 
-     {"az", Get_az, 0, "azimuth (degrees)"},
-     {"alt", Get_alt, 0, "altitude (degrees)"},
+     {"az", Get_az, 0, "azimuth (radians that print as degrees)"},
+     {"alt", Get_alt, 0, "altitude (radians that print as degrees)"},
 
      {"x", Get_x, 0, "how far east or west of its planet"
       " the moon lies in the sky (in planet radii, east is positive)"},
      {"y", Get_y, 0, "how far north or south of its planet"
       " the moon lies in the sky (in planet radii, south is positive)"},
-     {"z", Get_z, 0, "how much closer to or farther from Earth"
-      "the moon lies compared to its planet"
+     {"z", Get_z, 0, "how much closer or farther from Earth the moon is"
+      " than its planet"
       " (in planet radii, closer to Earth is positive)"},
+
      {"earth_visible", Get_earth_visible, 0, "whether visible from earth"},
      {"sun_visible", Get_sun_visible, 0, "whether visible from sun"},
      {NULL}
@@ -1372,23 +1377,25 @@ static PyGetSetDef PlanetMoon_getset[] = {
 
 static PyGetSetDef Moon_getset[] = {
      {"libration_lat", Get_libration_lat, 0,
-      "lunar libration (degrees latitude)"},
+      "lunar libration in latitude (radians that print as degrees)"},
      {"libration_long", Get_libration_long, 0,
-      "lunar libration (degrees longitude)"},
+      "lunar libration in longitude (radians that print as degrees)"},
      {"colong", Get_colong, 0,
-      "lunar selenographic colongitude (-lng of rising sun) (degrees)"},
+      "lunar selenographic colongitude (radians that print as degrees)"},
      {"moon_phase", Get_moon_phase, 0,
-      "illuminated fraction of lunar surface visible from earth"},
+      "fraction of lunar surface illuminated when viewed from earth"},
      {"subsolar_lat", Get_subsolar_lat, 0,
-      "lunar latitude of subsolar point (degrees)"},
+      "lunar latitude of subsolar point (radians that print as degrees)"},
      {NULL}
 };
 
 static PyGetSetDef Saturn_getset[] = {
      {"earth_tilt", Get_earth_tilt, 0,
-      "tilt of rings towards earth (degrees south)"},
+      "tilt of rings towards Earth (radians that print as degrees,"
+      " positive for southward tilt and negative for northward)"},
      {"sun_tilt", Get_sun_tilt, 0,
-      "tilt of rings towards sun (degrees south)"},
+      "tilt of rings towards Sun radians that print as degrees,"
+      " positive for southward tilt and negative for northward)"},
      {NULL}
 };
 
