@@ -221,12 +221,8 @@ we can try using the two Mars positions from near perihelion:
 >>> peri_angle = ephem.separation(hpos(mp0), hpos(mp1))
 >>> peri_distance = peri_angle * mp0.sun_distance
 >>> peri_area = peri_distance * mp0.sun_distance / 2.
->>> print peri_area
+>>> print peri_area      # the area, to high precision, is the same!
 0.0105712665517
->>> print peri_distance / aph_distance  # how much faster it was moving
-1.20596041281
->>> print peri_area / aph_area      # but are areas equal? very nearly!
-1.00001757256
 </pre>
 
 Despite the fact that Mars moves twenty percent faster at perihelion,
@@ -802,6 +798,13 @@ These create blank and uninitialized bodies
 whose orbital elements you must set before using them;
 <a href="#orbital-elements">see below</a>
 for the orbital elements required for each type of body.
+<dt><code>constellation(<i>body</i>)</code>
+<br><code>constellation((<i>ra</i>, <i>dec</i>))</code>
+<br><code>constellation((<i>ra</i>, <i>dec</i>), epoch=<i>epoch</i>)</code>
+<dd>
+Determines the constellation in which the given body or coordinates lie.
+If you provide coordinates without an epoch,
+then epoch 2000 is assumed.
 <dt>
 <code>separation(<i>position0</i>, <i>position1</i>)</code>
 <dd>
