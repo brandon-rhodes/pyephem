@@ -975,7 +975,7 @@ static PyObject* Body_writedb(PyObject *self)
 static PyObject* Body_copy(PyObject *self, PyObject *args)
 {
      PyObject *newbody;
-     if (!PyArg_ParseTuple(args, ":Body.__copy__"))
+     if (!PyArg_ParseTuple(args, ":Body.copy"))
 	  return NULL;
      newbody = _PyObject_New(self->ob_type);
      if (!newbody) return 0;
@@ -999,6 +999,8 @@ static PyMethodDef Body_methods[] = {
      {"writedb", (PyCFunction) Body_writedb, METH_NOARGS,
       "return a string representation of the body "
       "appropriate for inclusion in an ephem database file"},
+     {"copy", (PyCFunction) Body_copy, METH_VARARGS,
+      "Return a new copy of this body"},
      {"__copy__", (PyCFunction) Body_copy, METH_VARARGS,
       "Return a new copy of this body"},
      {NULL}
@@ -1099,7 +1101,8 @@ static int Moon_colong(Moon *moon, char *fieldname)
 		       "field %s undefined until first compute()", fieldname);
 	  return -1;
      }
-     moon_colong(moon->now.n_mjd, 0, 0, &moon->c, &moon->k, 0, &moon->s);
+     moon_colong(MJD0 + moon->now.n_mjd, 0, 0,
+		 &moon->c, &moon->k, 0, &moon->s);
      moon->obj.o_flags |= VALID_COLONG;
      return 0;
 }
@@ -1200,7 +1203,7 @@ GET_FIELD(llon, llon, build_degrees)
 #define CALCULATOR Moon_colong
 
 GET_FIELD(c, c, build_degrees)
-GET_FIELD(k, k, build_degrees)
+GET_FIELD(k, k, PyFloat_FromDouble)
 GET_FIELD(s, s, build_degrees)
 
 #undef CALCULATOR
@@ -2241,7 +2244,6 @@ leave:
   "return a new instance of " #NAME}
 
 static PyMethodDef ephem_methods[] = {
-     /*{"date", rebuild_date, METH_VARARGS, "Parse a date"},*/
 
      CREATE(Mercury),
      CREATE(Venus),
@@ -2348,7 +2350,7 @@ PyMODINIT_FUNC initephem(void)
      ADD("Moon", MoonType);
      
      ADD("FixedBody", FixedBodyType);
-     ADD("BinaryStar", BinaryStarType);
+     /*ADD("BinaryStar", BinaryStarType);*/
      ADD("EllipticalBody", EllipticalBodyType);
      ADD("ParabolicBody", ParabolicBodyType);
      ADD("HyperbolicBody", HyperbolicBodyType);
