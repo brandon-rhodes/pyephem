@@ -7,30 +7,18 @@
 # which also has elements for other comets and minor planets.
 
 from ephem import *
-fS = formatSexagesimal
-ss = scanSexagesimal
 
-print 'Reading the Hale-Bopp elements from an Ephem-style definition'
+hb = readdb("C/1995 O1 (Hale-Bopp),e,89.4245,282.4515,130.5641,183.6816," +
+	    "0.0003959,0.995026,0.1825,07/06.0/1998,2000,g -2.0,4.0")
 
-o = Obj()
-entry = ("C/1995 O1 (Hale-Bopp),e,89.4245,282.4515,130.5641,183.6816," +
-         "0.0003959,0.995026,0.1825,07/06.0/1998,2000,g -2.0,4.0")
-scanDB(entry, o)
+me = Observer()
+me.lat, me.long, me.elev = '33:45:10', '-84:23:37', 320.0
 
-print 'Creating a circumstance for Atlanta, Georgia'
+print "Hale-Bopp: date, right ascension, declination, and magnitude:"
 
-c = Circumstance()
-c.timezone = 0
-c.epoch = J2000
-c.latitude =	degrad(ss("33:45:10"))
-c.longitude =	degrad(ss("-84:23:37"))
-c.elevation =	320.0/EarthRadius       # (earth radii)
-
-print "Here are Hale-Bopp's right ascension and declination for:"
-
-jstart = fromGregorian(4,15,1997) - 1/24.
-for jo in range(40):
-        c.mjd = jstart + jo/240.
-	computeLocation(c, o)
-        print formatDay(c.mjd), formatTime(c.mjd, 60), \
-              formatHours(o.any.ra, 36000), formatDegrees(o.any.dec, 3600)
+me.date = date('1997/2/15')
+end = date('1997/5/15')
+while me.date < end:
+        hb.compute(me)
+        print me.date, hb.ra, hb.dec, hb.mag
+	me.date += 5
