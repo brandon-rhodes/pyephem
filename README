@@ -1,10 +1,9 @@
 PyEphem
 Version 3.6.1a
-24 October 2004
+25 November 2004 (Thanksgiving)
 
-PyEphem provides an `ephem' module providing many astronomical
-computation routines accessible from the Python scripting language.
-You can find the most recent version at
+PyEphem provides an `ephem' Python module that can perform many
+astronomical computations.  You can find the most recent version at
 
    http://www.rhodesmill.org/brandon/projects/pyephem.html
 
@@ -38,7 +37,7 @@ system.
 
 DOCUMENTATION
 
-See the manual under doc/pyephem-manual.html and look online at
+See the manual under doc/pyephem-manual.html, or look online at
 http://www.rhodesmill.org/brandon/projects/pyephem for a description
 of programming with PyEphem.
 
