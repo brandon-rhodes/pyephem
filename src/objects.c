@@ -5,12 +5,12 @@ typedef struct {
 
 typedef struct {
      PyObject_HEAD
-     unsigned now_valid : 2;	/* 0=no, 1=mjd and epoch only, 2=all */
-     unsigned obj_valid : 2;	/* 0=no, 1=geocentric only, 2=all */
-     unsigned riset_valid : 2;	/* 0=no, 2=yes */
      Now now;			/* cache of last observer */
      Obj obj;			/* the ephemeris object */
      RiseSet riset;		/* rising and setting */
+     unsigned now_valid : 2;	/* 0=no, 1=mjd and epoch only, 2=all */
+     unsigned obj_valid : 2;	/* 0=no, 1=geocentric only, 2=all */
+     unsigned riset_valid : 2;	/* 0=no, 2=yes */
 } BodyObject;
 
 typedef struct {
