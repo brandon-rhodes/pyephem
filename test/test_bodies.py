@@ -20,6 +20,10 @@ attribute_list = (
      ('colong', 'subsolar_lat', 'libration_lat', 'libration_long')),
     (Saturn, False,
      ('earth_tilt', 'sun_tilt')),
+    (PlanetMoon, False,
+     ('ra', 'dec', 'x', 'y', 'z', 'earth_visible', 'sun_visible')),
+    (PlanetMoon, True,
+     ('az', 'alt')),
     )
 
 # Return a dictionary whose keys are all known body attributes,
@@ -31,6 +35,8 @@ def predict_attributes(body, was_computed, was_given_observer):
     predictions = {}
     for bodytype, needs_observer, attrs in attribute_list:
         for attr in attrs:
+            if attr in predictions and predictions[attr] != AttributeError:
+                continue
             if not isinstance(body, bodytype):
                 predictions[attr] = AttributeError
             elif not was_computed:
