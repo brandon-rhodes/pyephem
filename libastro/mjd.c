@@ -46,7 +46,7 @@ double *mjd;
 	else
 	    c = (long)(365.25*y) - 694025L;
 
-	d = 30.6001*(m+1);
+	d = (int)(30.6001*(m+1));
 
 	*mjd = b + c + d + dy - 0.5;
 
@@ -103,14 +103,14 @@ double *dy;
 	b = floor((i/365.25)+.802601);
 	ce = i - floor((365.25*b)+.750001)+416;
 	g = floor(ce/30.6001);
-	*mn = g - 1;
+	*mn = (int)(g - 1);
 	*dy = ce - floor(30.6001*g)+f;
-	*yr = b + 1899;
+	*yr = (int)(b + 1899);
 
 	if (g > 13.5)
-	    *mn = g - 13;
+	    *mn = (int)(g - 13);
 	if (*mn < 2.5)
-	    *yr = b + 1900;
+	    *yr = (int)(b + 1900);
 	if (*yr < 1)
 	    *yr -= 1;
 
@@ -146,6 +146,14 @@ int *dow;
 	return (0);
 }
 
+/* given a year, return whether it is a leap year */
+int
+isleapyear (y)
+int y;
+{
+	return ((y%4==0 && y%100!=0) || y%400==0);
+}
+
 /* given a mjd, return the the number of days in the month.  */
 void
 mjd_dpm (mjd, ndays)
@@ -157,7 +165,24 @@ int *ndays;
 	double d;
 
 	mjd_cal (mjd, &m, &d, &y);
-	*ndays = (m==2 && ((y%4==0 && y%100!=0)||y%400==0)) ? 29 : dpm[m-1];
+	*ndays = (m==2 && isleapyear(y)) ? 29 : dpm[m-1];
+}
+
+/* given a mjd, return the year and number of days since 00:00 Jan 1 */
+void
+mjd_dayno (mjd, yr, dy)
+double mjd;
+int *yr;
+double *dy;
+{
+	double yrd;
+	int yri;
+	int dpy;
+
+	mjd_year (mjd, &yrd);
+	*yr = yri = (int)yrd;
+	dpy = isleapyear(yri) ? 366 : 365;
+	*dy = dpy*(yrd-yri);
 }
 
 /* given a mjd, return the year as a double. */
@@ -193,7 +218,7 @@ double y;
 double *mjd;
 {
 	double e0, e1;	/* mjd of start of this year, start of next year */
-	int yf = floor (y);
+	int yf = (int)floor (y);
 	if (yf == -1) yf = -2;
 
 	cal_mjd (1, 1.0, yf, &e0);
@@ -233,3 +258,6 @@ double *v, r;
 {
 	*v -= r*floor(*v/r);
 }
+
+/* For RCS Only -- Do Not Edit */
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: mjd.c,v $ $Date: 2003/03/04 05:44:05 $ $Revision: 1.2 $ $Name:  $"};

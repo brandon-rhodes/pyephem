@@ -225,6 +225,8 @@ double *d;
 		/* not in a number now ... */
 		if (in) {
 		    /* ... but we *were* in a number, so it counts */
+		    if (ncomp >= 3)
+			return;	/* too many components.. just bail */
 		    comp[ncomp] = atod (bp0);
 		    set[ncomp] = 1;
 		    in = 0;
@@ -253,19 +255,19 @@ double *d;
 
         switch (pref) {
         case PREF_MDY:
-            if (set[0]) *m = comp[0];
+            if (set[0]) *m = (int)comp[0];
             if (set[1]) *d = comp[1];
-            if (set[2]) *y = comp[2];
+            if (set[2]) *y = (int)comp[2];
             break;
         case PREF_YMD:
-            if (set[0]) *y = comp[0];
-            if (set[1]) *m = comp[1];
+            if (set[0]) *y = (int)comp[0];
+            if (set[1]) *m = (int)comp[1];
             if (set[2]) *d = comp[2];
             break;
         case PREF_DMY:
             if (set[0]) *d = comp[0];
-            if (set[1]) *m = comp[1];
-            if (set[2]) *y = comp[2];
+            if (set[1]) *m = (int)comp[1];
+            if (set[2]) *y = (int)comp[2];
             break;
 	}
 }
@@ -300,3 +302,6 @@ double *dp;
 	    *dp = - *dp;
 	return (0);
 }
+
+/* For RCS Only -- Do Not Edit */
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: formats.c,v $ $Date: 2003/03/04 05:44:05 $ $Revision: 1.2 $ $Name:  $"};

@@ -2073,8 +2073,8 @@ static CHAR lrargs[] = {
  -1
 };
 
-static long btabr[] = {-1.0};
-static long btabb[] = {-1.0};
+static long btabr[] = {-1};
+static long btabb[] = {-1};
 static long btabl[] = {
         -3,        -4,
          4,     -1856,         0,      8043,
@@ -3482,3 +3482,6 @@ double *msp, *mdp;
 
 	}
 }
+
+/* For RCS Only -- Do Not Edit */
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: moon.c,v $ $Date: 2003/03/04 05:44:05 $ $Revision: 1.2 $ $Name:  $"};

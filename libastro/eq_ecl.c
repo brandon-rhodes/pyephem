@@ -50,7 +50,7 @@ double *p, *q;		/* sw==1: p==lng, q==lat. sw==-1: p==ra, q==dec. */
 {
 	static double lastmjd = -10000;	/* last mjd calculated */
 	static double seps, ceps;	/* sin and cos of mean obliquity */
-	double sx, cx, sy, cy, ty;
+	double sx, cx, sy, cy, ty, sq;
 
 	if (mjd != lastmjd) {
 	    double eps;
@@ -66,8 +66,14 @@ double *p, *q;		/* sw==1: p==lng, q==lat. sw==-1: p==ra, q==dec. */
         ty = sy/cy;
 	cx = cos(x);
 	sx = sin(x);
-        *q = asin((sy*ceps)-(cy*seps*sx*sw));
+        sq = (sy*ceps)-(cy*seps*sx*sw);
+	if (sq < -1) sq = -1;
+	if (sq >  1) sq =  1;
+        *q = asin(sq);
         *p = atan(((sx*ceps)+(ty*seps*sw))/cx);
         if (cx<0) *p += PI;		/* account for atan quad ambiguity */
 	range (p, 2*PI);
 }
+
+/* For RCS Only -- Do Not Edit */
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: eq_ecl.c,v $ $Date: 2003/03/04 05:44:05 $ $Revision: 1.2 $ $Name:  $"};

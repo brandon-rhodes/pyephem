@@ -54,6 +54,9 @@ extern void hadec_aa P_((double lat, double ha, double dec, double *alt,
 extern void ab_ecl P_((double mjd, double lsn, double *lam, double *bet));
 extern void ab_eq P_((double mjd, double lsn, double *ra, double *dec));
 
+/* airmass.c */
+extern void airmass P_((double aa, double *Xp));
+
 /* anomaly.c */
 extern void anomaly P_((double ma, double s, double *nu, double *ea));
 
@@ -114,10 +117,12 @@ extern double delra P_((double dra));
 extern void cal_mjd P_((int mn, double dy, int yr, double *mjd));
 extern void mjd_cal P_((double mjd, int *mn, double *dy, int *yr));
 extern int mjd_dow P_((double mjd, int *dow));
+extern int isleapyear P_((int year));
 extern void mjd_dpm P_((double mjd, int *ndays));
 extern void mjd_year P_((double mjd, double *yr));
 extern void year_mjd P_((double y, double *mjd));
 extern void rnd_second P_((double *t));
+extern void mjd_dayno P_((double jd, int *yr, double *dy));
 extern double mjd_day P_((double jd));
 extern double mjd_hr P_((double jd));
 extern void range P_((double *v, double r));
@@ -156,6 +161,10 @@ extern void reduce_elements P_((double mjd0, double mjd, double inc0,
 extern void unrefract P_((double pr, double tr, double aa, double *ta));
 extern void refract P_((double pr, double tr, double ta, double *aa));
 
+/* rings.c */
+extern void satrings P_((double sb, double sl, double sr, double el, double er,
+    double JD, double *etiltp, double *stiltp));
+
 /* riset.c */
 extern void riset P_((double ra, double dec, double lat, double dis,
     double *lstr, double *lsts, double *azr, double *azs, int *status));
@@ -169,9 +178,16 @@ extern void cartsph P_((double x, double y, double z, double *l, double *b,
 /* sun.c */
 extern void sunpos P_((double mjd, double *lsn, double *rsn, double *bsn));
 
+/* twobody.c */
+extern void vrc P_((double *v, double *r, double tp, double e, double q));
+
 /* utc_gst.c */
 extern void utc_gst P_((double mjd, double utc, double *gst));
 extern void gst_utc P_((double mjd, double gst, double *utc));
 
 /* vsop87.c */
 extern int vsop87 P_((double mjd, int obj, double prec, double *ret));
+
+/* For RCS Only -- Do Not Edit
+ * @(#) $RCSfile: astro.h,v $ $Date: 2003/03/04 05:44:05 $ $Revision: 1.2 $ $Name:  $
+ */

@@ -2,6 +2,7 @@
  *
  * original code by Stephen Moshier <moshier@world.std.com>,
  * adapted to xephem by Michael Sternberg <sternberg@physik.tu-chemnitz.de>
+ * smoothed transitions and updated by Neal McBurnett <nealmcb@bell-labs.com>
  *
  **********************************************************************
  *
@@ -23,13 +24,16 @@
  * were derived from studies of ancient eclipses and other historical
  * information, whose interpretation depends only partly on ndot.
  *
- * A linear [was: quadratic - stern] extrapolation formula, that agrees
- * in value and slope with current data, predicts future values of deltaT.
+ * For future vaues of deltaT, the function smoothly transitions with
+ * a linear segment back to Stephenson & Morrison's quadratic formula
+ * in 2130.
  *
  * Input is mjd (modified julian date from MJD0 on). [stern]
+ *  Note that xephem uses a different epoch for this "mjd" than the
+ *  normal value of JD=240000.5.
  * See AA page B4.
  *
- * Output double deltat(mjd) is ET-UT in seconds.
+ * Output double deltat(mjd) is ET-UT1 in seconds.
  *
  *
  * References:
@@ -71,15 +75,14 @@
  *	of second order version
  *   - installed lastmjd cache (made ans static)
  *
- *   - no changes to table interpolation scheme and past extrapolations
- */
+ *   - no changes to table interpolation scheme and past extrapolations */
 
 #include "P_.h"
 #include "astro.h"
 
 #define TABSTART 1620.0
-#define TABEND 2004.0
-#define TABSIZ 385
+#define TABEND 2006.0
+#define TABSIZ 387
 
 /* Note, Stephenson and Morrison's table starts at the year 1630.
  * The Chapronts' table does not agree with the Almanac prior to 1630.
@@ -137,18 +140,24 @@ static short dt[TABSIZ] = {
      5686, 5757, 5831, 5912, 5998, 6078,
     /* new USNO data (stern) */
      6163, 6230,
-    /* new USNO extrapolation (stern), 2000.0 to 2004.0 */
-     6296, 6420,
-     6510, 6600, 6700, 6800, 6900  /* 7000, 7100, 7200, 7300, 7400, */
+    /* 1999 USNO data 1998.0 thru 2000.0 (McBurnett) */
+     6297, 6347, 6383, 
+    /* 1999 extrapolation (McBurnett), 2001.0 thru 2006.0
+       Ramp up to 1.6 s/yr to transition smoothly to Stevenson formula
+       in 2130.0 */
+     6440, 6510, 6600, 6750, 6900, 7060
 
-    /* Extrapolated values (USNO) (original Moshier)
+    /* original 1997 USNO extrapolation (stern), 1998.0 thru 2004.0
+     6296, 6420,
+     6510, 6600, 6700, 6800, 6900   */ /* 7000, 7100, 7200, 7300, 7400, */
+
+    /* Extrapolated values (USNO) (original Moshier) [1996.0 thru 2005.0]
      6183, 6280, 6377, 6475,
      6572, 6667, 6765, 6861, 6957
      */
 };
 
-
-/* calculate  DeltaT = ET - UT in seconds.  Describes the irregularities
+/* calculate  DeltaT = ET - UT1 in seconds.  Describes the irregularities
  * of the Earth rotation rate in the ET time scale.
  */
 double deltat(mjd)
@@ -169,7 +178,7 @@ double mjd;
 
 	Y = 2000.0 + (mjd - J2000)/365.25;
 
-	if( Y > TABEND ) {
+	if( Y > TABEND  &&  Y < 2130.0 ) {
 	    /* linear interpolation from table end; stern */
 	    B = Y - TABEND;
 	    ans = dt[TABSIZ-1] + B * (dt[TABSIZ-1]  - dt[TABSIZ-2]);
@@ -177,15 +186,25 @@ double mjd;
 	    return(ans);
 	}
 
-	if( Y < TABSTART ) {
-	    if( Y >= 948.0 ) {
+	if( Y < TABSTART  ||  Y >= 2130.0 ) {
+	    if( (Y >= 948.0 - 15.0  &&  Y < TABSTART) ||  Y >= 2130.0 ) {
 		/* Stephenson and Morrison, stated domain is 948 to 1600:
 		 * 25.5(centuries from 1800)^2 - 1.9159(centuries from 1955)^2
+		 * Here we offset by -15 y to minimize the discontinuity,
+		 * thus we use it from 933.0 to 1620.0,
+		 * and from the end of the table to 2130.0.
+		 * f(1620.0) = 60.955200, slope -0.079 s/y
+		 * f(2004.0) = 105.649728, slope 1.02 s/y
+		 * f(2048.0) = 155.176, slope 1.23 s/y
+		 * f(2084.0) = 202.49, slope 1.4 s/y
+		 * f(2130.0) = 272, slope .1616
+	         * f(2150.0) = 305, slope .17
 		 */
 		B = 0.01*(Y - 2000.0);
 		ans = (23.58 * B + 100.3)*B + 101.6;
 	    } else {
 		/* Borkowski */
+	        /* f(2004.0) = 542.7435, slope 2.65 s/y */
 		B = 0.01*(Y - 2000.0)  +  3.75;
 		ans = 35.0 * B * B  +  40.;
 	    }
@@ -196,10 +215,12 @@ double mjd;
 	 * See AA page K11.
 	 */
 
+	/* value for 1620.1 is 121.96 or so, not 124.0 */
+
 	/* Index into the table.
 	 */
 	p = floor(Y);
-	iy = p - TABSTART;
+	iy = (int)(p - TABSTART);
 	/* Zeroth order estimate is value at start of year
 	 */
 	ans = dt[iy];
@@ -281,3 +302,6 @@ main()
 	}
 }
 #endif
+
+/* For RCS Only -- Do Not Edit */
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: deltat.c,v $ $Date: 2003/03/04 05:44:05 $ $Revision: 1.2 $ $Name:  $"};

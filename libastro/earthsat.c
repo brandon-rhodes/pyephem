@@ -1,19 +1,28 @@
-/* this file contains routines to support earth satellites.
+/* this file contains routines to support Earth satellites.
  *
- * everything is based on the `orbit' program, as per the copyright therein as
- * follows:
+ * Orbit propagation is based on the NORAD SGP4/SDP4 code, as converted from
+ *   the original FORTRAN to C by Magnus Backstrom. The paper "Spacetrack
+ *   Report Number 3: Models for Propagation of NORAD Element Sets" describes
+ *   the calculations.
+ *   See http://www.celestrak.com/NORAD/documentation/spacetrk.pdf.
+ *
+ * A few topocentric routines are also used from the 'orbit' program which is
  *   Copyright (c) 1986,1987,1988,1989,1990 Robert W. Berger N3EMO
- *   May be freely distributed, provided this notice remains intact. 
- * Any errors in utilizing the code from orbit are strictly my own.
  *
- * N.B. in spite of the orbit.doc comment, we assume that Range, RangeRate and
- *   Height are in km, not m.
- * define the following to get some intermediate results printed:
- * #define ESAT_TRACE
+ */
+
+/* define this to use orbit's propagator
+#define USE_ORBIT_PROPAGATOR
+ */
+
+/* define this to print some stuff
+#define ESAT_TRACE
  */
 
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
+
 #if defined(__STDC__)
 #include <stdlib.h>
 #endif
@@ -23,18 +32,22 @@
 #include "circum.h"
 #include "preferences.h"
 
+#include "vector.h"
+#include "sattypes.h"
+#include "satlib.h"
+
+
+#define ESAT_MAG        2       /* fake satellite magnitude */
+
 typedef double MAT3x3[3][3];
 
-#define ESAT_MAG        2       /* default satellite magnitude */
-
+static void esat_prop P_((Now *np, Obj *op, double *SatX, double *SatY, double
+    *SatZ, double *SatVX, double *SatVY, double *SatVZ));
 static void GetSatelliteParams P_((Obj *op));
 static void GetSiteParams P_((Now *np));
 static double Kepler P_((double MeanAnomaly, double Eccentricity));
-static int esat_main P_((double CrntTime, Obj *op));
 static void GetSubSatPoint P_((double SatX, double SatY, double SatZ,
     double T, double *Latitude, double *Longitude, double *Height));
-static void GetPrecession P_((double SemiMajorAxis, double Eccentricity,
-    double Inclination, double *RAANPrecession, double *PerigeePrecession));
 static void GetSatPosition P_((double EpochTime, double EpochRAAN,
     double EpochArgPerigee, double SemiMajorAxis, double Inclination,
     double Eccentricity, double RAANPrecession, double PerigeePrecession,
@@ -57,88 +70,13 @@ static int Eclipsed P_((double SatX, double SatY, double SatZ,
     double SatRadius, double CrntTime));
 static void InitOrbitRoutines P_((double EpochDay, int AtEod));
 
+#ifdef USE_ORBIT_PROPAGATOR 
+static void GetPrecession P_((double SemiMajorAxis, double Eccentricity,
+    double Inclination, double *RAANPrecession, double *PerigeePrecession));
+#endif /* USE_ORBIT_PROPAGATOR */
 
-
-/* given a Now and an Obj with info about an earth satellite in the es_* fields
- * fill in the s_* sky fields describing the satellite.
- * as usual, we compute the geocentric ra/dec precessed to np->n_epoch and
- * compute topocentric altitude accounting for refraction.
- * return 0 if all ok, else -1.
- */
-int
-obj_earthsat (np, op)
-Now *np;
-Obj *op;
-{
-	double CrntTime;
-	double ra, dec, alt;
-
-	/* extract the xephem data forms into those used by orbit.
-	 * (we reuse orbit's function names that read these from files.)
-	 */
-	GetSatelliteParams(op);
-	GetSiteParams(np);
- 
-	/* xephem uses noon 12/31/1899 as 0; orbit uses midnight 1/1/1900.
-	 * thus, xephem runs 12 hours, or 1/2 day, behind of what orbit wants.
-	 */
-	CrntTime = mjd + 0.5;
-
-	/* do the work for the epoch of date */
-	if (esat_main (CrntTime, op) < 0)
-	    return (-1);
-
-#ifdef ESAT_TRACE
-	printf ("lat = %g\n", raddeg(lat));
-	printf ("lng = %g\n", raddeg(lng));
-	printf ("n_elev = %g\n", elev*ERAD/1000);
-
-	printf ("az = %g\n", raddeg(op->s_az));
-	printf ("alt = %g\n", raddeg(op->s_alt));
-	printf ("range = %g\n", op->s_range);
-	printf ("s_elev = %g\n", op->s_elev);
-	printf ("sublat = %g\n", raddeg(op->s_sublat));
-	printf ("sublng = %g\n", -raddeg(op->s_sublng));
-	printf ("eclipsed = %d\n", op->s_eclipsed);
-	fflush (stdout);
-#endif
-
-	/* correct altitude for refraction */
-	alt = op->s_alt;
-	refract (pressure, temp, alt, &alt);
-	op->s_alt = alt;
-
-	/* find s_ra/dec, depending on current options. */
-	if (pref_get(PREF_EQUATORIAL) == PREF_TOPO) {
-	    double ha, lst;
-	    aa_hadec (lat, alt, (double)op->s_az, &ha, &dec);
-	    now_lst (np, &lst);
-	    ra = hrrad(lst) - ha;
-	    range (&ra, 2*PI);
-	} else {
-	    ra = op->s_gaera;
-	    dec = op->s_gaedec;
-	}
-	if (epoch != EOD)
-	    precess (mjd, epoch, &ra, &dec);
-	op->s_ra = ra;
-	op->s_dec = dec;
-
-	/* just make up a size and brightness */
-	set_smag (op, ESAT_MAG);
-	op->s_size = 0;
-
-	return (0);
-}
-
-
-/* follows is right out of `orbit', sans the printing stuff, except as
- * noted by ECD.
- */
- 
-#ifndef PI
-#define PI 3.14159265
-#endif
+/* stuff from orbit */
+/* char VersionStr[] = "N3EMO Orbit Simulator  v3.9"; */
 
 #ifdef PI2
 #undef PI2
@@ -163,10 +101,6 @@ Obj *op;
 #define Epsilon (RadiansPerDegree/3600)     /* 1 arc second */
 #define SunRadius 695000		
 #define SunSemiMajorAxis  149598845.0  	    /* Kilometers 		   */
-
-/*
-char VersionStr[] = "N3EMO Orbit Simulator  v3.9";
-*/
  
 /*  Keplerian Elements and misc. data for the satellite              */
 static double  EpochDay;                   /* time of epoch                 */
@@ -191,7 +125,272 @@ static double SunEpochTime,SunInclination,SunRAAN,SunEccentricity,
 
 /* values for shadow geometry */
 static double SinPenumbra,CosPenumbra;
+
+
+/* given a Now and an Obj with info about an earth satellite in the es_* fields
+ * fill in the s_* sky fields describing the satellite.
+ * as usual, we compute the geocentric ra/dec precessed to np->n_epoch and
+ * compute topocentric altitude accounting for refraction.
+ * return 0 if all ok, else -1.
+ */
+int
+obj_earthsat (np, op)
+Now *np;
+Obj *op;
+{
+	double Radius;              /* From geocenter                  */
+	double SatX,SatY,SatZ;	    /* In Right Ascension based system */
+	double SatVX,SatVY,SatVZ;   /* Kilometers/second	       */
+	double SiteX,SiteY,SiteZ;
+	double SiteVX,SiteVY;
+	double SiteMatrix[3][3];
+	double Height;
+	double SSPLat,SSPLong;
+	double Azimuth,Elevation,Range;
+	double RangeRate;
+	double dtmp;
+	double CrntTime;
+	double ra, dec;
+
+#ifdef ESAT_TRACE
+	printf ("\n");
+	printf ("Name = %s\n", op->o_name);
+	printf ("current jd = %13.5f\n", mjd+MJD0);
+	printf ("current mjd = %g\n", mjd);
+	printf ("satellite jd = %13.5f\n", op->es_epoch+MJD0);
+	printf ("satellite mjd = %g\n", op->es_epoch);
+#endif /* ESAT_TRACE */
+
+	/* xephem uses noon 12/31/1899 as 0; orbit uses midnight 1/1/1900.
+	 * thus, xephem runs 12 hours, or 1/2 day, behind of what orbit wants.
+	 */
+	CrntTime = mjd + 0.5;
+
+	/* extract the XEphem data forms into those used by orbit.
+	 * (we still use some functions and names from orbit, thank you).
+	 */
+	InitOrbitRoutines(CrntTime, 1);
+	GetSatelliteParams(op);
+	GetSiteParams(np);
+
+	/* propagate to np->n_mjd */
+	esat_prop (np, op, &SatX, &SatY, &SatZ, &SatVX, &SatVY, &SatVZ);
+	Radius = sqrt (SatX*SatX + SatY*SatY + SatZ*SatZ);
+
+	/* find geocentric EOD equatorial directly from xyz vector */
+	dtmp = atan2 (SatY, SatX);
+	range (&dtmp, 2*PI);
+	op->s_gaera = (float) dtmp;
+	op->s_gaedec = (float) atan2 (SatZ, sqrt(SatX*SatX + SatY*SatY));
+
+	/* find topocentric from site location */
+	GetSitPosition(SiteLat,SiteLong,SiteAltitude,CrntTime,
+		    &SiteX,&SiteY,&SiteZ,&SiteVX,&SiteVY,SiteMatrix);
+	GetBearings(SatX,SatY,SatZ,SiteX,SiteY,SiteZ,SiteMatrix,
+		    &Azimuth,&Elevation);
+
+	op->s_az = Azimuth;
+	refract (pressure, temp, Elevation, &dtmp);
+	op->s_alt = dtmp;
+
+	/* Range: line-of-site distance to satellite, m
+	 * RangeRate: m/s
+	 */
+	GetRange(SiteX,SiteY,SiteZ,SiteVX,SiteVY,
+	    SatX,SatY,SatZ,SatVX,SatVY,SatVZ,&Range,&RangeRate);
+
+	op->s_range = (float)(Range*1000);	/* we want m */
+	op->s_rangev = (float)(RangeRate*1000);	/* we want m/s */
  
+	/* SSPLat: sub-satellite latitude, rads 
+	 * SSPLong: sub-satellite longitude, >0 west, rads 
+	 * Height: height of satellite above ground, m
+	 */
+	GetSubSatPoint(SatX,SatY,SatZ,CrntTime,
+	    &SSPLat,&SSPLong,&Height);
+
+	op->s_elev = (float)(Height*1000);	/* we want m */
+	op->s_sublat = (float)SSPLat;
+	op->s_sublng = (float)(-SSPLong);	/* we want +E */
+
+	op->s_eclipsed = Eclipsed(SatX,SatY,SatZ,Radius,CrntTime);
+
+#ifdef ESAT_TRACE
+	printf ("CrntTime = %g\n", CrntTime);
+	printf ("SatX = %g\n", SatX);
+	printf ("SatY = %g\n", SatY);
+	printf ("SatZ = %g\n", SatZ);
+	printf ("Radius = %g\n", Radius);
+	printf ("SatVX = %g\n", SatVX);
+	printf ("SatVY = %g\n", SatVY);
+	printf ("SatVZ = %g\n", SatVZ);
+	printf ("SiteX = %g\n", SiteX);
+	printf ("SiteY = %g\n", SiteY);
+	printf ("SiteZ = %g\n", SiteZ);
+	printf ("SiteVX = %g\n", SiteVX);
+	printf ("SiteVY = %g\n", SiteVY);
+	printf ("Height = %g\n", Height);
+	printf ("SSPLat = %g\n", SSPLat);
+	printf ("SSPLong = %g\n", SSPLong);
+	printf ("Azimuth = %g\n", Azimuth);
+	printf ("Elevation = %g\n", Elevation);
+	printf ("Range = %g\n", Range);
+	printf ("RangeRate = %g\n", RangeRate);
+	fflush (stdout);
+#endif	/* ESAT_TRACE */
+
+	/* find s_ra/dec, depending on current options. */
+	if (pref_get(PREF_EQUATORIAL) == PREF_TOPO) {
+	    double ha, lst;
+	    aa_hadec (lat, (double)op->s_alt, (double)op->s_az, &ha, &dec);
+	    now_lst (np, &lst);
+	    ra = hrrad(lst) - ha;
+	    range (&ra, 2*PI);
+	} else {
+	    ra = op->s_gaera;
+	    dec = op->s_gaedec;
+	}
+	if (epoch != EOD)
+	    precess (mjd, epoch, &ra, &dec);
+	op->s_ra = (float)ra;
+	op->s_dec = (float)dec;
+
+	/* just make up a size and brightness */
+	set_smag (op, ESAT_MAG);
+	op->s_size = (float)0;
+
+	return (0);
+}
+
+/* find position and velocity vector for given Obj at the given time.
+ * set USE_ORBIT_PROPAGATOR depending on desired propagator to use.
+ */
+static void
+esat_prop (np, op, SatX, SatY, SatZ, SatVX, SatVY, SatVZ)
+Now *np;
+Obj *op;
+double *SatX,*SatY,*SatZ;
+double *SatVX,*SatVY,*SatVZ;
+{
+#ifdef USE_ORBIT_PROPAGATOR
+	double ReferenceOrbit;      /* Floating point orbit # at epoch */
+	double CurrentOrbit;
+	long OrbitNum;
+	double RAANPrecession,PerigeePrecession;
+	double MeanAnomaly,TrueAnomaly;
+	double SemiMajorAxis;
+	double AverageMotion,       /* Corrected for drag              */
+	    CurrentMotion;
+	double Radius;
+	double CrntTime;
+
+	SemiMajorAxis = 331.25 * exp(2*log(MinutesPerDay/epochMeanMotion)/3);
+	GetPrecession(SemiMajorAxis,Eccentricity,Inclination,&RAANPrecession,
+			    &PerigeePrecession);
+
+	ReferenceOrbit = EpochMeanAnomaly/PI2 + EpochOrbitNum;
+     
+	CrntTime = mjd + 0.5;
+	AverageMotion = epochMeanMotion + (CrntTime-EpochDay)*OrbitalDecay/2;
+	CurrentMotion = epochMeanMotion + (CrntTime-EpochDay)*OrbitalDecay;
+
+	SemiMajorAxis = 331.25 * exp(2*log(MinutesPerDay/CurrentMotion)/3);
+     
+	CurrentOrbit = ReferenceOrbit + (CrntTime-EpochDay)*AverageMotion;
+
+	OrbitNum = CurrentOrbit;
+     
+	MeanAnomaly = (CurrentOrbit-OrbitNum)*PI2;
+     
+	TrueAnomaly = Kepler(MeanAnomaly,Eccentricity);
+
+	GetSatPosition(EpochDay,EpochRAAN,EpochArgPerigee,SemiMajorAxis,
+		Inclination,Eccentricity,RAANPrecession,PerigeePrecession,
+		CrntTime,TrueAnomaly,SatX,SatY,SatZ,&Radius,SatVX,SatVY,SatVZ);
+
+#ifdef ESAT_TRACE
+	printf ("O Radius = %g\n", Radius);
+	printf ("ReferenceOrbit = %g\n", ReferenceOrbit);
+	printf ("CurrentOrbit = %g\n", CurrentOrbit);
+	printf ("RAANPrecession = %g\n", RAANPrecession);
+	printf ("PerigeePrecession = %g\n", PerigeePrecession);
+	printf ("MeanAnomaly = %g\n", MeanAnomaly);
+	printf ("TrueAnomaly = %g\n", TrueAnomaly);
+	printf ("SemiMajorAxis = %g\n", SemiMajorAxis);
+	printf ("AverageMotion = %g\n", AverageMotion);
+	printf ("CurrentMotion = %g\n", CurrentMotion);
+#endif	/* ESAT_TRACE */
+
+#else	/* ! USE_ORBIT_PROPAGATOR */
+#define	MPD		1440.0		/* minutes per day */
+
+	SatElem se;
+	SatData sd;
+	Vec3 posvec, velvec;
+	double dy;
+	double dt;
+	int yr;
+
+	/* init */
+	memset ((void *)&se, 0, sizeof(se));
+	memset ((void *)&sd, 0, sizeof(sd));
+	sd.elem = &se;
+
+	/* se_EPOCH is packed as yr*1000 + dy, where yr is years since 1900
+	 * and dy is day of year, Jan 1 being 1
+	 */
+	mjd_dayno (op->es_epoch, &yr, &dy);
+	yr -= 1900;
+	dy += 1;
+	se.se_EPOCH = yr*1000 + dy;
+
+	/* others carry over with some change in units */
+	se.se_XNO = op->es_n * (2*PI/MPD);	/* revs/day to rads/min */
+	se.se_XINCL = (float)degrad(op->es_inc);
+	se.se_XNODEO = (float)degrad(op->es_raan);
+	se.se_EO = op->es_e;
+	se.se_OMEGAO = (float)degrad(op->es_ap);
+	se.se_XMO = (float)degrad(op->es_M);
+	se.se_BSTAR = op->es_drag;
+	se.se_XNDT20 = op->es_decay*(2*PI/MPD/MPD); /*rv/dy^^2 to rad/min^^2*/
+
+	se.se_id.orbit = op->es_orbit;
+
+	dt = (mjd-op->es_epoch)*MPD;
+
+#ifdef ESAT_TRACE
+	printf ("se_EPOCH  : %30.20f\n", se.se_EPOCH);
+	printf ("se_XNO    : %30.20f\n", se.se_XNO);
+	printf ("se_XINCL  : %30.20f\n", se.se_XINCL);
+	printf ("se_XNODEO : %30.20f\n", se.se_XNODEO);
+	printf ("se_EO     : %30.20f\n", se.se_EO);
+	printf ("se_OMEGAO : %30.20f\n", se.se_OMEGAO);
+	printf ("se_XMO    : %30.20f\n", se.se_XMO);
+	printf ("se_BSTAR  : %30.20f\n", se.se_BSTAR);
+	printf ("se_XNDT20 : %30.20f\n", se.se_XNDT20);
+	printf ("se_orbit  : %30d\n",    se.se_id.orbit);
+	printf ("dt        : %30.20f\n", dt);
+#endif /* ESAT_TRACE */
+
+	/* compute the state vectors */
+	if (se.se_XNO >= (1.0/225.0))
+	    sgp4(&sd, &posvec, &velvec, dt); /* NEO */
+	else
+	    sdp4(&sd, &posvec, &velvec, dt); /* GEO */
+	if (sd.prop.sgp4)
+	    free (sd.prop.sgp4);	/* sd.prop.sdp4 is in same union */
+	if (sd.deep)
+	    free (sd.deep);
+
+	*SatX = ERAD*posvec.x/1000;	/* earth radii to km */
+	*SatY = ERAD*posvec.y/1000;
+	*SatZ = ERAD*posvec.z/1000;
+	*SatVX = 100*velvec.x;		/* ?? */
+	*SatVY = 100*velvec.y;
+	*SatVZ = 100*velvec.z;
+#endif
+}
+
 
 /* grab the xephem stuff from op and copy into orbit's globals.
  */
@@ -199,6 +398,7 @@ static void
 GetSatelliteParams(op)
 Obj *op;
 {
+	/* the following are for the orbit functions */
 	/* xephem uses noon 12/31/1899 as 0; orbit uses midnight 1/1/1900 as 1.
 	 * thus, xephem runs 12 hours, or 1/2 day, behind of what orbit wants.
 	 */
@@ -223,21 +423,8 @@ Obj *op;
 	OrbitalDecay = op->es_decay;
 
 	EpochOrbitNum = op->es_orbit;
-
-#ifdef ESAT_TRACE
-	printf ("\n");
-	printf ("EpochDay = %.15g\n", EpochDay);
-	printf ("Inclination = %.15g\n", Inclination);
-	printf ("EpochRAAN = %.15g\n", EpochRAAN);
-	printf ("Eccentricity = %.15g\n", Eccentricity);
-	printf ("EpochArgPerigee = %.15g\n", EpochArgPerigee);
-	printf ("EpochMeanAnomaly = %.15g\n", EpochMeanAnomaly);
-	printf ("epochMeanMotion = %.15g\n", epochMeanMotion);
-	printf ("OrbitalDecay = %.15g\n", OrbitalDecay);
-	printf ("EpochOrbitNum = %ld\n", EpochOrbitNum);
-	fflush (stdout);
-#endif
 }
+
 
  
 static void
@@ -265,146 +452,6 @@ Now *np;
 	fflush (stdout);
 #endif
 }
- 
-/* compute geocentric gaera/dec @ eod, and topocentric alt/az _sans refraction_.
- * as well as satellites-specific fields.
- * return 0 if ok, else -1.
- */
-static int
-esat_main (CrntTime, op)
-double CrntTime;
-Obj *op;
-{
-	double ReferenceOrbit;      /* Floating point orbit # at epoch */
-	double CurrentOrbit;
-	double AverageMotion,       /* Corrected for drag              */
-	    CurrentMotion;
-	double MeanAnomaly,TrueAnomaly;
-	double SemiMajorAxis;
-	double Radius;              /* From geocenter                  */
-	double SatX,SatY,SatZ;	    /* In Right Ascension based system */
-	double SatVX,SatVY,SatVZ;   /* Kilometers/second	       */
-	double SiteX,SiteY,SiteZ;
-	double SiteVX,SiteVY;
-	double SiteMatrix[3][3];
-	double Height;
-	double RAANPrecession,PerigeePrecession;
-	double SSPLat,SSPLong;
-	long OrbitNum;
-	double Azimuth,Elevation,Range;
-	double RangeRate;
-	double dtmp;
-
-	InitOrbitRoutines(CrntTime, 1);
-
-	SemiMajorAxis = 331.25 * exp(2*log(MinutesPerDay/epochMeanMotion)/3);
-	GetPrecession(SemiMajorAxis,Eccentricity,Inclination,&RAANPrecession,
-			    &PerigeePrecession);
-
-	ReferenceOrbit = EpochMeanAnomaly/PI2 + EpochOrbitNum;
-     
-	AverageMotion = epochMeanMotion + (CrntTime-EpochDay)*OrbitalDecay/2;
-	CurrentMotion = epochMeanMotion + (CrntTime-EpochDay)*OrbitalDecay;
-
-	/* ECD: range checking */
-	if (CurrentMotion <= 0)
-	    return (-1);
-
-	SemiMajorAxis = 331.25 * exp(2*log(MinutesPerDay/CurrentMotion)/3);
-     
-	CurrentOrbit = ReferenceOrbit + (CrntTime-EpochDay)*AverageMotion;
-
-#ifdef ESAT_TRACE
-	printf ("CurrentOrbit=%.10g ReferenceOrbit=%.10g CrntTime=%.10g EpochDay=%.10g AverageMotion=%.10g\n",
-	CurrentOrbit, ReferenceOrbit, CrntTime, EpochDay, AverageMotion);
-#endif
-
-	OrbitNum = CurrentOrbit;
-     
-	MeanAnomaly = (CurrentOrbit-OrbitNum)*PI2;
-     
-	TrueAnomaly = Kepler(MeanAnomaly,Eccentricity);
-
-	GetSatPosition(EpochDay,EpochRAAN,EpochArgPerigee,SemiMajorAxis,
-		Inclination,Eccentricity,RAANPrecession,PerigeePrecession,
-		CrntTime,TrueAnomaly,&SatX,&SatY,&SatZ,&Radius,
-		&SatVX,&SatVY,&SatVZ);
-
-	/* ECD: insure 0..2PI ra */
-	dtmp = atan2 (SatY, SatX);
-	range (&dtmp, 2*PI);
-	op->s_gaera = dtmp;
-	op->s_gaedec = atan2 (SatZ, sqrt(SatX*SatX + SatY*SatY));
-
-	GetSitPosition(SiteLat,SiteLong,SiteAltitude,CrntTime,
-		    &SiteX,&SiteY,&SiteZ,&SiteVX,&SiteVY,SiteMatrix);
-
-
-	GetBearings(SatX,SatY,SatZ,SiteX,SiteY,SiteZ,SiteMatrix,
-		    &Azimuth,&Elevation);
-
-	op->s_az = Azimuth;
-	op->s_alt = Elevation;
-
-	/* Range: line-of-site distance to satellite, m
-	 * RangeRate: m/s
-	 */
-	GetRange(SiteX,SiteY,SiteZ,SiteVX,SiteVY,
-	    SatX,SatY,SatZ,SatVX,SatVY,SatVZ,&Range,&RangeRate);
-
-	op->s_range = Range*1000;	/* we want m */
-	op->s_rangev = RangeRate*1000;	/* we want m/s */
- 
-	/* SSPLat: sub-satellite latitude, rads 
-	 * SSPLong: sub-satellite longitude, >0 west, rads 
-	 * Height: height of satellite above ground, m
-	 */
-	GetSubSatPoint(SatX,SatY,SatZ,CrntTime,
-	    &SSPLat,&SSPLong,&Height);
-
-	op->s_elev = Height*1000;	/* we want m */
-	op->s_sublat = SSPLat;
-	op->s_sublng = -SSPLong;	/* we want +E */
-
-	op->s_eclipsed = Eclipsed(SatX,SatY,SatZ,Radius,CrntTime);
-
-#ifdef ESAT_TRACE
-	printf ("\n");
-	printf ("CrntTime = %g\n", CrntTime);
-	printf ("ReferenceOrbit = %g\n", ReferenceOrbit);
-	printf ("CurrentOrbit = %g\n", CurrentOrbit);
-	printf ("AverageMotion = %g\n", AverageMotion);
-	printf ("CurrentMotion = %g\n", CurrentMotion);
-	printf ("MeanAnomaly = %g\n", MeanAnomaly);
-	printf ("TrueAnomaly = %g\n", TrueAnomaly);
-	printf ("SemiMajorAxis = %g\n", SemiMajorAxis);
-	printf ("Radius = %g\n", Radius);
-	printf ("SatX = %g\n", SatX);
-	printf ("SatY = %g\n", SatY);
-	printf ("SatZ = %g\n", SatZ);
-	printf ("SatVX = %g\n", SatVX);
-	printf ("SatVY = %g\n", SatVY);
-	printf ("SatVZ = %g\n", SatVZ);
-	printf ("SiteX = %g\n", SiteX);
-	printf ("SiteY = %g\n", SiteY);
-	printf ("SiteZ = %g\n", SiteZ);
-	printf ("SiteVX = %g\n", SiteVX);
-	printf ("SiteVY = %g\n", SiteVY);
-	printf ("Height = %g\n", Height);
-	printf ("RAANPrecession = %g\n", RAANPrecession);
-	printf ("PerigeePrecession = %g\n", PerigeePrecession);
-	printf ("SSPLat = %g\n", SSPLat);
-	printf ("SSPLong = %g\n", SSPLong);
-	printf ("Azimuth = %g\n", Azimuth);
-	printf ("Elevation = %g\n", Elevation);
-	printf ("Range = %g\n", Range);
-	printf ("RangeRate = %g\n", RangeRate);
-	fflush (stdout);
-#endif
-
-	return (0);
-}
-
 
  
 /* Solve Kepler's equation                                      */
@@ -474,6 +521,7 @@ double *Latitude,*Longitude,*Height;
 }
  
  
+#ifdef USE_ORBIT_PROPAGATOR
 static void
 GetPrecession(SemiMajorAxis,Eccentricity,Inclination,
         RAANPrecession,PerigeePrecession)
@@ -487,6 +535,7 @@ double *RAANPrecession,*PerigeePrecession;
          * (5*SQR(cos(Inclination))-1)
                  / SQR(1-SQR(Eccentricity)) * RadiansPerDegree;
 }
+#endif /* USE_ORBIT_PROPAGATOR */
  
 /* Compute the satellite postion and velocity in the RA based coordinate
  * system.
@@ -720,7 +769,7 @@ int AtEod;
 
     /* Omega is used to correct for the nutation and the abberation */
     Omega = AtEod ? (259.18 - 1934.142*T) * RadiansPerDegree : 0.0;
-    n = Omega / PI2;
+    n = (int)(Omega / PI2);
     Omega -= n*PI2;
 
     SunEpochTime = EpochDay;
@@ -733,7 +782,7 @@ int AtEod;
 			+ 0.0000033*T3) * RadiansPerDegree;
     SunMeanAnomaly = (358.475845 + 35999.04975*T - 0.00015*T2
 			- 0.00000333333*T3) * RadiansPerDegree;
-    n = SunMeanAnomaly / PI2;
+    n = (int)(SunMeanAnomaly / PI2);
     SunMeanAnomaly -= n*PI2;
 
     SunMeanMotion = 1/(365.24219879 - 0.00000614*T);
@@ -745,3 +794,6 @@ int AtEod;
     SinPenumbra = (SunRadius-EarthRadius)/SunDistance;
     CosPenumbra = sqrt(1-SQR(SinPenumbra));
 }
+
+/* For RCS Only -- Do Not Edit */
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: earthsat.c,v $ $Date: 2003/03/04 05:44:05 $ $Revision: 1.2 $ $Name:  $"};

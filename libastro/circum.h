@@ -5,7 +5,7 @@
 #define _CIRCUM_H
 
 #define	SPD	(24.0*3600.0)	/* seconds per day */
-#define	MAU	(1.495979e11)	/* m / au */
+#define	MAU	(1.4959787e11)	/* m / au */
 #define	LTAU	499.005		/* seconds light takes to travel 1 AU */
 #define	ERAD	(6.37816e6)	/* earth equitorial radius, m */
 #define	MRAD	(1.740e6)	/* moon equitorial radius, m */
@@ -67,7 +67,7 @@ typedef struct {
 #define	get_mag(op)	((op)->s_mag / MAGSCALE)
 
 /* longest object name, including trailing '\0' */
-#define	MAXNM	14
+#define	MAXNM	22
 
 /* Obj is a massive union.
  * many fields are in common so we use macros to make things a little easier.
@@ -86,10 +86,10 @@ typedef unsigned char ObjAge_t;
     float co_dec;	/* geo/topo app/mean dec, rads */		\
     float co_gaera;	/* geo apparent ra, rads */			\
     float co_gaedec;	/* geo apparent dec, rads */			\
-    float co_az;	/* azimuth, >0 e of n, rads */			\
-    float co_alt;	/* altitude above topocentric horizon, rads */	\
-    float co_elong;	/* angular sep btwen obj and sun, >0 if east */	\
-    unsigned short co_size; /* angular size, arc secs */		\
+    double co_az;	/* azimuth, >0 e of n, rads */			\
+    double co_alt;	/* altitude above topocentric horizon, rads */	\
+    float co_elong;	/* angular sep btwen obj and sun, >0 E, degs */	\
+    float co_size;	/* angular size, arc secs */			\
     short co_mag;	/* visual magnitude * MAGSCALE */		\
     ObjAge_t co_age	/* update aging code; see db.c */
 
@@ -115,17 +115,13 @@ typedef struct {
 
 /* basic Fixed object info.
  */
-#define	SRSCALE		255.0		/* galaxy size ratio scale */
-#define	PASCALE		(255.0/360.0)	/* pos angle scale factor */
-
 typedef unsigned char byte;
-
 typedef struct {
     OBJ_COMMON_FLDS;
     char  fo_class;	/* object class --  see db.c:db_set_field() et al */
     char  fo_spect[2];	/* spectral codes, if appropriate */
-    byte  fo_ratio;	/* minor/major diameter ratio, * SRSCALE */
-    byte  fo_pa;	/* position angle, E of N, degrees * PASCALE */
+    byte  fo_ratio;	/* minor/major diameter ratio. use s/get_ratio() */
+    byte  fo_pa;	/* position angle, E of N, rads. use s/get_pa() */
     float fo_epoch;	/* epoch of f_RA/dec */
     float fo_ra;	/* ra, rads, at given epoch */
     float fo_dec;	/* dec, rads, at given epoch */
@@ -134,12 +130,15 @@ typedef struct {
 #define	fo_mag	co_mag	/* pseudonym for so_mag since it is not computed */
 #define	fo_size	co_size	/* pseudonym for so_size since it is not computed */
 
+/* macros to pack/unpack some fields */
+#define	SRSCALE		255.0		/* galaxy size ratio scale */
+#define	PASCALE		(255.0/(2*PI))	/* pos angle scale factor */
 #define	get_ratio(op)	((int)(op)->f_ratio/SRSCALE)
 #define	set_ratio(op,maj,min) ((op)->f_ratio = (byte)(((maj) > 0)	    \
 					? ((min)*SRSCALE/(double)(maj)+0.5) \
 					: 0))
-#define	get_pa(op)	degrad(((double)(op)->f_pa/PASCALE))
-#define	set_pa(op,s)	((op)->f_pa = (byte)(raddeg(s)*PASCALE + 0.5))
+#define	get_pa(op)	((double)(op)->f_pa/PASCALE)
+#define	set_pa(op,s)	((op)->f_pa = (byte)((s)*PASCALE + 0.5))
 
 #define	NCLASSES	128 /* n potential fo_classes -- allow for all ASCII */
 
@@ -156,9 +155,9 @@ typedef struct {
     float  eo_Om;	/* longitude of ascending node, degrees */
     float  eo_om;	/* argument of perihelion, degress */
     float  eo_a;	/* mean distance, aka,semi-maj axis,AU */
-    float  eo_e;	/* eccentricity */
     float  eo_M;	/* mean anomaly, ie, degrees from perihelion at cepoch*/
     float  eo_size;	/* angular size, in arc seconds at 1 AU */
+    double eo_e;	/* eccentricity (double for when near 1 computing q) */
     double eo_cepoch;	/* epoch date (M reference), as an mjd */
     double eo_epoch;	/* equinox year (inc/Om/om reference), as an mjd. */
     Mag    eo_mag;	/* magnitude */
@@ -206,6 +205,7 @@ typedef struct {
     float  eso_ap;	/* argument of perigee at epoch, degs */
     float  eso_M;	/* mean anomaly, ie, degrees from perigee at epoch */
     float  eso_decay;	/* orbit decay rate, rev/day^2 */
+    float  eso_drag;	/* object drag coefficient, (earth radii)^-1 */
     int    eso_orbit;	/* integer orbit number of epoch */
 
     /* computed "sky" results unique to earth satellites */
@@ -235,6 +235,9 @@ typedef union {
 #define	FUSER2		0x04
 #define	FUSER3		0x08
 #define	FUSER4		0x10
+#define	FUSER5		0x20
+#define	FUSER6		0x40
+#define	FUSER7		0x80
 
 /* mark an object as being a "field star" */
 #define	FLDSTAR		FUSER3
@@ -317,6 +320,7 @@ typedef union {
 #define	es_M		es.eso_M
 #define	es_n		es.eso_n
 #define	es_decay	es.eso_decay
+#define	es_drag		es.eso_drag
 #define	es_orbit	es.eso_orbit
 
 /* insure we always refer to the fields and no monkey business */
@@ -356,7 +360,7 @@ enum {
     E_INC, E_LAN, E_AOP, E_A, E_N, E_E, E_M, E_CEPOCH, E_EPOCH,E_M1,E_M2,E_SIZE,
     H_EP, H_INC, H_LAN, H_AOP, H_E, H_QP, H_EPOCH, H_G, H_K, H_SIZE,
     P_EP, P_INC, P_AOP, P_QP, P_LAN, P_EPOCH, P_G, P_K, P_SIZE,
-    ES_EPOCH, ES_INC, ES_RAAN, ES_E, ES_AP, ES_M, ES_N, ES_DECAY, ES_ORBIT
+    ES_EPOCH,ES_INC,ES_RAAN,ES_E,ES_AP,ES_M,ES_N,ES_DECAY,ES_ORBIT,ES_DRAG
 };
 
 /* rise, set and transit information.
@@ -416,13 +420,15 @@ extern int obj_cir P_((Now *np, Obj *op));
 extern int obj_earthsat P_((Now *np, Obj *op));
 
 /* dbfmt.c */
-extern int db_crack_line P_((char s[], Obj *op));
+extern int db_crack_line P_((char s[], Obj *op, char whynot[]));
 extern void db_write_line P_((Obj *op, char *lp));
 extern int get_fields P_((char *s, int delim, char *fields[]));
 extern int db_chk_planet P_((char name[], Obj *op));
+extern int db_tle P_((char *name, char *l1, char *l2, Obj *op));
 
 /* misc.c */
-extern void now_lst P_((Now *np, double *lst));
+extern void now_lst P_((Now *np, double *lstp));
+extern void radec2ha P_((Now *np, double ra, double dec, double *hap));
 extern char *obj_description P_((Obj *op));
 extern int is_deepsky P_((Obj *op));
 
@@ -430,3 +436,7 @@ extern int is_deepsky P_((Obj *op));
 extern void riset_cir P_((Now *np, Obj *op, double dis, RiseSet *rp));
 extern void twilight_cir P_((Now *np, double dis, double *dawn, double *dusk,
     int *status));
+
+/* For RCS Only -- Do Not Edit
+ * @(#) $RCSfile: circum.h,v $ $Date: 2003/03/04 05:44:05 $ $Revision: 1.2 $ $Name:  $
+ */

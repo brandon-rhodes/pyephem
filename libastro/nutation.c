@@ -374,7 +374,7 @@ nut_eq (mjd, ra, dec)
 double mjd, *ra, *dec;
 {
 	static double lastmjd = -10000;
-	double a[3][3];		/* rotation matrix */
+	static double a[3][3];		/* rotation matrix */
 	double xold, yold, zold, x, y, z;
 
 	if (mjd != lastmjd) {
@@ -426,6 +426,8 @@ double mjd, *ra, *dec;
 	    a[2][0] = sede*sp;
 	    a[2][1] = sede*cp*ce-cede*se;
 	    a[2][2] = sede*cp*se+cede*ce;
+
+	    lastmjd = mjd;
 	}
 
 	sphcart(*ra, *dec, 1.0, &xold, &yold, &zold);
@@ -435,3 +437,6 @@ double mjd, *ra, *dec;
 	cartsph(x, y, z, ra, dec, &zold);	/* radius should be 1.0 */
 	if (*ra < 0.) *ra += 2.*PI;		/* make positive for display */
 }
+
+/* For RCS Only -- Do Not Edit */
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: nutation.c,v $ $Date: 2003/03/04 05:44:05 $ $Revision: 1.2 $ $Name:  $"};

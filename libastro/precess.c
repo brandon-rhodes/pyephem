@@ -79,7 +79,7 @@ double *ra, *dec;	/* ra/dec for mjd1 in, for mjd2 out */
 
 	/* precession progresses about 1 arc second in .047 years */
 	/* From from_equinox to 2000.0 */
-	if (fabs (from_equinox-2000.0) > .04) {
+	if (fabs (from_equinox-2000.0) > .02) {
 	    T = (from_equinox - 2000.0)/100.0;
 	    zeta_A  = 0.6406161* T + 0.0000839* T*T + 0.0000050* T*T*T;
 	    z_A     = 0.6406161* T + 0.0003041* T*T + 0.0000051* T*T*T;
@@ -102,7 +102,7 @@ double *ra, *dec;	/* ra/dec for mjd1 in, for mjd2 out */
 
 
 	/* From 2000.0 to to_equinox */
-	if (fabs (to_equinox - 2000.0) > .04) {
+	if (fabs (to_equinox - 2000.0) > .02) {
 	    T = (to_equinox - 2000.0)/100.0;
 	    zeta_A  = 0.6406161* T + 0.0000839* T*T + 0.0000050* T*T*T;
 	    z_A     = 0.6406161* T + 0.0003041* T*T + 0.0000051* T*T*T;
@@ -143,3 +143,6 @@ double *ra, *dec;	/* ra/dec for mjd1 in, for mjd2 out */
 	range (ra, 2.0*PI);
 }
 #endif
+
+/* For RCS Only -- Do Not Edit */
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: precess.c,v $ $Date: 2003/03/04 05:44:05 $ $Revision: 1.2 $ $Name:  $"};

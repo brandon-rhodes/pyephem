@@ -107,16 +107,22 @@ double *ret;
 /* visual elements of planets
  * [planet][0] = angular size at 1 AU
  * [planet][1] = magnitude at 1 AU from sun and earth and 0 deg phase angle
+ * [planet][2] = A
+ * [planet][3] = B
+ * [planet][4] = C
+ *   where mag correction = A*(i/100) + B*(i/100)^2 + C*(i/100)^3
+ *      i = angle between sun and earth from planet, degrees
+ * from Explanatory Supplement, 1992
  */
-static double vis_elements[8][2] = {
-	/* Mercury */	{ 6.74, -0.42, },
-	/* Venus */	{ 16.92, -4.34, },
-	/* Mars */	{ 9.36, -1.20, },
-	/* Jupiter */	{ 196.74, -9.4, },
-	/* Saturn */	{ 165.6, -8.88, },
-	/* Uranus */	{ 65.8, -7.19, },
-	/* Neptune */	{ 62.2, -6.87, },
-	/* Pluto */	{ 8.2, -1.0, }
+static double vis_elements[8][5] = {
+	/* Mercury */	{ 6.74, -0.36, 3.8, -2.73, 2.00},
+	/* Venus */	{ 16.92, -4.29, 0.09, 2.39, -.65},
+	/* Mars */	{ 9.36, -1.52, 1.60, 0., 0.},
+	/* Jupiter */	{ 196.74, -9.25, 0.50, 0., 0.},
+	/* Saturn */	{ 165.6, -8.88, 4.40, 0., 0.},
+	/* Uranus */	{ 65.8, -7.19, 0.28, 0., 0.},
+	/* Neptune */	{ 62.2, -6.87, 0., 0., 0.},
+	/* Pluto */	{ 8.2, -1.01, 4.1, 0., 0.}
 };
 
 /* given a modified Julian date, mjd, and a planet, p, find:
@@ -131,7 +137,7 @@ static double vis_elements[8][2] = {
  *         each corrected for light time, ie, they are the apparent values as
  *	   seen from the center of the Earth for the given instant.
  *   dia:  angular diameter in arcsec at 1 AU, 
- *   mag:  visual magnitude when 1 AU from sun and earth at 0 phase angle.
+ *   mag:  visual magnitude
  *
  * all angles are in radians, all distances in AU.
  *
@@ -147,11 +153,13 @@ int p;
 double *lpd0, *psi0, *rp0, *rho0, *lam, *bet, *dia, *mag;
 {
 	static double lastmjd = -10000;
-	static double lsn, bsn, rsn;	/* geometric geocentric coords of sun */
-	static double xsn, ysn, zsn;
+	static double lsn, bsn, rsn;	/* geocentric coords of sun */
+	static double xsn, ysn, zsn;	/* cartesian " */
 	double lp, bp, rp;		/* heliocentric coords of planet */
 	double xp, yp, zp, rho;		/* rect. coords and geocentric dist. */
 	double dt;			/* light time */
+	double *vp;			/* vis_elements[p] */
+	double ci, i;			/* sun/earth angle: cos, degrees */
 	int pass;
 
 	/* get sun cartesian; needed only once at mjd */
@@ -201,6 +209,26 @@ double *lpd0, *psi0, *rp0, *rho0, *lam, *bet, *dia, *mag;
 	    dt = rho * 5.7755183e-3;
 	}
 
-	*dia = vis_elements[p][0];
-	*mag = vis_elements[p][1];
+	vp = vis_elements[p];
+	*dia = vp[0];
+
+	/* solve plane triangle, assume sun/earth dist == 1 */
+	ci = (rp*rp + rho*rho - 1)/(2*rp*rho);
+
+	/* expl supp equation for mag */
+	if (ci < -1) ci = -1;
+	if (ci >  1) ci =  1;
+	i = raddeg(acos(ci))/100.;
+	*mag = vp[1] + 5*log10(rho*rp) + i*(vp[2] + i*(vp[3] + i*vp[4]));
+
+	/* rings contribution if SATURN */
+	if (p == SATURN) {
+	    double et, st, set;
+	    satrings (bp, lp, rp, lsn+PI, rsn, mjd+MJD0, &et, &st);
+	    set = sin(fabs(et));
+	    *mag += (-2.60 + 1.25*set)*set;
+	}
 }
+
+/* For RCS Only -- Do Not Edit */
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: plans.c,v $ $Date: 2003/03/04 05:44:05 $ $Revision: 1.2 $ $Name:  $"};

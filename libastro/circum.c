@@ -2,7 +2,8 @@
  * fill in the sky position (s_*) portions.
  * calculation of positional coordinates reworked by
  * Michael Sternberg <sternberg@physik.tu-chemnitz.de>
- * 3/11/98: deflect was using op->s_hlong before being set in cir_pos().
+ *  3/11/98: deflect was using op->s_hlong before being set in cir_pos().
+ *  4/19/98: just edit a comment
  */
 
 #include <stdio.h>
@@ -30,6 +31,7 @@ static void cir_pos P_((Now *np, double bet, double lam, double *rho, Obj *op));
 static void elongation P_((double lam, double bet, double lsn, double *el));
 static void deflect P_((double mjd1, double lpd, double psi, double rsn,
     double lsn, double rho, double *ra, double *dec));
+static double h_albsize P_((double H));
 
 /* given a Now and an Obj, fill in the approprirate s_* fields within Obj.
  * return 0 if all ok, else -1.
@@ -64,7 +66,6 @@ Obj *op;
 	double rho;		/* dist from earth */
 	double lam, bet;	/* geocentric ecliptic long and lat */
 	double dia, mag;	/* angular diameter at 1 AU and magnitude */
-	double f;		/* fractional phase from earth */
 	int p;
 
 	/* validate code and check for a few special cases */
@@ -81,7 +82,7 @@ Obj *op;
 	/* find solar ecliptical longitude and distance to sun from earth */
 	sunpos (mjed, &lsn, &rsn, 0);
 
-	/* find helio long/lat; sun/planet and earth/plant dist; ecliptic
+	/* find helio long/lat; sun/planet and earth/planet dist; ecliptic
 	 * long/lat; diameter and mag.
 	 */
 	plans(mjed, p, &lpd, &psi, &rp, &rho, &lam, &bet, &dia, &mag);
@@ -89,10 +90,9 @@ Obj *op;
 	/* fill in all of op->s_* stuff except s_size and s_mag */
 	cir_sky (np, lpd, psi, rp, &rho, lam, bet, lsn, rsn, op);
 
-	/* compute magnitude and angular size */
-	f = op->s_phase ? 5*log10(rp*rho) - 5*log10(op->s_phase/100) : 100;
-	set_smag (op, mag+f);
-	op->s_size = dia/rho + 0.5;
+	/* set magnitude and angular size */
+	set_smag (op, mag);
+	op->s_size = (float)(dia/rho);
 
 	return (0);
 }
@@ -116,41 +116,41 @@ Obj *op;
 	     * user is likely to stick with this for a while.
 	     */
 	    double tra = op->f_RA, tdec = op->f_dec;
-	    float tepoch = epoch;	/* compare to float precision */
+	    float tepoch = (float)epoch;	/* compare w/float precision */
 	    precess (op->f_epoch, tepoch, &tra, &tdec);
 	    op->f_epoch = tepoch;
-	    op->f_RA = tra;
-	    op->f_dec = tdec;
+	    op->f_RA = (float)tra;
+	    op->f_dec = (float)tdec;
 	}
 
-	/* set ra/dec to their values at epoch of date */
+	/* set ra/dec to astrometric @ epoch of date */
 	ra = op->f_RA;
 	dec = op->f_dec;
-	precess (op->f_epoch, mjd, &ra, &dec);
+	precess (op->f_epoch, mjed, &ra, &dec);
 
 	/* convert equatoreal ra/dec to mean geocentric ecliptic lat/long */
-	eq_ecl (mjd, ra, dec, &bet, &lam);
+	eq_ecl (mjed, ra, dec, &bet, &lam);
 
 	/* find solar ecliptical long.(mean equinox) and distance from earth */
 	sunpos (mjed, &lsn, &rsn, NULL);
 
 	/* allow for relativistic light bending near the sun */
-	deflect (mjd, lam, bet, lsn, rsn, 1e10, &ra, &dec);
+	deflect (mjed, lam, bet, lsn, rsn, 1e10, &ra, &dec);
 
 	/* TODO: correction for annual parallax would go here */
 
 	/* correct EOD equatoreal for nutation/aberation to form apparent 
 	 * geocentric
 	 */
-	nut_eq(mjd, &ra, &dec);
-	ab_eq(mjd, lsn, &ra, &dec);
-	op->s_gaera = ra;
-	op->s_gaedec = dec;
+	nut_eq(mjed, &ra, &dec);
+	ab_eq(mjed, lsn, &ra, &dec);
+	op->s_gaera = (float)ra;
+	op->s_gaedec = (float)dec;
 
 	/* set s_ra/dec -- apparent if EOD else astrometric */
 	if (epoch == EOD) {
-	    op->s_ra = ra;
-	    op->s_dec = dec;
+	    op->s_ra = (float)ra;
+	    op->s_dec = (float)dec;
 	} else {
 	    /* annual parallax at time mjd is to be added here, too, but
 	     * technically in the frame of epoch (usually different from mjd)
@@ -162,7 +162,7 @@ Obj *op;
 	/* compute elongation from ecliptic long/lat and sun geocentric long */
 	elongation (lam, bet, lsn, &el);
 	el = raddeg(el);
-	op->s_elong = el;
+	op->s_elong = (float)el;
 
 	/* these are really the same fields ...
 	op->s_mag = op->f_mag;
@@ -190,8 +190,7 @@ Obj *op;
 	double lsn, rsn;	/* true geoc lng of sun; dist from sn to earth*/
 	double dt;		/* light travel time to object */
 	double lg;		/* helio long of earth */
-	double nu, ea;		/* true anomaly and eccentric anomaly */
-	double ma;		/* mean anomaly */
+	double nu;		/* true anomaly */
 	double rp=0;		/* distance from the sun */
 	double lo, slo, clo;	/* angle from ascending node */
 	double inc;		/* inclination */
@@ -203,10 +202,10 @@ Obj *op;
 	double Om;		/* long of ascending node. */
 	double lam;    		/* geocentric ecliptic longitude */
 	double bet;    		/* geocentric ecliptic latitude */
-	double e;		/* fast eccentricity */
 	double ll=0, sll, cll;	/* helio angle between object and earth */
 	double mag;		/* magnitude */
 	double e_n;		/* mean daily motion */
+	double tp;		/* time from perihelion (days) */
 	double rpd=0;
 	double y;
 	int pass;
@@ -214,9 +213,6 @@ Obj *op;
 	/* find location of earth from sun now */
 	sunpos (mjed, &lsn, &rsn, 0);
 	lg = lsn + PI;
-
-	/* faster access to eccentricty */
-	e = op->e_e;
 
 	/* mean daily motion is derived fro mean distance */
 	e_n = 0.9856076686/pow((double)op->e_a, 1.5);
@@ -232,9 +228,9 @@ Obj *op;
 					degrad (op->e_om), degrad (op->e_Om),
 					&inc, &om, &Om);
 
-	    ma = degrad (op->e_M + (mjed - op->e_cepoch - dt) * e_n);
-	    anomaly (ma, e, &nu, &ea);
-	    rp = op->e_a * (1-e*e) / (1+e*cos(nu));
+	    tp = mjed - dt - (op->e_cepoch - op->e_M/e_n);
+	    vrc (&nu, &rp, tp, op->e_e, op->e_a*(1-op->e_e));
+	    nu = degrad(nu);
 	    lo = nu + om;
 	    slo = sin(lo);
 	    clo = cos(lo);
@@ -271,13 +267,19 @@ Obj *op;
 	if (op->e_mag.whichm == MAG_HG) {
 	    /* the H and G parameters from the Astro. Almanac.
 	     */
-	    hg_mag (op->e_mag.m1, op->e_mag.m2, rp, rho, rsn, &mag);
+	    if (op->e_size)
+		op->s_size = (float)(op->e_size / rho);
+	    else {
+		hg_mag (op->e_mag.m1, op->e_mag.m2, rp, rho, rsn, &mag);
+		op->s_size = (float)(h_albsize (op->e_mag.m1)/rho);
+
+	    }
 	} else {
 	    /* the g/k model of comets */
 	    gk_mag (op->e_mag.m1, op->e_mag.m2, rp, rho, &mag);
+	    op->s_size = (float)(op->e_size / rho);
 	}
 	set_smag (op, mag);
-	op->s_size = op->e_size / rho;
 
 	return (0);
 }
@@ -292,8 +294,7 @@ Obj *op;
 	double lsn, rsn;	/* true geoc lng of sun; dist from sn to earth*/
 	double dt;		/* light travel time to object */
 	double lg;		/* helio long of earth */
-	double nu, ea;		/* true anomaly and eccentric anomaly */
-	double ma;		/* mean anomaly */
+	double nu;		/* true anomaly and eccentric anomaly */
 	double rp=0;		/* distance from the sun */
 	double lo, slo, clo;	/* angle from ascending node */
 	double inc;		/* inclination */
@@ -310,6 +311,7 @@ Obj *op;
 	double n;		/* mean daily motion */
 	double mag;		/* magnitude */
 	double a;		/* mean distance */
+	double tp;		/* time from perihelion (days) */
 	double rpd=0;
 	double y;
 	int pass;
@@ -333,9 +335,9 @@ Obj *op;
 			    degrad (op->h_om), degrad (op->h_Om),
 			    &inc, &om, &Om);
 
-	    ma = degrad ((mjed - op->h_ep - dt) * n);
-	    anomaly (ma, e, &nu, &ea);
-	    rp = a * (e*e-1.0) / (1.0+e*cos(nu));
+	    tp = mjed - dt - op->h_ep;
+	    vrc (&nu, &rp, tp, op->h_e, op->h_qp);
+	    nu = degrad(nu);
 	    lo = nu + om;
 	    slo = sin(lo);
 	    clo = cos(lo);
@@ -371,7 +373,7 @@ Obj *op;
 	/* compute magnitude and size */
 	gk_mag (op->h_g, op->h_k, rp, rho, &mag);
 	set_smag (op, mag);
-	op->s_size = op->h_size / rho;
+	op->s_size = (float)(op->h_size / rho);
 
 	return (0);
 }
@@ -411,7 +413,7 @@ Obj *op;
 	/* compute magnitude and size */
 	gk_mag (op->p_g, op->p_k, rp, rho, &mag);
 	set_smag (op, mag);
-	op->s_size = op->p_size / rho;
+	op->s_size = (float)(op->p_size / rho);
 
 	return (0);
 }
@@ -435,13 +437,13 @@ Obj *op;
 	set_smag (op, -26.8);	/* TODO */
 	dhlong = lsn-PI;	/* geo- to helio- centric */
 	range (&dhlong, 2*PI);
-	op->s_hlong = dhlong;
-	op->s_hlat = -bsn;
+	op->s_hlong = (float)dhlong;
+	op->s_hlat = (float)(-bsn);
 
 	/* fill sun's ra/dec, alt/az in op */
 	cir_pos (np, bsn, lsn, &rsn, op);
-	op->s_edist = rsn;
-	op->s_size = raddeg(4.65242e-3/rsn)*3600*2;
+	op->s_edist = (float)rsn;
+	op->s_size = (float)(raddeg(4.65242e-3/rsn)*3600*2);
 
 	return (0);
 }
@@ -465,28 +467,29 @@ Obj *op;
 	moon (mjed, &lam, &bet, &edistau, &ms, &md);	/* mean ecliptic & EOD*/
 	sunpos (mjed, &lsn, &rsn, NULL);		/* mean ecliptic & EOD*/
 
-	op->s_hlong = lam;			/* save geo in helio fields */
-	op->s_hlat = bet;
+	op->s_hlong = (float)lam;		/* save geo in helio fields */
+	op->s_hlat = (float)bet;
 
 	/* find angular separation from sun */
 	elongation (lam, bet, lsn, &el);
-	op->s_elong = raddeg(el);		/* want degrees */
+	op->s_elong = (float)raddeg(el);		/* want degrees */
 
 	/* solve triangle of earth, sun, and elongation for moon-sun dist */
-	op->s_sdist= sqrt (edistau*edistau + rsn*rsn - 2.0*edistau*rsn*cos(el));
+	op->s_sdist = (float) sqrt (edistau*edistau + rsn*rsn
+						    - 2.0*edistau*rsn*cos(el));
 
 	/* TODO: improve mag; this is based on a flat moon model. */
 	set_smag (op, -12.7 + 2.5*(log10(PI) - log10(PI/2*(1+1.e-6-cos(el)))));
 
 	/* find phase -- allow for projection effects */
 	i = 0.1468*sin(el)*(1 - 0.0549*sin(md))/(1 - 0.0167*sin(ms));
-	op->s_phase = (1+cos(PI-el-degrad(i)))/2*100;
+	op->s_phase = (float)((1+cos(PI-el-degrad(i)))/2*100);
 
 	/* fill moon's ra/dec, alt/az in op and update for topo dist */
 	cir_pos (np, bet, lam, &edistau, op);
 
-	op->s_edist = edistau;
-	op->s_size = 3600*2.0*raddeg(asin(MRAD/MAU/edistau));
+	op->s_edist = (float)edistau;
+	op->s_size = (float)(3600*2.0*raddeg(asin(MRAD/MAU/edistau)));
 						/* moon angular dia, seconds */
 
 	return (0);
@@ -511,20 +514,20 @@ Obj *op;
 	/* compute elongation and phase */
 	elongation (lam, bet, lsn, &el);
 	el = raddeg(el);
-	op->s_elong = el;
+	op->s_elong = (float)el;
 	f = 0.25 * ((rp+ *rho)*(rp+ *rho) - rsn*rsn)/(rp* *rho);
-	op->s_phase = f*100.0; /* percent */
+	op->s_phase = (float)(f*100.0); /* percent */
 
 	/* set heliocentric long/lat; mean ecliptic and EOD */
-	op->s_hlong = lpd;
-	op->s_hlat = psi;
+	op->s_hlong = (float)lpd;
+	op->s_hlat = (float)psi;
 
 	/* fill solar sys body's ra/dec, alt/az in op */
 	cir_pos (np, bet, lam, rho, op);        /* updates rho */
 
 	/* set earth/planet and sun/planet distance */
-	op->s_edist = *rho;
-	op->s_sdist = rp;
+	op->s_edist = (float)(*rho);
+	op->s_sdist = (float)rp;
 }
 
 /* fill equatoreal and horizontal op-> fields; stern
@@ -571,7 +574,7 @@ Obj *op;	/* object to set s_ra/dec as per epoch */
 	double rho_topo;        /* topocentric distance in earth radii */
 
 	/* convert to equatoreal [mean equator, with mean obliquity] */
-	ecl_eq (mjd, bet, lam, &ra, &dec);
+	ecl_eq (mjed, bet, lam, &ra, &dec);
 	tra = ra;	/* keep mean coordinates */
 	tdec = dec;
 
@@ -582,14 +585,14 @@ Obj *op;	/* object to set s_ra/dec as per epoch */
 	 * (avoid calling deflect() for the sun itself).
 	 */
 	if (!is_planet(op,SUN) && !is_planet(op,MOON))
-	    deflect (mjd, op->s_hlong, op->s_hlat, lsn, rsn, *rho, &ra, &dec);
+	    deflect (mjed, op->s_hlong, op->s_hlat, lsn, rsn, *rho, &ra, &dec);
 
 	/* correct ra/dec to form geocentric apparent */
-	nut_eq (mjd, &ra, &dec);
+	nut_eq (mjed, &ra, &dec);
 	if (!is_planet(op,MOON))
-		ab_eq (mjd, lsn, &ra, &dec);
-	op->s_gaera = ra;
-	op->s_gaedec = dec;
+	    ab_eq (mjed, lsn, &ra, &dec);
+	op->s_gaera = (float)ra;
+	op->s_gaedec = (float)dec;
 
 	/* find parallax correction for equatoreal coords */
 	now_lst (np, &lst);
@@ -625,11 +628,11 @@ Obj *op;	/* object to set s_ra/dec as per epoch */
 	} else {			/* astrometric geo/topocent */
 	    ra = tra + dra;
 	    dec = tdec + ddec;
-	    precess (mjd, epoch, &ra, &dec);
+	    precess (mjed, epoch, &ra, &dec);
 	}
 	range(&ra, 2*PI);
-	op->s_ra = ra;
-	op->s_dec = dec;
+	op->s_ra = (float)ra;
+	op->s_dec = (float)dec;
 }
 
 /* given geocentric ecliptic longitude and latitude, lam and bet, of some object
@@ -732,3 +735,17 @@ double *ra, *dec;	/* geocentric equatoreal */
 	/* back to spherical */
 	cartsph(u[0], u[1], u[2], ra, dec, &rho);	/* rho thrown away */
 }
+
+/* estimate size in arc seconds @ 1AU from absolute magnitude, H, and assuming
+ * an albedo of 0.1. With this assumption an object with diameter of 1500m
+ * has an absolute mag of 18.
+ */
+static double
+h_albsize (H)
+double H;
+{
+	return (3600*raddeg(.707*1500*pow(2.51,(18-H)/2)/MAU));
+}
+
+/* For RCS Only -- Do Not Edit */
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: circum.c,v $ $Date: 2003/03/04 05:44:05 $ $Revision: 1.2 $ $Name:  $"};

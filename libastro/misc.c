@@ -1,5 +1,6 @@
 /* misc handy functions.
  * every system has such, no?
+ *  4/20/98 now_lst() always just returns apparent time
  */
 
 #include <stdio.h>
@@ -121,37 +122,53 @@ Obj *op;
 	}
 }
 
-/* given a Now *, find the local sidereal time, in hours.
- * if epoch == EOD we return apparent time, else just mean time.
+/* given a Now *, find the local apparent sidereal time, in hours.
  */
 void
-now_lst (np, lst)
+now_lst (np, lstp)
 Now *np;
-double *lst;
+double *lstp;
 {
 	static double last_mjd = -23243, last_lng = 121212, last_lst;
+	double eps, lst, deps, dpsi;
 
 	if (last_mjd == mjd && last_lng == lng) {
-	    *lst = last_lst;
+	    *lstp = last_lst;
 	    return;
 	}
 
-	utc_gst (mjd_day(mjd), mjd_hr(mjd), lst);
-	*lst += radhr(lng);
+	utc_gst (mjd_day(mjd), mjd_hr(mjd), &lst);
+	lst += radhr(lng);
 
-	if (epoch == EOD) {
-	    double eps, deps, dpsi;
+	obliquity(mjd, &eps);
+	nutation(mjd, &deps, &dpsi);
+	lst += radhr(dpsi*cos(eps+deps));
 
-	    obliquity(mjd, &eps);
-	    nutation(mjd, &deps, &dpsi);
-	    *lst += radhr(dpsi*cos(eps+deps));
-	}
-
-	range (lst, 24.0);
+	range (&lst, 24.0);
 
 	last_mjd = mjd;
 	last_lng = lng;
-	last_lst = *lst;
+	*lstp = last_lst = lst;
+}
+
+/* convert ra to ha, in range -PI .. PI.
+ * need dec too if not already apparent.
+ */
+void
+radec2ha (np, ra, dec, hap)
+Now *np;
+double ra, dec;
+double *hap;
+{
+	double ha, lst;
+
+	if (epoch != EOD)
+	    as_ap (np, epoch, &ra, &dec);
+	now_lst (np, &lst);
+	ha = hrrad(lst) - ra;
+	if (ha < -PI) ha += 2*PI;
+	if (ha >  PI) ha -= 2*PI;
+	*hap = ha;
 }
 
 /* given a circle and a line segment, find a segment of the line inside the 
@@ -202,8 +219,8 @@ int *sx1, *sy1, *sx2, *sy2;	/* segment inside the circle */
 	    *sx1 = x1;
 	    *sy1 = y1;
 	} else {
-	    *sx1 = x1 + dx*t1;
-	    *sy1 = y1 + dy*t1;
+	    *sx1 = (int)(x1 + dx*t1);
+	    *sy1 = (int)(y1 + dy*t1);
 	}
 
 	if (t2 >= 1.0) {
@@ -211,8 +228,8 @@ int *sx1, *sy1, *sx2, *sy2;	/* segment inside the circle */
 	    *sx2 = x2;
 	    *sy2 = y2;
 	} else {
-	    *sx2 = x1 + dx*t2;
-	    *sy2 = y1 + dy*t2;
+	    *sx2 = (int)(x1 + dx*t2);
+	    *sy2 = (int)(y1 + dy*t2);
 	}
 
 	return (0);
@@ -230,9 +247,16 @@ double rsn;	/* sun-earth dist, AU */
 double *mp;
 {
 	double psi_t, Psi_1, Psi_2, beta;
+	double c;
 	double tb2;
 
-	beta = acos((rp*rp + rho*rho - rsn*rsn)/ (2*rp*rho));
+	c = (rp*rp + rho*rho - rsn*rsn)/(2*rp*rho);
+	if (c <= -1)
+	    beta = PI;
+	else if (c >= 1)
+	    beta = 0;
+	else
+	    beta = acos(c);;
 	tb2 = tan(beta/2.0);
 	/* psi_t = exp(log(tan(beta/2.0))*0.63); */
 	psi_t = pow (tb2, 0.63);
@@ -446,3 +470,6 @@ Obj *op;
 
 	return (deepsky);
 }
+
+/* For RCS Only -- Do Not Edit */
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: misc.c,v $ $Date: 2003/03/04 05:44:05 $ $Revision: 1.2 $ $Name:  $"};

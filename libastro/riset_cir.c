@@ -22,6 +22,7 @@ static int find_max P_((Now *np, Obj *op, double tr, double ts, double *tp,
 /* find where and when an object, op, will rise and set and
  *   it's transit circumstances. all times are utc mjd, angles rads e of n.
  * dis is the angle down from an ideal horizon, in rads (see riset()).
+ * N.B. dis should NOT include refraction, we do that here.
  */
 void
 riset_cir (np, op, dis, rp)
@@ -62,6 +63,8 @@ RiseSet *rp;
 
 	/* first approximation is to find rise/set times of a fixed object
 	 * at the current epoch in its position at local noon.
+	 * N.B. add typical refraction for initial go/no-go test. if it
+	 *   passes, real code does refraction rigorously.
 	 */
 	n.n_mjd = mjdn;
 	if (obj_cir (&n, &o) < 0) {
@@ -69,7 +72,7 @@ RiseSet *rp;
 	    return;
 	}
 	ran = o.s_gaera;
-	riset (o.s_gaera, o.s_gaedec, lat, dis, &lr, &ls, &ar, &as, &rss);
+	riset (o.s_gaera, o.s_gaedec, lat, dis+.01, &lr, &ls, &ar, &as, &rss);
 	switch (rss) {
 	case  0:  break;
 	case  1: rp->rs_flags = RS_NEVERUP; return;
@@ -84,10 +87,11 @@ RiseSet *rp;
 	    rp->rs_risetm = n.n_mjd;
 	    rp->rs_riseaz = o.s_az;
 	    break;
-	case -1: /* did not converge */
+	case -1: /* obj_cir error */
 	    rp->rs_flags |= RS_RISERR;
 	    break;
-	case -2: /* converged but not today */
+	case -2: /* converged but not today */ /* FALLTHRU */
+	case -3: /* probably never up */
 	    rp->rs_flags |= RS_NORISE;
 	    break;
 	}
@@ -99,10 +103,11 @@ RiseSet *rp;
 	    rp->rs_settm = n.n_mjd;
 	    rp->rs_setaz = o.s_az;
 	    break;
-	case -1: /* did not converge */
+	case -1: /* obj_cir error */
 	    rp->rs_flags |= RS_SETERR;
 	    break;
-	case -2: /* converged but not today */
+	case -2: /* converged but not today */ /* FALLTHRU */
+	case -3: /* probably circumpolar */
 	    rp->rs_flags |= RS_NOSET;
 	    break;
 	}
@@ -197,10 +202,11 @@ RiseSet *rp;
 		    rp->rs_riseaz = op->s_az;
 		    rise = 1;
 		    break;
-		case -1: /* did not converge */
+		case -1: /* obj_cir error */
 		    rp->rs_flags |= RS_RISERR;
 		    return;
-		case -2: /* converged but not today */
+		case -2: /* converged but not today */ /* FALLTHRU */
+		case -3: /* probably never up */
 		    rp->rs_flags |= RS_NORISE;
 		    return;
 		}
@@ -212,10 +218,11 @@ RiseSet *rp;
 		    rp->rs_setaz = op->s_az;
 		    set = 1;
 		    break;
-		case -1: /* did not converge */
+		case -1: /* obj_cir error */
 		    rp->rs_flags |= RS_SETERR;
 		    return;
-		case -2: /* converged but not today */
+		case -2: /* converged but not today */ /* FALLTHRU */
+		case -3: /* probably circumpolar */
 		    rp->rs_flags |= RS_NOSET;
 		    return;
 		}
@@ -257,9 +264,11 @@ RiseSet *rp;
 
 /* given a Now at noon and a dt from noon, in hours, for a first approximation
  * to a rise or set event, refine the event by searching for when alt+dis = 0.
- * if find one within 12 hours of noon then return 0 with np and op set to the
- *    better time and circumstances; if can't converge return -1; if converges
- *    ok but not today, return -2.
+ * return 0: if find one within 12 hours of noon with np and op set to the
+ *    better time and circumstances;
+ * return -1: if error from obj_cir;
+ * return -2: if converges but not today;
+ * return -3: if does not converge at all (probably circumpolar or never up);
  */
 static int
 find_0alt (dt, dis, np, op)
@@ -268,7 +277,7 @@ double dis;	/* horizon displacement, rads */
 Now *np;	/* working Now -- starts with mjd is noon, returns as answer */
 Obj *op;	/* working object -- returns as answer */
 {
-#define	MAXPASSES	10		/* max iterations to try */
+#define	MAXPASSES	20		/* max iterations to try */
 #define	FIRSTSTEP	(1.0/60.0/24.0)	/* first time step, days */
 
 	double a0 = 0;
@@ -301,7 +310,7 @@ Obj *op;	/* working object -- returns as answer */
 
 	/* return codes */
 	if (npasses == MAXPASSES)
-	    return (-1);
+	    return (-3);
 	return (fabs(mjdn-mjd) < .5 ? 0 : -2);
 
 #undef	MAXPASSES
@@ -373,3 +382,6 @@ double *tp, *alp;	/* time of max altitude, and that altitude */
 	*alp = op->s_alt;
 	return (0);
 }
+
+/* For RCS Only -- Do Not Edit */
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: riset_cir.c,v $ $Date: 2003/03/04 05:44:05 $ $Revision: 1.2 $ $Name:  $"};

@@ -13,9 +13,9 @@ static void galeq_init P_((void));
 #define	GALtoEQ	(-1)
 #define	SMALL	(1e-20)
 
-static double an = degrad(33.0);	/* G lng of asc node on equator */
-static double gpr = degrad(192.255);	/* RA of North Gal Pole, 2000 */
-static double gpd = degrad(27.40);	/* Dec of  " */
+static double an = degrad(32.93192);    /* G lng of asc node on equator */
+static double gpr = degrad(192.85948);  /* RA of North Gal Pole, 2000 */
+static double gpd = degrad(27.12825);   /* Dec of  " */
 static double cgpd, sgpd;		/* cos() and sin() of gpd */
 static double mjd2000;			/* mjd of 2000 */
 static int before;			/* whether these have been set yet */
@@ -99,3 +99,6 @@ galeq_init()
 	    before = 1;
 	}
 }
+
+/* For RCS Only -- Do Not Edit */
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: eq_gal.c,v $ $Date: 2003/03/04 05:44:05 $ $Revision: 1.2 $ $Name:  $"};

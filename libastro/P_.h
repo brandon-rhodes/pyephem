@@ -8,3 +8,7 @@
 #define P_(s) ()
 #endif
 #endif /* P_ */
+
+/* For RCS Only -- Do Not Edit
+ * @(#) $RCSfile: P_.h,v $ $Date: 2003/03/04 05:44:05 $ $Revision: 1.2 $ $Name:  $
+ */

@@ -324,8 +324,8 @@ gplan (J, plan)
 
 /* lblat403.c */
 
-static int lattabr[] = {-1.0};
-static int lattabb[] = {-1.0};
+static int lattabr[] = {-1};
+static int lattabb[] = {-1};
 static int lattabl[] = {
     785710,
 
@@ -1111,8 +1111,8 @@ static struct plantbl liblat = {
 };
 
 /* lblon403.c */
-static int lontabr[] = {-1.0};
-static int lontabb[] = {-1.0};
+static int lontabr[] = {-1};
+static int lontabb[] = {-1};
 static int lontabl[] = {
    -640001,
 
@@ -2220,3 +2220,6 @@ double *llonp;
 	*llonp = degrad (lon/3600.0);
 	*llatp = degrad (lat/3600.0);
 }
+
+/* For RCS Only -- Do Not Edit */
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: libration.c,v $ $Date: 2003/03/04 05:44:05 $ $Revision: 1.2 $ $Name:  $"};
