@@ -1,14 +1,13 @@
 from distutils.core import setup, Extension
 
 setup(name = 'pyephem',
-      version = '3.5.2a',
+      version = '3.5.2b',
       description = 'Python interface to the XEphem libastro library',
       author = 'Brandon Craig Rhodes',
       author_email = 'brandon@rhodesmill.org',
       url = 'http://www.rhodesmill.org/brandon/projects/pyephem.html',
-      py_modules = ['ephem'],
-      ext_modules = [Extension('ephemc',
-                               ['src/ephem_wrap.c',
+      ext_modules = [Extension('ephem',
+                               ['src/ephem.c',
                                 'libastro/aa_hadec.c',
                                 'libastro/aberration.c',
                                 'libastro/actan.c',
@@ -52,6 +51,5 @@ setup(name = 'pyephem',
                                 'libastro/utc_gst.c',
                                 'libastro/vsop87.c',
                                 'libastro/vsop87_data.c'],
-                               include_dirs = ['.'])
-                     ]
-      )
+                               #extra_compile_args = ["-O2", "-ffast-math"],
+                               include_dirs=['libastro'])])
