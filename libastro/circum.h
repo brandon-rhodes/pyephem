@@ -67,7 +67,7 @@ typedef struct {
 #define	get_mag(op)	((op)->s_mag / MAGSCALE)
 
 /* longest object name, including trailing '\0' */
-#define	MAXNM	22
+#define	MAXNM	48
 
 /* Obj is a massive union.
  * many fields are in common so we use macros to make things a little easier.
@@ -438,5 +438,5 @@ extern void twilight_cir P_((Now *np, double dis, double *dawn, double *dusk,
     int *status));
 
 /* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: circum.h,v $ $Date: 2003/03/04 05:44:05 $ $Revision: 1.2 $ $Name:  $
+ * @(#) $RCSfile: circum.h,v $ $Date: 2003/04/19 19:17:16 $ $Revision: 1.3 $ $Name:  $
  */
