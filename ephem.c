@@ -48,6 +48,7 @@ typedef struct {
      Now now;			/* cache of last argument to compute() */
      Obj obj;			/* the ephemeris object */
      RiseSet riset;		/* rising and setting */
+     PyObject *name;		/* object name */
 } Body;
 
 typedef Body Planet, PlanetMoon;
@@ -59,6 +60,7 @@ typedef struct {
      Now now;			/* cache of last observer */
      Obj obj;			/* the ephemeris object */
      RiseSet riset;		/* rising and setting */
+     PyObject *name;		/* object name */
      double llat, llon;		/* libration */
      double c, k, s;		/* co-longitude and illumination */
 } Moon;
@@ -68,6 +70,7 @@ typedef struct {
      Now now;			/* cache of last observer */
      Obj obj;			/* the ephemeris object */
      RiseSet riset;		/* rising and setting */
+     PyObject *name;		/* object name */
      double etilt, stilt;	/* tilt of rings */
 } Saturn;
 
@@ -770,6 +773,7 @@ static int Planet_setup(Body *planet, PyObject *args, PyObject *kw,
 {
      Body_setup(planet);
 
+     planet->name = 0;
      planet->obj.o_type = PLANET;
      strcpy(planet->obj.o_name, planet_name);
      planet->obj.pl_code = planet_code;
@@ -800,7 +804,8 @@ static int Planet_init(PyObject *self, PyObject *args, PyObject *kw)
 
 static int PlanetMoon_init(PyObject *self, PyObject *args, PyObject *kw)
 {
-     PyErr_SetString(PyExc_TypeError, "you cannot create a generic PlanetMoon");
+     PyErr_SetString(PyExc_TypeError, 
+		     "you cannot create a generic PlanetMoon");
      return -1;
 }
 
@@ -814,6 +819,15 @@ static int Saturn_init(PyObject *self, PyObject *args, PyObject *kw)
 static int Moon_init(PyObject *self, PyObject *args, PyObject *kw)
 {
      return Planet_setup((Body*) self, args, kw, "Moon", MOON, X_PLANET);
+}
+
+/* Bodies need to unlink any name object when finished. */
+
+static void Body_dealloc(PyObject *self)
+{
+     Body *body = (Body*) self;
+     Py_XDECREF(body->name);
+     self->ob_type->tp_free(self);
 }
 
 /* These functions create and return planets. */
@@ -872,6 +886,8 @@ static int NAME##_init(PyObject* self, PyObject* args, PyObject *kw) \
 { \
      Body *body = (Body*) self; \
      Body_setup(body); \
+     body->name = PyString_FromString("unnamed"); \
+     body->obj.o_name[0] = '\0'; \
      body->obj.o_type = CODE; \
      return 0; \
 }
@@ -880,12 +896,13 @@ static int FixedBody_init(PyObject* self, PyObject* args, PyObject *kw)
 {
      Body *body = (Body*) self;
      Body_setup(body);
+     body->name = PyString_FromString("unnamed");
+     body->obj.o_name[0] = '\0';
      body->obj.o_type = FIXED;
      body->obj.f_epoch = J2000;
      return 0;
 }
 
-/* INIT(FixedBody, FIXED) */
 INIT(BinaryStar, BINARYSTAR)
 INIT(EllipticalBody, ELLIPTICAL)
 INIT(HyperbolicBody, HYPERBOLIC)
@@ -964,27 +981,43 @@ static PyObject* Body_writedb(PyObject *self)
      Body *body = (Body*) self;
      char line[1024];
      db_write_line(&body->obj, line);
-     return PyString_FromString(line);
+     if (body->name) {
+	  char *name = PyString_AsString(body->name);
+	  return PyString_FromFormat("%s%s", name, line);
+     } else
+	  return PyString_FromString(line);
 }
 
-static PyObject* Body_copy(PyObject *self, PyObject *args)
+static PyObject* Body_copy(PyObject *self)
 {
-     PyObject *newbody;
-     if (!PyArg_ParseTuple(args, ":Body.copy"))
-	  return NULL;
-     newbody = _PyObject_New(self->ob_type);
+     PyObject *newbody = _PyObject_New(self->ob_type);
      if (!newbody) return 0;
      memcpy(newbody, self, self->ob_type->tp_basicsize);
+     Py_XINCREF(((Body*) self)->name);
      return newbody;
 }
 
-static PyObject* Body_str(PyObject *body_object)
+static PyObject* Body_repr(PyObject *body_object)
 {
      Body *body = (Body*) body_object;
-     char *format = body->obj.o_name[0] ?
-	  "<%s \"%s\" at 0x%x>" : "<%s at 0x%x>";
-     return PyString_FromFormat
-	  (format, body->ob_type->tp_name, body->obj.o_name, body);
+     if (body->name) {
+	  char *name;
+	  PyObject *repr, *result;
+	  repr = PyObject_Repr(body->name);
+	  if (!repr) return 0;
+	  name = PyString_AsString(repr);
+	  Py_DECREF(repr);
+	  if (!name) return 0;
+	  result = PyString_FromFormat("<%s %s at %p>",
+				       body->ob_type->tp_name, name, body);
+	  return result;
+     } else if (body->obj.o_name[0])
+	  return PyString_FromFormat("<%s \"%s\" at %p>",
+				     body->ob_type->tp_name,
+				     body->obj.o_name, body);
+     else
+	  return PyString_FromFormat("<%s at %p>",
+				     body->ob_type->tp_name, body);
 }
 
 static PyMethodDef Body_methods[] = {
@@ -994,7 +1027,7 @@ static PyMethodDef Body_methods[] = {
      {"writedb", (PyCFunction) Body_writedb, METH_NOARGS,
       "return a string representation of the body "
       "appropriate for inclusion in an ephem database file"},
-     {"copy", (PyCFunction) Body_copy, METH_VARARGS,
+     {"copy", (PyCFunction) Body_copy, METH_NOARGS,
       "Return a new copy of this body"},
      {"__copy__", (PyCFunction) Body_copy, METH_VARARGS,
       "Return a new copy of this body"},
@@ -1216,22 +1249,19 @@ GET_FIELD(sun_tilt, stilt, build_degrees)
 static PyObject *Get_name(PyObject *self, void *v)
 {
      Body *body = (Body*) self;
-     int i=0;
-     while (i < MAXNM && body->obj.o_name[i]) i++;
-     return PyString_FromStringAndSize(body->obj.o_name, i);
+     if (body->name) {
+	  Py_INCREF(body->name);
+	  return body->name;
+     } else
+	  return PyString_FromString(body->obj.o_name);
 }
 
 static int Set_name(PyObject *self, PyObject *value, void *v)
 {
      Body *body = (Body*) self;
-     char *s;
-     if (!PyString_Check(value)) {
-	  PyErr_Format(PyExc_ValueError, "body name must be a string");
-	  return -1;
-     }
-     s = PyString_AsString(value);
-     strncpy(body->obj.o_name, s, 20);
-     body->obj.o_name[MAXNM - 1] = '\0';
+     Py_XDECREF(body->name);
+     body->name = value;
+     Py_INCREF(value);
      return 0;
 }
 
@@ -1309,7 +1339,7 @@ static int Set_gk(PyObject *self, PyObject *value, void *v)
 #define OFF(member) offsetof(Body, obj.member)
 
 static PyGetSetDef Body_getset[] = {
-     {"name", Get_name, Set_name, "object name (up to 20 characters)"},
+     {"name", Get_name, 0, "object name (read-only string)"},
 
      {"ra", Get_ra, 0, "right ascension (radians that print as hours of arc)"},
      {"dec", Get_dec, 0, "declination (radians that print as degrees)"},
@@ -1354,7 +1384,7 @@ static PyGetSetDef Planet_getset[] = {
    moon (see libastro's plmoon.c for details). */
 
 static PyGetSetDef PlanetMoon_getset[] = {
-     {"name", Get_name, Set_name, "arbitrary name of up to 20 characters"},
+     {"name", Get_name, 0, "object name (read-only string)"},
 
      {"ra", Get_ra, 0, "right ascension (radians that print as hours of arc)"},
      {"dec", Get_dec, 0, "declination (radians that print as degrees)"},
@@ -1400,6 +1430,7 @@ static PyGetSetDef Saturn_getset[] = {
 };
 
 static PyGetSetDef FixedBody_getset[] = {
+     {"name", Get_name, Set_name, "object name"},
      {"mag", Get_mag, Set_mag, "magnitude", 0},
      {"_spect",  get_f_spect, set_f_spect, "spectral codes", 0},
      {"_ratio", get_f_ratio, set_f_ratio,
@@ -1417,6 +1448,7 @@ static PyMemberDef FixedBody_members[] = {
 };
 
 static PyGetSetDef EllipticalBody_getset[] = {
+     {"name", Get_name, Set_name, "object name"},
      {"_inc", getf_dd, setf_dd, "inclination (degrees)", VOFF(e_inc)},
      {"_Om", getf_dd, setf_dd,
       "longitude of ascending node (degrees)", VOFF(e_Om)},
@@ -1441,6 +1473,7 @@ static PyMemberDef EllipticalBody_members[] = {
 };
 
 static PyGetSetDef HyperbolicBody_getset[] = {
+     {"name", Get_name, Set_name, "object name"},
      {"_epoch", getd_mjd, setd_mjd, "epoch date of _inc, _Om, and _om",
       VOFF(h_epoch)},
      {"_epoch_p", getd_mjd, setd_mjd, "epoch of perihelion", VOFF(h_ep)},
@@ -1462,6 +1495,7 @@ static PyMemberDef HyperbolicBody_members[] = {
 };
 
 static PyGetSetDef ParabolicBody_getset[] = {
+     {"name", Get_name, Set_name, "object name"},
      {"_epoch", getd_mjd, setd_mjd, "reference epoch", VOFF(p_epoch)},
      {"_epoch_p", getd_mjd, setd_mjd, "epoch of perihelion", VOFF(p_ep)},
      {"_inc", getf_dd, setf_dd, "inclination (degrees)", VOFF(p_inc)},
@@ -1480,6 +1514,7 @@ static PyMemberDef ParabolicBody_members[] = {
 };
 
 static PyGetSetDef EarthSatellite_getset[] = {
+     {"name", Get_name, Set_name, "object name"},
      {"_epoch", getd_mjd, setd_mjd, "reference epoch (mjd)", VOFF(es_epoch)},
      {"_inc", getf_dd, setf_dd, "inclination (degrees)", VOFF(es_inc)},
      {"_raan", getf_dd, setf_dd,
@@ -1540,18 +1575,18 @@ static PyTypeObject BodyType = {
      "ephem.Body",
      sizeof(Body),
      0,
-     0,				/* tp_dealloc */
+     Body_dealloc,		/* tp_dealloc */
      0,				/* tp_print */
      0,				/* tp_getattr */
      0,				/* tp_setattr */
      0,				/* tp_compare */
-     0,				/* tp_repr */
+     Body_repr,			/* tp_repr */
      0,				/* tp_as_number */
      0,				/* tp_as_sequence */
      0,				/* tp_as_mapping */
      0,				/* tp_hash */
      0,				/* tp_call */
-     Body_str,			/* tp_str */
+     0,				/* tp_str */
      0,				/* tp_getattro */
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
@@ -1631,13 +1666,13 @@ static PyTypeObject PlanetMoonType = {
      0,				/* tp_getattr */
      0,				/* tp_setattr */
      0,				/* tp_compare */
-     0,				/* tp_repr */
+     Body_repr,			/* tp_repr */
      0,				/* tp_as_number */
      0,				/* tp_as_sequence */
      0,				/* tp_as_mapping */
      0,				/* tp_hash */
      0,				/* tp_call */
-     Body_str,			/* tp_str */
+     0,				/* tp_str */
      0,				/* tp_getattro */
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
@@ -2076,7 +2111,7 @@ static PyObject* separation(PyObject *self, PyObject *args)
 
 /* Read an  database entry from a string. */
 
-static PyObject *build_body_from_obj(Obj *op)
+static PyObject *build_body_from_obj(PyObject *name, Obj *op)
 {
      PyTypeObject *type;
      Body *body;
@@ -2098,41 +2133,62 @@ static PyObject *build_body_from_obj(Obj *op)
 	  break;
      default:
 	  PyErr_Format(PyExc_ValueError,
-		       "attempting to build object of unknown type %d",
+		       "cannot build object of unexpected type %d",
 		       op->o_type);
+	  Py_DECREF(name);
 	  return 0;
      }
      //body = PyObject_NEW(Body, type);
      body = (Body*) PyType_GenericNew(type, 0, 0);
-     if (body) body->obj = *op;
+     if (!body) {
+	  Py_DECREF(name);
+	  return 0;
+     }
+     body->obj = *op;
+     body->name = name;
+     body->obj.o_name[0] = '\0';
      return (PyObject*) body;
 }
 
 static PyObject* readdb(PyObject *self, PyObject *args)
 {
-     char *s, errmsg[256];
+     char *line, *comma, errmsg[256];
+     PyObject *name;
      Obj obj;
-     if (!PyArg_ParseTuple(args, "s:readdb", &s)) return 0;
-     if (db_crack_line(s, &obj, 0, 0, errmsg) == -1) {
+     if (!PyArg_ParseTuple(args, "s:readdb", &line)) return 0;
+     if (db_crack_line(line, &obj, 0, 0, errmsg) == -1) {
 	  PyErr_SetString(PyExc_ValueError,
 			  errmsg[0] ? errmsg :
 			  "line does not conform to ephem database format");
 	  return 0;
      }
-     return build_body_from_obj(&obj);
+     comma = strchr(line, ',');
+     if (comma)
+	  name = PyString_FromStringAndSize(line, comma - line);
+     else
+	  name = PyString_FromString(line);
+     if (!name)
+	  return 0;
+     return build_body_from_obj(name, &obj);
 }
 
 static PyObject* readtle(PyObject *self, PyObject *args)
 {
-     char *name, *l1, *l2;
+     char *l1, *l2;
+     PyObject *name, *stripped_name;
      Obj obj;
-     if (!PyArg_ParseTuple(args, "sss:readelt", &name, &l1, &l2)) return 0;
-     if (db_tle(name, l1, l2, &obj)) {
+     if (!PyArg_ParseTuple(args, "O!ss:readtle",
+			   &PyString_Type, &name, &l1, &l2))
+	  return 0;
+     if (db_tle(PyString_AsString(name), l1, l2, &obj)) {
 	  PyErr_SetString(PyExc_ValueError,
 			  "line does not conform to tle format");
 	  return 0;
      }
-     return build_body_from_obj(&obj);
+     stripped_name = PyObject_CallMethod(name, "strip", 0);
+     if (!stripped_name)
+	  return 0;
+     return build_body_from_obj(stripped_name, &obj);
 }
 
 /* Create various sorts of angles. */
