@@ -1372,7 +1372,7 @@ static PyGetSetDef FixedBody_getset[] = {
      {"_ratio", get_f_ratio, set_f_ratio,
       "ratio of minor to major diameter", VOFF(f_ratio)},
      {"_pa", get_f_pa, set_f_pa, "position angle E of N", VOFF(f_pa)},
-     {"_epoch", getf_mjd, setf_mjd, "date", VOFF(f_epoch)},
+     {"_epoch", getf_mjd, setf_mjd, "epoch for _ra and _dec", VOFF(f_epoch)},
      {"_ra", getf_rh, setf_rh, "fixed right ascension", VOFF(f_RA)},
      {"_dec", getf_rd, setf_rd, "fixed declination", VOFF(f_dec)},
      {NULL}
@@ -1389,13 +1389,14 @@ static PyGetSetDef EllipticalBody_getset[] = {
       "longitude of ascending node (degrees)", VOFF(e_Om)},
      {"_om", getf_dd, setf_dd, "argument of perihelion (degrees)", VOFF(e_om)},
      {"_M", getf_dd, setf_dd, "mean anomaly (degrees)", VOFF(e_M)},
-     {"_cepoch", getd_mjd, setd_mjd, "epoch date of mean anomaly",
+     {"_cepoch", getd_mjd, setd_mjd, "epoch of mean anomaly",
       VOFF(e_cepoch)},
-     {"_epoch", getd_mjd, setd_mjd, "equinox year", VOFF(e_epoch)},
-     {"_H", Get_HG, Set_HG, "H magnitude coefficient", VOFF(e_mag.m1)},
-     {"_G", Get_HG, Set_HG, "G magnitude coefficient", VOFF(e_mag.m2)},
-     {"_g", Get_gk, Set_gk, "g magnitude coefficient", VOFF(e_mag.m1)},
-     {"_k", Get_gk, Set_gk, "k magnitude coefficient", VOFF(e_mag.m2)},
+     {"_epoch", getd_mjd, setd_mjd, "epoch for _inc, _Om, and _om",
+      VOFF(e_epoch)},
+     {"_H", Get_HG, Set_HG, "magnitude coefficient", VOFF(e_mag.m1)},
+     {"_G", Get_HG, Set_HG, "magnitude coefficient", VOFF(e_mag.m2)},
+     {"_g", Get_gk, Set_gk, "magnitude coefficient", VOFF(e_mag.m1)},
+     {"_k", Get_gk, Set_gk, "magnitude coefficient", VOFF(e_mag.m2)},
      {NULL}
 };
 
@@ -1407,27 +1408,29 @@ static PyMemberDef EllipticalBody_members[] = {
 };
 
 static PyGetSetDef HyperbolicBody_getset[] = {
-     {"_ep", getd_mjd, setd_mjd, "epoch of perihelion (Date)", VOFF(h_ep)},
+     {"_epoch", getd_mjd, setd_mjd, "epoch date of _inc, _Om, and _om",
+      VOFF(h_epoch)},
+     {"_epoch_p", getd_mjd, setd_mjd, "epoch of perihelion", VOFF(h_ep)},
      {"_inc", getf_dd, setf_dd, "inclination (degrees)", VOFF(h_inc)},
      {"_Om", getf_dd, setf_dd,
       "longitude of ascending node (degrees)", VOFF(h_Om)},
      {"_om", getf_dd, setf_dd,
       "argument of perihelion (degrees)", VOFF(h_om)},
-     {"_epoch", getd_mjd, setd_mjd, "epoch of _inc, _Om, and _om (Date)",
-      VOFF(h_epoch)},
      {NULL}
 };
 
 static PyMemberDef HyperbolicBody_members[] = {
      {"_e", T_FLOAT, OFF(h_e), 0, "eccentricity"},
      {"_q", T_FLOAT, OFF(h_qp), 0, "perihelion distance (AU)"},
-     {"_g", T_FLOAT, OFF(h_g), 0, "magnitude coefficient g"},
-     {"_k", T_FLOAT, OFF(h_k), 0, "magnitude coefficient g"},
+     {"_g", T_FLOAT, OFF(h_g), 0, "magnitude coefficient"},
+     {"_k", T_FLOAT, OFF(h_k), 0, "magnitude coefficient"},
      {"_size", T_FLOAT, OFF(h_size), 0, "angular size at 1 AU (arcseconds)"},
      {NULL}
 };
 
 static PyGetSetDef ParabolicBody_getset[] = {
+     {"_epoch", getd_mjd, setd_mjd, "reference epoch", VOFF(p_epoch)},
+     {"_epoch_p", getd_mjd, setd_mjd, "epoch of perihelion", VOFF(p_ep)},
      {"_inc", getf_dd, setf_dd, "inclination (degrees)", VOFF(p_inc)},
      {"_om", getf_dd, setf_dd, "argument of perihelion (degrees)", VOFF(p_om)},
      {"_Om", getf_dd, setf_dd,
@@ -1436,11 +1439,9 @@ static PyGetSetDef ParabolicBody_getset[] = {
 };
 
 static PyMemberDef ParabolicBody_members[] = {
-     {"_epoch", T_DOUBLE, OFF(p_epoch), 0, ""},
-     {"_ep", T_DOUBLE, OFF(p_ep), 0, ""},
-     {"_qp", T_FLOAT, OFF(p_qp), 0, ""},
-     {"_g", T_FLOAT, OFF(p_g), 0, ""},
-     {"_k", T_FLOAT, OFF(p_k), 0, ""},
+     {"_q", T_FLOAT, OFF(p_qp), 0, "perihelion distance (AU)"},
+     {"_g", T_FLOAT, OFF(p_g), 0, "magnitude coefficient"},
+     {"_k", T_FLOAT, OFF(p_k), 0, "magnitude coefficient"},
      {"_size", T_FLOAT, OFF(p_size), 0, "angular size at 1 AU (arcseconds)"},
      {NULL}
 };

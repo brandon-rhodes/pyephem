@@ -264,14 +264,22 @@ class bodies(MyTestCase):
             bodytype=HyperbolicBody,
             line=('C/1999 J2 (Skiff),h,04/05.7769/2000,86.3277,50.0353,'
                   '127.1286,1.002879,7.110858,2000,2.0,4.0'),
-            attributes = {'name': 'Skiff', '_ep': '2000/4/5.7769',
+            attributes = {'name': 'Skiff', '_epoch_p': '2000/4/5.7769',
                           '_inc': 86.3277, '_Om': 50.0353, '_om': 127.1286,
                           '_e': 1.002879, '_q': 7.110858, '_epoch': '2000',
                           '_g': 2.0, '_k': 4.0,
                           })
 
-    #def test_ParabolicBody(self):
-    #    ...
+    def test_ParabolicBody(self):
+        self.build(
+            bodytype=ParabolicBody,
+            line = ('C/2004 S1 (Van Ness),p,12/08.9212/2004,114.6676,'
+                    '92.8155,0.681783,19.2198,2000,16.5,4.0'),
+            attributes = {'name': 'Van Ness', '_epoch_p': '2004/12/8.9212',
+                          '_inc': 114.6676, '_om': 92.8155, '_q': 0.681783,
+                          '_Om': 19.2198, '_epoch': '2000',
+                          '_g': 16.5, '_k': 4.0
+                          })
 
     #def test_EarthSatellite(self):
     #    ...
