@@ -33,7 +33,7 @@ class MyTestCase(unittest.TestCase):
 
 # Determine whether angles work reasonably.
 
-class angles(unittest.TestCase):
+class angle_suite(unittest.TestCase):
     def setUp(self):
         self.d = degrees(1.5)
         self.h = hours(1.6)
@@ -59,7 +59,7 @@ class angles(unittest.TestCase):
 
 # Determine whether dates behave reasonably.
 
-class dates(unittest.TestCase):
+class date_suite(unittest.TestCase):
     def setUp(self):
         self.date = date('2004/09/04 00:17:15.8')
 
@@ -137,7 +137,7 @@ def predict_attributes(body, was_computed, was_given_observer):
 # Determine whether each kind of body supports the set of attributes
 # we believe it should.
 
-class bodies(MyTestCase):
+class body_suite(MyTestCase):
     def setUp(self):
         self.date = date('1955/05/21')
 
@@ -311,6 +311,16 @@ class bodies(MyTestCase):
                         '_n': 14.99359833, '_orbit': 59452,
                         })
 
+# Make sure the constellation function forces objects to determine
+# their position before using their right ascension and declination.
+
+class function_suite(unittest.TestCase):
+    def test_constellation(self):
+        oneb = readdb('Orion Nebula,f,5.59,-5.45,2,2000.0,')
+        oneb.compute('1999/2/28')
+        self.assertEqual(constellation(oneb), ('Ori', 'Orion'))
+
+#
 
 class riset(MyTestCase):
     def setUp(self):
