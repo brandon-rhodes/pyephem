@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+#
 # Print out how the Jovian moons will be distributed around the planet
 # for the next three days.
 
