@@ -25,23 +25,26 @@ scope = { 'ephem' : ephem }
 # and print out the two value if they differ.
 
 def compare(lineno, command, result):
+    global n_success, n_failure
     real_stdout, real_stderr = sys.stdout, sys.stderr
-    sys.stdout = sys.stderr = StringIO()
+    sio = StringIO()
+    sys.stdout = sio
     try:
         exec command in scope
+        output = sio.getvalue()
     except:
         t, v, tb = sys.exc_info()
-        traceback.print_exception(t, v)
-    output = sys.stdout.getvalue()
-    sys.stdout, sys.stderr = real_stdout, real_stderr
-    output = output.replace('&', '&amp;').replace('<', '&lt;')\
+        output = '\n'.join(traceback.format_exception_only(t, v))
+    sys.stdout = real_stdout
+    output = output.replace('&', '&amp;').replace('<', '&lt;') \
              .replace('>', '&gt;')
-    if output != result:
+    if output == result:
+        n_success += 1
+    else:
+        n_failure += 1
         print '=' * 60
         print '%d:' % lineno, command
-        print output
-        print '--'
-        print result
+        print output + '--\n' + result
 
 # This state machine determines which commands illustrated in the
 # produce which outputs, and sends each command-result pair to the
@@ -52,9 +55,11 @@ pre_end = '</pre>\n'
 
 state = 'waiting-for-pre'
 lineno = 0
+n_success = n_failure = 0
 
 for line in file(premanual_path):
     lineno += 1
+    #print lineno
     if state == 'waiting-for-pre':
         if line == pre_start:
             state = 'waiting-for-command'
@@ -96,4 +101,5 @@ for line in file(premanual_path):
     else:
         raise RuntimeError, 'unknown state %r' % state
 
-x = "Test complete"
+print "Test complete with %d successes and %d failures" % (
+    n_success, n_failure)

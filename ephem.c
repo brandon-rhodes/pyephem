@@ -126,6 +126,12 @@ static PyObject* Angle_str(PyObject *self)
      return PyString_FromString(Angle_format(self));
 }
 
+static int Angle_print(PyObject *self, FILE *fp, int flags)
+{
+     fputs(Angle_format(self), fp);
+     return 0;
+}
+
 static PyTypeObject AngleType = {
      PyObject_HEAD_INIT(NULL)
      0,
@@ -133,7 +139,7 @@ static PyTypeObject AngleType = {
      sizeof(AngleObject),
      0,
      0,				/* tp_dealloc */
-     0,				/* tp_print */
+     Angle_print,		/* tp_print */
      0,				/* tp_getattr */
      0,				/* tp_setattr */
      0,				/* tp_compare */
@@ -291,6 +297,13 @@ static PyObject* Date_str(PyObject *self)
      return PyString_FromString(Date_format(self));
 }
 
+static int Date_print(PyObject *self, FILE *fp, int flags)
+{
+     char *s = Date_format(self);
+     fputs(s, fp);
+     return 0;
+}
+
 static PyObject *Date_triple(PyObject *self, PyObject *args)
 {
      int year, month;
@@ -333,7 +346,7 @@ static PyTypeObject DateType = {
      sizeof(PyFloatObject),
      0,
      0,				/* tp_dealloc */
-     0,				/* tp_print */
+     Date_print,		/* tp_print */
      0,				/* tp_getattr */
      0,				/* tp_setattr */
      0,				/* tp_compare */
@@ -669,10 +682,6 @@ static int set_elev(PyObject *self, PyObject *value, void *v)
  * Observer class type.
  */
 
-/*static PyMethodDef ephem_observer_methods[] = {
-     {NULL}
-     };*/
-
 #define VOFF(member) ((void*) OFF(member))
 #define OFF(member) offsetof(Observer, now.member)
 
@@ -963,6 +972,17 @@ static PyObject* Body_writedb(PyObject *self)
      return PyString_FromString(line);
 }
 
+static PyObject* Body_copy(PyObject *self, PyObject *args)
+{
+     PyObject *newbody;
+     if (!PyArg_ParseTuple(args, ":Body.__copy__"))
+	  return NULL;
+     newbody = _PyObject_New(self->ob_type);
+     if (!newbody) return 0;
+     memcpy(newbody, self, self->ob_type->tp_basicsize);
+     return newbody;
+}
+
 static PyObject* Body_str(PyObject *body_object)
 {
      Body *body = (Body*) body_object;
@@ -979,6 +999,8 @@ static PyMethodDef Body_methods[] = {
      {"writedb", (PyCFunction) Body_writedb, METH_NOARGS,
       "return a string representation of the body "
       "appropriate for inclusion in an ephem database file"},
+     {"__copy__", (PyCFunction) Body_copy, METH_VARARGS,
+      "Return a new copy of this body"},
      {NULL}
 };
 
@@ -1979,7 +2001,7 @@ static PyTypeObject EarthSatelliteType = {
 static PyObject* build_now(PyObject *self, PyObject *args)
 {
      if (!PyArg_ParseTuple(args, "")) return 0;
-     return PyFloat_FromDouble(mjd_now());
+     return build_Date(mjd_now());
 }
 
 /* Compute the separation between two objects. */

@@ -9,7 +9,7 @@ class TestError(Exception):
 
 # Work backwords from the `test' directory in which this script sits
 # to find where the distutils have placed the new module; note that
-# this attempt to file the `lib.*' directory will fail if the user has
+# this attempt to find the `lib.*' directory will fail if the user has
 # created several by building the module for several architectures.
 
 (build_lib,) = glob(sys.path[0] + '/../build/lib.*')
@@ -19,7 +19,9 @@ sys.path.insert(0, build_lib)
 
 import ephem
 from ephem import *
-#import test_ephem
+
+# Improve the standard TestCase class by providing a routine to check
+# whether a function call returns a desired exception.
 
 class MyTestCase(unittest.TestCase):
     def assertRaises(self, exception, callable, *args):
@@ -29,9 +31,7 @@ class MyTestCase(unittest.TestCase):
             raise AssertionError, ('%r failed to raise %s with arguments %r'
                                    % (callable, exception, args))
 
-#print dir(ephem)
-#print ephem.Date, ephem.Body
-#sys.exit(0)
+# Determine whether angles work reasonably.
 
 class angles(unittest.TestCase):
     def setUp(self):
@@ -52,8 +52,12 @@ class angles(unittest.TestCase):
     def test_hours_string_value(self):
         self.assertEqual(str(self.h), '6:06:41.58')
 
-#
-#
+    def test_angle_addition(self):
+        self.assertEqual(degrees('30') + degrees('90'), degrees('120'))
+    def test_angle_subtraction(self):
+        self.assertEqual(degrees('180') - hours('9'), degrees('45'))
+
+# Determine whether dates behave reasonably.
 
 class dates(unittest.TestCase):
     def setUp(self):
@@ -90,7 +94,8 @@ class dates(unittest.TestCase):
         self.assertEqual(self.date.tuple(),
                          (2004, 9, 4, 0, 17, 15.799999977461994))
 
-# fixed
+# The attributes which each class of object should support (these
+# lists are used by several of the functions below).
 
 satellite_attributes = ('sublat', 'sublong', 'elevation',
                         'range', 'range_velocity', 'eclipsed')
@@ -129,7 +134,8 @@ def predict_attributes(body, was_computed, was_given_observer):
                 predictions[attr] = None
     return predictions
 
-#
+# Determine whether each kind of body supports the set of attributes
+# we believe it should.
 
 class bodies(MyTestCase):
     def setUp(self):
@@ -155,9 +161,9 @@ class bodies(MyTestCase):
                     attributes[attr] = None
         return attributes
 
-    # Use the above two functions to predict which attributes of the
-    # given body should be accessible, and then test to see whether
-    # the reality matches our prediction.
+    # Use the above functions to predict which attributes of the given
+    # body should be accessible, and then test to see whether the
+    # reality matches our prediction.
 
     def compare_attributes(self, body, was_computed, was_given_observer):
         p = predict_attributes(body, was_computed, was_given_observer)
@@ -180,6 +186,11 @@ class bodies(MyTestCase):
                             % (a, adjective, body,
                                t[a], t[a].args[0], p[a]))
 
+    # Run the body - which should not yet have been compute()d when
+    # first given to us - through several computations to determine
+    # whether its attributes become available when we think they
+    # should.
+
     def run(self, body):
         self.compare_attributes(body, False, False)
         body.compute()
@@ -196,14 +207,14 @@ class bodies(MyTestCase):
 
     # For each flavor of user-definable body, 
 
-    def build(self, bodytype, line, attributes):
+    def build(self, bodytype, dbentry, attributes):
 
         # Build one body from the Ephem-formatted entry.
 
-        if isinstance(line, tuple):
-            bl = readtle(*line)
+        if isinstance(dbentry, tuple):
+            bl = readtle(*dbentry)
         else:
-            bl = readdb(line)
+            bl = readdb(dbentry)
 
         # Build another body by setting the attributes on a body.
 
@@ -235,7 +246,6 @@ class bodies(MyTestCase):
                 vl, va = getattr(bl, attr), getattr(ba, attr)
                 if isinstance(vl, float):
                     vl, va = str(float(vl)), str(float(va))
-                #print attr, vl, va
                 if vl != va:
                     raise TestError, ("%s item from line returns %s for %s"
                                       " but constructed object returns %s"
@@ -244,30 +254,30 @@ class bodies(MyTestCase):
     def test_FixedBody(self):
         self.build(
             bodytype=FixedBody,
-            line='Achernar,f|V|B3,1:37:42.9,-57:14:12,0.46,2000',
-            attributes = {'name': 'Achernar',
-                          '_ra': '1:37:42.9', '_dec': '-57:14:12',
-                          'mag': 0.46, '_epoch': '2000',
-                          })
+            dbentry='Achernar,f|V|B3,1:37:42.9,-57:14:12,0.46,2000',
+            attributes={'name': 'Achernar',
+                        '_ra': '1:37:42.9', '_dec': '-57:14:12',
+                        'mag': 0.46, '_epoch': '2000',
+                        })
 
     def test_EllipticalBody(self):
         self.build(
             bodytype=EllipticalBody,
-            line=('C/1995 O1 (Hale-Bopp),e,89.3918,282.4192,130.8382,'
-                  '186.4302,0.0003872,0.99500880,0.0000,'
-                  '03/30.4376/1997,2000,g -2.0,4.0'),
-            attributes = {'name': 'Hale-Bopp', '_inc': 89.3918,
-                          '_Om': 282.4192, '_om': 130.8382,
-                          '_a': 186.4302, '_e': 0.99500880, '_M': 0.0000,
-                          '_cepoch': '1997/03/30.4376', '_epoch': '2000',
-                          '_size': 0, '_g': -2.0, '_k': 4.0,
-                          })
+            dbentry=('C/1995 O1 (Hale-Bopp),e,89.3918,282.4192,130.8382,'
+                     '186.4302,0.0003872,0.99500880,0.0000,'
+                     '03/30.4376/1997,2000,g -2.0,4.0'),
+            attributes={'name': 'Hale-Bopp', '_inc': 89.3918,
+                        '_Om': 282.4192, '_om': 130.8382,
+                        '_a': 186.4302, '_e': 0.99500880, '_M': 0.0000,
+                        '_cepoch': '1997/03/30.4376', '_epoch': '2000',
+                        '_size': 0, '_g': -2.0, '_k': 4.0,
+                        })
 
     def test_HyperbolicBody(self):
         self.build(
             bodytype=HyperbolicBody,
-            line=('C/1999 J2 (Skiff),h,04/05.7769/2000,86.3277,50.0353,'
-                  '127.1286,1.002879,7.110858,2000,2.0,4.0'),
+            dbentry=('C/1999 J2 (Skiff),h,04/05.7769/2000,86.3277,50.0353,'
+                     '127.1286,1.002879,7.110858,2000,2.0,4.0'),
             attributes = {'name': 'Skiff', '_epoch_p': '2000/4/5.7769',
                           '_inc': 86.3277, '_Om': 50.0353, '_om': 127.1286,
                           '_e': 1.002879, '_q': 7.110858, '_epoch': '2000',
@@ -277,29 +287,29 @@ class bodies(MyTestCase):
     def test_ParabolicBody(self):
         self.build(
             bodytype=ParabolicBody,
-            line = ('C/2004 S1 (Van Ness),p,12/08.9212/2004,114.6676,'
-                    '92.8155,0.681783,19.2198,2000,16.5,4.0'),
-            attributes = {'name': 'Van Ness', '_epoch_p': '2004/12/8.9212',
-                          '_inc': 114.6676, '_om': 92.8155, '_q': 0.681783,
-                          '_Om': 19.2198, '_epoch': '2000',
-                          '_g': 16.5, '_k': 4.0
-                          })
+            dbentry=('C/2004 S1 (Van Ness),p,12/08.9212/2004,114.6676,'
+                     '92.8155,0.681783,19.2198,2000,16.5,4.0'),
+            attributes={'name': 'Van Ness', '_epoch_p': '2004/12/8.9212',
+                        '_inc': 114.6676, '_om': 92.8155, '_q': 0.681783,
+                        '_Om': 19.2198, '_epoch': '2000',
+                        '_g': 16.5, '_k': 4.0
+                        })
 
     def test_EarthSatellite(self):
         self.build(
             bodytype=EarthSatellite,
-            line = ('HST                     ',
-                    '1 20580U 90037B   04296.45910607  .00000912 '
-                    ' 00000-0  59688-4 0  1902',
-                    '2 20580  28.4694  17.3953 0004117 265.2946  '
-                    '94.7172 14.99359833594524'),
-            attributes = {'name': 'Hubble Telescope',
-                          '_epoch': Date('2004') + 296.45910607 - 1,
-                          '_decay': .00000912, '_drag': .59688e-4,
-                          '_inc': 28.4694, '_raan': 17.3953,
-                          '_e': 4117e-7, '_ap': 265.2946, '_M': 94.7172,
-                          '_n': 14.99359833, '_orbit': 59452,
-                          })
+            dbentry=('HST                     ',
+                     '1 20580U 90037B   04296.45910607  .00000912 '
+                     ' 00000-0  59688-4 0  1902',
+                     '2 20580  28.4694  17.3953 0004117 265.2946  '
+                     '94.7172 14.99359833594524'),
+            attributes={'name': 'Hubble Telescope',
+                        '_epoch': Date('2004') + 296.45910607 - 1,
+                        '_decay': .00000912, '_drag': .59688e-4,
+                        '_inc': 28.4694, '_raan': 17.3953,
+                        '_e': 4117e-7, '_ap': 265.2946, '_M': 94.7172,
+                        '_n': 14.99359833, '_orbit': 59452,
+                        })
 
 
 class riset(MyTestCase):
@@ -313,15 +323,3 @@ class riset(MyTestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
-sys.exit(0)
-
-line=('C/1995 O1 (Hale-Bopp),e,89.3918,282.4192,130.8382,'
-      '186.4302,0.0003872,0.99500880,0.0000,'
-      '03/30.4376/1997,2000,g -2.0,4.0')
-bopp = readdb(line)
-for a in dir(bopp):
-    try:
-        print a, getattr(bopp, a)
-    except:
-        print a, '---'
