@@ -86,7 +86,7 @@ but you can also have several going at once.
 To determine how close Neptune and Jupiter lay
 as Galileo famously observed them ---
 he was busy watching the Jovian moons he had discovered two years earlier
-and, though Neptune had moved overnight, he drew it as a background star
+and, though Neptune had moved overnight, he dismissed it as a background star
 and left its discovery to wait another two hundred years ---
 we create one instance of each planet and compare their positions:
 
@@ -256,16 +256,16 @@ the fact that it is counted in days
 means you can move one day forward or backward
 by adding or subtracting one.
 The rules described above for angles hold for floats as well:
-you can create them with <tt>ephem.date()</tt>,
+you can create them with <tt>ephem.Date()</tt>,
 but after doing arithmetic on them
-you must pass them back through <tt>ephem.date()</tt>
+you must pass them back through <tt>ephem.Date()</tt>
 to turn them back into dates:
 
 <pre class=interactive>
->>> d = ephem.date('1950/2/28')
+>>> d = ephem.Date('1950/2/28')
 >>> print d + 1
 18321.5
->>> print ephem.date(d + 1)
+>>> print ephem.Date(d + 1)
 1950/3/1 00:00:00
 </pre>
 
@@ -286,11 +286,11 @@ and give the first six elements it returns to PyEphem.
 The following assignments are all equivalent:
 
 <pre class=interactive>
->>> d = ephem.date(34530.34375)
->>> d = ephem.date('1994/7/16.84375')
->>> d = ephem.date('1994/7/16 20:15')
->>> d = ephem.date((1994, 7, 16.84375))
->>> d = ephem.date((1994, 7, 16, 20, 15, 0))
+>>> d = ephem.Date(34530.34375)
+>>> d = ephem.Date('1994/7/16.84375')
+>>> d = ephem.Date('1994/7/16 20:15')
+>>> d = ephem.Date((1994, 7, 16.84375))
+>>> d = ephem.Date((1994, 7, 16, 20, 15, 0))
 </pre>
 
 And to complement the fact that you can specify dates as a tuple,
@@ -343,17 +343,17 @@ PyEphem has enough information
 to determine where in the sky the body appears.
 Fill in the <tt>date</tt> and <tt>epoch</tt> fields of the <tt>Observer</tt>
 with the values you would otherwise provide to <tt>compute()</tt>;
-the epoch defaults to year 2000 if you do not set it yourself.
-As an example we can examine the 1984 eclipse of the sun from Atlanta:
+the epoch defaults to the year 2000 if you do not set it yourself.
+As an example, we can examine the 1984 eclipse of the sun from Atlanta:
 
 <pre class=interactive>
 >>> gatech.date = '1984/5/30 16:22:56'   # 12:22:56 EDT
 >>> sun, moon = ephem.Sun(), ephem.Moon()
 >>> sun.compute(gatech), moon.compute(gatech)
 >>> print sun.alt, sun.az
-70:08:39.05 122:11:25.78
+70:08:38.99 122:11:25.80
 >>> print moon.alt, moon.az
-70:08:39.52 122:11:26.03
+70:08:39.46 122:11:26.04
 </pre>
 
 For those unfamiliar with azimuth and altitude:
@@ -381,7 +381,7 @@ we can provide azimuth and altitude:
 
 <pre class=interactive>
 >>> print ephem.separation((sun.az, sun.alt), (moon.az, moon.alt))
-0:00:00.48
+0:00:00.47
 >>> print sun.size, moon.size, sun.size - moon.size
 1892.91210938 1891.85778809 1.05432128906
 </pre>
@@ -414,14 +414,14 @@ because the atmosphere bends its image upwards as it approaches the horizon:
 ...     sun.compute(gatech)
 ...     sep = ephem.separation((old_az, old_alt), (sun.az, sun.alt))
 ...     print gatech.date, sun.alt, sep
-1984/5/31 00:05:00 6:17:38.48 1:08:47.96
-1984/5/31 00:10:00 5:21:17.48 1:08:36.14
-1984/5/31 00:15:00 4:25:33.75 1:08:19.68
-1984/5/31 00:20:00 3:30:36.64 1:07:56.37
-1984/5/31 00:25:00 2:36:40.62 1:07:22.34
-1984/5/31 00:30:00 1:44:08.01 1:06:31.78
-1984/5/31 00:35:00 0:53:32.82 1:05:16.45
-1984/5/31 00:40:00 0:05:42.83 1:03:27.65
+1984/5/31 00:05:00 6:17:37.09 1:08:48.09
+1984/5/31 00:10:00 5:21:15.89 1:08:36.34
+1984/5/31 00:15:00 4:25:31.82 1:08:19.95
+1984/5/31 00:20:00 3:30:34.48 1:07:56.53
+1984/5/31 00:25:00 2:36:38.04 1:07:22.67
+1984/5/31 00:30:00 1:44:04.88 1:06:32.21
+1984/5/31 00:35:00 0:53:28.95 1:05:17.02
+1984/5/31 00:40:00 0:05:38.03 1:03:28.39
 </pre>
 
 We see that the Sun's apparent angular speed
@@ -450,7 +450,7 @@ leaving you to simply ask:
 
 <pre class=interactive>
 >>> print sun.set_time, sun.set_az
-1984/5/31 00:40:36 297:06:01.83
+1984/5/31 00:40:36 297:05:57.36
 </pre>
 
 This agrees with the list of altitudes we generated above,

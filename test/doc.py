@@ -2,6 +2,7 @@
 
 import fileinput, sys, traceback
 from glob import glob
+from cStringIO import StringIO
 
 # Work backwords from the `test' directory in which this script sits
 # to find where the distutils have placed the new module; note that
@@ -18,28 +19,77 @@ premanual_path = test_dir + '/../doc/premanual.html'
 
 inpre = 0
 scope = { 'ephem' : ephem }
-lines = [ line for line in fileinput.input(premanual_path) ]
 
-i = 0
-while i < len(lines):
-    line = lines[i].strip()
-    i += 1
-    if not inpre and line == '<pre class=interactive>':
+# Try running the given Python command, and see whether the output it
+# produces on the terminal is the same as the given expected result;
+# and print out the two value if they differ.
+
+def compare(lineno, command, result):
+    real_stdout, real_stderr = sys.stdout, sys.stderr
+    sys.stdout = sys.stderr = StringIO()
+    try:
+        exec command in scope
+    except:
+        t, v, tb = sys.exc_info()
+        traceback.print_exception(t, v)
+    output = sys.stdout.getvalue()
+    sys.stdout, sys.stderr = real_stdout, real_stderr
+    if output != result:
         print '=' * 60
-        inpre = 1
-    elif inpre and line.strip() == '</pre>':
-        inpre = 0
-    elif inpre and line[0:4] == '>>> ':
-        command = line[4:]
-        line = lines[i]
-        while line[0:4] == '... ':
-            command += '\n' + line[4:]
-            i += 1
-            line = lines[i]
-        print '>>>', command
-        try:
-            exec command in scope
-        except:
-            traceback.print_exc(file=sys.stdout)
-    elif inpre:
-        print line
+        print '%d:' % lineno, command
+        print output
+        print '--'
+        print result
+
+# This state machine determines which commands illustrated in the
+# produce which outputs, and sends each command-result pair to the
+# above comparison function.
+
+pre_start = '<pre class=interactive>\n'
+pre_end = '</pre>\n'
+
+state = 'waiting-for-pre'
+lineno = 0
+
+for line in file(premanual_path):
+    lineno += 1
+    if state == 'waiting-for-pre':
+        if line == pre_start:
+            state = 'waiting-for-command'
+
+    elif state == 'waiting-for-command':
+        if line == pre_end:
+            state = 'waiting-for-pre'
+        elif line.startswith('>>> '):
+            cmdlineno = lineno
+            command = line[4:]
+            state = 'reading-command'
+
+    elif state == 'reading-command':
+        if line == pre_end:
+            compare(cmdlineno, command, '')
+            state = 'waiting-for-pre'
+        elif line.startswith('>>> '):
+            compare(cmdlineno, command, '')
+            cmdlineno = lineno
+            command = line[4:]
+        elif line.startswith('... '):
+            command += line[4:]
+        else:
+            result = line
+            state = 'reading-result'
+
+    elif state == 'reading-result':
+        if line == pre_end:
+            compare(cmdlineno, command, result)
+            state = 'waiting-for-pre'
+        elif line.startswith('>>> '):
+            compare(cmdlineno, command, result)
+            cmdlineno = lineno
+            command = line[4:]
+            state = 'reading-command'
+        else:
+            result += line
+
+    else:
+        raise RuntimeError, 'unknown state %r' % state
