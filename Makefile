@@ -30,8 +30,8 @@ module: ephemcmodule.so
 #
 
 install: ephemcmodule.so
-	install -m 644 ephem.py $(PYTHON)
-	install -m 755 ephemcmodule.so $(PYTHON)/lib-dynload
+	install -m 644 ephem.py $(PYTHON)/ephem.py
+	install -m 755 ephemcmodule.so $(PYTHON)/lib-dynload/ephemcmodule.so
 
 #
 # Creation of a dynamically linked interface with Swig.
