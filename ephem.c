@@ -1347,17 +1347,6 @@ static PyGetSetDef PlanetMoon_getset[] = {
      {"az", Get_az, 0, "azimuth"},
      {"alt", Get_alt, 0, "altitude"},
 
-     {"rise_time", Get_risetm, 0, "rise time"},
-     {"rise_az", Get_riseaz, 0, "rise azimuth"},
-     {"transit_time", Get_trantm, 0, "transit time"},
-     {"transit_alt", Get_tranalt, 0, "transit altitude"},
-     {"set_time", Get_settm, 0, "set time"},
-     {"set_az", Get_setaz, 0, "set azimuth"},
-     {"circumpolar", Get_circumpolar, 0,
-      "whether object remains above the horizon this day"},
-     {"neverup", Get_neverup, 0,
-      "whether the object never rises above the horizon this day"},
-
      {"x", Get_x, 0, "offset in planet radii"},
      {"y", Get_y, 0, "offset in planet radii"},
      {"z", Get_z, 0, "offset in planet radii"},
