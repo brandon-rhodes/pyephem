@@ -10,6 +10,7 @@ libastro_files = glob('libastro-%s/*.c' % libastro_version)
 ext_modules = [
     Extension('ephem', ['ephem.c'] + libastro_files,
               include_dirs=['libastro-' + libastro_version],
+              # These make the library more efficient on some platforms:
               #extra_compile_args = ["-O2", "-ffast-math"],
               )]
 
