@@ -649,7 +649,7 @@ static int Observer_init(PyObject *self, PyObject *args, PyObject *kwds)
      o->now.n_epoch = J2000;
      o->now.n_lat = o->now.n_lng = o->now.n_elev = 0;
      o->now.n_temp = 15.0;
-     o->now.n_pressure = 1013;
+     o->now.n_pressure = 1010;
      o->now.n_dip = 0;
      o->now.n_tz = 0;
      return 0;
@@ -850,27 +850,27 @@ CREATE(PlanetType, Pluto, PLUTO, X_PLANET)
 CREATE(PlanetType, Sun, SUN, X_PLANET)
 /* the Moon has its own class */
 
-/* Moons */
+/* Planetary Moons */
 
-CREATE(PlanetMoonType, Phobos, MARS, PHOBOS)
-CREATE(PlanetMoonType, Deimos, MARS, DEIMOS)
-CREATE(PlanetMoonType, Io, JUPITER, IO)
-CREATE(PlanetMoonType, Europa, JUPITER, EUROPA)
-CREATE(PlanetMoonType, Ganymede, JUPITER, GANYMEDE)
-CREATE(PlanetMoonType, Callisto, JUPITER, CALLISTO)
-CREATE(PlanetMoonType, Mimas, SATURN, MIMAS)
-CREATE(PlanetMoonType, Enceladus, SATURN, ENCELADUS)
-CREATE(PlanetMoonType, Tethys, SATURN, TETHYS)
-CREATE(PlanetMoonType, Dione, SATURN, DIONE)
-CREATE(PlanetMoonType, Rhea, SATURN, RHEA)
-CREATE(PlanetMoonType, Titan, SATURN, TITAN)
-CREATE(PlanetMoonType, Hyperion, SATURN, HYPERION)
-CREATE(PlanetMoonType, Iapetus, SATURN, IAPETUS)
-CREATE(PlanetMoonType, Ariel, URANUS, ARIEL)
-CREATE(PlanetMoonType, Umbriel, URANUS, UMBRIEL)
-CREATE(PlanetMoonType, Titania, URANUS, TITANIA)
-CREATE(PlanetMoonType, Oberon, URANUS, OBERON)
-CREATE(PlanetMoonType, Miranda, URANUS, MIRANDA)
+CREATE(PlanetMoonType, Phobos, MARS, M_PHOBOS)
+CREATE(PlanetMoonType, Deimos, MARS, M_DEIMOS)
+CREATE(PlanetMoonType, Io, JUPITER, J_IO)
+CREATE(PlanetMoonType, Europa, JUPITER, J_EUROPA)
+CREATE(PlanetMoonType, Ganymede, JUPITER, J_GANYMEDE)
+CREATE(PlanetMoonType, Callisto, JUPITER, J_CALLISTO)
+CREATE(PlanetMoonType, Mimas, SATURN, S_MIMAS)
+CREATE(PlanetMoonType, Enceladus, SATURN, S_ENCELADUS)
+CREATE(PlanetMoonType, Tethys, SATURN, S_TETHYS)
+CREATE(PlanetMoonType, Dione, SATURN, S_DIONE)
+CREATE(PlanetMoonType, Rhea, SATURN, S_RHEA)
+CREATE(PlanetMoonType, Titan, SATURN, S_TITAN)
+CREATE(PlanetMoonType, Hyperion, SATURN, S_HYPERION)
+CREATE(PlanetMoonType, Iapetus, SATURN, S_IAPETUS)
+CREATE(PlanetMoonType, Ariel, URANUS, U_ARIEL)
+CREATE(PlanetMoonType, Umbriel, URANUS, U_UMBRIEL)
+CREATE(PlanetMoonType, Titania, URANUS, U_TITANIA)
+CREATE(PlanetMoonType, Oberon, URANUS, U_OBERON)
+CREATE(PlanetMoonType, Miranda, URANUS, U_MIRANDA)
 
 #undef CREATE
 
@@ -973,10 +973,10 @@ static PyObject* Body_writedb(PyObject *self)
 static PyObject* Body_str(PyObject *body_object)
 {
      Body *body = (Body*) body_object;
-     char *format = body->obj.o_type != PLANET && body->obj.o_name[0] ?
-	  "<%s \"%s\">" : "<%s>";
+     char *format = body->obj.o_name[0] ?
+	  "<%s named \"%s\" at 0x%x>" : "<%s at 0x%x>";
      return PyString_FromFormat
-	  (format, body->ob_type->tp_name, body->obj.o_name);
+	  (format, body->ob_type->tp_name, body->obj.o_name, body);
 }
 
 static PyMethodDef Body_methods[] = {
@@ -1029,7 +1029,7 @@ static int Body_obj_cir(Body *body, char *fieldname, unsigned topocentric)
      if (body->obj.o_flags & VALID_OBJ)
 	  return 0;
      pref_set(PREF_EQUATORIAL, body->obj.o_flags & VALID_TOPO ?
-	      PREF_GEO : PREF_TOPO);
+	      PREF_TOPO : PREF_GEO);
      obj_cir(& body->now, & body->obj);
      body->obj.o_flags |= VALID_OBJ;
      return 0;
@@ -1617,7 +1617,7 @@ static PyTypeObject PlanetMoonType = {
      0,				/* tp_as_mapping */
      0,				/* tp_hash */
      0,				/* tp_call */
-     0,				/* tp_str */
+     Body_str,			/* tp_str */
      0,				/* tp_getattro */
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
@@ -1629,7 +1629,7 @@ static PyTypeObject PlanetMoonType = {
      0,				/* tp_weaklistoffset */
      0,				/* tp_iter */
      0,				/* tp_iternext */
-     0,				/* tp_methods */
+     Body_methods,		/* tp_methods */
      0,				/* tp_members */
      PlanetMoon_getset,		/* tp_getset */
      0,				/* tp_base */
@@ -2229,7 +2229,7 @@ leave:
 #undef CREATE
 #define CREATE(NAME) \
  {#NAME, (PyCFunction) create_##NAME, METH_VARARGS | METH_KEYWORDS, \
-  "return a " #NAME " instance"}
+  "return a new instance of " #NAME}
 
 static PyMethodDef ephem_methods[] = {
      /*{"date", rebuild_date, METH_VARARGS, "Parse a date"},*/
