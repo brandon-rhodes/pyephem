@@ -1,5 +1,4 @@
 include COPYING
 include doc/pyephem-manual.html
 include examples/*.py
-include libastro/*.h
-include src/*.c src/*.h
+include libastro-3.6.1/*.h libastro-3.6.1/Copyright
