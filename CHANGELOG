@@ -1,0 +1,33 @@
+
+Version 3.6.1a
+
+  - All major moons in the solar system are now supported.
+
+  - Added copy() method to bodies, that returns a new instance of the
+    body which should be identical in all properties.
+
+  - Improved the definitions of body attributes, both in their
+    docstrings and in the PyEphem Manual.
+
+  - Improved access to the orbital parameters by which the user
+    defines bodies in ellipical, parabolic, and hyperbolic orbits, as
+    well as artificial Earth satellites; users can now create such
+    objects entirely through setting their parameters, without having
+    to use the readdb() function to parse a definition of the object
+    in Ephem database format.
+
+  - Source distribution now includes test suites, one of which
+    actually checks to see whether your version of PyEphem produces
+    the same output as the examples from the PyEphem Manual (two of
+    which will fail).
+
+  - Following the same adjustment in the XEphem application, PyEphem
+    now uses a default atmospheric pressure of 1010 millibar, rather
+    than the old value of 1013, when computing the altitude of a body
+    near the horizon.
+
+  - The constellation() function now correctly forces the computation
+    of a body's ra and dec before determining the constellation in
+    which the body lies.
+
+  - Code should produce cleaner compiles on many platforms.
