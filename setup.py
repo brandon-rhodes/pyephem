@@ -8,10 +8,10 @@ libastro_version = '3.6.1'
 libastro_files = glob('libastro-%s/*.c' % libastro_version)
 
 ext_modules = [
-    Extension('ephem', ['src/ephem.c'] + libastro_files,
-              include_dirs=['libastro-' + libastro_version]),
+    Extension('ephem', ['ephem.c'] + libastro_files,
+              include_dirs=['libastro-' + libastro_version],
               #extra_compile_args = ["-O2", "-ffast-math"],
-    ]
+              )]
 
 setup(name = 'pyephem',
       version = '3.6.1a',

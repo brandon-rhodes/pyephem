@@ -1,7 +1,10 @@
+/* Python header files. */
+
 #include <Python.h>
 #include <structmember.h>
 
-#include <string.h>
+/* Read the libastro header file, then undo its #defines of common
+   body attribute names like "mjd" as "np->mjd". */
 
 #include "astro.h"
 #include "preferences.h"
@@ -18,10 +21,13 @@
 #undef tznm
 #undef mjed
 
+/* These structures describe the actual in-memory storage of all of
+   the new Python types we define. */
+
 typedef struct {
      PyObject_HEAD
      Now now;
-} ObserverObject;
+} Observer;
 
 typedef struct {
      PyObject_HEAD
@@ -31,7 +37,7 @@ typedef struct {
      unsigned now_valid : 2;	/* 0=no, 1=mjd and epoch only, 2=all */
      unsigned obj_valid : 2;	/* 0=no, 1=geocentric only, 2=all */
      unsigned riset_valid : 2;	/* 0=no, 2=yes */
-} BodyObject;
+} Body;
 
 typedef struct {
      PyObject_HEAD
@@ -45,7 +51,7 @@ typedef struct {
      unsigned moon_colong_valid : 2; /* 0=no, nonzero=yes */
      double llat, llon;		/* libration */
      double c, k, s;		/* co-longitude and illumination */
-} MoonObject;
+} Moon;
 
 typedef struct {
      PyObject_HEAD
@@ -57,12 +63,16 @@ typedef struct {
      unsigned riset_valid : 2;	/* 0=no, 2=yes */
      unsigned satrings_valid : 2; /* 0=no, nonzero=yes */
      double etilt, stilt;	/* tilt of rings */
-} SaturnObject;
+} Saturn;
+
+/* */
 
 static double mjd_now(void)
 {
      return 25567.5 + time(NULL)/3600.0/24.0;
 }
+
+/* Return the floating-point equivalent value of a Python number. */
 
 static int PyNumber_AsDouble(PyObject *o, double *dp)
 {
@@ -73,7 +83,11 @@ static int PyNumber_AsDouble(PyObject *o, double *dp)
      return 0;
 }
 
-staticforward PyTypeObject Angle_Type;
+/* Angle: Python float which prints itself as a sexagesimal value,
+   like 'hours:minutes:seconds' or 'degrees:minutes:seconds',
+   depending on the factor given it. */
+
+staticforward PyTypeObject AngleType;
 
 typedef struct {
      PyFloatObject f;
@@ -83,7 +97,7 @@ typedef struct {
 static PyObject* new_Angle(double radians, double factor)
 {
      AngleObject *ea;
-     ea = PyObject_NEW(AngleObject, &Angle_Type);
+     ea = PyObject_NEW(AngleObject, &AngleType);
      if (ea) {
 	  ea->f.ob_fval = radians;
 	  ea->factor = factor;
@@ -91,35 +105,35 @@ static PyObject* new_Angle(double radians, double factor)
      return (PyObject*) ea;
 }
 
-static char *angle_format(PyObject *self)
+static char *Angle_format(PyObject *self)
 {
      AngleObject *ea = (AngleObject*) self;
-     static char buffer[12 + 1];
+     static char buffer[13];
      fs_sexa(buffer, ea->f.ob_fval * ea->factor, 3, 360000);
      return buffer[0] != ' ' ? buffer
 	  : buffer[1] != ' ' ? buffer + 1
 	  : buffer + 2;
 }
 
-static PyObject* angle_str(PyObject *self)
+static PyObject* Angle_str(PyObject *self)
 {
-     return PyString_FromString(angle_format(self));
+     return PyString_FromString(Angle_format(self));
 }
 
-static int angle_print(PyObject *self, FILE *fp, int flags)
+static int Angle_print(PyObject *self, FILE *fp, int flags)
 {
-     fputs(angle_format(self), fp);
+     fputs(Angle_format(self), fp);
      return 0;
 }
 
-static PyTypeObject Angle_Type = {
+static PyTypeObject AngleType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "angle",
+     "ephem.Angle",
      sizeof(AngleObject),
      0,
      0,				/* tp_dealloc */
-     angle_print,		/* tp_print */
+     Angle_print,		/* tp_print */
      0,				/* tp_getattr */
      0,				/* tp_setattr */
      0,				/* tp_compare */
@@ -129,7 +143,7 @@ static PyTypeObject Angle_Type = {
      0,				/* tp_as_mapping */
      0,				/* tp_hash */
      0,				/* tp_call */
-     angle_str,			/* tp_str */
+     Angle_str,			/* tp_str */
      0,				/* tp_getattro */
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
@@ -144,7 +158,7 @@ static PyTypeObject Angle_Type = {
      0,				/* tp_methods */
      0,				/* tp_members */
      0,				/* tp_getset */
-     0, /*&PyFloat_Type*/	/* tp_base */
+     0, /* &PyFloatType*/	/* tp_base */
      0,				/* tp_dict */
      0,				/* tp_descr_get */
      0,				/* tp_descr_set */
@@ -155,16 +169,15 @@ static PyTypeObject Angle_Type = {
      0,				/* tp_free */
 };
 
-staticforward PyTypeObject Date_Type;
+/* Date: a Python Float that can print itself as a date, and that
+   supports triple() and tuple() methods for extracting its date and
+   time components. */
+
+staticforward PyTypeObject DateType;
 
 typedef PyFloatObject DateObject;
 
-/*
- * Modified Julian dates are read and written as (year, month, day)
- * tuples where the day can include a fraction.
- */
-
-static int parse_mjd_from_number(PyObject *o, double *mjdp)
+static inline int parse_mjd_from_number(PyObject *o, double *mjdp)
 {
      return PyNumber_AsDouble(o, mjdp);
 }
@@ -192,7 +205,7 @@ static int parse_mjd_from_string(PyObject *so, double *mjdp)
 	  if (f_scansexa(timestr, &hours) == -1) {
 	       PyErr_SetString(PyExc_ValueError,
 			       "the second field of your time string does "
-			       "appear to be hours:minutes:seconds");
+			       "not appear to be hours:minutes:seconds");
 	       return -1;
 	  }
 	  day += hours / 24.;
@@ -227,8 +240,6 @@ static int parse_mjd(PyObject *value, double *mjdp)
      return -1;
 }
 
-/* Helper function used by some of the below. */
-
 static void mjd_six(double mjd, int *yearp, int *monthp, int *dayp,
 		    int *hourp, int *minutep, double *secondp)
 {
@@ -242,14 +253,14 @@ static void mjd_six(double mjd, int *yearp, int *monthp, int *dayp,
      *secondp = fmod(fminute, 1.0) * 60;
 }
 
-static PyObject* build_date(double mjd)
+static PyObject* build_Date(double mjd)
 {
-     DateObject *new = PyObject_New(PyFloatObject, &Date_Type);
+     DateObject *new = PyObject_New(PyFloatObject, &DateType);
      if (new) new->ob_fval = mjd;
      return (PyObject*) new;
 }
 
-static PyObject *date_new(PyObject *self, PyObject *args, PyObject *kw)
+static PyObject *Date_new(PyObject *self, PyObject *args, PyObject *kw)
 {
      PyObject *arg;
      double mjd;
@@ -260,10 +271,10 @@ static PyObject *date_new(PyObject *self, PyObject *args, PyObject *kw)
      }
      if (!PyArg_ParseTuple(args, "O", &arg)) return 0;
      if (parse_mjd(arg, &mjd)) return 0;
-     return build_date(mjd);
+     return build_Date(mjd);
 }
 
-static char *date_format(PyObject *self)
+static char *Date_format(PyObject *self)
 {
      DateObject *d = (DateObject*) self;
      static char buffer[64];
@@ -275,19 +286,19 @@ static char *date_format(PyObject *self)
      return buffer;
 }
 
-static PyObject* date_str(PyObject *self)
+static PyObject* Date_str(PyObject *self)
 {
-     return PyString_FromString(date_format(self));
+     return PyString_FromString(Date_format(self));
 }
 
-static int date_print(PyObject *self, FILE *fp, int flags)
+static int Date_print(PyObject *self, FILE *fp, int flags)
 {
-     char *s = date_format(self);
+     char *s = Date_format(self);
      fputs(s, fp);
      return 0;
 }
 
-static PyObject *date_triple(PyObject *self, PyObject *args)
+static PyObject *Date_triple(PyObject *self, PyObject *args)
 {
      int year, month;
      double day;
@@ -297,7 +308,7 @@ static PyObject *date_triple(PyObject *self, PyObject *args)
      return Py_BuildValue("iid", year, month, day);
 }
 
-static PyObject *date_tuple(PyObject *self, PyObject *args)
+static PyObject *Date_tuple(PyObject *self, PyObject *args)
 {
      int year, month;
      double fday, fhour, fminute, fsecond;
@@ -314,21 +325,22 @@ static PyObject *date_tuple(PyObject *self, PyObject *args)
      return Py_BuildValue("iiiiid", year, month, day, hour, minute, fsecond);
 }
 
-static PyMethodDef date_methods[] = {
-     {"triple", date_triple, METH_VARARGS,
-      "Return the date as a (year, month, day.fraction) triple"},
-     {"tuple", date_tuple, METH_VARARGS, "generate db entry"},
-     {NULL, NULL, 0, NULL}
+static PyMethodDef Date_methods[] = {
+     {"triple", Date_triple, METH_VARARGS,
+      "Return the date as a (year, month, day_with_fraction) tuple"},
+     {"tuple", Date_tuple, METH_VARARGS,
+      "Return the date as a (year, month, day, hour, minute, second) tuple"},
+     {NULL}
 };
 
-static PyTypeObject Date_Type = {
+static PyTypeObject DateType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "date",
+     "ephem.Date",
      sizeof(PyFloatObject),
      0,
      0,				/* tp_dealloc */
-     date_print,		/* tp_print */
+     Date_print,		/* tp_print */
      0,				/* tp_getattr */
      0,				/* tp_setattr */
      0,				/* tp_compare */
@@ -338,7 +350,7 @@ static PyTypeObject Date_Type = {
      0,				/* tp_as_mapping */
      0,				/* tp_hash */
      0,				/* tp_call */
-     date_str,			/* tp_str */
+     Date_str,			/* tp_str */
      0,				/* tp_getattro */
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
@@ -350,17 +362,17 @@ static PyTypeObject Date_Type = {
      0,				/* tp_weaklistoffset */
      0,				/* tp_iter */
      0,				/* tp_iternext */
-     date_methods,		/* tp_methods */
+     Date_methods,		/* tp_methods */
      0,				/* tp_members */
      0,				/* tp_getset */
-     0, /*&PyFloat_Type,*/	/* tp_base */
+     0, /*&PyFloatType,*/	/* tp_base */
      0,				/* tp_dict */
      0,				/* tp_descr_get */
      0,				/* tp_descr_set */
      0,				/* tp_dictoffset */
      0,				/* tp_init */
      0,				/* tp_alloc */
-     (newfunc) date_new,	/* tp_new */
+     (newfunc) Date_new,	/* tp_new */
      0,				/* tp_free */
 };
 
@@ -504,7 +516,7 @@ static int setf_dd(PyObject *self, PyObject *value, void *v)
 
 static PyObject* getf_mjd(PyObject *self, void *v)
 {
-     return build_date(THE_FLOAT);
+     return build_Date(THE_FLOAT);
 }
 
 static int setf_mjd(PyObject *self, PyObject *value, void *v)
@@ -519,7 +531,7 @@ static int setf_mjd(PyObject *self, PyObject *value, void *v)
 
 static PyObject* getd_mjd(PyObject *self, void *v)
 {
-     return build_date(THE_DOUBLE);
+     return build_Date(THE_DOUBLE);
 }
 
 static int setd_mjd(PyObject *self, PyObject *value, void *v)
@@ -542,23 +554,23 @@ static int setd_mjd(PyObject *self, PyObject *value, void *v)
 
 /* Magnitude. */
 
-static PyObject* get_s_mag(PyObject *self, void *v)
+/*static PyObject* get_s_mag(PyObject *self, void *v)
 {
-     BodyObject *b = (BodyObject*) self;
+     Body *b = (Body*) self;
      return PyFloat_FromDouble(get_mag(&b->obj));
-}
+}*/
 
 /* Spectral codes. */
 
 static PyObject* get_f_spect(PyObject *self, void *v)
 {
-     BodyObject *b = (BodyObject*) self;
+     Body *b = (Body*) self;
      return PyString_FromStringAndSize(b->obj.f_spect, 2);
 }
 
 static int set_f_spect(PyObject *self, PyObject *value, void *v)
 {
-     BodyObject *b = (BodyObject*) self;
+     Body *b = (Body*) self;
      char *s;
      if (!PyString_Check(value)) {
 	  PyErr_SetString(PyExc_ValueError, "spectral code must be a string");
@@ -579,13 +591,13 @@ static int set_f_spect(PyObject *self, PyObject *value, void *v)
 
 static PyObject* get_f_ratio(PyObject *self, void *v)
 {
-     BodyObject *b = (BodyObject*) self;
+     Body *b = (Body*) self;
      return PyFloat_FromDouble(get_ratio(&b->obj));
 }
 
 static int set_f_ratio(PyObject *self, PyObject *value, void *v)
 {
-     BodyObject *b = (BodyObject*) self;
+     Body *b = (Body*) self;
      float maj, min;
      if (!PyArg_ParseTuple(value, "ff", &maj, &min)) return -1;
      set_ratio(&b->obj, maj, min);
@@ -596,13 +608,13 @@ static int set_f_ratio(PyObject *self, PyObject *value, void *v)
 
 static PyObject* get_f_pa(PyObject *self, void *v)
 {
-     BodyObject *b = (BodyObject*) self;
+     Body *b = (Body*) self;
      return PyFloat_FromDouble(get_pa(&b->obj));
 }
 
 static int set_f_pa(PyObject *self, PyObject *value, void *v)
 {
-     BodyObject *b = (BodyObject*) self;
+     Body *b = (Body*) self;
      if (!PyNumber_Check(value)) {
 	  PyErr_SetString(PyExc_ValueError, "position angle must be a float");
 	  return -1;
@@ -615,32 +627,25 @@ static int set_f_pa(PyObject *self, PyObject *value, void *v)
  * Observer object.
  */
 
-static PyTypeObject Observer_Type;
+static PyTypeObject ObserverType;
 
 /*
  * Constructor and methods.
  */
 
-static PyObject *observer_new(PyObject *self, PyObject *args, PyObject *kw)
+static int Observer_init(PyObject *self, PyObject *args, PyObject *kwds)
 {
-     ObserverObject *o;
-     if (kw) {
-	  PyErr_SetString(PyExc_TypeError,
-			  "this function does not accept keyword arguments");
-	  return 0;
-     }
-     if (!PyArg_ParseTuple(args, ":Observer")) return 0;
-     o = PyObject_NEW(ObserverObject, &Observer_Type);
-     if (o) {
-	  o->now.n_mjd = mjd_now();
-	  o->now.n_epoch = J2000;
-	  o->now.n_lat = o->now.n_lng = o->now.n_elev = 0;
-	  o->now.n_temp = 15.0;
-	  o->now.n_pressure = 1013;
-	  o->now.n_dip = 0;
-	  o->now.n_tz = 0;
-     }
-     return (PyObject*) o;
+     Observer *o = (Observer*) self;
+     if (!PyArg_ParseTupleAndKeywords(args, kwds, ":Observer", 0))
+	  return -1;
+     o->now.n_mjd = mjd_now();
+     o->now.n_epoch = J2000;
+     o->now.n_lat = o->now.n_lng = o->now.n_elev = 0;
+     o->now.n_temp = 15.0;
+     o->now.n_pressure = 1013;
+     o->now.n_dip = 0;
+     o->now.n_tz = 0;
+     return 0;
 }
 
 /*
@@ -649,7 +654,7 @@ static PyObject *observer_new(PyObject *self, PyObject *args, PyObject *kw)
 
 static PyObject *get_elev(PyObject *self, void *v)
 {
-     ObserverObject *o = (ObserverObject*) self;
+     Observer *o = (Observer*) self;
      return PyFloat_FromDouble(o->now.n_elev * ERAD);
 }
 
@@ -657,7 +662,7 @@ static int set_elev(PyObject *self, PyObject *value, void *v)
 {
      int r;
      double n;
-     ObserverObject *o = (ObserverObject*) self;
+     Observer *o = (Observer*) self;
      if (!PyNumber_Check(value)) {
 	  PyErr_SetString(PyExc_TypeError, "Elevation must be numeric");
 	  return -1;
@@ -671,12 +676,12 @@ static int set_elev(PyObject *self, PyObject *value, void *v)
  * Observer class type.
  */
 
-static PyMethodDef ephem_observer_methods[] = {
-     {NULL, NULL, 0, NULL}
-};
+/*static PyMethodDef ephem_observer_methods[] = {
+     {NULL}
+     };*/
 
 #define VOFF(member) ((void*) OFF(member))
-#define OFF(member) offsetof(ObserverObject, now.member)
+#define OFF(member) offsetof(Observer, now.member)
 
 static PyGetSetDef ephem_observer_getset[] = {
      {"date", getd_mjd, setd_mjd, "Date", VOFF(n_mjd)},
@@ -686,23 +691,23 @@ static PyGetSetDef ephem_observer_getset[] = {
      /*{"dip", getd_rd, setd_rd,
        "dip of sun below horizon at twilight (degrees)", VOFF(n_dip)},*/
      {"epoch", getd_mjd, setd_mjd, "Precession epoch", VOFF(n_epoch)},
-     {NULL, NULL, NULL, NULL, NULL}
+     {NULL}
 };
 
 static PyMemberDef ephem_observer_members[] = {
      {"temp", T_DOUBLE, OFF(n_temp), 0, "atmospheric temperature (C)"},
      {"pressure", T_DOUBLE, OFF(n_pressure), 0,
       "atmospheric pressure (mBar)"},
-     {NULL, 0, 0, 0, NULL}
+     {NULL}
 };
 
 #undef OFF
 
-static PyTypeObject Observer_Type = {
+static PyTypeObject ObserverType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "Observer",
-     sizeof(ObserverObject),
+     "ephem.Observer",
+     sizeof(Observer),
      0,
      0,	/*_PyObject_Del*/	/* tp_dealloc */
      0,				/* tp_print */
@@ -719,7 +724,7 @@ static PyTypeObject Observer_Type = {
      0, /*PyObject_GenericGetAttr,*/ /* tp_getattro */
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
-     Py_TPFLAGS_DEFAULT,	/* tp_flags */
+     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,	/* tp_flags */
      0,				/* tp_doc */
      0,				/* tp_traverse */
      0,				/* tp_clear */
@@ -727,7 +732,7 @@ static PyTypeObject Observer_Type = {
      0,				/* tp_weaklistoffset */
      0,				/* tp_iter */
      0,				/* tp_iternext */
-     ephem_observer_methods,	/* tp_methods */
+     0, /*ephem_observer_methods,*/	/* tp_methods */
      ephem_observer_members,	/* tp_members */
      ephem_observer_getset,	/* tp_getset */
      0,				/* tp_base */
@@ -735,9 +740,9 @@ static PyTypeObject Observer_Type = {
      0,				/* tp_descr_get */
      0,				/* tp_descr_set */
      0,				/* tp_dictoffset */
-     0,				/* tp_init */
+     Observer_init,		/* tp_init */
      0,				/* tp_alloc */
-     (newfunc) observer_new,	/* tp_new */
+     0,				/* tp_new */
      /*_PyObject_GC_Del,*/	/* tp_free */
 };
 
@@ -747,83 +752,96 @@ static PyTypeObject Observer_Type = {
  * because they support more functions.
  */
 
-staticforward PyTypeObject Body_Type;
-staticforward PyTypeObject FixedBody_Type;
-staticforward PyTypeObject Planet_Type;
-staticforward PyTypeObject Saturn_Type;
-staticforward PyTypeObject Moon_Type;
-staticforward PyTypeObject EllipticalBody_Type;
-staticforward PyTypeObject HyperbolicBody_Type;
-staticforward PyTypeObject ParabolicBody_Type;
-staticforward PyTypeObject EarthSatellite_Type;
+staticforward PyTypeObject BodyType;
+staticforward PyTypeObject FixedBodyType;
+staticforward PyTypeObject PlanetType;
+staticforward PyTypeObject SaturnType;
+staticforward PyTypeObject MoonType;
+staticforward PyTypeObject EllipticalBodyType;
+staticforward PyTypeObject HyperbolicBodyType;
+staticforward PyTypeObject ParabolicBodyType;
+staticforward PyTypeObject EarthSatelliteType;
 
 static PyObject* body_compute
 (PyObject *self, PyObject *args, PyObject *kwdict);
 
-/* Object initialization. */
+/* Body and Planet are abstract classes, and resist instantiation. */
 
-static int body_init(PyObject *self, PyObject *args, PyObject *kw)
+static int Body_init(PyObject *self, PyObject *args, PyObject *kw)
 {
-     BodyObject *body = (BodyObject*) self;
-     body->now_valid = body->obj_valid = body->riset_valid = 0;
+     PyErr_SetString(PyExc_TypeError, "you cannot create a plain Body");
+     return -1;
+}
+
+static int Planet_init(PyObject *self, PyObject *args, PyObject *kw)
+{
+     PyErr_SetString(PyExc_TypeError, "you cannot create a plain Planet");
+     return -1;
+}
+
+static int Allow_init(PyObject *self, PyObject *args, PyObject *kw)
+{
      return 0;
 }
 
-static int saturn_init(PyObject *self, PyObject *args, PyObject *kw)
+/* Body and Planet may be initialized privately by their subclasses
+   using these *_setup() functions. */
+
+static void Body_setup(Body *body)
 {
-     SaturnObject *saturn = (SaturnObject*) self;
-     saturn->satrings_valid = 0;
-     return body_init(self, args, kw);
+     body->now_valid = body->obj_valid = body->riset_valid = 0;
 }
 
-static int moon_init(PyObject *self, PyObject *args, PyObject *kw)
+static int Planet_setup(Body *planet, PyObject *args, PyObject *kw,
+			char *planet_name, int planet_code)
 {
-     MoonObject *moon = (MoonObject*) self;
-     moon->llibration_valid = 0;
-     moon->moon_colong_valid = 0;
-     return body_init(self, args, kw);
-}
+     Body_setup(planet);
 
-/* Object constructors. */
+     planet->obj.o_type = PLANET;
+     strcpy(planet->obj.o_name, planet_name);
+     planet->obj.pl.plo_code = planet_code;
 
-static PyObject* build_planet
-(PyObject* self, PyObject* args, PyObject *kw,
- PyTypeObject *bodytype, char *name, int typecode)
-{
-     PyObject *compute_result = 0;
-     BodyObject *body;
-     
-     body = (BodyObject*) bodytype->tp_new(bodytype, 0, 0);
-     if (!body) return 0;
-     body_init((PyObject*) body, 0, 0);
-     strcpy(body->obj.o_name, name);
-     body->obj.o_type = PLANET; 
-     body->obj.pl.plo_code = typecode;
      if (PyTuple_Check(args) && PyTuple_Size(args)) {
-	  compute_result = body_compute((PyObject*) body, args, kw);
-	  if (! compute_result) return 0;
-	  Py_DECREF(compute_result);
+	  PyObject *result = body_compute((PyObject*) planet, args, kw);
+	  if (!result) return -1;
+	  Py_DECREF(result);
      }
-     return (PyObject*) body;
+     return 0;
 }
 
-#define planet_builder(name, typecode, bodytype) \
-static PyObject* name \
-(PyObject* self, PyObject* args, PyObject *kw) \
+/* Most planets share nearly identical init code. */
+
+#define PLANET_INIT(NAME, CODE) \
+static int NAME##_init(PyObject* self, PyObject* args, PyObject *kw) \
 { \
-     return build_planet(self, args, kw, &bodytype, #name, typecode); \
+     return Planet_setup((Body*) self, args, kw, #NAME, CODE); \
 }
 
-planet_builder(Mercury, MERCURY, Planet_Type)
-planet_builder(Venus, VENUS, Planet_Type)
-planet_builder(Mars, MARS, Planet_Type)
-planet_builder(Jupiter, JUPITER, Planet_Type)
-planet_builder(Saturn, SATURN, Saturn_Type)
-planet_builder(Uranus, URANUS, Planet_Type)
-planet_builder(Neptune, NEPTUNE, Planet_Type)
-planet_builder(Pluto, PLUTO, Planet_Type)
-planet_builder(Sun, SUN, Planet_Type)
-planet_builder(Moon, MOON, Moon_Type)
+PLANET_INIT(Mercury, MERCURY)
+PLANET_INIT(Venus, VENUS)
+PLANET_INIT(Mars, MARS)
+PLANET_INIT(Jupiter, JUPITER)
+PLANET_INIT(Uranus, URANUS)
+PLANET_INIT(Neptune, NEPTUNE)
+PLANET_INIT(Pluto, PLUTO)
+PLANET_INIT(Sun, SUN)
+
+/* Saturn and the Moon require specific init functions since they have
+   additional flags to clear. */
+
+static int Moon_init(PyObject *self, PyObject *args, PyObject *kw)
+{
+     Moon *moon = (Moon*) self;
+     moon->llibration_valid = moon->moon_colong_valid = 0;
+     return Planet_setup((Body*) moon, args, kw, "Moon", MOON);
+}
+
+static int Saturn_init(PyObject *self, PyObject *args, PyObject *kw)
+{
+     Saturn *saturn = (Saturn*) self;
+     saturn->satrings_valid = 0;
+     return Planet_setup((Body*) saturn, args, kw, "Saturn", SATURN);
+}
 
 /*
  * Perhaps the central function of the entire package: this calls the
@@ -836,23 +854,21 @@ planet_builder(Moon, MOON, Moon_Type)
  * simple geocentric computation is made.
  */
 
-static PyObject* body_compute
-(PyObject *self, PyObject *args, PyObject *kwdict)
+static PyObject* body_compute(PyObject *self, PyObject *args, PyObject *kwdict)
 {
-     BodyObject *body = (BodyObject*) self;
+     Body *body = (Body*) self;
      static char *kwlist[] = {"when", "epoch", 0};
      PyObject *when_arg = 0, *epoch_arg = 0;
-     double mjd = 0, epoch;
 
      if (!PyArg_ParseTupleAndKeywords
 	 (args, kwdict, "|OO", kwlist, &when_arg, &epoch_arg))
 	  return 0;
 
-     if (when_arg && PyObject_TypeCheck(when_arg, &Observer_Type)) {
+     if (when_arg && PyObject_TypeCheck(when_arg, &ObserverType)) {
 
 	  /* compute(observer) */
 
-	  ObserverObject *observer = (ObserverObject*) when_arg;
+	  Observer *observer = (Observer*) when_arg;
 	  if (epoch_arg) {
 	       PyErr_SetString(PyExc_ValueError,
 			       "cannot supply an epoch= keyword argument "
@@ -863,22 +879,23 @@ static PyObject* body_compute
 	  body->now = observer->now;
 	  body->now_valid = 2;
      } else {
+	  double when_mjd = 0, epoch_mjd;
 
 	  /* compute(date, epoch) where date defaults to current time
 	     and epoch defaults to 2000.0 */
 
 	  if (when_arg) {
-	       if (parse_mjd(when_arg, &mjd) == -1) goto fail;
+	       if (parse_mjd(when_arg, &when_mjd) == -1) goto fail;
 	  } else
-	       mjd = mjd_now();
+	       when_mjd = mjd_now();
 
 	  if (epoch_arg) {
-	       if (parse_mjd(epoch_arg, &epoch) == -1) goto fail;
+	       if (parse_mjd(epoch_arg, &epoch_mjd) == -1) goto fail;
 	  } else
-	       epoch = J2000;
+	       epoch_mjd = J2000;
      
-	  body->now.n_mjd = mjd;
-	  body->now.n_epoch = epoch;
+	  body->now.n_mjd = when_mjd;
+	  body->now.n_epoch = epoch_mjd;
 	  body->now_valid = 1;
      }
 
@@ -893,18 +910,17 @@ fail:
      return 0;
 }
 
-static PyObject* body_writedb(PyObject *self, PyObject *args)
+static PyObject* body_writedb(PyObject *self)
 {
-     BodyObject *body = (BodyObject*) self;
+     Body *body = (Body*) self;
      char line[1024];
-     if (!PyArg_ParseTuple(args, "")) return 0;
      db_write_line(&body->obj, line);
      return PyString_FromString(line);
 }
 
 static PyObject* body_str(PyObject *body_object)
 {
-     BodyObject *body = (BodyObject*) body_object;
+     Body *body = (Body*) body_object;
      char *format = body->obj.o_type == PLANET ? "<ephem.%s %s>" :
 	  body->obj.o_name[0] ? "<ephem.%s \"%s\">" :
 	  "<ephem.%s%s>";
@@ -915,11 +931,11 @@ static PyObject* body_str(PyObject *body_object)
 static PyMethodDef body_methods[] = {
      {"compute", (PyCFunction) body_compute,
       METH_VARARGS | METH_KEYWORDS, "compute it"},
-     {"writedb", body_writedb, METH_VARARGS, "generate db entry"},
-     {NULL, NULL, 0, NULL}
+     {"writedb", (PyCFunction) body_writedb, METH_NOARGS, "generate db entry"},
+     {NULL}
 };
 
-#define OFF(member) offsetof(BodyObject, obj.member)
+#define OFF(member) offsetof(Body, obj.member)
 
 static PyObject* build_hours(double radians)
 {
@@ -943,7 +959,7 @@ static PyObject* build_mag(double raw)
    not.  By checking body->now_valid they can deteremine how much
    information the last compute() call supplied. */
 
-static int body_obj_cir(BodyObject *body, char *fieldname, unsigned threshold)
+static int body_obj_cir(Body *body, char *fieldname, unsigned threshold)
 {
      if (!body->obj_valid) {
 	  if (body->now_valid == 0) {
@@ -968,7 +984,7 @@ static int body_obj_cir(BodyObject *body, char *fieldname, unsigned threshold)
      return 0;
 }
 
-static int body_riset_cir(BodyObject *body, char *fieldname)
+static int body_riset_cir(Body *body, char *fieldname)
 {
      if (body->riset_valid) return 0;
      if (body->now_valid == 0) {
@@ -988,7 +1004,7 @@ static int body_riset_cir(BodyObject *body, char *fieldname)
      return 0;
 }
 
-static int moon_llibration(MoonObject *moon, char *fieldname)
+static int moon_llibration(Moon *moon, char *fieldname)
 {
      if (moon->llibration_valid) return 0;
      if (moon->now_valid == 0) {
@@ -1001,7 +1017,7 @@ static int moon_llibration(MoonObject *moon, char *fieldname)
      return 0;
 }
 
-static int moon_moon_colong(MoonObject *moon, char *fieldname)
+static int moon_moon_colong(Moon *moon, char *fieldname)
 {
      if (moon->moon_colong_valid) return 0;
      if (moon->now_valid == 0) {
@@ -1014,7 +1030,7 @@ static int moon_moon_colong(MoonObject *moon, char *fieldname)
      return 0;
 }
 
-static int saturn_satrings(SaturnObject *saturn, char *fieldname)
+static int saturn_satrings(Saturn *saturn, char *fieldname)
 {
      double lsn, rsn, bsn;
      if (saturn->satrings_valid) return 0;
@@ -1023,8 +1039,8 @@ static int saturn_satrings(SaturnObject *saturn, char *fieldname)
 		       "field %s undefined until first compute()", fieldname);
 	  return -1;
      }
-     if (body_obj_cir((BodyObject*) saturn, fieldname, 1) == -1) return -1;
-     sunpos (saturn->now.n_mjd, &lsn, &rsn, &bsn);
+     if (body_obj_cir((Body*) saturn, fieldname, 1) == -1) return -1;
+     sunpos(saturn->now.n_mjd, &lsn, &rsn, &bsn);
      satrings(saturn->obj.s_hlat, saturn->obj.s_hlong, saturn->obj.s_sdist,
 	      lsn + PI, rsn, saturn->now.n_mjd,
 	      &saturn->etilt, &saturn->stilt);
@@ -1044,7 +1060,7 @@ static int saturn_satrings(SaturnObject *saturn, char *fieldname)
 
 /* Attributes computed by obj_cir needing only a date and epoch. */
 
-#define BODY BodyObject
+#define BODY Body
 #define CALCULATOR body_obj_cir
 #define CARGS ,1
 
@@ -1081,17 +1097,17 @@ GET_FIELD(alt, obj.s_alt, build_degrees)
 #define FLAGGED(mask, builder) \
  (body->riset.rs_flags & mask) ? (Py_INCREF(Py_None), Py_None) : builder
 
-GET_FIELD(risetm, riset.rs_risetm, FLAGGED(RS_NORISE, build_date))
+GET_FIELD(risetm, riset.rs_risetm, FLAGGED(RS_NORISE, build_Date))
 GET_FIELD(riseaz, riset.rs_riseaz, FLAGGED(RS_NORISE, build_degrees))
-GET_FIELD(trantm, riset.rs_trantm, FLAGGED(RS_NOTRANS, build_date))
+GET_FIELD(trantm, riset.rs_trantm, FLAGGED(RS_NOTRANS, build_Date))
 GET_FIELD(tranalt, riset.rs_tranalt, FLAGGED(RS_NOTRANS, build_degrees))
-GET_FIELD(settm, riset.rs_settm, FLAGGED(RS_NOSET, build_date))
+GET_FIELD(settm, riset.rs_settm, FLAGGED(RS_NOSET, build_Date))
 GET_FIELD(setaz, riset.rs_setaz, FLAGGED(RS_NOSET, build_degrees))
 
 #undef CALCULATOR
 #undef BODY
 
-#define BODY MoonObject
+#define BODY Moon
 #define CALCULATOR moon_llibration
 
 GET_FIELD(llat, llat, build_degrees)
@@ -1108,7 +1124,7 @@ GET_FIELD(s, s, build_degrees)
 #undef CALCULATOR
 #undef BODY
 
-#define BODY SaturnObject
+#define BODY Saturn
 #define CALCULATOR saturn_satrings
 
 GET_FIELD(etilt, etilt, build_degrees)
@@ -1121,7 +1137,7 @@ GET_FIELD(stilt, stilt, build_degrees)
 
 static PyMemberDef body_members[] = {
      {"name", T_STRING_INPLACE, OFF(o_name), RO, "body name"},
-     {NULL, 0, 0, 0, NULL}
+     {NULL}
 };
 
 static PyGetSetDef body_getset[] = {
@@ -1141,7 +1157,7 @@ static PyGetSetDef body_getset[] = {
      {"transit_alt", Get_tranalt, 0, "transit altitude"},
      {"set_time", Get_settm, 0, "set time"},
      {"set_az", Get_setaz, 0, "set azimuth"},
-     {NULL, NULL, NULL, NULL, NULL}
+     {NULL}
 };
 
 static PyGetSetDef body_ss_getset[] = {
@@ -1150,7 +1166,7 @@ static PyGetSetDef body_ss_getset[] = {
      {"sun_distance", Get_sdist, 0, "distance from sun (AU)"},
      {"earth_distance", Get_edist, 0, "distance from earth (AU)"},
      {"phase", Get_phase, 0, "phase (percent illuminated)"},
-     {NULL, NULL, NULL, NULL, NULL}
+     {NULL}
 };
 
 static PyGetSetDef moon_getset[] = {
@@ -1161,14 +1177,14 @@ static PyGetSetDef moon_getset[] = {
      {"moon_phase", Get_k, 0,
       "illuminated fraction of lunar surface visible from earth"},
      {"subsolar_latitude", Get_s, 0, "lunar latitude of subsolar point"},
-     {NULL, NULL, NULL, NULL, NULL}
+     {NULL}
 };
 
 static PyGetSetDef saturn_getset[] = {
      {"earth_tilt", Get_etilt, 0,
       "tilt of rings towards earth (degrees south)"},
      {"sun_tilt", Get_stilt, 0, "tilt of rings towards sun (degrees south)"},
-     {NULL, NULL, NULL, NULL, NULL}
+     {NULL}
 };
 
 static PyGetSetDef body_f_getset[] = {
@@ -1179,12 +1195,12 @@ static PyGetSetDef body_f_getset[] = {
      {"_epoch", getf_mjd, setf_mjd, "Date", VOFF(f_epoch)},
      {"_ra", getf_rh, setf_rh, "Fixed right ascension", VOFF(f_RA)},
      {"_dec", getf_rd, setf_rd, "Fixed declination", VOFF(f_dec)},
-     {NULL, NULL, NULL, NULL, NULL}
+     {NULL}
 };
 
 static PyMemberDef body_f_members[] = {
      {"_class", T_CHAR, OFF(f_class), RO, "fixed object classification"},
-     {NULL, 0, 0, 0, NULL}
+     {NULL}
 };
 
 static PyGetSetDef body_e_getset[] = {
@@ -1193,7 +1209,7 @@ static PyGetSetDef body_e_getset[] = {
       "longitude of ascending node (degrees)", VOFF(e_Om)},
      {"_om", getf_dd, setf_dd, "argument of perihelion (degrees)", VOFF(e_om)},
      {"_M", getf_dd, setf_dd, "mean anomaly (degrees)", VOFF(e_M)},
-     {NULL, NULL, NULL, NULL, NULL}
+     {NULL}
 };
 
 static PyMemberDef body_e_members[] = {
@@ -1203,7 +1219,7 @@ static PyMemberDef body_e_members[] = {
      {"_cepoch", T_DOUBLE, OFF(e_cepoch), 0, "epoch date of mean anomaly"},
      {"_epoch", T_DOUBLE, OFF(e_epoch), 0, "equinox year"},
      /* Mag */
-     {NULL, 0, 0, 0, NULL}
+     {NULL}
 };
 
 static PyGetSetDef body_h_getset[] = {
@@ -1212,7 +1228,7 @@ static PyGetSetDef body_h_getset[] = {
       "Longitude of ascending node (degrees)", VOFF(h_Om)},
      {"_om", getf_dd, setf_dd,
       "Argument of perihelion (degrees)", VOFF(h_om)},
-     {NULL, NULL, NULL, NULL, NULL}
+     {NULL}
 };
 
 static PyMemberDef body_h_members[] = {
@@ -1224,7 +1240,7 @@ static PyMemberDef body_h_members[] = {
      {"_g", T_FLOAT, OFF(h_g), 0, "Magnitude coefficient g"},
      {"_k", T_FLOAT, OFF(h_k), 0, "Magnitude coefficient g"},
      {"_size", T_FLOAT, OFF(h_size), 0, "Angular size at 1 AU (arcseconds)"},
-     {NULL, 0, 0, 0, NULL}
+     {NULL}
 };
 
 static PyGetSetDef body_p_getset[] = {
@@ -1232,7 +1248,7 @@ static PyGetSetDef body_p_getset[] = {
      {"_om", getf_dd, setf_dd, "Argument of perihelion (degrees)", VOFF(p_om)},
      {"_Om", getf_dd, setf_dd,
       "Longitude of ascending node (degrees)", VOFF(p_Om)},
-     {NULL, NULL, NULL, NULL, NULL}
+     {NULL}
 };
 
 static PyMemberDef body_p_members[] = {
@@ -1242,7 +1258,7 @@ static PyMemberDef body_p_members[] = {
      {"_g", T_FLOAT, OFF(p_g), 0, ""},
      {"_k", T_FLOAT, OFF(p_k), 0, ""},
      {"_size", T_FLOAT, OFF(p_size), 0, "angular size at 1 AU (arcseconds)"},
-     {NULL, 0, 0, 0, NULL}
+     {NULL}
 };
 
 static PyGetSetDef body_es_getset[] = {
@@ -1257,7 +1273,7 @@ static PyGetSetDef body_es_getset[] = {
       "Latitude below satellite (degrees east)", VOFF(s_sublat)},
      {"sublong", getf_rd, setf_rd,
       "Longitude below satellite (degrees north)", VOFF(s_sublng)},
-     {NULL, NULL, NULL, NULL, NULL}
+     {NULL}
 };
 
 static PyMemberDef body_es_members[] = {
@@ -1279,7 +1295,7 @@ static PyMemberDef body_es_members[] = {
       "range rate of change (m/s)"},
      {"eclipsed", T_INT, OFF(s_eclipsed), RO,
       "whether satellite is in earth's shadow"},
-     {NULL, 0, 0, 0, NULL}
+     {NULL}
 };
 
 #undef OFF
@@ -1296,11 +1312,11 @@ static PyMemberDef body_es_members[] = {
  * various wrappers around the same X Obj structure.
  */
 
-static PyTypeObject Body_Type = {
+static PyTypeObject BodyType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "Body",
-     sizeof(BodyObject),
+     "ephem.Body",
+     sizeof(Body),
      0,
      0, /*_PyObject_Del,*/	/* tp_dealloc */
      0,				/* tp_print */
@@ -1317,8 +1333,7 @@ static PyTypeObject Body_Type = {
      0, /*PyObject_GenericGetAttr,*/ /* tp_getattro */
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
-     Py_TPFLAGS_DEFAULT /*| Py_TPFLAGS_HAVE_GC*/
-     | Py_TPFLAGS_BASETYPE,	/* tp_flags */
+     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
      0,				/* tp_doc */
      0,				/* tp_traverse */
      0,				/* tp_clear */
@@ -1334,60 +1349,17 @@ static PyTypeObject Body_Type = {
      0,				/* tp_descr_get */
      0,				/* tp_descr_set */
      0,				/* tp_dictoffset */
-     body_init,			/* tp_init */
+     Body_init,			/* tp_init */
      0, /*PyType_GenericAlloc,*/ /* tp_alloc */
      0, /*PyType_GenericNew,*/	/* tp_new */
      0, /*_PyObject_GC_Del,*/	/* tp_free */
 };
 
-static PyTypeObject FixedBody_Type = {
+static PyTypeObject PlanetType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "FixedBody",
-     sizeof(BodyObject),
-     0,
-     0,				/* tp_dealloc */
-     0,				/* tp_print */
-     0,				/* tp_getattr */
-     0,				/* tp_setattr */
-     0,				/* tp_compare */
-     0,				/* tp_repr */
-     0,				/* tp_as_number */
-     0,				/* tp_as_sequence */
-     0,				/* tp_as_mapping */
-     0,				/* tp_hash */
-     0,				/* tp_call */
-     0,				/* tp_str */
-     0,				/* tp_getattro */
-     0,				/* tp_setattro */
-     0,				/* tp_as_buffer */
-     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
-     0,				/* tp_doc */
-     0,				/* tp_traverse */
-     0,				/* tp_clear */
-     0,				/* tp_richcompare */
-     0,				/* tp_weaklistoffset */
-     0,				/* tp_iter */
-     0,				/* tp_iternext */
-     0,				/* tp_methods */
-     body_f_members,		/* tp_members */
-     body_f_getset,		/* tp_getset */
-     &Body_Type,		/* tp_base */
-     0,				/* tp_dict */
-     0,				/* tp_descr_get */
-     0,				/* tp_descr_set */
-     0,				/* tp_dictoffset */
-     0,				/* tp_init */
-     0,				/* tp_alloc */
-     0,				/* tp_new */
-     0,				/* tp_free */
-};
-
-static PyTypeObject Planet_Type = {
-     PyObject_HEAD_INIT(NULL)
-     0,
-     "Planet",
-     sizeof(BodyObject),
+     "ephem.Planet",
+     sizeof(Body),
      0,
      0,				/* tp_dealloc */
      0,				/* tp_print */
@@ -1415,22 +1387,194 @@ static PyTypeObject Planet_Type = {
      0,				/* tp_methods */
      0,				/* tp_members */
      body_ss_getset,		/* tp_getset */
-     &Body_Type,		/* tp_base */
+     &BodyType,		/* tp_base */
      0,				/* tp_dict */
      0,				/* tp_descr_get */
      0,				/* tp_descr_set */
      0,				/* tp_dictoffset */
-     0,				/* tp_init */
+     &Planet_init,		/* tp_init */
      0,				/* tp_alloc */
      0,				/* tp_new */
      0,				/* tp_free */
 };
 
-static PyTypeObject Saturn_Type = {
+static PyTypeObject MercuryType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "Saturn",
-     sizeof(SaturnObject),
+     "ephem.Mercury",
+     sizeof(Body),
+     0,
+     0,				/* tp_dealloc */
+     0,				/* tp_print */
+     0,				/* tp_getattr */
+     0,				/* tp_setattr */
+     0,				/* tp_compare */
+     0,				/* tp_repr */
+     0,				/* tp_as_number */
+     0,				/* tp_as_sequence */
+     0,				/* tp_as_mapping */
+     0,				/* tp_hash */
+     0,				/* tp_call */
+     0,				/* tp_str */
+     0,				/* tp_getattro */
+     0,				/* tp_setattro */
+     0,				/* tp_as_buffer */
+     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
+     0,				/* tp_doc */
+     0,				/* tp_traverse */
+     0,				/* tp_clear */
+     0,				/* tp_richcompare */
+     0,				/* tp_weaklistoffset */
+     0,				/* tp_iter */
+     0,				/* tp_iternext */
+     0,				/* tp_methods */
+     0,				/* tp_members */
+     0,				/* tp_getset */
+     &PlanetType,		/* tp_base */
+     0,				/* tp_dict */
+     0,				/* tp_descr_get */
+     0,				/* tp_descr_set */
+     0,				/* tp_dictoffset */
+     Mercury_init,		/* tp_init */
+     0,				/* tp_alloc */
+     0,				/* tp_new */
+     0,				/* tp_free */
+};
+
+static PyTypeObject VenusType = {
+     PyObject_HEAD_INIT(NULL)
+     0,
+     "ephem.Venus",
+     sizeof(Body),
+     0,
+     0,				/* tp_dealloc */
+     0,				/* tp_print */
+     0,				/* tp_getattr */
+     0,				/* tp_setattr */
+     0,				/* tp_compare */
+     0,				/* tp_repr */
+     0,				/* tp_as_number */
+     0,				/* tp_as_sequence */
+     0,				/* tp_as_mapping */
+     0,				/* tp_hash */
+     0,				/* tp_call */
+     0,				/* tp_str */
+     0,				/* tp_getattro */
+     0,				/* tp_setattro */
+     0,				/* tp_as_buffer */
+     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
+     0,				/* tp_doc */
+     0,				/* tp_traverse */
+     0,				/* tp_clear */
+     0,				/* tp_richcompare */
+     0,				/* tp_weaklistoffset */
+     0,				/* tp_iter */
+     0,				/* tp_iternext */
+     0,				/* tp_methods */
+     0,				/* tp_members */
+     0,				/* tp_getset */
+     &PlanetType,		/* tp_base */
+     0,				/* tp_dict */
+     0,				/* tp_descr_get */
+     0,				/* tp_descr_set */
+     0,				/* tp_dictoffset */
+     Venus_init,		/* tp_init */
+     0,				/* tp_alloc */
+     0,				/* tp_new */
+     0,				/* tp_free */
+};
+
+static PyTypeObject MarsType = {
+     PyObject_HEAD_INIT(NULL)
+     0,
+     "ephem.Mars",
+     sizeof(Body),
+     0,
+     0,				/* tp_dealloc */
+     0,				/* tp_print */
+     0,				/* tp_getattr */
+     0,				/* tp_setattr */
+     0,				/* tp_compare */
+     0,				/* tp_repr */
+     0,				/* tp_as_number */
+     0,				/* tp_as_sequence */
+     0,				/* tp_as_mapping */
+     0,				/* tp_hash */
+     0,				/* tp_call */
+     0,				/* tp_str */
+     0,				/* tp_getattro */
+     0,				/* tp_setattro */
+     0,				/* tp_as_buffer */
+     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
+     0,				/* tp_doc */
+     0,				/* tp_traverse */
+     0,				/* tp_clear */
+     0,				/* tp_richcompare */
+     0,				/* tp_weaklistoffset */
+     0,				/* tp_iter */
+     0,				/* tp_iternext */
+     0,				/* tp_methods */
+     0,				/* tp_members */
+     0,				/* tp_getset */
+     &PlanetType,		/* tp_base */
+     0,				/* tp_dict */
+     0,				/* tp_descr_get */
+     0,				/* tp_descr_set */
+     0,				/* tp_dictoffset */
+     Mars_init,			/* tp_init */
+     0,				/* tp_alloc */
+     0,				/* tp_new */
+     0,				/* tp_free */
+};
+
+static PyTypeObject JupiterType = {
+     PyObject_HEAD_INIT(NULL)
+     0,
+     "ephem.Jupiter",
+     sizeof(Body),
+     0,
+     0,				/* tp_dealloc */
+     0,				/* tp_print */
+     0,				/* tp_getattr */
+     0,				/* tp_setattr */
+     0,				/* tp_compare */
+     0,				/* tp_repr */
+     0,				/* tp_as_number */
+     0,				/* tp_as_sequence */
+     0,				/* tp_as_mapping */
+     0,				/* tp_hash */
+     0,				/* tp_call */
+     0,				/* tp_str */
+     0,				/* tp_getattro */
+     0,				/* tp_setattro */
+     0,				/* tp_as_buffer */
+     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
+     0,				/* tp_doc */
+     0,				/* tp_traverse */
+     0,				/* tp_clear */
+     0,				/* tp_richcompare */
+     0,				/* tp_weaklistoffset */
+     0,				/* tp_iter */
+     0,				/* tp_iternext */
+     0,				/* tp_methods */
+     0,				/* tp_members */
+     0,				/* tp_getset */
+     &PlanetType,		/* tp_base */
+     0,				/* tp_dict */
+     0,				/* tp_descr_get */
+     0,				/* tp_descr_set */
+     0,				/* tp_dictoffset */
+     Jupiter_init,		/* tp_init */
+     0,				/* tp_alloc */
+     0,				/* tp_new */
+     0,				/* tp_free */
+};
+
+static PyTypeObject SaturnType = {
+     PyObject_HEAD_INIT(NULL)
+     0,
+     "ephem.Saturn",
+     sizeof(Saturn),
      0,
      0,				/* tp_dealloc */
      0,				/* tp_print */
@@ -1458,22 +1602,194 @@ static PyTypeObject Saturn_Type = {
      0,				/* tp_methods */
      0,				/* tp_members */
      saturn_getset,		/* tp_getset */
-     &Planet_Type,		/* tp_base */
+     &PlanetType,		/* tp_base */
      0,				/* tp_dict */
      0,				/* tp_descr_get */
      0,				/* tp_descr_set */
      0,				/* tp_dictoffset */
-     saturn_init,		/* tp_init */
+     Saturn_init,		/* tp_init */
      0,				/* tp_alloc */
      0,				/* tp_new */
      0,				/* tp_free */
 };
 
-static PyTypeObject Moon_Type = {
+static PyTypeObject UranusType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "Moon",
-     sizeof(MoonObject),
+     "ephem.Uranus",
+     sizeof(Body),
+     0,
+     0,				/* tp_dealloc */
+     0,				/* tp_print */
+     0,				/* tp_getattr */
+     0,				/* tp_setattr */
+     0,				/* tp_compare */
+     0,				/* tp_repr */
+     0,				/* tp_as_number */
+     0,				/* tp_as_sequence */
+     0,				/* tp_as_mapping */
+     0,				/* tp_hash */
+     0,				/* tp_call */
+     0,				/* tp_str */
+     0,				/* tp_getattro */
+     0,				/* tp_setattro */
+     0,				/* tp_as_buffer */
+     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
+     0,				/* tp_doc */
+     0,				/* tp_traverse */
+     0,				/* tp_clear */
+     0,				/* tp_richcompare */
+     0,				/* tp_weaklistoffset */
+     0,				/* tp_iter */
+     0,				/* tp_iternext */
+     0,				/* tp_methods */
+     0,				/* tp_members */
+     0,				/* tp_getset */
+     &PlanetType,		/* tp_base */
+     0,				/* tp_dict */
+     0,				/* tp_descr_get */
+     0,				/* tp_descr_set */
+     0,				/* tp_dictoffset */
+     Uranus_init,		/* tp_init */
+     0,				/* tp_alloc */
+     0,				/* tp_new */
+     0,				/* tp_free */
+};
+
+static PyTypeObject NeptuneType = {
+     PyObject_HEAD_INIT(NULL)
+     0,
+     "ephem.Neptune",
+     sizeof(Body),
+     0,
+     0,				/* tp_dealloc */
+     0,				/* tp_print */
+     0,				/* tp_getattr */
+     0,				/* tp_setattr */
+     0,				/* tp_compare */
+     0,				/* tp_repr */
+     0,				/* tp_as_number */
+     0,				/* tp_as_sequence */
+     0,				/* tp_as_mapping */
+     0,				/* tp_hash */
+     0,				/* tp_call */
+     0,				/* tp_str */
+     0,				/* tp_getattro */
+     0,				/* tp_setattro */
+     0,				/* tp_as_buffer */
+     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
+     0,				/* tp_doc */
+     0,				/* tp_traverse */
+     0,				/* tp_clear */
+     0,				/* tp_richcompare */
+     0,				/* tp_weaklistoffset */
+     0,				/* tp_iter */
+     0,				/* tp_iternext */
+     0,				/* tp_methods */
+     0,				/* tp_members */
+     0,				/* tp_getset */
+     &PlanetType,		/* tp_base */
+     0,				/* tp_dict */
+     0,				/* tp_descr_get */
+     0,				/* tp_descr_set */
+     0,				/* tp_dictoffset */
+     Neptune_init,		/* tp_init */
+     0,				/* tp_alloc */
+     0,				/* tp_new */
+     0,				/* tp_free */
+};
+
+static PyTypeObject PlutoType = {
+     PyObject_HEAD_INIT(NULL)
+     0,
+     "ephem.Pluto",
+     sizeof(Body),
+     0,
+     0,				/* tp_dealloc */
+     0,				/* tp_print */
+     0,				/* tp_getattr */
+     0,				/* tp_setattr */
+     0,				/* tp_compare */
+     0,				/* tp_repr */
+     0,				/* tp_as_number */
+     0,				/* tp_as_sequence */
+     0,				/* tp_as_mapping */
+     0,				/* tp_hash */
+     0,				/* tp_call */
+     0,				/* tp_str */
+     0,				/* tp_getattro */
+     0,				/* tp_setattro */
+     0,				/* tp_as_buffer */
+     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
+     0,				/* tp_doc */
+     0,				/* tp_traverse */
+     0,				/* tp_clear */
+     0,				/* tp_richcompare */
+     0,				/* tp_weaklistoffset */
+     0,				/* tp_iter */
+     0,				/* tp_iternext */
+     0,				/* tp_methods */
+     0,				/* tp_members */
+     0,				/* tp_getset */
+     &PlanetType,		/* tp_base */
+     0,				/* tp_dict */
+     0,				/* tp_descr_get */
+     0,				/* tp_descr_set */
+     0,				/* tp_dictoffset */
+     Pluto_init,		/* tp_init */
+     0,				/* tp_alloc */
+     0,				/* tp_new */
+     0,				/* tp_free */
+};
+
+static PyTypeObject SunType = {
+     PyObject_HEAD_INIT(NULL)
+     0,
+     "ephem.Sun",
+     sizeof(Body),
+     0,
+     0,				/* tp_dealloc */
+     0,				/* tp_print */
+     0,				/* tp_getattr */
+     0,				/* tp_setattr */
+     0,				/* tp_compare */
+     0,				/* tp_repr */
+     0,				/* tp_as_number */
+     0,				/* tp_as_sequence */
+     0,				/* tp_as_mapping */
+     0,				/* tp_hash */
+     0,				/* tp_call */
+     0,				/* tp_str */
+     0,				/* tp_getattro */
+     0,				/* tp_setattro */
+     0,				/* tp_as_buffer */
+     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
+     0,				/* tp_doc */
+     0,				/* tp_traverse */
+     0,				/* tp_clear */
+     0,				/* tp_richcompare */
+     0,				/* tp_weaklistoffset */
+     0,				/* tp_iter */
+     0,				/* tp_iternext */
+     0,				/* tp_methods */
+     0,				/* tp_members */
+     0,				/* tp_getset */
+     &PlanetType,		/* tp_base */
+     0,				/* tp_dict */
+     0,				/* tp_descr_get */
+     0,				/* tp_descr_set */
+     0,				/* tp_dictoffset */
+     Sun_init,			/* tp_init */
+     0,				/* tp_alloc */
+     0,				/* tp_new */
+     0,				/* tp_free */
+};
+
+static PyTypeObject MoonType = {
+     PyObject_HEAD_INIT(NULL)
+     0,
+     "ephem.Moon",
+     sizeof(Moon),
      0,
      0,				/* tp_dealloc */
      0,				/* tp_print */
@@ -1501,22 +1817,65 @@ static PyTypeObject Moon_Type = {
      0,				/* tp_methods */
      0,				/* tp_members */
      moon_getset,		/* tp_getset */
-     &Planet_Type,		/* tp_base */
+     &PlanetType,		/* tp_base */
      0,				/* tp_dict */
      0,				/* tp_descr_get */
      0,				/* tp_descr_set */
      0,				/* tp_dictoffset */
-     moon_init,			/* tp_init */
+     Moon_init,			/* tp_init */
      0,				/* tp_alloc */
      0,				/* tp_new */
      0,				/* tp_free */
 };
 
-static PyTypeObject EllipticalBody_Type = {
+static PyTypeObject FixedBodyType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "EllipticalBody",
-     sizeof(BodyObject),
+     "ephem.FixedBody",
+     sizeof(Body),
+     0,
+     0,				/* tp_dealloc */
+     0,				/* tp_print */
+     0,				/* tp_getattr */
+     0,				/* tp_setattr */
+     0,				/* tp_compare */
+     0,				/* tp_repr */
+     0,				/* tp_as_number */
+     0,				/* tp_as_sequence */
+     0,				/* tp_as_mapping */
+     0,				/* tp_hash */
+     0,				/* tp_call */
+     0,				/* tp_str */
+     0,				/* tp_getattro */
+     0,				/* tp_setattro */
+     0,				/* tp_as_buffer */
+     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
+     0,				/* tp_doc */
+     0,				/* tp_traverse */
+     0,				/* tp_clear */
+     0,				/* tp_richcompare */
+     0,				/* tp_weaklistoffset */
+     0,				/* tp_iter */
+     0,				/* tp_iternext */
+     0,				/* tp_methods */
+     body_f_members,		/* tp_members */
+     body_f_getset,		/* tp_getset */
+     &BodyType,		/* tp_base */
+     0,				/* tp_dict */
+     0,				/* tp_descr_get */
+     0,				/* tp_descr_set */
+     0,				/* tp_dictoffset */
+     Allow_init,		/* tp_init */
+     0,				/* tp_alloc */
+     0,				/* tp_new */
+     0,				/* tp_free */
+};
+
+static PyTypeObject EllipticalBodyType = {
+     PyObject_HEAD_INIT(NULL)
+     0,
+     "ephem.EllipticalBody",
+     sizeof(Body),
      0,
      0,				/* tp_dealloc */
      0,				/* tp_print */
@@ -1544,22 +1903,22 @@ static PyTypeObject EllipticalBody_Type = {
      0,				/* tp_methods */
      body_e_members,	/* tp_members */
      body_e_getset,	/* tp_getset */
-     &Planet_Type,		/* tp_base */
+     &PlanetType,		/* tp_base */
      0,				/* tp_dict */
      0,				/* tp_descr_get */
      0,				/* tp_descr_set */
      0,				/* tp_dictoffset */
-     0,				/* tp_init */
+     Allow_init,		/* tp_init */
      0,				/* tp_alloc */
      0,				/* tp_new */
      0,				/* tp_free */
 };
 
-static PyTypeObject HyperbolicBody_Type = {
+static PyTypeObject HyperbolicBodyType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "HyperbolicBody",
-     sizeof(BodyObject),
+     "ephem.HyperbolicBody",
+     sizeof(Body),
      0,
      0,				/* tp_dealloc */
      0,				/* tp_print */
@@ -1587,22 +1946,22 @@ static PyTypeObject HyperbolicBody_Type = {
      0,				/* tp_methods */
      body_h_members,		/* tp_members */
      body_h_getset,		/* tp_getset */
-     &Planet_Type,		/* tp_base */
+     &PlanetType,		/* tp_base */
      0,				/* tp_dict */
      0,				/* tp_descr_get */
      0,				/* tp_descr_set */
      0,				/* tp_dictoffset */
-     0,				/* tp_init */
+     Allow_init,		/* tp_init */
      0,				/* tp_alloc */
      0,				/* tp_new */
      0,				/* tp_free */
 };
 
-static PyTypeObject ParabolicBody_Type = {
+static PyTypeObject ParabolicBodyType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "ParabolicBody",
-     sizeof(BodyObject),
+     "ephem.ParabolicBody",
+     sizeof(Body),
      0,
      0,				/* tp_dealloc */
      0,				/* tp_print */
@@ -1630,22 +1989,22 @@ static PyTypeObject ParabolicBody_Type = {
      0,				/* tp_methods */
      body_p_members,		/* tp_members */
      body_p_getset,		/* tp_getset */
-     &Planet_Type,		/* tp_base */
+     &PlanetType,		/* tp_base */
      0,				/* tp_dict */
      0,				/* tp_descr_get */
      0,				/* tp_descr_set */
      0,				/* tp_dictoffset */
-     0,				/* tp_init */
+     Allow_init,		/* tp_init */
      0,				/* tp_alloc */
      0,				/* tp_new */
      0,				/* tp_free */
 };
 
-static PyTypeObject EarthSatellite_Type = {
+static PyTypeObject EarthSatelliteType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "EarthSatellite",
-     sizeof(BodyObject),
+     "ephem.EarthSatellite",
+     sizeof(Body),
      0,
      0,				/* tp_dealloc */
      0,				/* tp_print */
@@ -1662,7 +2021,7 @@ static PyTypeObject EarthSatellite_Type = {
      0,				/* tp_getattro */
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
-     Py_TPFLAGS_DEFAULT,	/* tp_flags */
+     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,	/* tp_flags */
      0,				/* tp_doc */
      0,				/* tp_traverse */
      0,				/* tp_clear */
@@ -1673,12 +2032,12 @@ static PyTypeObject EarthSatellite_Type = {
      0,				/* tp_methods */
      body_es_members,		/* tp_members */
      body_es_getset,		/* tp_getset */
-     &Planet_Type,		/* tp_base */
+     &PlanetType,		/* tp_base */
      0,				/* tp_dict */
      0,				/* tp_descr_get */
      0,				/* tp_descr_set */
      0,				/* tp_dictoffset */
-     0,				/* tp_init */
+     Allow_init,		/* tp_init */
      0,				/* tp_alloc */
      0,				/* tp_new */
      0,				/* tp_free */
@@ -1699,13 +2058,13 @@ static int separation_arg(PyObject *arg, double *lngi, double *lati)
      char err_message[] = "each separation argument "
 	  "must be an Observer, an Body, "
 	  "or a pair of numeric coordinates";
-     if (PyObject_IsInstance(arg, (PyObject*) &Observer_Type)) {
-	  ObserverObject *o = (ObserverObject*) arg;
+     if (PyObject_IsInstance(arg, (PyObject*) &ObserverType)) {
+	  Observer *o = (Observer*) arg;
 	  *lngi = o->now.n_lng;
 	  *lati = o->now.n_lat;
 	  return 0;
-     } else if (PyObject_IsInstance(arg, (PyObject*) &Body_Type)) {
-	  BodyObject *b = (BodyObject*) arg;
+     } else if (PyObject_IsInstance(arg, (PyObject*) &BodyType)) {
+	  Body *b = (Body*) arg;
 	  if (body_obj_cir(b, "ra", 1)) return -1;
 	  *lngi = b->obj.s_ra;
 	  *lati = b->obj.s_dec;
@@ -1756,22 +2115,22 @@ static PyObject* separation(PyObject *self, PyObject *args)
 static PyObject *build_body_from_obj(Obj *op)
 {
      PyTypeObject *type;
-     BodyObject *body;
+     Body *body;
      switch (op->o_type) {
      case FIXED:
-	  type = &FixedBody_Type;
+	  type = &FixedBodyType;
 	  break;
      case ELLIPTICAL:
-	  type = &EllipticalBody_Type;
+	  type = &EllipticalBodyType;
 	  break;
      case HYPERBOLIC:
-	  type = &HyperbolicBody_Type;
+	  type = &HyperbolicBodyType;
 	  break;
      case PARABOLIC:
-	  type = &ParabolicBody_Type;
+	  type = &ParabolicBodyType;
 	  break;
      case EARTHSAT:
-	  type = &EarthSatellite_Type;
+	  type = &EarthSatelliteType;
 	  break;
      default:
 	  PyErr_Format(PyExc_ValueError,
@@ -1779,8 +2138,8 @@ static PyObject *build_body_from_obj(Obj *op)
 		       op->o_type);
 	  return 0;
      }
-     //body = PyObject_NEW(BodyObject, type);
-     body = (BodyObject*) PyType_GenericNew(type, 0, 0);
+     //body = PyObject_NEW(Body, type);
+     body = (Body*) PyType_GenericNew(type, 0, 0);
      if (body) body->obj = *op;
      return (PyObject*) body;
 }
@@ -1850,8 +2209,8 @@ static PyObject* constellation
 				      &position_arg, &epoch_arg))
 	  return 0;
      
-     if (PyObject_IsInstance(position_arg, (PyObject*) &Body_Type)) {
-	  BodyObject *b = (BodyObject*) position_arg;
+     if (PyObject_IsInstance(position_arg, (PyObject*) &BodyType)) {
+	  Body *b = (Body*) position_arg;
 	  if (epoch_arg) {
 	       PyErr_SetString(PyExc_TypeError, "you cannot specify an epoch= "
 			       "when providing a body for the position, since "
@@ -2063,21 +2422,7 @@ leave:
  * The global methods table and the module initialization function.
  */
 
-#define planet_builder_method(name) \
- {#name, (PyCFunction) name, METH_VARARGS | METH_KEYWORDS, \
-  "Return a new instance of the planet " #name}
-
 static PyMethodDef ephem_methods[] = {
-     planet_builder_method(Mercury),
-     planet_builder_method(Venus),
-     planet_builder_method(Mars),
-     planet_builder_method(Jupiter),
-     planet_builder_method(Saturn),
-     planet_builder_method(Uranus),
-     planet_builder_method(Neptune),
-     planet_builder_method(Pluto),
-     planet_builder_method(Sun),
-     planet_builder_method(Moon),
      /*{"date", rebuild_date, METH_VARARGS, "Parse a date"},*/
      {"degrees", degrees, METH_VARARGS, "build an angle"},
      {"hours", hours, METH_VARARGS, "build an angle"},
@@ -2090,88 +2435,94 @@ static PyMethodDef ephem_methods[] = {
      {"constellation", (PyCFunction) constellation,
       METH_VARARGS | METH_KEYWORDS,
       "Return the constellation in which the object or coordinates lie"},
-     {NULL, NULL, 0, NULL}
+     {NULL}
 };
 
-#define CONSTRUCTOR(name, type) \
- if (PyDict_SetItemString(d, name, (PyObject*) &type)) \
+#define ADD(name, type) \
+ if (PyModule_AddObject(m, name, (PyObject*) &type)) \
   return;
 
-DL_EXPORT(void)
-initephem(void)
+PyMODINIT_FUNC initephem(void)
 {
-     PyObject *m, *d, *o;
+     PyObject *m, *o;
 
      /* Initialize non-constant pointers. */
 
-     Angle_Type.ob_type = &PyType_Type;
-     Angle_Type.tp_base = &PyFloat_Type;
+     AngleType.tp_base = &PyFloat_Type;
+     DateType.tp_base = &PyFloat_Type;
 
-     Body_Type.ob_type = &PyType_Type;
-     Body_Type.tp_dealloc = (destructor) _PyObject_Del;
-     Body_Type.tp_getattro = PyObject_GenericGetAttr;
-     Body_Type.tp_alloc = PyType_GenericAlloc;
-     Body_Type.tp_new = PyType_GenericNew;
-     Body_Type.tp_free = _PyObject_GC_Del;
+     BodyType.tp_dealloc = (destructor) _PyObject_Del;
+     BodyType.tp_getattro = PyObject_GenericGetAttr;
+     BodyType.tp_alloc = PyType_GenericAlloc;
+     BodyType.tp_new = PyType_GenericNew;
+     BodyType.tp_free = _PyObject_GC_Del;
 
-     FixedBody_Type.ob_type = &PyType_Type;
+     ObserverType.tp_dealloc = (destructor) _PyObject_Del;
+     ObserverType.tp_getattro = PyObject_GenericGetAttr;
 
-     Planet_Type.ob_type = &PyType_Type;
+     /* Ready each type. */
 
-     Saturn_Type.ob_type = &PyType_Type;
+     PyType_Ready(&AngleType);
+     PyType_Ready(&DateType);
 
-     Moon_Type.ob_type = &PyType_Type;
+     PyType_Ready(&ObserverType);
 
-     EllipticalBody_Type.ob_type = &PyType_Type;
+     PyType_Ready(&BodyType);
+     PyType_Ready(&PlanetType);
 
-     HyperbolicBody_Type.ob_type = &PyType_Type;
+     PyType_Ready(&MercuryType);
+     PyType_Ready(&VenusType);
+     PyType_Ready(&MarsType);
+     PyType_Ready(&JupiterType);
+     PyType_Ready(&SaturnType);
+     PyType_Ready(&UranusType);
+     PyType_Ready(&NeptuneType);
+     PyType_Ready(&PlutoType);
+     PyType_Ready(&SunType);
+     PyType_Ready(&MoonType);
 
-     ParabolicBody_Type.ob_type = &PyType_Type;
+     PyType_Ready(&FixedBodyType);
+     PyType_Ready(&EllipticalBodyType);
+     PyType_Ready(&HyperbolicBodyType);
+     PyType_Ready(&ParabolicBodyType);
+     PyType_Ready(&EarthSatelliteType);
 
-     EarthSatellite_Type.ob_type = &PyType_Type;
+     m = Py_InitModule3("ephem", ephem_methods,
+			"Module providing astronomical routines from Ephem");
+     if (!m) return;
 
-     Date_Type.ob_type = &PyType_Type;
-     Date_Type.tp_base = &PyFloat_Type;
+     ADD("Angle", AngleType);
+     ADD("Date", DateType);
 
-     Observer_Type.ob_type = &PyType_Type;
-     Observer_Type.tp_dealloc = (destructor) _PyObject_Del;
-     Observer_Type.tp_getattro = PyObject_GenericGetAttr;
+     ADD("Observer", ObserverType);
 
-     /* Build type dictionaries. */
+     ADD("Body", BodyType);
+     ADD("FixedBody", FixedBodyType);
+     ADD("EllipticalBody", EllipticalBodyType);
+     ADD("ParabolicBody", ParabolicBodyType);
+     ADD("HyperbolicBody", HyperbolicBodyType);
+     ADD("EarthSatellite", EarthSatelliteType);
 
-     PyType_Ready(&Angle_Type);
-     PyType_Ready(&Date_Type);
-
-     PyType_Ready(&Observer_Type);
-
-     PyType_Ready(&FixedBody_Type);
-     PyType_Ready(&Planet_Type);
-     PyType_Ready(&Moon_Type);
-     PyType_Ready(&Saturn_Type);
-     PyType_Ready(&EllipticalBody_Type);
-     PyType_Ready(&HyperbolicBody_Type);
-     PyType_Ready(&ParabolicBody_Type);
-     PyType_Ready(&EarthSatellite_Type);
-
-     m = Py_InitModule("ephem", ephem_methods);
-     d = PyModule_GetDict(m);
-
-     CONSTRUCTOR("date", Date_Type);
-     CONSTRUCTOR("Observer", Observer_Type);
-     CONSTRUCTOR("FixedBody", FixedBody_Type);
-     CONSTRUCTOR("EllipticalBody", EllipticalBody_Type);
-     CONSTRUCTOR("ParabolicBody", ParabolicBody_Type);
-     CONSTRUCTOR("HyperbolicBody", HyperbolicBody_Type);
-     CONSTRUCTOR("EarthSatellite", EarthSatellite_Type);
+     ADD("Planet", PlanetType);
+     ADD("Mercury", MercuryType);
+     ADD("Venus", VenusType);
+     ADD("Mars", MarsType);
+     ADD("Jupiter", JupiterType);
+     ADD("Saturn", SaturnType);
+     ADD("Uranus", UranusType);
+     ADD("Neptune", NeptuneType);
+     ADD("Pluto", PlutoType);
+     ADD("Sun", SunType);
+     ADD("Moon", MoonType);
      
      o = PyFloat_FromDouble(1./24.);
-     if (!o || PyDict_SetItemString(d, "hour", o)) return;
+     if (!o || PyModule_AddObject(m, "hour", o)) return;
 
      o = PyFloat_FromDouble(1./24./60.);
-     if (!o || PyDict_SetItemString(d, "minute", o)) return;
+     if (!o || PyModule_AddObject(m, "minute", o)) return;
 
      o = PyFloat_FromDouble(1./24./60./60.);
-     if (!o || PyDict_SetItemString(d, "second", o)) return;
+     if (!o || PyModule_AddObject(m, "second", o)) return;
      
      pref_set(PREF_DATE_FORMAT, PREF_YMD);
 }
