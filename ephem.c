@@ -2300,7 +2300,12 @@ static PyMethodDef ephem_methods[] = {
  if (PyModule_AddObject(m, name, (PyObject*) &type)) \
   return;
 
-PyMODINIT_FUNC initephem(void)
+#ifdef PyMODINIT_FUNC
+PyMODINIT_FUNC
+#else
+DL_EXPORT(void)
+#endif
+initephem(void)
 {
      PyObject *m, *o;
 
