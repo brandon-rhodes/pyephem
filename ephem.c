@@ -1447,6 +1447,7 @@ static PyMemberDef ParabolicBody_members[] = {
 };
 
 static PyGetSetDef EarthSatellite_getset[] = {
+     {"_epoch", getd_mjd, setd_mjd, "reference epoch (mjd)", VOFF(es_epoch)},
      {"_inc", getf_dd, setf_dd, "inclination (degrees)", VOFF(es_inc)},
      {"_raan", getf_dd, setf_dd,
       "right ascension of ascending node (degrees)", VOFF(es_raan)},
@@ -1454,15 +1455,17 @@ static PyGetSetDef EarthSatellite_getset[] = {
       "argument of perigee at epoch (degrees)", VOFF(es_ap)},
      {"_M", getf_dd, setf_dd,
       "mean anomaly (degrees from perigee at epoch)", VOFF(es_M)},
+
+     /* results: */
+
      {"sublat", getf_rd, 0,
-      "latitude below satellite (degrees east)", VOFF(s_sublat)},
+      "latitude below satellite (degrees north)", VOFF(s_sublat)},
      {"sublong", getf_rd, 0,
-      "longitude below satellite (degrees north)", VOFF(s_sublng)},
+      "longitude below satellite (degrees east)", VOFF(s_sublng)},
      {NULL}
 };
 
 static PyMemberDef EarthSatellite_members[] = {
-     {"_epoch", T_DOUBLE, OFF(es_epoch), 0, "reference epoch (mjd)"},
      {"_n", T_DOUBLE, OFF(es_n), 0, "mean motion (revolutions per day)"},
      {"_e", T_FLOAT, OFF(es_e), 0, "eccentricity"},
      {"_decay", T_FLOAT, OFF(es_decay), 0,

@@ -200,7 +200,10 @@ class bodies(MyTestCase):
 
         # Build one body from the Ephem-formatted entry.
 
-        bl = readdb(line)
+        if isinstance(line, tuple):
+            bl = readtle(*line)
+        else:
+            bl = readdb(line)
 
         # Build another body by setting the attributes on a body.
 
@@ -244,7 +247,8 @@ class bodies(MyTestCase):
             line='Achernar,f|V|B3,1:37:42.9,-57:14:12,0.46,2000',
             attributes = {'name': 'Achernar',
                           '_ra': '1:37:42.9', '_dec': '-57:14:12',
-                          'mag': 0.46, '_epoch': '2000'})
+                          'mag': 0.46, '_epoch': '2000',
+                          })
 
     def test_EllipticalBody(self):
         self.build(
@@ -281,13 +285,21 @@ class bodies(MyTestCase):
                           '_g': 16.5, '_k': 4.0
                           })
 
-    #def test_EarthSatellite(self):
-    #    ...
-
-    #def test_sanity(self):
-    #    s = Sun()
-    #    s.compute(self.obs)
-    #    
+    def test_EarthSatellite(self):
+        self.build(
+            bodytype=EarthSatellite,
+            line = ('HST                     ',
+                    '1 20580U 90037B   04296.45910607  .00000912 '
+                    ' 00000-0  59688-4 0  1902',
+                    '2 20580  28.4694  17.3953 0004117 265.2946  '
+                    '94.7172 14.99359833594524'),
+            attributes = {'name': 'Hubble Telescope',
+                          '_epoch': Date('2004') + 296.45910607 - 1,
+                          '_decay': .00000912, '_drag': .59688e-4,
+                          '_inc': 28.4694, '_raan': 17.3953,
+                          '_e': 4117e-7, '_ap': 265.2946, '_M': 94.7172,
+                          '_n': 14.99359833, '_orbit': 59452,
+                          })
 
 
 class riset(MyTestCase):
