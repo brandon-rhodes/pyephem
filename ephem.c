@@ -183,7 +183,7 @@ staticforward PyTypeObject DateType;
 
 typedef PyFloatObject DateObject;
 
-static inline int parse_mjd_from_number(PyObject *o, double *mjdp)
+inline int parse_mjd_from_number(PyObject *o, double *mjdp)
 {
      return PyNumber_AsDouble(o, mjdp);
 }
@@ -1260,7 +1260,9 @@ static PyObject *Get_neverup(PyObject *self, void *v)
      return PyBool_FromLong(body->riset.rs_flags & RS_NEVERUP);
 }
 
-/* */
+/* Allow getting and setting of EllipticalBody magnitude model
+   coefficients, which can be either H/G or gk but which use the same
+   storage either way. */
 
 static PyObject *Get_HG(PyObject *self, void *v)
 {
