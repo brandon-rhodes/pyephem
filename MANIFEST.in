@@ -7,4 +7,4 @@ include libastro/vector.h libastro/vsop87.h
 include src/angle_type.c src/basics.c src/body_types.c src/date_type.c
 include src/extras.c src/getset.c src/objects.c src/observer_type.c
 include doc/pyephem-manual.html
-include examples/halebopp.py examples/preferences.py examples/test.py
+include examples/halebopp.py
