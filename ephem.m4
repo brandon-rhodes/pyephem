@@ -155,9 +155,9 @@ INTRODUCTION_(`Wrapped by
 <P>
 PyEphem is a library of astronomical computation functions
 accessible from the Python language.
-The library functions themselves are the hard work of Elwood Downey Jr.
+The library functions themselves are the hard work of Elwood Downey
 and his contributors,
-and are taken from the internals of his excellent
+and are taken with his permission from the internals of his excellent
 <A HREF="http://iraf.noao.edu/~ecdowney/xephem.html">XEphem</A> application.
 These functions have been incorporated into a Python module through
 David Beazley''`s <A HREF="http://www.swig.org/">SWIG</A> utility

@@ -1,5 +1,6 @@
 The following modifications to this copy of libastro were performed by
-Brandon Craig Rhodes while developing PyEphem:
+Brandon Craig Rhodes while developing PyEphem with the permission of
+its author:
 
 The pref_get function in aux.c was commented out so it could be
 replaced by a pref_get function whose preferences could be modified
