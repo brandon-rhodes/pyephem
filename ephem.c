@@ -556,14 +556,6 @@ static int setd_mjd(PyObject *self, PyObject *value, void *v)
  * itself.  These are simply wrappers around those functions.
  */
 
-/* Magnitude. */
-
-/*static PyObject* get_s_mag(PyObject *self, void *v)
-{
-     Body *b = (Body*) self;
-     return PyFloat_FromDouble(get_mag(&b->obj));
-}*/
-
 /* Spectral codes. */
 
 static PyObject* get_f_spect(PyObject *self, void *v)
