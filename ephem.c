@@ -1160,8 +1160,6 @@ GET_FIELD(sun_visible, obj.pl_svis, PyFloat_FromDouble)
 #undef CARGS
 #define CARGS ,1
 
-GET_FIELD(apparent_ra, obj.s_gaera, build_hours)
-GET_FIELD(apparent_dec, obj.s_gaedec, build_degrees)
 GET_FIELD(az, obj.s_az, build_degrees)
 GET_FIELD(alt, obj.s_alt, build_degrees)
 
@@ -1319,10 +1317,6 @@ static PyGetSetDef Body_getset[] = {
      {"mag", Get_mag, 0, "magnitude"},
      {"size", Get_size, 0, "visual size (arcseconds)"},
 
-     {"apparent_ra", Get_apparent_ra, 0,
-      "apparent right ascension (hours of arc)"},
-     {"apparent_dec", Get_apparent_dec, 0,
-      "apparent declination (degrees)"},
      {"az", Get_az, 0, "azimuth (degrees)"},
      {"alt", Get_alt, 0, "altitude (degrees)"},
 
