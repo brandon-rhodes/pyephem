@@ -972,6 +972,12 @@ static PyObject* build_mag(double raw)
 
 static int Body_obj_cir(Body *body, char *fieldname, unsigned topocentric)
 {
+     if (body->obj.o_flags == 0) {
+	  PyErr_Format(PyExc_RuntimeError,
+		       "field %s undefined until first compute()",
+		       fieldname);
+	  return -1;
+     }
      if (topocentric && (body->obj.o_flags & VALID_TOPO) == 0) {
 	  PyErr_Format(PyExc_RuntimeError,
 		       "field %s undefined because the most recent compute() "
@@ -981,12 +987,6 @@ static int Body_obj_cir(Body *body, char *fieldname, unsigned topocentric)
      }
      if (body->obj.o_flags & VALID_OBJ)
 	  return 0;
-     if (body->obj.o_flags == 0) {
-	  PyErr_Format(PyExc_RuntimeError,
-		       "field %s undefined until first compute()",
-		       fieldname);
-	  return -1;
-     }
      pref_set(PREF_EQUATORIAL, body->obj.o_flags & VALID_TOPO ?
 	      PREF_GEO : PREF_TOPO);
      obj_cir(& body->now, & body->obj);
@@ -1072,7 +1072,7 @@ static int Saturn_satrings(Saturn *saturn, char *fieldname)
     return builder(body->field); \
   }
 
-/* Attributes computed by obj_cir needing only a date and epoch. */
+/* Attributes computed by obj_cir that need only a date and epoch. */
 
 #define BODY Body
 #define CALCULATOR Body_obj_cir
@@ -1090,7 +1090,7 @@ GET_FIELD(sdist, obj.s_sdist, PyFloat_FromDouble)
 GET_FIELD(edist, obj.s_edist, PyFloat_FromDouble)
 GET_FIELD(phase, obj.s_phase, PyFloat_FromDouble)
 
-/* Attributes computed by obj_cir that require an Observer. */
+/* Attributes computed by obj_cir that need an Observer. */
 
 #undef CARGS
 #define CARGS ,1
@@ -1176,16 +1176,6 @@ static PyGetSetDef body_getset[] = {
 };
 
 static PyGetSetDef body_ss_getset[] = {
-     {"hlong", Get_hlong, 0, "heliocentric longitude"},
-     {"hlat", Get_hlat, 0, "heliocentric latitude"},
-     {"sun_distance", Get_sdist, 0, "distance from sun (AU)"},
-     {"earth_distance", Get_edist, 0, "distance from earth (AU)"},
-     {"phase", Get_phase, 0, "phase (percent illuminated)"},
-     {NULL}
-};
-
-/* this is the same as the above, but omits sun_distance and phase */
-static PyGetSetDef body_sun_getset[] = {
      {"hlong", Get_hlong, 0, "heliocentric longitude"},
      {"hlat", Get_hlat, 0, "heliocentric latitude"},
      {"sun_distance", Get_sdist, 0, "distance from sun (AU)"},
@@ -1798,8 +1788,8 @@ static PyTypeObject SunType = {
      0,				/* tp_iternext */
      0,				/* tp_methods */
      0,				/* tp_members */
-     body_sun_getset,		/* tp_getset */
-     &BodyType,			/* tp_base */
+     0,				/* tp_getset */
+     &PlanetType,		/* tp_base */
      0,				/* tp_dict */
      0,				/* tp_descr_get */
      0,				/* tp_descr_set */
