@@ -861,13 +861,13 @@ using several techniques and formats:
 <dl>
 <dt><code>date(<i>raw_float</i>)</code>
 <br><code>date('<i>yyyy.y</i>')</code>
-<br><code>date('<i>yyyy/mm.m</i>')</code>
+<!-- <br><code>date('<i>yyyy/mm.m</i>')</code> -->
 <br><code>date('<i>yyyy/mm/dd.d</i>')</code>
 <br><code>date('<i>yyyy/mm/dd hh.h</i>')</code>
 <br><code>date('<i>yyyy/mm/dd hh/mm.m</i>')</code>
 <br><code>date('<i>yyyy/mm/dd hh/mm/ss.s</i>')</code>
-<br><code>date((<i>yyyy.y</i>,))</code>
-<br><code>date((<i>yyyy</i>, <i>mm.m</i>))</code>
+<br><code>date((<i>yyyy</i>,))</code>
+<br><code>date((<i>yyyy</i>, <i>mm</i>))</code>
 <br><code>date((<i>yyyy</i>, <i>mm</i>, <i>dd.d</i>))</code>
 <br><code>date((<i>yyyy</i>, <i>mm</i>, <i>dd</i>, <i>hh.h</i>))</code>
 <br><code>date((<i>yyyy</i>, <i>mm</i>, <i>dd</i>, <i>hh</i>,
@@ -997,14 +997,14 @@ for several other times during the day.
 <dt><b>Moon Attributes</b>
 <dd><code><i>body</i>.phase</code> --- the fraction of the lunar surface
  that appears illuminated from the earth
-<br><code><i>body</i>.colongitude</code> ---
+<br><code><i>body</i>.colong</code> ---
  the <i>selenographic colongitude</i>,
  the lunar longitude experiencing sunrise
-<br><code><i>body</i>.subsolar_latitude</code> --- the lunar latitude
+<br><code><i>body</i>.subsolar_lat</code> --- the lunar latitude
  of the location where the sun is directly overhead
-<br><code><i>body</i>.libration_latitude</code> --- the longitude of the
+<br><code><i>body</i>.libration_lat</code> --- the longitude of the
  point on the lunar surface facing the earth
-<br><code><i>body</i>.libration_longitude</code> --- the degrees by which
+<br><code><i>body</i>.libration_long</code> --- the degrees by which
  the point on the moon facing us is east or west 
 
 <dt><b>Saturn Attributes</b>

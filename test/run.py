@@ -104,15 +104,12 @@ attribute_list = (
      ('az', 'alt', 'apparent_ra', 'apparent_dec',
       'rise_time', 'rise_az', 'transit_time', 'transit_alt',
       'set_time', 'set_az')),
-    (Sun, False,
-     ('hlong', 'hlat', 'earth_distance')),
     (Planet, False,
      ('hlong', 'hlat', 'sun_distance', 'earth_distance', 'phase')),
     (Moon, False,
-     ('phase', 'colongitude', 'subsolar_latitude',
-      'libration_latitude', 'libration_longitude')),
+     ('colong', 'subsolar_lat', 'libration_lat', 'libration_long')),
     (Saturn, False,
-     ('etilt', 'stilt')),
+     ('earth_tilt', 'sun_tilt')),
     )
 
 class bodies(MyTestCase):
@@ -127,18 +124,18 @@ class bodies(MyTestCase):
     # value True for attributes which should not raise exceptions.
 
     def predict_attributes(self, body, was_computed, was_given_observer):
-        attributes = {}
+        predictions = {}
         for bodytype, needs_observer, attrs in attribute_list:
             for attr in attrs:
                 if not isinstance(body, bodytype):
-                    attributes[attr] = AttributeError
+                    predictions[attr] = AttributeError
                 elif not was_computed:
-                    attributes[attr] = RuntimeError
+                    predictions[attr] = RuntimeError
                 elif needs_observer and not was_given_observer:
-                    attributes[attr] = RuntimeError
+                    predictions[attr] = RuntimeError
                 else:
-                    attributes[attr] = True
-        return attributes
+                    predictions[attr] = None
+        return predictions
 
     # Try accessing each attribute in attribute_list from the given
     # body, recording the exceptions we receive in a dictionary, and
@@ -151,9 +148,9 @@ class bodies(MyTestCase):
                 try:
                     getattr(body, attr)
                 except:
-                    attributes[attr] = sys.exc_info()[0]
+                    attributes[attr] = sys.exc_info()[1]
                 else:
-                    attributes[attr] = True
+                    attributes[attr] = None
         return attributes
 
     # Use the above two functions to predict which attributes of the
@@ -164,18 +161,22 @@ class bodies(MyTestCase):
         p = self.predict_attributes(body, was_computed, was_given_observer)
         t = self.measure_attributes(body)
         for a in Set(p).union(t):
-            if p[a] != t[a]:
-                if was_computed:
-                    if was_given_observer:
-                        adjective = 'topo'
-                    else:
-                        adjective = 'geo'
-                    adjective += 'centrally computed'
+            if p[a] is None and t[a] is None:
+                continue
+            if p[a] and isinstance(t[a], p[a]):
+                continue
+            if was_computed:
+                if was_given_observer:
+                    adjective = 'topo'
                 else:
-                    adjective = 'uncomputed'
-                raise TestError('accessing %s of %s body %s'
-                                ' raised %r instead of %r'
-                                % (a, adjective, body, p[a], t[a]))
+                    adjective = 'geo'
+                adjective += 'centrically computed'
+            else:
+                adjective = 'uncomputed'
+            raise TestError('accessing %s of %s %s '
+                            'raised %r "%s" instead of %r'
+                            % (a, adjective, body,
+                               t[a], t[a].args[0], p[a]))
 
     def run(self, body):
         self.compare_attributes(body, False, False)
@@ -186,9 +187,10 @@ class bodies(MyTestCase):
         body.compute()
         self.compare_attributes(body, True, False)
 
-    def test_Sun(self):
-        fb = Sun()
-        self.run(fb)
+    def test_Planets(self):
+        for init in (Mercury, Venus, Mars, Jupiter, Saturn, Uranus,
+                     Neptune, Pluto, Sun, Moon):
+            self.run(init())
 
     def test_Fixed(self):
         fb = FixedBody()

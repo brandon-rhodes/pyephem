@@ -929,9 +929,8 @@ static PyObject* Body_writedb(PyObject *self)
 static PyObject* Body_str(PyObject *body_object)
 {
      Body *body = (Body*) body_object;
-     char *format = body->obj.o_type == PLANET ? "<%s>" :
-	  body->obj.o_name[0] ? "<%s \"%s\">" :
-	  "<%s%s>";
+     char *format = body->obj.o_type != PLANET && body->obj.o_name[0] ?
+	  "<%s \"%s\">" : "<%s>";
      return PyString_FromFormat
 	  (format, body->ob_type->tp_name, body->obj.o_name);
 }
@@ -1053,7 +1052,7 @@ static int Saturn_satrings(Saturn *saturn, char *fieldname)
 		       "field %s undefined until first compute()", fieldname);
 	  return -1;
      }
-     if (Body_obj_cir((Body*) saturn, fieldname, 1) == -1) return -1;
+     if (Body_obj_cir((Body*) saturn, fieldname, 0) == -1) return -1;
      sunpos(saturn->now.n_mjd, &lsn, &rsn, &bsn);
      satrings(saturn->obj.s_hlat, saturn->obj.s_hlong, saturn->obj.s_sdist,
 	      lsn + PI, rsn, saturn->now.n_mjd,
@@ -1187,11 +1186,11 @@ static PyGetSetDef body_ss_getset[] = {
 static PyGetSetDef moon_getset[] = {
      {"libration_lat", Get_llat, 0, "lunar libration (degrees latitude)"},
      {"libration_long", Get_llon, 0, "lunar libration (degrees longitude)"},
-     {"colongitude", Get_c, 0,
+     {"colong", Get_c, 0,
       "lunar selenographic colongitude (-lng of rising sun) (degrees)"},
      {"moon_phase", Get_k, 0,
       "illuminated fraction of lunar surface visible from earth"},
-     {"subsolar_latitude", Get_s, 0, "lunar latitude of subsolar point"},
+     {"subsolar_lat", Get_s, 0, "lunar latitude of subsolar point"},
      {NULL}
 };
 
