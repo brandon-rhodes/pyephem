@@ -1,10 +1,5 @@
 include COPYING
-include libastro/Copyright
-include libastro/P_.h libastro/astro.h libastro/chap95.h
-include libastro/circum.h libastro/deepconst.h libastro/preferences.h
-include libastro/satlib.h libastro/satspec.h libastro/sattypes.h
-include libastro/vector.h libastro/vsop87.h
-include src/angle_type.c src/basics.c src/body_types.c src/date_type.c
-include src/extras.c src/getset.c src/objects.c src/observer_type.c
 include doc/pyephem-manual.html
-include examples/halebopp.py
+include examples/*.py
+include libastro/*.h
+include src/*.c src/*.h
