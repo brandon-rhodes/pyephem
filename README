@@ -1,72 +1,43 @@
-PyEphem version 0.9
-25 July 1998
+PyEphem
+Version 3.5.2a
+4 March 2003
 
-INTRODUCTION ------------
-
-The PyEphem module offers a library of astronomical computation
-routines accessible from the Python scripting language.  It was
-written and is maintained by Brandon Craig Rhodes, whose contact
-information is:
+PyEphem provides an `ephem' module providing many astronomical
+computation routines accessible from the Python scripting language.
+It is written and maintained by Brandon Craig Rhodes, whom you can
+find at:
 
 	brandon@rhodesmill.org
 	http://www.rhodesmill.org/brandon/
 
 The computation routines themselves were extracted from the XEphem
-program of Elwood Charles Downey (ecdowney@ClearSkyInstitute.com); the
-program is housed at http://iraf.noao.edu/~ecdowney/xephem.html.
+program of Elwood Charles Downey (ecdowney@ClearSkyInstitute.com),
+available from http://iraf.noao.edu/~ecdowney/xephem.html.
 
+See the COPYING file in this directory for copyright information.
 
-COPYRIGHT ------------
+INSTALLING
 
-Note that Elwood Charles Downey is the author of the routines in the
-libastro directory, which are part of his XEphem program; their
-copyright appears in the file `pyephem/libastro/Copyright'.  The
-libastro library appears in the PyEphem distribution with his
-permission.  Only the source files in the main `pyephem' directory
-itself (which amount to about one-twentieth the size of Elwood's) are
-my own; they are licensed under the terms of the GNU General Public
-License.
+Change directory to pyephem-3.5.2a and use the setup.py script to
+build or install the package.  Typically, entering
 
+	python setup.py install
 
-BUILDING AND INSTALLING ------------
+(which you will probably need to do as root, unless you have your own
+version of Python in your home directory) will both build and install
+the module, which you can use in your Python programs with either an
 
-To compile (but not to use) PyEphem requires:
+	import ephem
 
-	SWIG, which may be obtained at http://www.swig.org/.
-	GNU m4
-	C compiler and linker
+or perhaps a
 
-The options provided to the linker successfully produce a shared
-library under Red Hat Linux; for different operating systems you
-may have to alter its options in the makefile.
+	from ephem import *
 
-To make PyEphem:
+The scripts in the examples/ directory might help you learn how to use
+PyEphem, and also to test whether it is running properly on your
+system.
 
-	Go into the `libastro' directory
-	Type `make'
-
-This will produce a Python module in two pieces, `ephem.py' and
-`ephemcmodule.so'.  It will also produce documentation, in a file
-called `pyephem.html'.
-
-To install PyEphem:
-
-	Check the PYTHON variable in the makefile
-	Type `make install'
-
-
-TESTING ------------
-
-In the tests directory there is currently a single test program, which
-determines the locations of six kinds of object on a given date, and
-compares the result with those given by the XEphem program itself.
-
-Remember to set PYTHONPATH to point to the directory that contains the
-`ephem.py' and `ephemcmodule.so' files if you have not yet (or cannot)
-install them in the default Python directories.
-
-
-CONTRIBUTING ------------
+CONTRIBUTING
 
 If you write useful scripts with PyEphem, please consider contributing
 them to the `examples/' directory.  In particular users would probably
