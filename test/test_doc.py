@@ -15,7 +15,7 @@ sys.path.insert(0, build_lib)
 
 import ephem
 
-premanual_path = test_dir + '/../doc/premanual.html'
+manual_path = test_dir + '/../doc/pyephem-manual.html'
 
 inpre = 0
 scope = { 'ephem' : ephem }
@@ -29,6 +29,7 @@ def compare(lineno, command, result):
     real_stdout, real_stderr = sys.stdout, sys.stderr
     sio = StringIO()
     sys.stdout = sio
+    command = command.replace('<b>', '').replace('</b>', '')
     try:
         exec command in scope
         output = sio.getvalue()
@@ -57,9 +58,8 @@ state = 'waiting-for-pre'
 lineno = 0
 n_success = n_failure = 0
 
-for line in file(premanual_path):
+for line in file(manual_path):
     lineno += 1
-    #print lineno
     if state == 'waiting-for-pre':
         if line == pre_start:
             state = 'waiting-for-command'
