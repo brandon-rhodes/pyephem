@@ -217,7 +217,7 @@ initephem(void)
      Angle_Type.tp_base = &PyFloat_Type;
 
      Body_Type.ob_type = &PyType_Type;
-     Body_Type.tp_dealloc = _PyObject_Del;
+     Body_Type.tp_dealloc = (destructor) _PyObject_Del;
      Body_Type.tp_getattro = PyObject_GenericGetAttr;
      Body_Type.tp_alloc = PyType_GenericAlloc;
      Body_Type.tp_new = PyType_GenericNew;
@@ -243,7 +243,7 @@ initephem(void)
      Date_Type.tp_base = &PyFloat_Type;
 
      Observer_Type.ob_type = &PyType_Type;
-     Observer_Type.tp_dealloc = _PyObject_Del;
+     Observer_Type.tp_dealloc = (destructor) _PyObject_Del;
      Observer_Type.tp_getattro = PyObject_GenericGetAttr;
 
      /* Build type dictionaries. */
