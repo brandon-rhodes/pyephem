@@ -88,7 +88,7 @@ static PyObject* getf_rh(PyObject *self, void *v)
 static int setf_rh(PyObject *self, PyObject *value, void *v)
 {
      int status;
-     THE_FLOAT = to_angle(value, radhr(1), &status);
+     THE_FLOAT = (float) to_angle(value, radhr(1), &status);
      return status;
 }
 
@@ -116,7 +116,7 @@ static PyObject* getf_rd(PyObject *self, void *v)
 static int setf_rd(PyObject *self, PyObject *value, void *v)
 {
      int status;
-     THE_FLOAT = to_angle(value, raddeg(1), &status);
+     THE_FLOAT = (float) to_angle(value, raddeg(1), &status);
      return status;
 }
 
@@ -131,7 +131,7 @@ static PyObject* getf_dd(PyObject *self, void *v)
 static int setf_dd(PyObject *self, PyObject *value, void *v)
 {
      int status;
-     THE_FLOAT = to_angle(value, raddeg(1), &status);
+     THE_FLOAT = (float) to_angle(value, raddeg(1), &status);
      return status;
 }
 
@@ -174,7 +174,7 @@ static int setf_mjd(PyObject *self, PyObject *value, void *v)
 {
      double result;
      if (parse_mjd(value, &result)) return -1;
-     THE_FLOAT = result;
+     THE_FLOAT = (float) result;
      return 0;
 }
 
@@ -243,7 +243,7 @@ static int set_f_spect(PyObject *self, PyObject *value, void *v)
 static PyObject* get_f_ratio(PyObject *self, void *v)
 {
      BodyObject *b = (BodyObject*) self;
-     return PyInt_FromLong(get_ratio(&b->obj));
+     return PyFloat_FromDouble(get_ratio(&b->obj));
 }
 
 static int set_f_ratio(PyObject *self, PyObject *value, void *v)

@@ -86,7 +86,7 @@ static PyMemberDef ephem_observer_members[] = {
 #undef OFF
 
 static PyTypeObject Observer_Type = {
-     PyObject_HEAD_INIT(&PyType_Type)
+     PyObject_HEAD_INIT(NULL)
      0,
      "Observer",
      sizeof(ObserverObject),

@@ -38,7 +38,7 @@ static int angle_print(PyObject *self, FILE *fp, int flags)
 }
 
 static PyTypeObject Angle_Type = {
-     PyObject_HEAD_INIT(&PyType_Type)
+     PyObject_HEAD_INIT(NULL)
      0,
      "angle",
      sizeof(AngleObject),
@@ -69,7 +69,7 @@ static PyTypeObject Angle_Type = {
      0,				/* tp_methods */
      0,				/* tp_members */
      0,				/* tp_getset */
-     &PyFloat_Type,		/* tp_base */
+     0, /*&PyFloat_Type*/	/* tp_base */
      0,				/* tp_dict */
      0,				/* tp_descr_get */
      0,				/* tp_descr_set */

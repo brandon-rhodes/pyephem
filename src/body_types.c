@@ -216,7 +216,7 @@ static PyObject* build_mag(double raw)
    not.  By checking body->now_valid they can deteremine how much
    information the last compute() call supplied. */
 
-static int body_obj_cir(BodyObject *body, char *fieldname, int threshold)
+static int body_obj_cir(BodyObject *body, char *fieldname, unsigned threshold)
 {
      if (!body->obj_valid) {
 	  switch (body->now_valid) {
@@ -575,7 +575,7 @@ static PyMemberDef body_es_members[] = {
  */
 
 static PyTypeObject Body_Type = {
-     PyObject_HEAD_INIT(&PyType_Type)
+     PyObject_HEAD_INIT(NULL)
      0,
      "Body",
      sizeof(BodyObject),
@@ -619,7 +619,7 @@ static PyTypeObject Body_Type = {
 };
 
 static PyTypeObject FixedBody_Type = {
-     PyObject_HEAD_INIT(&PyType_Type)
+     PyObject_HEAD_INIT(NULL)
      0,
      "FixedBody",
      sizeof(BodyObject),
@@ -662,7 +662,7 @@ static PyTypeObject FixedBody_Type = {
 };
 
 static PyTypeObject Planet_Type = {
-     PyObject_HEAD_INIT(&PyType_Type)
+     PyObject_HEAD_INIT(NULL)
      0,
      "Planet",
      sizeof(BodyObject),
@@ -705,7 +705,7 @@ static PyTypeObject Planet_Type = {
 };
 
 static PyTypeObject Saturn_Type = {
-     PyObject_HEAD_INIT(&PyType_Type)
+     PyObject_HEAD_INIT(NULL)
      0,
      "Saturn",
      sizeof(SaturnObject),
@@ -748,7 +748,7 @@ static PyTypeObject Saturn_Type = {
 };
 
 static PyTypeObject Moon_Type = {
-     PyObject_HEAD_INIT(&PyType_Type)
+     PyObject_HEAD_INIT(NULL)
      0,
      "Moon",
      sizeof(MoonObject),
@@ -791,7 +791,7 @@ static PyTypeObject Moon_Type = {
 };
 
 static PyTypeObject EllipticalBody_Type = {
-     PyObject_HEAD_INIT(&PyType_Type)
+     PyObject_HEAD_INIT(NULL)
      0,
      "EllipticalBody",
      sizeof(BodyObject),
@@ -834,7 +834,7 @@ static PyTypeObject EllipticalBody_Type = {
 };
 
 static PyTypeObject HyperbolicBody_Type = {
-     PyObject_HEAD_INIT(&PyType_Type)
+     PyObject_HEAD_INIT(NULL)
      0,
      "HyperbolicBody",
      sizeof(BodyObject),
@@ -877,7 +877,7 @@ static PyTypeObject HyperbolicBody_Type = {
 };
 
 static PyTypeObject ParabolicBody_Type = {
-     PyObject_HEAD_INIT(&PyType_Type)
+     PyObject_HEAD_INIT(NULL)
      0,
      "ParabolicBody",
      sizeof(BodyObject),
@@ -920,7 +920,7 @@ static PyTypeObject ParabolicBody_Type = {
 };
 
 static PyTypeObject EarthSatellite_Type = {
-     PyObject_HEAD_INIT(&PyType_Type)
+     PyObject_HEAD_INIT(NULL)
      0,
      "EarthSatellite",
      sizeof(BodyObject),

@@ -165,7 +165,7 @@ static PyMethodDef date_methods[] = {
 };
 
 static PyTypeObject Date_Type = {
-     PyObject_HEAD_INIT(&PyType_Type)
+     PyObject_HEAD_INIT(NULL)
      0,
      "date",
      sizeof(PyFloatObject),
@@ -196,7 +196,7 @@ static PyTypeObject Date_Type = {
      date_methods,		/* tp_methods */
      0,				/* tp_members */
      0,				/* tp_getset */
-     &PyFloat_Type,		/* tp_base */
+     0, /*&PyFloat_Type,*/	/* tp_base */
      0,				/* tp_dict */
      0,				/* tp_descr_get */
      0,				/* tp_descr_set */
