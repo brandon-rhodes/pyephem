@@ -38,3 +38,6 @@ class date_suite(unittest.TestCase):
     def test_date_triple_value(self):
         self.assertEqual(self.date.tuple(),
                          (2004, 9, 4, 0, 17, 15.799999977461994))
+
+if __name__ == '__main__':
+    unittest.main()
