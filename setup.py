@@ -1,7 +1,7 @@
 from distutils.core import setup, Extension
 
 setup(name = 'pyephem',
-      version = '3.5.2b2',
+      version = '3.5.2b2a',
       description = 'Python interface to the XEphem libastro library',
       author = 'Brandon Craig Rhodes',
       author_email = 'brandon@rhodesmill.org',
