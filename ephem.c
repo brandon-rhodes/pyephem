@@ -1296,35 +1296,35 @@ static int Set_gk(PyObject *self, PyObject *value, void *v)
 #define OFF(member) offsetof(Body, obj.member)
 
 static PyGetSetDef Body_getset[] = {
-     {"name", Get_name, Set_name, "arbitrary name of up to 20 characters"},
+     {"name", Get_name, Set_name, "object name (up to 20 characters)"},
 
      {"ra", Get_ra, 0, "right ascension (hours of arc)"},
      {"dec", Get_dec, 0, "declination (degrees)"},
-     {"elong", Get_elong, 0, "elongation"},
+     {"elong", Get_elong, 0, "elongation (degrees)"},
      {"mag", Get_mag, 0, "magnitude"},
-     {"size", Get_size, 0, "visual size in arcseconds"},
+     {"size", Get_size, 0, "visual size (arcseconds)"},
 
      {"apparent_ra", Get_gaera, 0, "apparent right ascension (hours of arc)"},
      {"apparent_dec", Get_gaedec, 0, "apparent declination (degrees)"},
-     {"az", Get_az, 0, "azimuth"},
-     {"alt", Get_alt, 0, "altitude"},
+     {"az", Get_az, 0, "azimuth (degrees)"},
+     {"alt", Get_alt, 0, "altitude (degrees)"},
 
      {"rise_time", Get_risetm, 0, "rise time"},
-     {"rise_az", Get_riseaz, 0, "rise azimuth"},
+     {"rise_az", Get_riseaz, 0, "rise azimuth (degrees)"},
      {"transit_time", Get_trantm, 0, "transit time"},
-     {"transit_alt", Get_tranalt, 0, "transit altitude"},
+     {"transit_alt", Get_tranalt, 0, "transit altitude (degrees)"},
      {"set_time", Get_settm, 0, "set time"},
-     {"set_az", Get_setaz, 0, "set azimuth"},
+     {"set_az", Get_setaz, 0, "set azimuth (degrees)"},
      {"circumpolar", Get_circumpolar, 0,
       "whether object remains above the horizon this day"},
      {"neverup", Get_neverup, 0,
-      "whether the object never rises above the horizon this day"},
+      "whether object never rises above the horizon this day"},
      {NULL}
 };
 
 static PyGetSetDef Planet_getset[] = {
-     {"hlong", Get_hlong, 0, "heliocentric longitude"},
-     {"hlat", Get_hlat, 0, "heliocentric latitude"},
+     {"hlong", Get_hlong, 0, "heliocentric longitude (degrees)"},
+     {"hlat", Get_hlat, 0, "heliocentric latitude (degrees)"},
      {"sun_distance", Get_sdist, 0, "distance from sun (AU)"},
      {"earth_distance", Get_edist, 0, "distance from earth (AU)"},
      {"phase", Get_phase, 0, "phase (percent illuminated)"},
@@ -1340,16 +1340,16 @@ static PyGetSetDef Planet_getset[] = {
 static PyGetSetDef PlanetMoon_getset[] = {
      {"name", Get_name, Set_name, "arbitrary name of up to 20 characters"},
 
-     {"ra", Get_ra, 0, "right ascension (hours of arc)"},
-     {"dec", Get_dec, 0, "declination (degrees)"},
+     {"ra", Get_ra, 0, "right ascension (in hours of arc)"},
+     {"dec", Get_dec, 0, "declination (in degrees)"},
      {"mag", Get_mag, 0, "magnitude"},
 
-     {"az", Get_az, 0, "azimuth"},
-     {"alt", Get_alt, 0, "altitude"},
+     {"az", Get_az, 0, "azimuth (degrees)"},
+     {"alt", Get_alt, 0, "altitude (degrees)"},
 
-     {"x", Get_x, 0, "offset in planet radii"},
-     {"y", Get_y, 0, "offset in planet radii"},
-     {"z", Get_z, 0, "offset in planet radii"},
+     {"x", Get_x, 0, "distance east of planet (in planet radii)"},
+     {"y", Get_y, 0, "distance south of planet (in planet radii)"},
+     {"z", Get_z, 0, "distance in front of planet (in planet radii)"},
      {"earth_visible", Get_earth_visible, 0, "whether visible from earth"},
      {"sun_visible", Get_sun_visible, 0, "whether visible from sun"},
      {NULL}
@@ -1362,7 +1362,7 @@ static PyGetSetDef Moon_getset[] = {
       "lunar selenographic colongitude (-lng of rising sun) (degrees)"},
      {"moon_phase", Get_k, 0,
       "illuminated fraction of lunar surface visible from earth"},
-     {"subsolar_lat", Get_s, 0, "lunar latitude of subsolar point"},
+     {"subsolar_lat", Get_s, 0, "lunar latitude of subsolar point (degrees)"},
      {NULL}
 };
 
@@ -1379,14 +1379,14 @@ static PyGetSetDef FixedBody_getset[] = {
      {"_ratio", get_f_ratio, set_f_ratio,
       "ratio of minor to major diameter", VOFF(f_ratio)},
      {"_pa", get_f_pa, set_f_pa, "position angle E of N", VOFF(f_pa)},
-     {"_epoch", getf_mjd, setf_mjd, "Date", VOFF(f_epoch)},
-     {"_ra", getf_rh, setf_rh, "Fixed right ascension", VOFF(f_RA)},
-     {"_dec", getf_rd, setf_rd, "Fixed declination", VOFF(f_dec)},
+     {"_epoch", getf_mjd, setf_mjd, "date", VOFF(f_epoch)},
+     {"_ra", getf_rh, setf_rh, "fixed right ascension", VOFF(f_RA)},
+     {"_dec", getf_rd, setf_rd, "fixed declination", VOFF(f_dec)},
      {NULL}
 };
 
 static PyMemberDef FixedBody_members[] = {
-     {"_class", T_CHAR, OFF(f_class), RO, "fixed object classification"},
+     {"_class", T_CHAR, OFF(f_class), RO, "object classification"},
      {NULL}
 };
 
@@ -1414,31 +1414,31 @@ static PyMemberDef EllipticalBody_members[] = {
 };
 
 static PyGetSetDef HyperbolicBody_getset[] = {
-     {"_inc", getf_dd, setf_dd, "Inclination (degrees)", VOFF(h_inc)},
+     {"_inc", getf_dd, setf_dd, "inclination (degrees)", VOFF(h_inc)},
      {"_Om", getf_dd, setf_dd,
-      "Longitude of ascending node (degrees)", VOFF(h_Om)},
+      "longitude of ascending node (degrees)", VOFF(h_Om)},
      {"_om", getf_dd, setf_dd,
-      "Argument of perihelion (degrees)", VOFF(h_om)},
+      "argument of perihelion (degrees)", VOFF(h_om)},
      {NULL}
 };
 
 static PyMemberDef HyperbolicBody_members[] = {
      {"_epoch", T_DOUBLE, OFF(h_epoch), 0,
       "Equinox year of _inc, _Om, and _om (mjd)"},
-     {"_ep", T_DOUBLE, OFF(h_ep), 0, "Epoch of perihelion (mjd)"},
-     {"_e", T_FLOAT, OFF(h_e), 0, "Eccentricity"},
-     {"_qp", T_FLOAT, OFF(h_qp), 0, "Perihelion distance (AU)"},
-     {"_g", T_FLOAT, OFF(h_g), 0, "Magnitude coefficient g"},
-     {"_k", T_FLOAT, OFF(h_k), 0, "Magnitude coefficient g"},
-     {"_size", T_FLOAT, OFF(h_size), 0, "Angular size at 1 AU (arcseconds)"},
+     {"_ep", T_DOUBLE, OFF(h_ep), 0, "epoch of perihelion (mjd)"},
+     {"_e", T_FLOAT, OFF(h_e), 0, "eccentricity"},
+     {"_qp", T_FLOAT, OFF(h_qp), 0, "perihelion distance (AU)"},
+     {"_g", T_FLOAT, OFF(h_g), 0, "magnitude coefficient g"},
+     {"_k", T_FLOAT, OFF(h_k), 0, "magnitude coefficient g"},
+     {"_size", T_FLOAT, OFF(h_size), 0, "angular size at 1 AU (arcseconds)"},
      {NULL}
 };
 
 static PyGetSetDef ParabolicBody_getset[] = {
-     {"_inc", getf_dd, setf_dd, "Inclination (degrees)", VOFF(p_inc)},
-     {"_om", getf_dd, setf_dd, "Argument of perihelion (degrees)", VOFF(p_om)},
+     {"_inc", getf_dd, setf_dd, "inclination (degrees)", VOFF(p_inc)},
+     {"_om", getf_dd, setf_dd, "argument of perihelion (degrees)", VOFF(p_om)},
      {"_Om", getf_dd, setf_dd,
-      "Longitude of ascending node (degrees)", VOFF(p_Om)},
+      "longitude of ascending node (degrees)", VOFF(p_Om)},
      {NULL}
 };
 
@@ -1453,17 +1453,17 @@ static PyMemberDef ParabolicBody_members[] = {
 };
 
 static PyGetSetDef EarthSatellite_getset[] = {
-     {"_inc", getf_dd, setf_dd, "Inclination (degrees)", VOFF(es_inc)},
+     {"_inc", getf_dd, setf_dd, "inclination (degrees)", VOFF(es_inc)},
      {"_raan", getf_dd, setf_dd,
-      "Right ascension of ascending node (degrees)", VOFF(es_raan)},
+      "right ascension of ascending node (degrees)", VOFF(es_raan)},
      {"_ap", getf_dd, setf_dd,
-      "Argument of perigee at epoch (degrees)", VOFF(es_ap)},
+      "argument of perigee at epoch (degrees)", VOFF(es_ap)},
      {"_M", getf_dd, setf_dd,
-      "Mean anomaly (degrees from perigee at epoch)", VOFF(es_M)},
+      "mean anomaly (degrees from perigee at epoch)", VOFF(es_M)},
      {"sublat", getf_rd, 0,
-      "Latitude below satellite (degrees east)", VOFF(s_sublat)},
+      "latitude below satellite (degrees east)", VOFF(s_sublat)},
      {"sublong", getf_rd, 0,
-      "Longitude below satellite (degrees north)", VOFF(s_sublng)},
+      "longitude below satellite (degrees north)", VOFF(s_sublng)},
      {NULL}
 };
 
@@ -1479,11 +1479,12 @@ static PyMemberDef EarthSatellite_members[] = {
 
      /* results: */
 
-     {"elevation", T_FLOAT, OFF(s_elev), RO, "height above sea level (m)"},
+     {"elevation", T_FLOAT, OFF(s_elev), RO,
+      "satellite height above sea level (meters)"},
      {"range", T_FLOAT, OFF(s_range), RO,
-      "distance from observer to satellite (m)"},
+      "distance from observer to satellite (meters)"},
      {"range_velocity", T_FLOAT, OFF(s_rangev), RO,
-      "range rate of change (m/s)"},
+      "range rate of change (meters per second)"},
      {"eclipsed", T_INT, OFF(s_eclipsed), RO,
       "whether satellite is in earth's shadow"},
      {NULL}
