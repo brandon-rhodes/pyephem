@@ -432,7 +432,7 @@ Since atmospheric refraction varies with temperature and pressure,
 you can improve the accuracy of PyEphem
 by providing these values from a local forecast,
 or at least from average values for your location and season.
-By default an <tt>Observer</tt> uses 15&deg;C and 1013~mB,
+By default an <tt>Observer</tt> uses 15&deg;C and 1010~mB,
 the values for these parameters at sea level
 in the standard atmosphere model used in aviation.
 Setting the pressure to zero
@@ -681,7 +681,7 @@ beginning with one like the above but for a moving object:
  is probably useless:
  it computes the current position of <tt>halley</tt>,
  but returns coordinates relative
- to the direction the earth's axis pointed in the year~1066.
+ to the direction the earth's axis was pointing in the year~1066.
  Unless you use a Conquest-era star atlas, this is not useful.
 <li><code>halley.compute('1066', epoch='1066')</code>
  is slightly more promising:
@@ -758,72 +758,69 @@ not how they are positioned with respect to you.
 <hr>
 <h2>The PyEphem Reference</h2>
 
-<h3>1. Module Contents.</h3>
+<h3>1. Module Contents: Objects.</h3>
 
 <dl class=ref>
 <dt>
-<code>Sun()
-Moon()
-Mercury()
-Venus()
-Mars()
-Jupiter()
-Saturn()
-Uranus()
-Neptune()
-Pluto()</code>
+
+<code>Sun() Moon() Mercury() Venus() Mars() Jupiter() Saturn()
+Uranus() Neptune() Pluto()
+<br>Phobos() Deimos()
+<br>Io() Europa() Ganymede() Callisto()
+<br>Mimas() Enceladus() Tethys() Dione() Rhea() Titan() Hyperion() Iapetus()
+<br>Ariel() Umbriel() Titania() Oberon() Miranda()</code>
+
 <dd>
-Each of these functions creates and returns
+These calls each create and return
 an instance of a major solar-system body,
-whose position XEphem already knows how to compute
+whose position PyEphem knows how to compute
 using high accuracy formulae and series.
+Any of these functions can be given arguments,
+which will be used to call the <tt>compute()</tt> method of the new object
+before it is returned to you.
+(Only <tt>Saturn</tt> and the <tt>Moon</tt> are actual type objects;
+the others return instances
+of either the <tt>Planet</tt> or <tt>PlanetMoon</tt> types.)
+
+<dt>
+<code>FixedBody() EllipticalBody() ParabolicBody() HyperbolicBody()
+ EarthSatellite()</code>
+<dd>
+Calling one of these type objects
+creates a blank and uninitialized body
+whose orbital elements must be filled in before use;
+<a href="#orbital-elements">see below</a>
+for the orbital elements required for each type of body.
+
 <dt>
 <code>readdb(<i>line</i>)</code>
 <dd>
-This function accepts an entry from an XEphem database file
-and returns an object representing it.
-Problems parsing the line result in a <tt>ValueError</tt> being raised.
-Its type will be one of the following five,
-with all relevant orbital elements already set.
+Parse an entry from an XEphem database file
+and return an instance of the object it describes.
+If an error is encountered parsing the database line,
+<tt>ValueError</tt> is raised.
+The type of the returned object will be one of the five listed above,
+with all of its orbital elements already set.
+
 <dt>
 <code>readtle(<i>name</i>, <i>line1</i>, <i>line2</i>)</code>
 <dd>
 This function parses an earth satellite description
-that is in the Two-Line Element format used by NORAD.
-The resulting object will be an <tt>EarthSatellite</tt>.
+that is in the Two-Line Element format used by NORAD,
+and returns the result as an <tt>EarthSatellite</tt>.
+
 <dt>
-<code>FixedBody()
- EllipticalBody() ParabolicBody() HyperbolicBody()
- EarthSatellite()</code>
+<code>Observer()</code>
 <dd>
-These create blank and uninitialized bodies
-whose orbital elements you must set before using them;
-<a href="#orbital-elements">see below</a>
-for the orbital elements required for each type of body.
-<dt><code>constellation(<i>body</i>)</code>
-<br><code>constellation((<i>ra</i>, <i>dec</i>))</code>
-<br><code>constellation((<i>ra</i>, <i>dec</i>), epoch=<i>epoch</i>)</code>
-<dd>
-Determines the constellation in which the given body or coordinates lie.
-If you provide coordinates without an epoch,
-then epoch 2000 is assumed.
-<dt>
-<code>separation(<i>position0</i>, <i>position1</i>)</code>
-<dd>
-Returns the angle in degrees between two positions on a sphere.
-Each position should be a coordinate pair
-whose first element measures angle around the sphere's equator,
-and whose second specifies angle above or below its equator.
-(Common examples of such pairs are right ascension and declination,
-and longitude and latitude.)
-While each coordinate pair can simply be a sequence of two floats,
-you can also submit an <tt>Observer</tt>,
-whose longitude and latitude will be used,
-or a celestial body,
-whose right ascension and declination will be used.
+This returns an <tt>Observer</tt> object
+with which the user can describe a position on the Earth's surface
+together with the atmospheric conditions.
+<a href="#observer">See below</a> for the fields supported
+by these objects,
+which can be passed to the <tt>compute()</tt> method of any body.
 </dl>
 
-<h3>2. Angles and Times</h3>
+<h3>2. Module Contents: Angles and Times</h3>
 
 Every <tt>ephem</tt> object and method that returns an angle
 will return a floating point number
@@ -857,11 +854,11 @@ uses hours of arc (of which there are twenty-four in a circle).
 
 Dates are stored as the number of days since noon on 1899 December~31,
 and like angles yield simple floats when used in computations.
-They can be created by the <tt>date</tt> function
-using several techniques and formats:
+Dates can be created in several ways:
 
 <dl>
-<dt><code>date(<i>raw_float</i>)</code>
+<dt><code>now()</code>
+<br><code>date(<i>raw_float</i>)</code>
 <br><code>date('<i>yyyy.y</i>')</code>
 <!-- <br><code>date('<i>yyyy/mm.m</i>')</code> -->
 <br><code>date('<i>yyyy/mm/dd.d</i>')</code>
@@ -882,22 +879,52 @@ In addition to using dates as floats,
 and as strings through <tt>str()</tt> and <tt>print</tt>,
 they can be extracted in two other forms:
 
-<p>
+<dl><dt>
 <code><i>date</i>.triple()</code> ---
 Returns the date as <tt>(<i>year</i>, <i>month</i>, <i>day.fraction</i>)</tt>.
 <br><code><i>date</i>.tuple()</code> ---
 Returns the date as <tt>(<i>year</i>, <i>month</i>, <i>day</i>,
  <i>hour</i>, <i>minute</i>, <i>second.fraction</i>)</tt>.
-<p>
+</dl>
 
 Three constants are provided to help increment and decrement dates:
 
-<p>
-<code>hour</code> = one twenty-fourth
+<dl><dt>
+<code>hour</code> = one twenty-fourth of a day
 <br><code>minute</code> = one sixtieth of an hour
 <br><code>second</code> = one sixtieth of a minute
+</dl>
 
-<h3>3. Observer Objects</h3>
+<h3>3. Module Contents: Functions</h3>
+
+<dl>
+
+<dt><code>constellation(<i>body</i>)</code>
+<br><code>constellation((<i>ra</i>, <i>dec</i>))</code>
+<br><code>constellation((<i>ra</i>, <i>dec</i>), epoch=<i>epoch</i>)</code>
+<dd>
+Determines the constellation in which the given body or coordinates lie.
+If you provide coordinates without an epoch,
+then epoch 2000 is assumed.
+
+<dt>
+<code>separation(<i>position0</i>, <i>position1</i>)</code>
+<dd>
+Returns the angle in degrees between two positions on a sphere.
+Each position should be a coordinate pair
+whose first element measures angle around the sphere's equator,
+and whose second specifies angle above or below its equator.
+(Common examples of such pairs are right ascension and declination,
+and longitude and latitude.)
+While each coordinate pair can simply be a sequence of two floats,
+you can also submit an <tt>Observer</tt>,
+whose longitude and latitude will be used,
+or a celestial body,
+whose right ascension and declination will be used.
+
+</dl>
+
+<a name="observer"><h3>4. Observer Objects</h3></a>
 
 Default values are shown in parenthesis.
 <p>
@@ -912,14 +939,14 @@ Default values are shown in parenthesis.
 <br><code><i>observer</i>.temp</code> --- temperature in degrees centigrade
  (15&deg;C)
 <br><code><i>observer</i>.pressure</code> --- atmospheric pressure in milibars
- (1013~mB)
+ (1010~mB)
 <p>
 The <tt>temp</tt> and <tt>pressure</tt> are used
 to estimate how the object's position will be distorted by the atmosphere
-when it is close to the horizon;
-setting <tt>pressure</tt> to zero makes PyEphem ignore atmospheric refraction.
+when it is close to the horizon.
+Setting <tt>pressure</tt> to zero makes PyEphem ignore atmospheric refraction.
 
-<h3>4. Body Methods</h3>
+<h3>5. Body Methods</h3>
 
 <dl class=ref>
 <dt>
@@ -946,9 +973,13 @@ and for the time and epoch it specifies.
 This returns a string representing the object in ephem database format;
 you can recreate the object at any later time
 by submitting this string to the module's <tt>readdb()</tt> function.
+<dt>
+<code><i>body</i>.copy()</code><br>
+<dd>
+Returns a new copy of the body.
 </dl>
 
-<h3>5. Body Attributes</h3>
+<h3>6. Body Attributes</h3>
 
 <a name="bodyattrs">These attributes</a>
 store the results of the most recent <tt>compute()</tt>
@@ -975,17 +1006,21 @@ before the first call, most of these values are zero.
  --- the apparent position of the object,
  in hours of right ascension and degrees of declination,
  when viewed by an observer through the distorting lens of the atmosphere
- (which typically raises the altitude of objects near the edge of the horizon)
+ (which typically increases the altitude
+  of objects near the edge of the horizon)
 <br>
 <br><code><i>body</i>.rise_time, <i>body</i>.rise_az,
 <br><i>body</i>.transit_time, <i>body</i>.transit_alt,
-<br><i>body</i>.set_time, <i>body</i>.set_az</code>
+<br><i>body</i>.set_time, <i>body</i>.set_az,
+<br><i>body</i>.circumpolar, <i>body</i>.neverup</code>
 <br>--- these attributes establish when and where the object rises,
 transits, and sets on the day for which its position has been computed.
-Note when accessing these attributes
-that their computation can be expensive,
-since they must recompute the object's position
-for several other times during the day.
+Any of the times or positions might be <tt>None</tt>
+if PyEphem does not find that the object rose, passed the meridian, or set
+on the given day.
+Both <tt>circumpolar</tt> and <tt>neverup</tt> are booleans,
+indicating respectively whether the object stayed above the horizon all day,
+or remained below the horizon all day.
 
 <dt><b>Solar System Position</b>
 (available for all objects that orbit the sun)
@@ -996,26 +1031,40 @@ for several other times during the day.
 <br><code><i>body</i>.phase</code> --- percent of the body illuminated
  when viewed from earth
 
-<dt><b>Moon Attributes</b>
-<dd><code><i>body</i>.phase</code> --- the fraction of the lunar surface
- that appears illuminated from the earth
-<br><code><i>body</i>.colong</code> ---
- the <i>selenographic colongitude</i>,
- the lunar longitude experiencing sunrise
-<br><code><i>body</i>.subsolar_lat</code> --- the lunar latitude
- of the location where the sun is directly overhead
-<br><code><i>body</i>.libration_lat</code> --- the longitude of the
- point on the lunar surface facing the earth
-<br><code><i>body</i>.libration_long</code> --- the degrees by which
- the point on the moon facing us is east or west 
-
 <dt><b>Saturn Attributes</b>
 <dd><code><i>body</i>.earth_tilt, <i>body</i>.sun_tilt</code> ---
  the degrees southward by which Saturn's rings are tilted
  when Saturn is viewed respectively from the earth and from the sun
 <br><code>
 
-<dt><a name="satellite-attributes"><b>Satellite Attributes</b></a>
+<dt><b>Attributes of Earth's Moon</b>
+<dd><code><i>body</i>.moon_phase</code> --- the fraction of the lunar surface
+ that appears illuminated from the earth
+ (this value will probably be more accurate
+  than the <tt>phase</tt> attribute the Moon shares with other Planet objects)
+<br><code><i>body</i>.colong</code> ---
+ the co-longitude of (360&deg; minus) the lunar meridian experiencing sunrise
+<br><code><i>body</i>.subsolar_lat</code> --- the lunar latitude
+ of the location where the sun is directly overhead
+<br><code><i>body</i>.libration_lat, <i>body</i>.libration_long</code> ---
+ the latitude and longitude of the point on the lunar surface facing the earth
+
+<dt><b>Attributes of other moons</b>
+
+<dd><code><i>body</i>.x, <i>body</i>.y, <i>body</i>.z</code> ---
+ the position of the moon with respect to its planet,
+ measured in planet radii;
+ depending on whether the measurement is positive (or negative),
+ <tt>x</tt> gives position east (or west),
+ <tt>y</tt> south (or north),
+ and <tt>z</tt> in front of the planet (or behind it)
+<br><code><i>body</i>.earth_visible</code> --- boolean indicating
+ whether the moon is visible from the Earth.
+<br><code><i>body</i>.sun_visible</code> --- boolean indicating
+ whether the moon is visible from the Sun
+ (and therefore, whether it will be illuminated or dark).
+
+<dt><a name="satellite-attributes"><b>Earth Satellite Attributes</b></a>
 <dd><code><i>body</i>.sublat, <i>body</i>.sublong</code> ---
  the degrees latitude and longitude of the point on earth
  above which the satellite is positioned
@@ -1029,9 +1078,9 @@ for several other times during the day.
  in the earth's shadow
 </dl>
 
-<h3>6. Orbital Elements</h3>
+<a name="orbital-elements"><h3>7. Orbital Elements</h3></a>
 
-<a name="orbital-elements">Bodies with supplied orbital elements</a>
+Bodies with supplied orbital elements
 can be of any of the following types;
 you can create such bodies
 either by submitting an ephem database entry to <tt>ephem.readdb()</tt>
@@ -1060,23 +1109,26 @@ to prevent their being confused with normal object attributes.
 <br><code><i>body</i>._om</code> --- argument of perihelion in degrees
 <br><code><i>body</i>._a</code> --- mean distance from sun in~AU
 <br><code><i>body</i>._M</code> --- mean anomaly in degrees
- from perihelion at~<tt>cepoch</tt>
+ from perihelion at~<tt>_epoch_M</tt>
+<br><code><i>body</i>._epoch_M</code> --- epoch date for~<tt>_M</tt>
 <br><code><i>body</i>._size</code> --- angular size in arc seconds at~1~AU
 <br><code><i>body</i>._e</code> --- eccentricity
-<br><code><i>body</i>._cepoch</code> --- epoch date for~<tt>_M</tt>
 <br><code><i>body</i>._epoch</code> --- equinox year for <tt>_inc</tt>,
  <tt>_Om</tt>, and~<tt>_om</tt>
-<br>(Magnitude parameters not yet supported.)
+<br><code><i>body</i>._H, <i>body</i>._G</code> --- parameters for the
+ H/G magnitude model
+<br><code><i>body</i>._g, <i>body</i>._k</code> --- parameters for the
+ g/k magnitude model
 
 <dt><b>Hyperbolic Orbital Elements (<tt>HyperbolicBody</tt>)</b>
 <dd><code><i>body</i>._epoch</code> --- equinox year for <tt>_inc</tt>,
  <tt>_Om</tt>, and~<tt>_om</tt>
-<br><code><i>body</i>._ep</code> --- epoch of perihelion
+<br><code><i>body</i>._epoch_p</code> --- epoch of perihelion
 <br><code><i>body</i>._inc</code> --- inclination in degrees
 <br><code><i>body</i>._Om</code> --- longitude of ascending node in degrees
 <br><code><i>body</i>._om</code> --- argument of perihelion in degrees
 <br><code><i>body</i>._e</code> --- eccentricity
-<br><code><i>body</i>._qp</code> --- perihelion distance in~AU
+<br><code><i>body</i>._q</code> --- perihelion distance in~AU
 <br><code><i>body</i>._g, <i>body</i>._k</code> --- magnitude model
  coefficients
 <br><code><i>body</i>._size</code> --- angular size in arcseconds at~1~AU
@@ -1084,11 +1136,11 @@ to prevent their being confused with normal object attributes.
 <dt><b>Parabolic Orbital Elements (<tt>ParabolicBody</tt>)</b>
 <dd><code><i>body</i>._epoch</code> --- equinox year for <tt>_inc</tt>,
  <tt>_Om</tt>, and~<tt>_om</tt>
-<br><code><i>body</i>._ep</code> --- epoch of perihelion
+<br><code><i>body</i>._epoch_p</code> --- epoch of perihelion
 <br><code><i>body</i>._inc</code> --- inclination in degrees
 <br><code><i>body</i>._Om</code> --- longitude of ascending node in degrees
 <br><code><i>body</i>._om</code> --- argument of perihelion in degrees
-<br><code><i>body</i>._qp</code> --- perihelion distance in~AU
+<br><code><i>body</i>._q</code> --- perihelion distance in~AU
 <br><code><i>body</i>._g, <i>body</i>._k</code> --- magnitude model
  coefficients
 <br><code><i>body</i>._size</code> --- angular size in arcseconds at~1~AU

@@ -1087,7 +1087,7 @@ static int Moon_llibration(Moon *moon, char *fieldname)
 		       "field %s undefined until first compute()", fieldname);
 	  return -1;
      }
-     llibration(moon->now.n_mjd, &moon->llat, &moon->llon);
+     llibration(MJD0 + moon->now.n_mjd, &moon->llat, &moon->llon);
      moon->obj.o_flags |= VALID_LIBRATION;
      return 0;
 }
@@ -1195,16 +1195,16 @@ GET_FIELD(setaz, riset.rs_setaz, FLAGGED(RS_NOSET, build_degrees))
 #define BODY Moon
 #define CALCULATOR Moon_llibration
 
-GET_FIELD(llat, llat, build_degrees)
-GET_FIELD(llon, llon, build_degrees)
+GET_FIELD(libration_lat, llat, build_degrees)
+GET_FIELD(libration_long, llon, build_degrees)
 
 #undef CALCULATOR
 
 #define CALCULATOR Moon_colong
 
-GET_FIELD(c, c, build_degrees)
-GET_FIELD(k, k, PyFloat_FromDouble)
-GET_FIELD(s, s, build_degrees)
+GET_FIELD(colong, c, build_degrees)
+GET_FIELD(moon_phase, k, PyFloat_FromDouble)
+GET_FIELD(subsolar_lat, s, build_degrees)
 
 #undef CALCULATOR
 #undef BODY
@@ -1374,13 +1374,16 @@ static PyGetSetDef PlanetMoon_getset[] = {
 };
 
 static PyGetSetDef Moon_getset[] = {
-     {"libration_lat", Get_llat, 0, "lunar libration (degrees latitude)"},
-     {"libration_long", Get_llon, 0, "lunar libration (degrees longitude)"},
-     {"colong", Get_c, 0,
+     {"libration_lat", Get_libration_lat, 0,
+      "lunar libration (degrees latitude)"},
+     {"libration_long", Get_libration_long, 0,
+      "lunar libration (degrees longitude)"},
+     {"colong", Get_colong, 0,
       "lunar selenographic colongitude (-lng of rising sun) (degrees)"},
-     {"moon_phase", Get_k, 0,
+     {"moon_phase", Get_moon_phase, 0,
       "illuminated fraction of lunar surface visible from earth"},
-     {"subsolar_lat", Get_s, 0, "lunar latitude of subsolar point (degrees)"},
+     {"subsolar_lat", Get_subsolar_lat, 0,
+      "lunar latitude of subsolar point (degrees)"},
      {NULL}
 };
 
@@ -1414,7 +1417,7 @@ static PyGetSetDef EllipticalBody_getset[] = {
       "longitude of ascending node (degrees)", VOFF(e_Om)},
      {"_om", getf_dd, setf_dd, "argument of perihelion (degrees)", VOFF(e_om)},
      {"_M", getf_dd, setf_dd, "mean anomaly (degrees)", VOFF(e_M)},
-     {"_cepoch", getd_mjd, setd_mjd, "epoch of mean anomaly",
+     {"_epoch_M", getd_mjd, setd_mjd, "epoch of mean anomaly",
       VOFF(e_cepoch)},
      {"_epoch", getd_mjd, setd_mjd, "epoch for _inc, _Om, and _om",
       VOFF(e_epoch)},
