@@ -37,10 +37,16 @@ The scripts in the examples/ directory might help you learn how to use
 PyEphem, and also to test whether it is running properly on your
 system.
 
+DOCUMENTATION
+
+See the manual under doc/pyephem-manual.html and look online at
+http://www.rhodesmill.org/brandon/projects/pyephem for information
+about programming with PyEphem.
+
 CONTRIBUTING
 
-If you write useful scripts with PyEphem, please consider contributing
-them to the `examples/' directory.  In particular users would probably
-be interested in algorithms that search for various celestial
-circumstances like eclipses or conjunctions; not needing such routines
-myself, however, I have not endeavored to produce any.
+If you write useful scripts with PyEphem, please consider submitting
+them to be considered for the `examples/' directory.  In particular,
+there will probably be interest in algorithms that search for various
+celestial circumstances like eclipses or conjunctions; not needing
+such routines myself, however, I have not endeavored to produce any.
