@@ -3,11 +3,10 @@
 #include <Python.h>
 #include <structmember.h>
 
-/* Read the libastro header file, then undo its #defines of common
-   body attribute names like "mjd" as "np->mjd". */
-
 #include "astro.h"
 #include "preferences.h"
+
+/* Undo the astro.h #defines of common body attribute names. */
 
 #undef mjd
 #undef lat
@@ -51,7 +50,7 @@ typedef struct {
      RiseSet riset;		/* rising and setting */
 } Body;
 
-typedef Body Planet, Mercury, Venus, Mars, Jupiter, Uranus, Neptune, Pluto;
+typedef Body Planet, PlanetMoon;
 typedef Body FixedBody, BinaryStar;
 typedef Body EllipticalBody, ParabolicBody, EarthSatellite;
 
@@ -755,40 +754,21 @@ static PyTypeObject ObserverType = {
 };
 
 /*
- * XEphem Obj's are more complicated, both because of the several
- * classes of object - for which different fields are valid - and
- * because they support more functions.
+ *
+ * BODIES
+ *
  */
 
-/*staticforward PyTypeObject BodyType;
+staticforward PyTypeObject BodyType;
 staticforward PyTypeObject PlanetType;
 staticforward PyTypeObject SaturnType;
 staticforward PyTypeObject MoonType;
-staticforward PyTypeObject FixedBodyType;
-staticforward PyTypeObject EllipticalBodyType;
-staticforward PyTypeObject EllipticalBodyType;
-staticforward PyTypeObject HyperbolicBodyType;
-staticforward PyTypeObject ParabolicBodyType;
-staticforward PyTypeObject EarthSatelliteType;*/
+staticforward PyTypeObject PlanetMoonType;
 
 static PyObject* Body_compute(PyObject *self, PyObject *args, PyObject *kwds);
 
-/* Body and Planet are abstract classes, and resist instantiation. */
-
-static int Body_init(PyObject *self, PyObject *args, PyObject *kw)
-{
-     PyErr_SetString(PyExc_TypeError, "you cannot create a plain Body");
-     return -1;
-}
-
-static int Planet_init(PyObject *self, PyObject *args, PyObject *kw)
-{
-     PyErr_SetString(PyExc_TypeError, "you cannot create a plain Planet");
-     return -1;
-}
-
 /* Body and Planet may be initialized privately by their subclasses
-   using these *_setup() functions. */
+   using these setup functions. */
 
 static void Body_setup(Body *body)
 {
@@ -796,13 +776,14 @@ static void Body_setup(Body *body)
 }
 
 static int Planet_setup(Body *planet, PyObject *args, PyObject *kw,
-			char *planet_name, int planet_code)
+			char *planet_name, int planet_code, int moon_code)
 {
      Body_setup(planet);
 
      planet->obj.o_type = PLANET;
      strcpy(planet->obj.o_name, planet_name);
-     planet->obj.pl.plo_code = planet_code;
+     planet->obj.pl_code = planet_code;
+     planet->obj.pl_moon = moon_code;
 
      if (PyTuple_Check(args) && PyTuple_Size(args)) {
 	  PyObject *result = Body_compute((PyObject*) planet, args, kw);
@@ -812,28 +793,89 @@ static int Planet_setup(Body *planet, PyObject *args, PyObject *kw,
      return 0;
 }
 
-/* Planets have symmetric initialization code. */
+/* Body, Planet, and PlanetMoon are abstract classes that resist
+   instantiation. */
 
-#define INIT(NAME, CODE) \
-static int NAME##_init(PyObject* self, PyObject* args, PyObject *kw) \
-{ \
-     return Planet_setup((Body*) self, args, kw, #NAME, CODE); \
+static int Body_init(PyObject *self, PyObject *args, PyObject *kw)
+{
+     PyErr_SetString(PyExc_TypeError, "you cannot create a generic Body");
+     return -1;
 }
 
-INIT(Mercury, MERCURY)
-INIT(Venus, VENUS)
-INIT(Mars, MARS)
-INIT(Jupiter, JUPITER)
-INIT(Saturn, SATURN)
-INIT(Uranus, URANUS)
-INIT(Neptune, NEPTUNE)
-INIT(Pluto, PLUTO)
-INIT(Sun, SUN)
-INIT(Moon, MOON)
+static int Planet_init(PyObject *self, PyObject *args, PyObject *kw)
+{
+     PyErr_SetString(PyExc_TypeError, "you cannot create a generic Planet");
+     return -1;
+}
 
-#undef INIT
+static int PlanetMoon_init(PyObject *self, PyObject *args, PyObject *kw)
+{
+     PyErr_SetString(PyExc_TypeError, "you cannot create a generic PlanetMoon");
+     return -1;
+}
 
-/* The other body types also have symmetric initialization code. */
+/* But Saturn and Moon, as concrete classes, do allow initialization. */
+
+static int Saturn_init(PyObject *self, PyObject *args, PyObject *kw)
+{
+     return Planet_setup((Body*) self, args, kw, "Saturn", SATURN, X_PLANET);
+}
+
+static int Moon_init(PyObject *self, PyObject *args, PyObject *kw)
+{
+     return Planet_setup((Body*) self, args, kw, "Moon", MOON, X_PLANET);
+}
+
+/* These functions create and return planets. */
+
+#define CREATE(TYPE, NAME, CODE, MOON) \
+PyObject *create_##NAME(PyObject* self, PyObject *args, PyObject *kw) \
+{ \
+     Body *body = (Body*) _PyObject_New(&TYPE); \
+     if (!body) return 0; \
+     if (Planet_setup((Body*) body, args, kw, #NAME, CODE, MOON)) return 0; \
+     return (PyObject*) body; \
+}
+
+/* Planets */
+
+CREATE(PlanetType, Mercury, MERCURY, X_PLANET)
+CREATE(PlanetType, Venus, VENUS, X_PLANET)
+CREATE(PlanetType, Mars, MARS, X_PLANET)
+CREATE(PlanetType, Jupiter, JUPITER, X_PLANET)
+/* Saturn has its own class */
+CREATE(PlanetType, Uranus, URANUS, X_PLANET)
+CREATE(PlanetType, Neptune, NEPTUNE, X_PLANET)
+CREATE(PlanetType, Pluto, PLUTO, X_PLANET)
+CREATE(PlanetType, Sun, SUN, X_PLANET)
+/* the Moon has its own class */
+
+/* Moons */
+
+CREATE(PlanetMoonType, Phobos, MARS, PHOBOS)
+CREATE(PlanetMoonType, Deimos, MARS, DEIMOS)
+CREATE(PlanetMoonType, Io, JUPITER, IO)
+CREATE(PlanetMoonType, Europa, JUPITER, EUROPA)
+CREATE(PlanetMoonType, Ganymede, JUPITER, GANYMEDE)
+CREATE(PlanetMoonType, Callisto, JUPITER, CALLISTO)
+CREATE(PlanetMoonType, Mimas, SATURN, MIMAS)
+CREATE(PlanetMoonType, Enceladus, SATURN, ENCELADUS)
+CREATE(PlanetMoonType, Tethys, SATURN, TETHYS)
+CREATE(PlanetMoonType, Dione, SATURN, DIONE)
+CREATE(PlanetMoonType, Rhea, SATURN, RHEA)
+CREATE(PlanetMoonType, Titan, SATURN, TITAN)
+CREATE(PlanetMoonType, Hyperion, SATURN, HYPERION)
+CREATE(PlanetMoonType, Iapetus, SATURN, IAPETUS)
+CREATE(PlanetMoonType, Ariel, URANUS, ARIEL)
+CREATE(PlanetMoonType, Umbriel, URANUS, UMBRIEL)
+CREATE(PlanetMoonType, Titania, URANUS, TITANIA)
+CREATE(PlanetMoonType, Oberon, URANUS, OBERON)
+CREATE(PlanetMoonType, Miranda, URANUS, MIRANDA)
+
+#undef CREATE
+
+/* The user-configurable body types also share symmetric
+   initialization code. */
 
 #define INIT(NAME, CODE) \
 static int NAME##_init(PyObject* self, PyObject* args, PyObject *kw) \
@@ -862,11 +904,12 @@ INIT(EarthSatellite, EARTHSAT)
 
 #undef INIT
 
-/* Surprisingly enough, the compute() method does not actually compute
-   anything, since several computations would be necessary to fill all
-   of our fields, and the user may not access them all; compute() just
-   stashes away its Observer or date (and optional epoch) for when the
-   user actually access fields. */
+/* This compute() method does not actually compute anything, since
+   several different computations would be necessary to determine the
+   value of all of a body's fields, and the user may not want them
+   all; so compute() just stashes away the Observer or date it is
+   given, and the fields are computed when the user actually accesses
+   them. */
 
 static PyObject* Body_compute(PyObject *self, PyObject *args, PyObject *kwds)
 {
@@ -936,7 +979,7 @@ static PyObject* Body_str(PyObject *body_object)
 	  (format, body->ob_type->tp_name, body->obj.o_name);
 }
 
-static PyMethodDef body_methods[] = {
+static PyMethodDef Body_methods[] = {
      {"compute", (PyCFunction) Body_compute, METH_VARARGS | METH_KEYWORDS,
       "compute the location of the body for the given date or Observer "
       "(or for the current time if no date is supplied)"},
@@ -945,8 +988,6 @@ static PyMethodDef body_methods[] = {
       "appropriate for inclusion in an ephem database file"},
      {NULL}
 };
-
-#define OFF(member) offsetof(Body, obj.member)
 
 static PyObject* build_hours(double radians)
 {
@@ -1094,6 +1135,12 @@ GET_FIELD(hlat, obj.s_hlat, build_degrees)
 GET_FIELD(sdist, obj.s_sdist, PyFloat_FromDouble)
 GET_FIELD(edist, obj.s_edist, PyFloat_FromDouble)
 GET_FIELD(phase, obj.s_phase, PyFloat_FromDouble)
+
+GET_FIELD(x, obj.pl_x, PyFloat_FromDouble)
+GET_FIELD(y, obj.pl_y, PyFloat_FromDouble)
+GET_FIELD(z, obj.pl_z, PyFloat_FromDouble)
+GET_FIELD(earth_visible, obj.pl_evis, PyFloat_FromDouble)
+GET_FIELD(sun_visible, obj.pl_svis, PyFloat_FromDouble)
 
 /* Attributes computed by obj_cir that need an Observer. */
 
@@ -1246,7 +1293,9 @@ static int Set_gk(PyObject *self, PyObject *value, void *v)
 
 /* Get/Set arrays. */
 
-static PyGetSetDef body_getset[] = {
+#define OFF(member) offsetof(Body, obj.member)
+
+static PyGetSetDef Body_getset[] = {
      {"name", Get_name, Set_name, "arbitrary name of up to 20 characters"},
 
      {"ra", Get_ra, 0, "right ascension (hours of arc)"},
@@ -1273,7 +1322,7 @@ static PyGetSetDef body_getset[] = {
      {NULL}
 };
 
-static PyGetSetDef body_ss_getset[] = {
+static PyGetSetDef Planet_getset[] = {
      {"hlong", Get_hlong, 0, "heliocentric longitude"},
      {"hlat", Get_hlat, 0, "heliocentric latitude"},
      {"sun_distance", Get_sdist, 0, "distance from sun (AU)"},
@@ -1282,7 +1331,42 @@ static PyGetSetDef body_ss_getset[] = {
      {NULL}
 };
 
-static PyGetSetDef moon_getset[] = {
+/* Some day, when planetary moons support all Body and Planet fields,
+   this will become a list only of fields peculiar to planetary moons,
+   and PlanetMoon will inherit from Planet; but for now, this lists
+   all fields valid for them.  See libastro's plmoon.c to review which
+   fields have information specific to the moon. */
+
+static PyGetSetDef PlanetMoon_getset[] = {
+     {"name", Get_name, Set_name, "arbitrary name of up to 20 characters"},
+
+     {"ra", Get_ra, 0, "right ascension (hours of arc)"},
+     {"dec", Get_dec, 0, "declination (degrees)"},
+     {"mag", Get_mag, 0, "magnitude"},
+
+     {"az", Get_az, 0, "azimuth"},
+     {"alt", Get_alt, 0, "altitude"},
+
+     {"rise_time", Get_risetm, 0, "rise time"},
+     {"rise_az", Get_riseaz, 0, "rise azimuth"},
+     {"transit_time", Get_trantm, 0, "transit time"},
+     {"transit_alt", Get_tranalt, 0, "transit altitude"},
+     {"set_time", Get_settm, 0, "set time"},
+     {"set_az", Get_setaz, 0, "set azimuth"},
+     {"circumpolar", Get_circumpolar, 0,
+      "whether object remains above the horizon this day"},
+     {"neverup", Get_neverup, 0,
+      "whether the object never rises above the horizon this day"},
+
+     {"x", Get_x, 0, "offset in planet radii"},
+     {"y", Get_y, 0, "offset in planet radii"},
+     {"z", Get_z, 0, "offset in planet radii"},
+     {"earth_visible", Get_earth_visible, 0, "whether visible from earth"},
+     {"sun_visible", Get_sun_visible, 0, "whether visible from sun"},
+     {NULL}
+};
+
+static PyGetSetDef Moon_getset[] = {
      {"libration_lat", Get_llat, 0, "lunar libration (degrees latitude)"},
      {"libration_long", Get_llon, 0, "lunar libration (degrees longitude)"},
      {"colong", Get_c, 0,
@@ -1293,14 +1377,14 @@ static PyGetSetDef moon_getset[] = {
      {NULL}
 };
 
-static PyGetSetDef saturn_getset[] = {
+static PyGetSetDef Saturn_getset[] = {
      {"earth_tilt", Get_etilt, 0,
       "tilt of rings towards earth (degrees south)"},
      {"sun_tilt", Get_stilt, 0, "tilt of rings towards sun (degrees south)"},
      {NULL}
 };
 
-static PyGetSetDef body_f_getset[] = {
+static PyGetSetDef FixedBody_getset[] = {
      {"mag", Get_mag, Set_mag, "magnitude", 0},
      {"_spect",  get_f_spect, set_f_spect, "spectral codes", 0},
      {"_ratio", get_f_ratio, set_f_ratio,
@@ -1312,12 +1396,12 @@ static PyGetSetDef body_f_getset[] = {
      {NULL}
 };
 
-static PyMemberDef body_f_members[] = {
+static PyMemberDef FixedBody_members[] = {
      {"_class", T_CHAR, OFF(f_class), RO, "fixed object classification"},
      {NULL}
 };
 
-static PyGetSetDef body_e_getset[] = {
+static PyGetSetDef EllipticalBody_getset[] = {
      {"_inc", getf_dd, setf_dd, "inclination (degrees)", VOFF(e_inc)},
      {"_Om", getf_dd, setf_dd,
       "longitude of ascending node (degrees)", VOFF(e_Om)},
@@ -1333,14 +1417,14 @@ static PyGetSetDef body_e_getset[] = {
      {NULL}
 };
 
-static PyMemberDef body_e_members[] = {
+static PyMemberDef EllipticalBody_members[] = {
      {"_a", T_FLOAT, OFF(e_a), 0, "mean distance (AU)"},
      {"_size", T_FLOAT, OFF(e_size), 0, "angular size at 1 AU (arcseconds)"},
      {"_e", T_DOUBLE, OFF(e_e), 0, "eccentricity"},
      {NULL}
 };
 
-static PyGetSetDef body_h_getset[] = {
+static PyGetSetDef HyperbolicBody_getset[] = {
      {"_inc", getf_dd, setf_dd, "Inclination (degrees)", VOFF(h_inc)},
      {"_Om", getf_dd, setf_dd,
       "Longitude of ascending node (degrees)", VOFF(h_Om)},
@@ -1349,7 +1433,7 @@ static PyGetSetDef body_h_getset[] = {
      {NULL}
 };
 
-static PyMemberDef body_h_members[] = {
+static PyMemberDef HyperbolicBody_members[] = {
      {"_epoch", T_DOUBLE, OFF(h_epoch), 0,
       "Equinox year of _inc, _Om, and _om (mjd)"},
      {"_ep", T_DOUBLE, OFF(h_ep), 0, "Epoch of perihelion (mjd)"},
@@ -1361,7 +1445,7 @@ static PyMemberDef body_h_members[] = {
      {NULL}
 };
 
-static PyGetSetDef body_p_getset[] = {
+static PyGetSetDef ParabolicBody_getset[] = {
      {"_inc", getf_dd, setf_dd, "Inclination (degrees)", VOFF(p_inc)},
      {"_om", getf_dd, setf_dd, "Argument of perihelion (degrees)", VOFF(p_om)},
      {"_Om", getf_dd, setf_dd,
@@ -1369,7 +1453,7 @@ static PyGetSetDef body_p_getset[] = {
      {NULL}
 };
 
-static PyMemberDef body_p_members[] = {
+static PyMemberDef ParabolicBody_members[] = {
      {"_epoch", T_DOUBLE, OFF(p_epoch), 0, ""},
      {"_ep", T_DOUBLE, OFF(p_ep), 0, ""},
      {"_qp", T_FLOAT, OFF(p_qp), 0, ""},
@@ -1379,7 +1463,7 @@ static PyMemberDef body_p_members[] = {
      {NULL}
 };
 
-static PyGetSetDef body_es_getset[] = {
+static PyGetSetDef EarthSatellite_getset[] = {
      {"_inc", getf_dd, setf_dd, "Inclination (degrees)", VOFF(es_inc)},
      {"_raan", getf_dd, setf_dd,
       "Right ascension of ascending node (degrees)", VOFF(es_raan)},
@@ -1394,7 +1478,7 @@ static PyGetSetDef body_es_getset[] = {
      {NULL}
 };
 
-static PyMemberDef body_es_members[] = {
+static PyMemberDef EarthSatellite_members[] = {
      {"_epoch", T_DOUBLE, OFF(es_epoch), 0, "reference epoch (mjd)"},
      {"_n", T_DOUBLE, OFF(es_n), 0, "mean motion (revolutions per day)"},
      {"_e", T_FLOAT, OFF(es_e), 0, "eccentricity"},
@@ -1459,9 +1543,9 @@ static PyTypeObject BodyType = {
      0,				/* tp_weaklistoffset */
      0,				/* tp_iter */
      0,				/* tp_iternext */
-     body_methods,		/* tp_methods */
+     Body_methods,		/* tp_methods */
      0,				/* tp_members */
-     body_getset,		/* tp_getset */
+     Body_getset,		/* tp_getset */
      0,				/* tp_base */
      0,				/* tp_dict */
      0,				/* tp_descr_get */
@@ -1504,7 +1588,7 @@ static PyTypeObject PlanetType = {
      0,				/* tp_iternext */
      0,				/* tp_methods */
      0,				/* tp_members */
-     body_ss_getset,		/* tp_getset */
+     Planet_getset,		/* tp_getset */
      &BodyType,			/* tp_base */
      0,				/* tp_dict */
      0,				/* tp_descr_get */
@@ -1516,11 +1600,11 @@ static PyTypeObject PlanetType = {
      0,				/* tp_free */
 };
 
-static PyTypeObject MercuryType = {
+static PyTypeObject PlanetMoonType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "ephem.Mercury",
-     sizeof(Body),
+     "ephem.PlanetMoon",
+     sizeof(PlanetMoon),
      0,
      0,				/* tp_dealloc */
      0,				/* tp_print */
@@ -1547,142 +1631,13 @@ static PyTypeObject MercuryType = {
      0,				/* tp_iternext */
      0,				/* tp_methods */
      0,				/* tp_members */
-     0,				/* tp_getset */
-     &PlanetType,		/* tp_base */
+     PlanetMoon_getset,		/* tp_getset */
+     0,				/* tp_base */
      0,				/* tp_dict */
      0,				/* tp_descr_get */
      0,				/* tp_descr_set */
      0,				/* tp_dictoffset */
-     Mercury_init,		/* tp_init */
-     0,				/* tp_alloc */
-     0,				/* tp_new */
-     0,				/* tp_free */
-};
-
-static PyTypeObject VenusType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
-     "ephem.Venus",
-     sizeof(Body),
-     0,
-     0,				/* tp_dealloc */
-     0,				/* tp_print */
-     0,				/* tp_getattr */
-     0,				/* tp_setattr */
-     0,				/* tp_compare */
-     0,				/* tp_repr */
-     0,				/* tp_as_number */
-     0,				/* tp_as_sequence */
-     0,				/* tp_as_mapping */
-     0,				/* tp_hash */
-     0,				/* tp_call */
-     0,				/* tp_str */
-     0,				/* tp_getattro */
-     0,				/* tp_setattro */
-     0,				/* tp_as_buffer */
-     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
-     0,				/* tp_doc */
-     0,				/* tp_traverse */
-     0,				/* tp_clear */
-     0,				/* tp_richcompare */
-     0,				/* tp_weaklistoffset */
-     0,				/* tp_iter */
-     0,				/* tp_iternext */
-     0,				/* tp_methods */
-     0,				/* tp_members */
-     0,				/* tp_getset */
-     &PlanetType,		/* tp_base */
-     0,				/* tp_dict */
-     0,				/* tp_descr_get */
-     0,				/* tp_descr_set */
-     0,				/* tp_dictoffset */
-     Venus_init,		/* tp_init */
-     0,				/* tp_alloc */
-     0,				/* tp_new */
-     0,				/* tp_free */
-};
-
-static PyTypeObject MarsType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
-     "ephem.Mars",
-     sizeof(Body),
-     0,
-     0,				/* tp_dealloc */
-     0,				/* tp_print */
-     0,				/* tp_getattr */
-     0,				/* tp_setattr */
-     0,				/* tp_compare */
-     0,				/* tp_repr */
-     0,				/* tp_as_number */
-     0,				/* tp_as_sequence */
-     0,				/* tp_as_mapping */
-     0,				/* tp_hash */
-     0,				/* tp_call */
-     0,				/* tp_str */
-     0,				/* tp_getattro */
-     0,				/* tp_setattro */
-     0,				/* tp_as_buffer */
-     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
-     0,				/* tp_doc */
-     0,				/* tp_traverse */
-     0,				/* tp_clear */
-     0,				/* tp_richcompare */
-     0,				/* tp_weaklistoffset */
-     0,				/* tp_iter */
-     0,				/* tp_iternext */
-     0,				/* tp_methods */
-     0,				/* tp_members */
-     0,				/* tp_getset */
-     &PlanetType,		/* tp_base */
-     0,				/* tp_dict */
-     0,				/* tp_descr_get */
-     0,				/* tp_descr_set */
-     0,				/* tp_dictoffset */
-     Mars_init,			/* tp_init */
-     0,				/* tp_alloc */
-     0,				/* tp_new */
-     0,				/* tp_free */
-};
-
-static PyTypeObject JupiterType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
-     "ephem.Jupiter",
-     sizeof(Body),
-     0,
-     0,				/* tp_dealloc */
-     0,				/* tp_print */
-     0,				/* tp_getattr */
-     0,				/* tp_setattr */
-     0,				/* tp_compare */
-     0,				/* tp_repr */
-     0,				/* tp_as_number */
-     0,				/* tp_as_sequence */
-     0,				/* tp_as_mapping */
-     0,				/* tp_hash */
-     0,				/* tp_call */
-     0,				/* tp_str */
-     0,				/* tp_getattro */
-     0,				/* tp_setattro */
-     0,				/* tp_as_buffer */
-     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
-     0,				/* tp_doc */
-     0,				/* tp_traverse */
-     0,				/* tp_clear */
-     0,				/* tp_richcompare */
-     0,				/* tp_weaklistoffset */
-     0,				/* tp_iter */
-     0,				/* tp_iternext */
-     0,				/* tp_methods */
-     0,				/* tp_members */
-     0,				/* tp_getset */
-     &PlanetType,		/* tp_base */
-     0,				/* tp_dict */
-     0,				/* tp_descr_get */
-     0,				/* tp_descr_set */
-     0,				/* tp_dictoffset */
-     Jupiter_init,		/* tp_init */
+     &PlanetMoon_init,		/* tp_init */
      0,				/* tp_alloc */
      0,				/* tp_new */
      0,				/* tp_free */
@@ -1719,185 +1674,13 @@ static PyTypeObject SaturnType = {
      0,				/* tp_iternext */
      0,				/* tp_methods */
      0,				/* tp_members */
-     saturn_getset,		/* tp_getset */
+     Saturn_getset,		/* tp_getset */
      &PlanetType,		/* tp_base */
      0,				/* tp_dict */
      0,				/* tp_descr_get */
      0,				/* tp_descr_set */
      0,				/* tp_dictoffset */
      Saturn_init,		/* tp_init */
-     0,				/* tp_alloc */
-     0,				/* tp_new */
-     0,				/* tp_free */
-};
-
-static PyTypeObject UranusType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
-     "ephem.Uranus",
-     sizeof(Body),
-     0,
-     0,				/* tp_dealloc */
-     0,				/* tp_print */
-     0,				/* tp_getattr */
-     0,				/* tp_setattr */
-     0,				/* tp_compare */
-     0,				/* tp_repr */
-     0,				/* tp_as_number */
-     0,				/* tp_as_sequence */
-     0,				/* tp_as_mapping */
-     0,				/* tp_hash */
-     0,				/* tp_call */
-     0,				/* tp_str */
-     0,				/* tp_getattro */
-     0,				/* tp_setattro */
-     0,				/* tp_as_buffer */
-     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
-     0,				/* tp_doc */
-     0,				/* tp_traverse */
-     0,				/* tp_clear */
-     0,				/* tp_richcompare */
-     0,				/* tp_weaklistoffset */
-     0,				/* tp_iter */
-     0,				/* tp_iternext */
-     0,				/* tp_methods */
-     0,				/* tp_members */
-     0,				/* tp_getset */
-     &PlanetType,		/* tp_base */
-     0,				/* tp_dict */
-     0,				/* tp_descr_get */
-     0,				/* tp_descr_set */
-     0,				/* tp_dictoffset */
-     Uranus_init,		/* tp_init */
-     0,				/* tp_alloc */
-     0,				/* tp_new */
-     0,				/* tp_free */
-};
-
-static PyTypeObject NeptuneType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
-     "ephem.Neptune",
-     sizeof(Body),
-     0,
-     0,				/* tp_dealloc */
-     0,				/* tp_print */
-     0,				/* tp_getattr */
-     0,				/* tp_setattr */
-     0,				/* tp_compare */
-     0,				/* tp_repr */
-     0,				/* tp_as_number */
-     0,				/* tp_as_sequence */
-     0,				/* tp_as_mapping */
-     0,				/* tp_hash */
-     0,				/* tp_call */
-     0,				/* tp_str */
-     0,				/* tp_getattro */
-     0,				/* tp_setattro */
-     0,				/* tp_as_buffer */
-     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
-     0,				/* tp_doc */
-     0,				/* tp_traverse */
-     0,				/* tp_clear */
-     0,				/* tp_richcompare */
-     0,				/* tp_weaklistoffset */
-     0,				/* tp_iter */
-     0,				/* tp_iternext */
-     0,				/* tp_methods */
-     0,				/* tp_members */
-     0,				/* tp_getset */
-     &PlanetType,		/* tp_base */
-     0,				/* tp_dict */
-     0,				/* tp_descr_get */
-     0,				/* tp_descr_set */
-     0,				/* tp_dictoffset */
-     Neptune_init,		/* tp_init */
-     0,				/* tp_alloc */
-     0,				/* tp_new */
-     0,				/* tp_free */
-};
-
-static PyTypeObject PlutoType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
-     "ephem.Pluto",
-     sizeof(Body),
-     0,
-     0,				/* tp_dealloc */
-     0,				/* tp_print */
-     0,				/* tp_getattr */
-     0,				/* tp_setattr */
-     0,				/* tp_compare */
-     0,				/* tp_repr */
-     0,				/* tp_as_number */
-     0,				/* tp_as_sequence */
-     0,				/* tp_as_mapping */
-     0,				/* tp_hash */
-     0,				/* tp_call */
-     0,				/* tp_str */
-     0,				/* tp_getattro */
-     0,				/* tp_setattro */
-     0,				/* tp_as_buffer */
-     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
-     0,				/* tp_doc */
-     0,				/* tp_traverse */
-     0,				/* tp_clear */
-     0,				/* tp_richcompare */
-     0,				/* tp_weaklistoffset */
-     0,				/* tp_iter */
-     0,				/* tp_iternext */
-     0,				/* tp_methods */
-     0,				/* tp_members */
-     0,				/* tp_getset */
-     &PlanetType,		/* tp_base */
-     0,				/* tp_dict */
-     0,				/* tp_descr_get */
-     0,				/* tp_descr_set */
-     0,				/* tp_dictoffset */
-     Pluto_init,		/* tp_init */
-     0,				/* tp_alloc */
-     0,				/* tp_new */
-     0,				/* tp_free */
-};
-
-static PyTypeObject SunType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
-     "ephem.Sun",
-     sizeof(Body),
-     0,
-     0,				/* tp_dealloc */
-     0,				/* tp_print */
-     0,				/* tp_getattr */
-     0,				/* tp_setattr */
-     0,				/* tp_compare */
-     0,				/* tp_repr */
-     0,				/* tp_as_number */
-     0,				/* tp_as_sequence */
-     0,				/* tp_as_mapping */
-     0,				/* tp_hash */
-     0,				/* tp_call */
-     0,				/* tp_str */
-     0,				/* tp_getattro */
-     0,				/* tp_setattro */
-     0,				/* tp_as_buffer */
-     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
-     0,				/* tp_doc */
-     0,				/* tp_traverse */
-     0,				/* tp_clear */
-     0,				/* tp_richcompare */
-     0,				/* tp_weaklistoffset */
-     0,				/* tp_iter */
-     0,				/* tp_iternext */
-     0,				/* tp_methods */
-     0,				/* tp_members */
-     0,				/* tp_getset */
-     &PlanetType,		/* tp_base */
-     0,				/* tp_dict */
-     0,				/* tp_descr_get */
-     0,				/* tp_descr_set */
-     0,				/* tp_dictoffset */
-     Sun_init,			/* tp_init */
      0,				/* tp_alloc */
      0,				/* tp_new */
      0,				/* tp_free */
@@ -1934,7 +1717,7 @@ static PyTypeObject MoonType = {
      0,				/* tp_iternext */
      0,				/* tp_methods */
      0,				/* tp_members */
-     moon_getset,		/* tp_getset */
+     Moon_getset,		/* tp_getset */
      &PlanetType,		/* tp_base */
      0,				/* tp_dict */
      0,				/* tp_descr_get */
@@ -1976,9 +1759,9 @@ static PyTypeObject FixedBodyType = {
      0,				/* tp_iter */
      0,				/* tp_iternext */
      0,				/* tp_methods */
-     body_f_members,		/* tp_members */
-     body_f_getset,		/* tp_getset */
-     &BodyType,		/* tp_base */
+     FixedBody_members,		/* tp_members */
+     FixedBody_getset,		/* tp_getset */
+     &BodyType,			/* tp_base */
      0,				/* tp_dict */
      0,				/* tp_descr_get */
      0,				/* tp_descr_set */
@@ -2062,8 +1845,8 @@ static PyTypeObject EllipticalBodyType = {
      0,				/* tp_iter */
      0,				/* tp_iternext */
      0,				/* tp_methods */
-     body_e_members,	/* tp_members */
-     body_e_getset,	/* tp_getset */
+     EllipticalBody_members,	/* tp_members */
+     EllipticalBody_getset,	/* tp_getset */
      &PlanetType,		/* tp_base */
      0,				/* tp_dict */
      0,				/* tp_descr_get */
@@ -2105,8 +1888,8 @@ static PyTypeObject HyperbolicBodyType = {
      0,				/* tp_iter */
      0,				/* tp_iternext */
      0,				/* tp_methods */
-     body_h_members,		/* tp_members */
-     body_h_getset,		/* tp_getset */
+     HyperbolicBody_members,	/* tp_members */
+     HyperbolicBody_getset,	/* tp_getset */
      &PlanetType,		/* tp_base */
      0,				/* tp_dict */
      0,				/* tp_descr_get */
@@ -2148,8 +1931,8 @@ static PyTypeObject ParabolicBodyType = {
      0,				/* tp_iter */
      0,				/* tp_iternext */
      0,				/* tp_methods */
-     body_p_members,		/* tp_members */
-     body_p_getset,		/* tp_getset */
+     ParabolicBody_members,	/* tp_members */
+     ParabolicBody_getset,	/* tp_getset */
      &PlanetType,		/* tp_base */
      0,				/* tp_dict */
      0,				/* tp_descr_get */
@@ -2191,8 +1974,8 @@ static PyTypeObject EarthSatelliteType = {
      0,				/* tp_iter */
      0,				/* tp_iternext */
      0,				/* tp_methods */
-     body_es_members,		/* tp_members */
-     body_es_getset,		/* tp_getset */
+     EarthSatellite_members,	/* tp_members */
+     EarthSatellite_getset,	/* tp_getset */
      &PlanetType,		/* tp_base */
      0,				/* tp_dict */
      0,				/* tp_descr_get */
@@ -2439,152 +2222,47 @@ leave:
      return result;
 }
 
-
-/* -------- astro.h --------
- *
- * aa_hadec - observation from geographic location -> ra and dec.
- * hadec_aa - geographic location and ra and dec -> alt and az.
- *
- * ab_ecl - aberration correction to sky coordinates
- * ab_eq - ditto
- *
- * airmass - apparent altitude -> airmasses
- *
- * anomaly - find true anomaly from mean anomaly and eccintricity
- *
- *(chap95 - used by plans() for Jupiter through Pluto)
- *
- *(comet - used by obj_cir for parabolic orbits)
- *
- * deltat - difference between ephemeris time and universal time
- *
- * eq_ecl, ecl_eq - converts between equatorial and ecliptic coordinates
- *   for a particular date
- *
- * fs_sexa - format sexigesimal
- *[fs_date - format date; we always use (year, month, day.fraction) tuple]
- * f_scansex - scan sexigesimal (relative to earlier value)
- *[f_sscandate - interpret date string; we always just accept tuple]
- * scansex - scan sexigesimal (absolute)
- *
- * heliocorr - find difference in time between light of distant object
- *   arriving at earth and sun
- *
- * llibration - Moon.libration()
- *
- *(zero_mem - like memset-zero, used internally by libastro)
- * tickmarks - fill in array of useful tick marks for given range of values
- * lc - find segment of line that lies inside a circle
- * hg_mag - compute visual magnitude using H/G parameters
- * magdiam - scale an object given the smallest magnitude on your screen
- *   and at what magnitude intervals you want screen size to increase
- * gk_mag - compute visual magnitude of object with g/k parameters
- * atod - convert string to double
- * solve_sphere - solve unknown angle and side of spherical triangle
- * delra - map difference between two ra's into normal range
- *
- * cal_mjd -
- * mjd_cal -
- * mjd_dow -
- * isleapyear -
- * mjd_dpm -
- * mjd_year -
- * year_mjd -
- * rnd_second -
- * mjd_dayno -
- * mjd_day -
- * mjd_hr -
- * range -
- *
- *(moon - compute position of moon)
- *
- * moon_colong - Moon.illumination()
- *
- * nutation - return nutation in obliquity and longitude for given date
- *(nut_eq - correct an ra and dec in-place for nutation)
- *
- * obliquity - find mean obliquity of ecliptic for given date
- *
- * ta_par - compute apparent height angle and declination for observer
- *   given his latitude and altitude above sea level
- *
- *(plans - find position in space of a planet)
- *
- * precess - convert ra and dec from one precession epoch to another
- *
- * reduce_elements - convert orbital elements from one epoch to another
- *
- * unrefract, refract - convert between apparent and true altitude of
- *   an observation given the altitude and atmospheric conditions
- *
- * satrings - Saturn.ringtilt()
- *
- * riset - compute rising and setting times of object at an ra and dec
- *
- * sphcart, cartsph - convert spherical to cartesian coordinates
- *
- *(sunpos - return position of sun)
- *
- *(vrc - two-body calculation)
- *
- * utc_gst, gst_utc - convert between (mjd + utc) and mean siderial time
- *
- *(vsop87 - planetary theory used to compute their positions)
- *
- * -------- chap95.h --------
- *(routines that compute positions of outer planets)
- *
- * -------- circum.h --------
- * ap_as - ?
- * as_ap - ?
- *
- * mm_mjed - given an mjd, return it modified for terrestial dynamical time
- *
- * obj_cir - in Body.compute()
- *
- *(obj_earthsat - called by obj_cir for satellites)
- *
- * db_crack_line - !
- * db_write_line - !
- * get_fields - return field as string
- * db_chk_planet - check whether a name matches that of a planet
- * db_tle - ?
- *
- * now_lst - now -> local sidereal time
- * radec2ha - convert ra to ha
- * obj_description - !
- * is_deepsky - return whether object is deep-sky ?
- *
- * riset_cir - compute rising and setting times for object
- * twilight_cir - find when sun is given number of radians below horizon
- *
- * -------- deepconst.h --------
- *(constants for deep space routines in deep.c)
- *
- * -------- preferences.h --------
- *
- * -------- satlib.h --------
- *(data definitions for earthsat.h and satspec.h)
- *
- * -------- satspec.h --------
- *(data definitions for deep.c, sdp4.c, and sgp4.c)
- *
- * -------- sattypes.h --------
- *(data definitions for earthsat.c, satspec.c, sdp4.c, and sgp4.)c
- *
- * -------- vector.h --------
- *(data definitions for earthsat.c sdp4.c, and sgp4.c)
- *
- * -------- vsop87.h --------
- *(routines that are used for the positions of the inner planets)
- */
-
 /*
  * The global methods table and the module initialization function.
  */
 
+#undef CREATE
+#define CREATE(NAME) \
+ {#NAME, (PyCFunction) create_##NAME, METH_VARARGS | METH_KEYWORDS, \
+  "return a " #NAME " instance"}
+
 static PyMethodDef ephem_methods[] = {
      /*{"date", rebuild_date, METH_VARARGS, "Parse a date"},*/
+
+     CREATE(Mercury),
+     CREATE(Venus),
+     CREATE(Mars),
+     CREATE(Jupiter),
+     CREATE(Uranus),
+     CREATE(Neptune),
+     CREATE(Pluto),
+     CREATE(Sun),
+
+     CREATE(Phobos),
+     CREATE(Deimos),
+     CREATE(Io),
+     CREATE(Europa),
+     CREATE(Ganymede),
+     CREATE(Callisto),
+     CREATE(Mimas),
+     CREATE(Enceladus),
+     CREATE(Tethys),
+     CREATE(Dione),
+     CREATE(Rhea),
+     CREATE(Titan),
+     CREATE(Hyperion),
+     CREATE(Iapetus),
+     CREATE(Ariel),
+     CREATE(Umbriel),
+     CREATE(Titania),
+     CREATE(Oberon),
+     CREATE(Miranda),
+
      {"degrees", degrees, METH_VARARGS, "build an angle"},
      {"hours", hours, METH_VARARGS, "build an angle"},
      {"now", build_now, METH_VARARGS, "Return the current time"},
@@ -2633,16 +2311,9 @@ PyMODINIT_FUNC initephem(void)
 
      PyType_Ready(&BodyType);
      PyType_Ready(&PlanetType);
+     PyType_Ready(&PlanetMoonType);
 
-     PyType_Ready(&MercuryType);
-     PyType_Ready(&VenusType);
-     PyType_Ready(&MarsType);
-     PyType_Ready(&JupiterType);
      PyType_Ready(&SaturnType);
-     PyType_Ready(&UranusType);
-     PyType_Ready(&NeptuneType);
-     PyType_Ready(&PlutoType);
-     PyType_Ready(&SunType);
      PyType_Ready(&MoonType);
 
      PyType_Ready(&FixedBodyType);
@@ -2663,16 +2334,8 @@ PyMODINIT_FUNC initephem(void)
 
      ADD("Body", BodyType);
      ADD("Planet", PlanetType);
-
-     ADD("Mercury", MercuryType);
-     ADD("Venus", VenusType);
-     ADD("Mars", MarsType);
-     ADD("Jupiter", JupiterType);
+     ADD("PlanetMoon", PlanetMoonType);
      ADD("Saturn", SaturnType);
-     ADD("Uranus", UranusType);
-     ADD("Neptune", NeptuneType);
-     ADD("Pluto", PlutoType);
-     ADD("Sun", SunType);
      ADD("Moon", MoonType);
      
      ADD("FixedBody", FixedBodyType);
