@@ -1,98 +1,6 @@
 #!/usr/bin/env python
 
-import sys, unittest
-from glob import glob
-from sets import Set
-
-class TestError(Exception):
-    pass
-
-# Work backwords from the `test' directory in which this script sits
-# to find where the distutils have placed the new module; note that
-# this attempt to find the `lib.*' directory will fail if the user has
-# created several by building the module for several architectures.
-
-(build_lib,) = glob(sys.path[0] + '/../build/lib.*')
-sys.path.insert(0, build_lib)
-
-# Now we can import the module.
-
-import ephem
-from ephem import *
-
-# Improve the standard TestCase class by providing a routine to check
-# whether a function call returns a desired exception.
-
-class MyTestCase(unittest.TestCase):
-    def assertRaises(self, exception, callable, *args):
-        try:
-            unittest.TestCase.assertRaises(self, exception, callable, *args)
-        except AssertionError:
-            raise AssertionError, ('%r failed to raise %s with arguments %r'
-                                   % (callable, exception, args))
-
-# Determine whether angles work reasonably.
-
-class angle_suite(unittest.TestCase):
-    def setUp(self):
-        self.d = degrees(1.5)
-        self.h = hours(1.6)
-
-    def test_degrees_constructor(self):
-        self.assertEqual(self.d, degrees('85:56:37.20937064454'))
-    def test_degrees_float_value(self):
-        self.assertEqual(self.d, 1.5)
-    def test_degrees_string_value(self):
-        self.assertEqual(str(self.d), '85:56:37.21')
-
-    def test_hours_constructor(self):
-        self.assertEqual(self.h, hours('6:06:41.579333023612'))
-    def test_hours_float_value(self):
-        self.assertEqual(self.h, 1.6)
-    def test_hours_string_value(self):
-        self.assertEqual(str(self.h), '6:06:41.58')
-
-    def test_angle_addition(self):
-        self.assertEqual(degrees('30') + degrees('90'), degrees('120'))
-    def test_angle_subtraction(self):
-        self.assertEqual(degrees('180') - hours('9'), degrees('45'))
-
-# Determine whether dates behave reasonably.
-
-class date_suite(unittest.TestCase):
-    def setUp(self):
-        self.date = date('2004/09/04 00:17:15.8')
-
-    def test_date_constructor(self):
-        std = ('2004/09/04 00:17:15.8',)
-        pairs = [std, ('2004.67489614324023472',),
-                 std, ('2004/9/4.0119884259259257',),
-                 std, ('2004/9/4 0.28772222222222221',),
-                 std, ('2004/9/4 0:17.263333333333332',),
-                 std, ('2004/9/4 0:17:15.8',),
-                 ('2004',), ((2004,),),
-                 ('2004/09',), ((2004, 9),),
-                 std, ((2004, 9, 4.0119884259259257),),
-                 std, ((2004, 9, 4, 0.28772222222222221),),
-                 std, ((2004, 9, 4, 0, 17.263333333333332),),
-                 std, ((2004, 9, 4, 0, 17, 15.8),),
-                 ]
-        for i in range(0, len(pairs), 2):
-            args1, args2 = pairs[i:i+2]
-            d1, d2 = date(*args1), date(*args2)
-            self.assert_(-1e-15 < (d1 / d2 - 1) < 1e-15,
-                         'dates not equal:\n %r = date%r\n %r = date%r'
-                         % (d1.tuple(), args1, d2.tuple(), args2))
-
-    def test_date_string_value(self):
-        self.assertEqual(str(self.date), '2004/9/4 00:17:15')
-
-    def test_date_triple_value(self):
-        self.assertEqual(self.date.triple(), (2004, 9, 4.0119884259256651))
-
-    def test_date_triple_value(self):
-        self.assertEqual(self.date.tuple(),
-                         (2004, 9, 4, 0, 17, 15.799999977461994))
+from ephem_test import *
 
 # The attributes which each class of object should support (these
 # lists are used by several of the functions below).
@@ -199,10 +107,15 @@ class body_suite(MyTestCase):
         body.compute()
         self.compare_attributes(body, True, False)
 
-    def test_Planets(self):
-        for init in (Mercury, Venus, Mars, Jupiter, Saturn,
-                     Uranus, Neptune, Pluto, Sun, Moon):
-            self.run(init())
+    def test_Named(self):
+        for named_object in (Mercury, Venus, Mars, Jupiter, Saturn,
+                             Uranus, Neptune, Pluto, Sun, Moon,
+                             Phobos, Deimos,
+                             Io, Europa, Ganymede, Callisto,
+                             Mimas, Enceladus, Tethys, Dione, Rhea,
+                             Titan, Hyperion, Iapetus, Ariel, Umbriel,
+                             Titania, Oberon, Miranda):
+            self.run(named_object())
 
     # For each flavor of user-definable body, 
 
