@@ -1,4 +1,5 @@
 include COPYING
+include libastro/Copyright
 include libastro/P_.h libastro/astro.h libastro/chap95.h
 include libastro/circum.h libastro/deepconst.h libastro/preferences.h
 include libastro/satlib.h libastro/satspec.h libastro/sattypes.h
