@@ -1054,12 +1054,12 @@ or remained below the horizon all day.
 <dt><b>Attributes of other moons</b>
 
 <dd><code><i>body</i>.x, <i>body</i>.y, <i>body</i>.z</code> ---
- the position of the moon with respect to its planet,
+ where the moon lies in the sky with respect to its planet,
  measured in planet radii;
- depending on whether the measurement is positive (or negative),
- <tt>x</tt> gives position east (or west),
- <tt>y</tt> south (or north),
- and <tt>z</tt> in front of the planet (or behind it)
+ <tt>x</tt> gives the distance east or west (east is positive),
+ <tt>y</tt> gives the distance north or south (south is positive),
+ and <tt>z</tt> indicates distance toward or away from the Earth
+ relative to the distance of its planet (closer to Earth is positive)
 <br><code><i>body</i>.earth_visible</code> --- boolean indicating
  whether the moon is visible from the Earth.
 <br><code><i>body</i>.sun_visible</code> --- boolean indicating

@@ -387,13 +387,8 @@ static PyTypeObject DateType = {
  * which they have been given the offset.
  */
 
-#define THE_NUMBER \
- ((sp->type == T_FLOAT) ? \
-   (* (float*) ((char*) self + m->offset)) : \
-   (* (double*) ((char*) self + m->offset)))
-
-#define THE_FLOAT (* (float*) ((char*)self + (int)v))
-#define THE_DOUBLE (* (double*) ((char*)self + (int)v))
+#define THE_FLOAT (* (float*) ((char*)self + (size_t)v))
+#define THE_DOUBLE (* (double*) ((char*)self + (size_t)v))
 
 /*
  * Sexigesimal values can be assigned either floating-point numbers or
@@ -1367,9 +1362,13 @@ static PyGetSetDef PlanetMoon_getset[] = {
      {"az", Get_az, 0, "azimuth (degrees)"},
      {"alt", Get_alt, 0, "altitude (degrees)"},
 
-     {"x", Get_x, 0, "distance east of planet (in planet radii)"},
-     {"y", Get_y, 0, "distance south of planet (in planet radii)"},
-     {"z", Get_z, 0, "distance in front of planet (in planet radii)"},
+     {"x", Get_x, 0, "how far east or west of its planet"
+      " the moon lies in the sky (in planet radii, east is positive)"},
+     {"y", Get_y, 0, "how far north or south of its planet"
+      " the moon lies in the sky (in planet radii, south is positive)"},
+     {"z", Get_z, 0, "how much closer to or farther from Earth"
+      "the moon lies compared to its planet"
+      " (in planet radii, closer to Earth is positive)"},
      {"earth_visible", Get_earth_visible, 0, "whether visible from earth"},
      {"sun_visible", Get_sun_visible, 0, "whether visible from sun"},
      {NULL}
