@@ -1,11 +1,24 @@
 # Test the example code in the manual.
 
-import ephem
 import fileinput, sys, traceback
+from glob import glob
+
+# Work backwords from the `test' directory in which this script sits
+# to find where the distutils have placed the new module; note that
+# this attempt to file the `lib.*' directory will fail if the user has
+# created several by building the module for several architectures.
+
+test_dir = sys.path[0]
+(build_lib,) = glob(test_dir + '/../build/lib.*')
+sys.path.insert(0, build_lib)
+
+import ephem
+
+premanual_path = test_dir + '/../doc/premanual.html'
 
 inpre = 0
 scope = { 'ephem' : ephem }
-lines = [ line for line in fileinput.input('premanual.html') ]
+lines = [ line for line in fileinput.input(premanual_path) ]
 
 i = 0
 while i < len(lines):
