@@ -19,5 +19,5 @@ setup(name = 'pyephem',
       description = 'computational astronomy routines from XEphem',
       author = 'Brandon Craig Rhodes',
       author_email = 'brandon@rhodesmill.org',
-      url = 'http://www.rhodesmill.org/brandon/projects/pyephem.html',
+      url = 'http://rhodesmill.org/brandon/projects/pyephem.html',
       ext_modules = ext_modules)
