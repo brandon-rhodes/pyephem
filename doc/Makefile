@@ -2,10 +2,8 @@
 #	umask 022; cat $< | python ./format.py > $@
 
 WEB = /home/brandon/sites/rhodesmill/html/brandon/projects
-VERSION = 3.5.2a
 
-all: $(WEB)/pyephem.html $(WEB)/pyephem-manual.html $(WEB)/pyephem.jpg \
-   $(WEB)/pyephem-$(VERSION).tar.gz
+all: $(WEB)/pyephem.html $(WEB)/pyephem-manual.html $(WEB)/pyephem.jpg
 
 $(WEB)/pyephem.html: pyephem.html
 	umask 022; cat pyephem.html > $@
