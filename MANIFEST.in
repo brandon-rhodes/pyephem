@@ -4,5 +4,5 @@ include libastro/P_.h libastro/astro.h libastro/chap95.h
 include libastro/circum.h libastro/deepconst.h libastro/preferences.h
 include libastro/satlib.h libastro/satspec.h libastro/sattypes.h
 include libastro/vector.h libastro/vsop87.h
-include src/Makefile src/ephem.i src/ephem.m4
+include src/Makefile src/ephem.i src/ephem.m4 src/ephem.py
 include src/ephem_wrap.c src/format_html.m4 src/format_swig.m4
