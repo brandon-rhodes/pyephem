@@ -21,7 +21,7 @@ the (rather cryptic) variable and function names of the C library.
 Instead I have sought names that, while brief, are expressive enough
 that I would not mind reading a program that uses this library.
 If you need briefer names for common functions,
-you can just use Python's equality operator to bind
+you can just use Python's assignment statement to bind
 functions and variables to more convenient names.
 <P>
 Please mail comments, corrections, or additional ideas
@@ -73,6 +73,8 @@ in the PyEphem source code package.
 <B><A HREF="#5">5. Ephem Database Format</A></B><BR>
 <B><A HREF="#6">6. Low-Level Computations</A></B><BR>
 <B><A HREF="#7">7. Preferences</A></B><BR>
+<A HREF="#7.1">7.1. PREF_EQUATORIAL</A><BR>
+<A HREF="#7.2">7.2. PREF_DATE_FORMAT</A><BR>
 <HR><A NAME="1"><H2>1. Constants</H2></A>
 <UL>
 <LI><B><TT>MetersPerAU</TT></B> - Meters per AU.
@@ -104,10 +106,10 @@ computations.
 </UL>
 <H4><A NAME="2.1.1">2.1.1. Input and Output</H4></A>
 <DL>
-<DT><TABLE WIDTH=100%><TR><TD><B>formatDate</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>-&gt; string <B>date</B></TABLE><DD>Formats the date corresponding to the given modified Julian day
+<DT><TABLE WIDTH=100%><TR><TD><B>formatDate</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>&#8594; string <B>date</B></TABLE><DD>Formats the date corresponding to the given modified Julian day
 using the format currently selected through the preferences;
 see the Preferences section below.</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>scanDate</B> (string <B>date</B>, integer <B>format</B>)<TD ALIGN=RIGHT>-&gt; (integer <B>month</B>, float <B>day</B>, integer <B>year</B>)</TABLE><DD>Split a date string of the form X/Y/Z (determined by the format
+<DT><TABLE WIDTH=100%><TR><TD><B>scanDate</B> (string <B>date</B>, integer <B>format</B>)<TD ALIGN=RIGHT>&#8594; (integer <B>month</B>, float <B>day</B>, integer <B>year</B>)</TABLE><DD>Split a date string of the form X/Y/Z (determined by the format
 preference specifier - see the Preferences section below) into its
 components.  It allows the day to be a floating point number.  A
 lone component is always a year if it contains a decimal point or
@@ -115,7 +117,7 @@ if format is MDY or DMY and it is not a reasonable month or day
 value, respectively.  The separators may be anything but digits or
 a decimal point.</P>
 <DT><TABLE WIDTH=100%><TR><TD><B>rescanDate</B> (string <B>date</B>, format <B>integer,</B><B></B>
-	 integer <B>month</B>, float <B>day</B>, integer <B>year</B>)<TD ALIGN=RIGHT>-&gt; (integer <B>month</B>, float <B>day</B>, integer <B>year</B>)</TABLE><DD>Split a date string just like the function scanDate does, except
+	 integer <B>month</B>, float <B>day</B>, integer <B>year</B>)<TD ALIGN=RIGHT>&#8594; (integer <B>month</B>, float <B>day</B>, integer <B>year</B>)</TABLE><DD>Split a date string just like the function scanDate does, except
 that you provide default values for each field and any unspecified
 component of the date will be left unchanged.</P>
 </DL>
@@ -131,26 +133,26 @@ and in general year <NOBR><I>n</I> BC</NOBR>
 is numbered as the -(<I>n</I>-1)th year.
 </P>
 <DL>
-<DT><TABLE WIDTH=100%><TR><TD><B>fromGregorian</B> (integer <B>month</B>, float <B>day</B>, integer <B>year</B>)<TD ALIGN=RIGHT>-&gt; float <B>mjd</B></TABLE><DD>Given a month, day (which can include a fraction), and year in the
+<DT><TABLE WIDTH=100%><TR><TD><B>fromGregorian</B> (integer <B>month</B>, float <B>day</B>, integer <B>year</B>)<TD ALIGN=RIGHT>&#8594; float <B>mjd</B></TABLE><DD>Given a month, day (which can include a fraction), and year in the
 Gregorian calendar, return the corresponding modified Julian
 day.</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>toGregorian</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>-&gt; (integer <B>month</B>, double <B>day</B>, integer <B>year</B>)</TABLE><DD>Given a modified Julian day, this returns a tuple containing the
+<DT><TABLE WIDTH=100%><TR><TD><B>toGregorian</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>&#8594; (integer <B>month</B>, double <B>day</B>, integer <B>year</B>)</TABLE><DD>Given a modified Julian day, this returns a tuple containing the
 corresponding Gregorian month, day, and year.</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>toDayOfWeek</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>-&gt; int <B>dayOfWeek</B></TABLE><DD>Given a modified Julian day, this returns the day of the week in
+<DT><TABLE WIDTH=100%><TR><TD><B>toDayOfWeek</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>&#8594; int <B>dayOfWeek</B></TABLE><DD>Given a modified Julian day, this returns the day of the week in
 which the given time falls, from 0 (Sunday) to 6 (Saturday).</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>toDaysInMonth</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>-&gt; int <B>daysInMonth</B></TABLE><DD>Given a modified Julian day, this returns the number of days in the
+<DT><TABLE WIDTH=100%><TR><TD><B>toDaysInMonth</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>&#8594; int <B>daysInMonth</B></TABLE><DD>Given a modified Julian day, this returns the number of days in the
 month in which it falls.</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>toYear</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>-&gt; float <B>year</B></TABLE><DD>Convert the modified Julian day to a Gregorian year, which might
+<DT><TABLE WIDTH=100%><TR><TD><B>toYear</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>&#8594; float <B>year</B></TABLE><DD>Convert the modified Julian day to a Gregorian year, which might
 include a fraction indicating how far into that year the date fell.
 Years BC are indicated by nonpositive numbers whose magnitude is one
 less than the corresponding year BC.</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>fromYear</B> (float <B>year</B>)<TD ALIGN=RIGHT>-&gt; float <B>mjd</B></TABLE><DD>Convert a year - which may include a fraction - to a modified
+<DT><TABLE WIDTH=100%><TR><TD><B>fromYear</B> (float <B>year</B>)<TD ALIGN=RIGHT>&#8594; float <B>mjd</B></TABLE><DD>Convert a year - which may include a fraction - to a modified
 Julian day.</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>toNearestSecond</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>-&gt; float <B>mjd</B></TABLE><DD>Return the given modified Julian day, with the result rounded to
+<DT><TABLE WIDTH=100%><TR><TD><B>toNearestSecond</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>&#8594; float <B>mjd</B></TABLE><DD>Return the given modified Julian day, with the result rounded to
 the nearest second.</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>toDay</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>-&gt; float <B>mjd</B></TABLE><DD>Return the given modified Julian day, with the result rounded to
+<DT><TABLE WIDTH=100%><TR><TD><B>toDay</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>&#8594; float <B>mjd</B></TABLE><DD>Return the given modified Julian day, with the result rounded to
 the beginning of the previous day.</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>toHourOfDay</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>-&gt; float <B>hours</B></TABLE><DD>Return how many hours (including any fraction) the given modified
+<DT><TABLE WIDTH=100%><TR><TD><B>toHourOfDay</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>&#8594; float <B>hours</B></TABLE><DD>Return how many hours (including any fraction) the given modified
 Julian day is from the previous midnight UTC.</P>
 </DL>
 <H3><A NAME=2.2>2.2. Angles</H3></A>
@@ -162,7 +164,7 @@ are used to maintain the original form of the published elements.
 </P>
 <H4><A NAME="2.2.1">2.2.1. Input and Output</H4></A>
 <DL>
-<DT><TABLE WIDTH=100%><TR><TD><B>formatSexagesimal</B> (float <B>angle</B>, integer <B>w</B>, integer <B>fracbase</B>)<TD ALIGN=RIGHT>-&gt; string <B>output</B></TABLE><DD>Return the variable a formatted in sexagesimal format.  <B>w</B> is the number
+<DT><TABLE WIDTH=100%><TR><TD><B>formatSexagesimal</B> (float <B>angle</B>, integer <B>w</B>, integer <B>fracbase</B>)<TD ALIGN=RIGHT>&#8594; string <B>output</B></TABLE><DD>Return the variable a formatted in sexagesimal format.  <B>w</B> is the number
 of characters that should be reserved for the whole part.  <B>fracbase</B> is
 the number of pieces a whole is to broken into, and may be one of:<PRE>
 	360000:	whole:mm:ss.ss
@@ -171,11 +173,11 @@ the number of pieces a whole is to broken into, and may be one of:<PRE>
 	600:	whole:mm.m
 	60:	whole:mm
 </PRE></P>
-<DT><TABLE WIDTH=100%><TR><TD><B>scanSexagesimal</B> (string <B>input</B>)<TD ALIGN=RIGHT>-&gt; float <B>output</B></TABLE><DD>Given a string of the form xx:mm[:ss] or xx:mm.dd, convert it to a
+<DT><TABLE WIDTH=100%><TR><TD><B>scanSexagesimal</B> (string <B>input</B>)<TD ALIGN=RIGHT>&#8594; float <B>output</B></TABLE><DD>Given a string of the form xx:mm[:ss] or xx:mm.dd, convert it to a
 double.  The delimiter ":" may also be ";", "/", or ",".  All
 components may be floats.
 Raises a ValueError if a problem in translation is encountered.</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>rescanSexagesimal</B> (float <B>default</B>, string <B>angle</B>)<TD ALIGN=RIGHT>-&gt; float <B>output</B></TABLE><DD>Scans a sexagesimal string (like a time or angle, in which
+<DT><TABLE WIDTH=100%><TR><TD><B>rescanSexagesimal</B> (float <B>default</B>, string <B>angle</B>)<TD ALIGN=RIGHT>&#8594; float <B>output</B></TABLE><DD>Scans a sexagesimal string (like a time or angle, in which
 fractional parts are prefixed by ":" and represent sixtieths of the
 next larger unit) and returns its numerical value.  A negative
 value may be indicated by a "-" character before any component.
@@ -186,17 +188,17 @@ of the double provided as the first argument.</P>
 </DL>
 <H4><A NAME="2.2.2">2.2.2. Arithmetic</H4></A>
 <DL>
-<DT><TABLE WIDTH=100%><TR><TD><B>deltaRA</B> (float <B>difference</B>)<TD ALIGN=RIGHT>-&gt; float <B>normalized</B></TABLE><DD>Given the difference between two right ascensions, this function
+<DT><TABLE WIDTH=100%><TR><TD><B>deltaRA</B> (float <B>difference</B>)<TD ALIGN=RIGHT>&#8594; float <B>normalized</B></TABLE><DD>Given the difference between two right ascensions, this function
 normalizes the value to an angle between zero and twice pi.</P>
 </DL>
 <H4><A NAME="2.2.3">2.2.3. Conversions</H4></A>
 <DL>
-<DT><TABLE WIDTH=100%><TR><TD><B>degrad</B> (float <B>d</B>)<TD ALIGN=RIGHT>-&gt; float <B>r</B></TABLE><DD>Degrees to radians.</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>raddeg</B> (float <B>r</B>)<TD ALIGN=RIGHT>-&gt; float <B>d</B></TABLE><DD>Radians to degrees.</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>hrdeg</B> (float <B>h</B>)<TD ALIGN=RIGHT>-&gt; float <B>d</B></TABLE><DD>Hours to degrees.</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>deghr</B> (float <B>d</B>)<TD ALIGN=RIGHT>-&gt; float <B>h</B></TABLE><DD>Degrees to hours.</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>hrrad</B> (float <B>h</B>)<TD ALIGN=RIGHT>-&gt; float <B>r</B></TABLE><DD>Hours to radians.</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>radhr</B> (float <B>r</B>)<TD ALIGN=RIGHT>-&gt; float <B>h</B></TABLE><DD>Radians to hours.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>degrad</B> (float <B>d</B>)<TD ALIGN=RIGHT>&#8594; float <B>r</B></TABLE><DD>Degrees to radians.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>raddeg</B> (float <B>r</B>)<TD ALIGN=RIGHT>&#8594; float <B>d</B></TABLE><DD>Radians to degrees.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>hrdeg</B> (float <B>h</B>)<TD ALIGN=RIGHT>&#8594; float <B>d</B></TABLE><DD>Hours to degrees.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>deghr</B> (float <B>d</B>)<TD ALIGN=RIGHT>&#8594; float <B>h</B></TABLE><DD>Degrees to hours.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>hrrad</B> (float <B>h</B>)<TD ALIGN=RIGHT>&#8594; float <B>r</B></TABLE><DD>Hours to radians.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>radhr</B> (float <B>r</B>)<TD ALIGN=RIGHT>&#8594; float <B>h</B></TABLE><DD>Radians to hours.</P>
 </DL>
 <H3><A NAME=2.3>2.3. Convenient Formatting</H3></A>
 <P>These functions are not actually present in the raw libastro library,
@@ -205,13 +207,13 @@ normalizes the value to an angle between zero and twice pi.</P>
  In each of these functions the variable <B>fracbase</B> has the same
  significance as in the <B>formatSexagesimal</B> function described above.</P>
 <DL>
-<DT><TABLE WIDTH=100%><TR><TD><B>formatHours</B> (float <B>angle</B>, int <B>fracbase</B>)<TD ALIGN=RIGHT>-&gt; string <B>output</B></TABLE><DD>Formats a radian angle as hours (such as those of right ascension).</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>formatDegrees</B> (float <B>angle</B>, int <B>fracbase</B>)<TD ALIGN=RIGHT>-&gt; string <B>output</B></TABLE><DD>Formats a radian angle as degrees.</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>formatDay</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>-&gt; string <B>output</B></TABLE><DD>Formats the date corresponding to the given modified Julian day
+<DT><TABLE WIDTH=100%><TR><TD><B>formatHours</B> (float <B>angle</B>, int <B>fracbase</B>)<TD ALIGN=RIGHT>&#8594; string <B>output</B></TABLE><DD>Formats a radian angle as hours (such as those of right ascension).</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>formatDegrees</B> (float <B>angle</B>, int <B>fracbase</B>)<TD ALIGN=RIGHT>&#8594; string <B>output</B></TABLE><DD>Formats a radian angle as degrees.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>formatDay</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>&#8594; string <B>output</B></TABLE><DD>Formats the date corresponding to the given modified Julian day
 	using the format currently selected through the preferences
 	(see the Preferences section below).
 	The fractional part of the day is ignored.</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>formatTime</B> (float <B>mjd</B>, int <B>fracbase</B>)<TD ALIGN=RIGHT>-&gt; string <B>output</B></TABLE><DD>Given the time expressed as a modified Julian day,
+<DT><TABLE WIDTH=100%><TR><TD><B>formatTime</B> (float <B>mjd</B>, int <B>fracbase</B>)<TD ALIGN=RIGHT>&#8594; string <B>output</B></TABLE><DD>Given the time expressed as a modified Julian day,
 	this function returns a formatted representation of the time of day.</P>
 </DL>
 <HR><A NAME="3"><H2>3. Objects</H2></A>
@@ -456,8 +458,8 @@ and their possible values are as follows.
 </UL>
 <H3><A NAME=3.5>3.5. Functions</H3></A>
 <DL>
-<DT><TABLE WIDTH=100%><TR><TD><B>describe</B> (Obj <B>o</B>)<TD ALIGN=RIGHT>-&gt; string <B>description</B></TABLE><DD>Returns a textual description of the object.</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>isDeepsky</B> (Obj <B>o</B>)<TD ALIGN=RIGHT>-&gt; integer <B>boolean</B></TABLE><DD>Returns integer true or false indicating whether the object is
+<DT><TABLE WIDTH=100%><TR><TD><B>describe</B> (Obj <B>o</B>)<TD ALIGN=RIGHT>&#8594; string <B>description</B></TABLE><DD>Returns a textual description of the object.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>isDeepsky</B> (Obj <B>o</B>)<TD ALIGN=RIGHT>&#8594; integer <B>boolean</B></TABLE><DD>Returns integer true or false indicating whether the object is
 a deep-sky object.</P>
 </DL>
 <HR><A NAME="4"><H2>4. Computation</H2></A>
@@ -489,13 +491,13 @@ involving time-specific calculations.
 </UL>
 <H3><A NAME=4.1>4.1. General Computations</H3></A>
 <DL>
-<DT><TABLE WIDTH=100%><TR><TD><B>computeLocation</B> (Circumstance <B>c</B>, Object <B>o</B>)<TD ALIGN=RIGHT>-&gt; int <B>error</B></TABLE><DD>Given a circumstance and an object,
+<DT><TABLE WIDTH=100%><TR><TD><B>computeLocation</B> (Circumstance <B>c</B>, Object <B>o</B>)<TD ALIGN=RIGHT>&#8594; int <B>error</B></TABLE><DD>Given a circumstance and an object,
 the position of the object at that time and location is computed
 and its field values are updated to reflect this.</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>computeSeparation</B> (Obj <B>o1</B>, Obj <B>o2</B>)<TD ALIGN=RIGHT>-&gt; (float <B>separation</B>)</TABLE><DD>Given two objects whose locations have been computed with
+<DT><TABLE WIDTH=100%><TR><TD><B>computeSeparation</B> (Obj <B>o1</B>, Obj <B>o2</B>)<TD ALIGN=RIGHT>&#8594; float <B>separation</B></TABLE><DD>Given two objects whose locations have been computed with
 	 <B>computeLocation</B>, return the angular separation between
 	 the two objects.</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>computeSiderealTime</B> (Circumstance <B>c</B>)<TD ALIGN=RIGHT>-&gt; float <B>sidhours</B></TABLE><DD>Given a circumstance,
+<DT><TABLE WIDTH=100%><TR><TD><B>computeSiderealTime</B> (Circumstance <B>c</B>)<TD ALIGN=RIGHT>&#8594; float <B>sidhours</B></TABLE><DD>Given a circumstance,
 this function returns the local sidereal time (in hours).</P>
 </DL>
 <H3><A NAME=4.2>4.2. Risings and Settings</H3></A>
@@ -527,22 +529,22 @@ the library provides a routine to compute these times for an object.
 </UL>
 <H4><A NAME="4.2.2">4.2.2. Functions</H4></A>
 <DL>
-<DT><TABLE WIDTH=100%><TR><TD><B>computeRiseSet</B> (Circumstance <B>c</B>, Object <B>o</B>, float <B>distance</B>, RiseSet <B>riseset</B>)<TD ALIGN=RIGHT>-&gt; <B>None</B></TABLE><DD>Given a circumstance, an object, and the angular distance in radians
+<DT><TABLE WIDTH=100%><TR><TD><B>computeRiseSet</B> (Circumstance <B>c</B>, Object <B>o</B>, float <B>distance</B>, RiseSet <B>riseset</B>)<TD ALIGN=RIGHT>&#8594; <B>None</B></TABLE><DD>Given a circumstance, an object, and the angular distance in radians
 below the ideal horizon at which point an object is considered to be
 rising or setting,
 this routine fills in the given RiseSet structure
 with information about when the object will rise and set.</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>computeTwilight</B> (Circumstance <B>c</B>, float <B>distance</B>)<TD ALIGN=RIGHT>-&gt; (float <B>mjdDawn</B>, float <B>mjdDusk</B>, integer <B>flags</B>)</TABLE><DD>Given a circumstance and a distance similar to that of the above function,
+<DT><TABLE WIDTH=100%><TR><TD><B>computeTwilight</B> (Circumstance <B>c</B>, float <B>distance</B>)<TD ALIGN=RIGHT>&#8594; (float <B>mjdDawn</B>, float <B>mjdDusk</B>, integer <B>flags</B>)</TABLE><DD>Given a circumstance and a distance similar to that of the above function,
 this returns a tuple containing the time of dawn, the time of dusk,
 and a set of flags like that returned from the computeRiseSet function
 indicating whether the calculation was successful.</P>
 </DL>
 <H3><A NAME=4.3>4.3. Constellation Identification</H3></A>
 <DL>
-<DT><TABLE WIDTH=100%><TR><TD><B>constellation</B> (float <B>ra</B>, float <B>dec</B>, float <B>epoch</B>)<TD ALIGN=RIGHT>-&gt; (string <B>abbreviation</B>)</TABLE><DD>Given a location in the sky and an mjd epoch,
+<DT><TABLE WIDTH=100%><TR><TD><B>constellation</B> (float <B>ra</B>, float <B>dec</B>, float <B>epoch</B>)<TD ALIGN=RIGHT>&#8594; string <B>abbreviation</B></TABLE><DD>Given a location in the sky and an mjd epoch,
  returns the three-letter abbreviation of the constellation
  at that location.</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>constellationName</B> (float <B>ra</B>, float <B>dec</B>, float <B>epoch</B>)<TD ALIGN=RIGHT>-&gt; (string <B>name</B>)</TABLE><DD>Given a location in the sky and an mjd epoch,
+<DT><TABLE WIDTH=100%><TR><TD><B>constellationName</B> (float <B>ra</B>, float <B>dec</B>, float <B>epoch</B>)<TD ALIGN=RIGHT>&#8594; string <B>name</B></TABLE><DD>Given a location in the sky and an mjd epoch,
  returns the full scientific (Latin) name of the constellation
  at that location.</P>
 </DL>
@@ -552,59 +554,61 @@ These two functions allow you to read and write lines
 in the venerable ephem database format.
 </P>
 <DL>
-<DT><TABLE WIDTH=100%><TR><TD><B>scanDB</B> (string <B>entry</B>, Object <B>o</B>)<TD ALIGN=RIGHT>-&gt; <B>None</B></TABLE><DD>Interpret the string as a database entry and fill in the object data
+<DT><TABLE WIDTH=100%><TR><TD><B>scanDB</B> (string <B>entry</B>, Object <B>o</B>)<TD ALIGN=RIGHT>&#8594; <B>None</B></TABLE><DD>Interpret the string as a database entry and fill in the object data
 structure accordingly.
 Raises a ValueError if the routine encounters a failure.</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>formatDB</B> (Object <B>o</B>)<TD ALIGN=RIGHT>-&gt; string <B>entry</B></TABLE><DD>Generate a line in ephem database format describing the given object.
+<DT><TABLE WIDTH=100%><TR><TD><B>formatDB</B> (Object <B>o</B>)<TD ALIGN=RIGHT>&#8594; string <B>entry</B></TABLE><DD>Generate a line in ephem database format describing the given object.
 The line will not include a terminal newline.</P>
 </DL>
 <HR><A NAME="6"><H2>6. Low-Level Computations</H2></A>
 <DL>
-<DT><TABLE WIDTH=100%><TR><TD><B>ap_as</B> (Circumstance <B>c</B>, float <B>mjd</B>, float <B>ra</B>, float <B>dec</B>)<TD ALIGN=RIGHT>-&gt; (float <B>ra</B>, float <B>dec</B>)</TABLE><DD>Converts the given apparent right ascension and declination
+<DT><TABLE WIDTH=100%><TR><TD><B>ap_as</B> (Circumstance <B>c</B>, float <B>mjd</B>, float <B>ra</B>, float <B>dec</B>)<TD ALIGN=RIGHT>&#8594; (float <B>ra</B>, float <B>dec</B>)</TABLE><DD>Converts the given apparent right ascension and declination
 to the astrometrically precessed values
 for the given modified Julian date.</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>as_ap</B> (Circumstance <B>c</B>, float <B>mjd</B>, float <B>ra</B>, float <B>dec</B>)<TD ALIGN=RIGHT>-&gt; (float <B>ra</B>, float <B>dec</B>)</TABLE><DD>Calculate the given astrometric right ascension and declination
+<DT><TABLE WIDTH=100%><TR><TD><B>as_ap</B> (Circumstance <B>c</B>, float <B>mjd</B>, float <B>ra</B>, float <B>dec</B>)<TD ALIGN=RIGHT>&#8594; (float <B>ra</B>, float <B>dec</B>)</TABLE><DD>Calculate the given astrometric right ascension and declination
 which are precessed to the modified Julian date
 of the time of the circumstance.
 Returns a (right ascension, declination) double.</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>deltat</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>-&gt; (float <B>seconds</B>)</TABLE><DD>Number of seconds by which Terrestrial Dynamical Time (known as
+<DT><TABLE WIDTH=100%><TR><TD><B>deltat</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>&#8594; float <B>seconds</B></TABLE><DD>Number of seconds by which Terrestrial Dynamical Time (known as
 Ephemeris Time prior to 1982) leads UTC.</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>heliocorr</B> (float <B>mjd</B>, float <B>ra</B>, float <B>dec</B>)<TD ALIGN=RIGHT>-&gt; float <B>hcp</B></TABLE><DD>Given geocentric time julian date
+<DT><TABLE WIDTH=100%><TR><TD><B>heliocorr</B> (float <B>mjd</B>, float <B>ra</B>, float <B>dec</B>)<TD ALIGN=RIGHT>&#8594; float <B>hcp</B></TABLE><DD>Given geocentric time julian date
 and coords of a distant object at the given right ascension
 and declination (for the epoch J2000),
 find the difference in time between light arriving at earth versus the sun.
 "hcp" must be subtracted from geocentric jd to get heliocentric jd.
 (From RLM Oct 12, 1995.)</P>
-<DT><TABLE WIDTH=100%><TR><TD><B>mm_mjed</B> (Circumstance <B>c</B>)<TD ALIGN=RIGHT>-&gt; float <B>mjd</B></TABLE><DD>Given a circumstance,
+<DT><TABLE WIDTH=100%><TR><TD><B>mm_mjed</B> (Circumstance <B>c</B>)<TD ALIGN=RIGHT>&#8594; float <B>mjd</B></TABLE><DD>Given a circumstance,
 return its modified julian date, modified for terrestrial dynamical time.</P>
 </DL>
 <HR><A NAME="7"><H2>7. Preferences</H2></A>
-<P>Two of XEphem's numerous options are relevant for this
- computational library.</P>
-<P>The variable <B>preference.whichEquatorial</B> sets whether locations
- should be computed from the center of the earth,
- or for a particular observer on the earth's surface.
- If geocentric (based on the center of the earth) computation is selected,
- most of the fields in a Circumstance object
- become irrelevant since they are used to specify a location on earth.
- It may take on either of these values:</P>
+<P>Preferences are integer values
+ which can assume various predefined values which are provied as macros.
+ They are accessed through two functions;
+ see the sections below to learn about the preferences available:</P>
+<DL>
+<DT><TABLE WIDTH=100%><TR><TD><B>pref_get</B> (int <B>preference</B>)<TD ALIGN=RIGHT>&#8594; int <B>value</B></TABLE><DD>Returns the current value of the given preference.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>pref_set</B> (int <B>preference</B>, int <B>value</B>)<TD ALIGN=RIGHT>&#8594; int <B>value</B></TABLE><DD>Sets the given preference to a new value, returning the old value.</P>
+</DL>
+<H3><A NAME=7.1>7.1. PREF_EQUATORIAL</H3></A>
+<P>Sets whether solar system object positions and angles
+ should be computed for an observer at the center of the earth,
+ or for an observer at a particular location on the earth's surface.</P>
 <UL>
-<LI><B><TT>topocentric</TT></B> - Asserts that computations should be relative to an
+<LI><B><TT>PREF_TOPO</TT></B> - Asserts that computations should be relative to an
  observer on the surface of the earth (the default).
-<LI><B><TT>geocentric</TT></B> - Asserts that computations should be relative to the
+<LI><B><TT>PREF_GEO</TT></B> - Asserts that computations should be relative to the
  center of the earth.
+ Note that geocentric mode ignores those fields of the Circumstance object
+ that specify your location.
 </UL>
-<P>The variable <B>preference.whichDateFormat</B> selects the manner
- in which the <B>formatDate</B> function formats its output.
- Its value should be one of:</P>
+<H3><A NAME=7.2>7.2. PREF_DATE_FORMAT</H3></A>
+<P>Determines how the <B>formatDate</B> function formats its output:</P>
 <UL>
-<LI><B><TT>MDY</TT></B> - Asserts that dates should be expressed as month/day/year
- in the manner familiar to Americans (this option is selected as the default
+<LI><B><TT>PREF_MDY</TT></B> - Writes dates as month/day/year like an American.
+ This option is the default,
  to conform to the default behavior of XEphem,
- even though this system makes less sense than the other two).
-<LI><B><TT>YMD</TT></B> - Asserts that dates should be expressed as year/month/day
- as commonly used by astronomers.
-<LI><B><TT>DMY</TT></B> - Asserts that dates should be expressed as day/month/year
- as used by Europeans.
+ even though this custom makes less sense than the other two.
+<LI><B><TT>PREF_YMD</TT></B> - Writes dates as year/month/day like an astronomer.
+<LI><B><TT>PREF_DMY</TT></B> - Writes dates as day/month/year like a European.
 </UL>
 </BODY></HTML>
