@@ -43,22 +43,6 @@ static int moon_init(PyObject *self, PyObject *args, PyObject *kw)
 
 /* Object constructors. */
 
-#define planet_builder(name, planet, objtype) \
-static PyObject* name(PyObject* self, PyObject* args) \
-{ \
-     BodyObject *body; \
-     if (!PyArg_ParseTuple(args, ":" #name)) return 0; \
-     body = PyObject_NEW(BodyObject, &objtype); \
-     if (!body) return 0; \
-     memset(& body->obj, 0, sizeof(body->obj)); \
-     strcpy(body->obj.o_name, #name); \
-     body->obj.o_type = PLANET; \
-     body->obj.pl.pl_code = planet; \
-     return (PyObject*) body; \
-}
-
-#undef planet_builder
-
 static PyObject* build_planet
 (PyObject* self, PyObject* args, PyObject *kw,
  PyTypeObject *bodytype, char *name, int typecode)
