@@ -929,9 +929,9 @@ static PyObject* Body_writedb(PyObject *self)
 static PyObject* Body_str(PyObject *body_object)
 {
      Body *body = (Body*) body_object;
-     char *format = body->obj.o_type == PLANET ? "<ephem.%s>" :
-	  body->obj.o_name[0] ? "<ephem.%s \"%s\">" :
-	  "<ephem.%s%s>";
+     char *format = body->obj.o_type == PLANET ? "<%s>" :
+	  body->obj.o_name[0] ? "<%s \"%s\">" :
+	  "<%s%s>";
      return PyString_FromFormat
 	  (format, body->ob_type->tp_name, body->obj.o_name);
 }
