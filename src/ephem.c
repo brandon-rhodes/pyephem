@@ -214,20 +214,37 @@ initephem(void)
      /* Initialize non-constant pointers. */
 
      Angle_Type.ob_type = &PyType_Type;
-     Body_Type.ob_type = &PyType_Type;
-     FixedBody_Type.ob_type = &PyType_Type;
-     Planet_Type.ob_type = &PyType_Type;
-     Saturn_Type.ob_type = &PyType_Type;
-     Moon_Type.ob_type = &PyType_Type;
-     EllipticalBody_Type.ob_type = &PyType_Type;
-     HyperbolicBody_Type.ob_type = &PyType_Type;
-     ParabolicBody_Type.ob_type = &PyType_Type;
-     EarthSatellite_Type.ob_type = &PyType_Type;
-     Date_Type.ob_type = &PyType_Type;
-     Observer_Type.ob_type = &PyType_Type;
-
      Angle_Type.tp_base = &PyFloat_Type;
+
+     Body_Type.ob_type = &PyType_Type;
+     Body_Type.tp_dealloc = _PyObject_Del;
+     Body_Type.tp_getattro = PyObject_GenericGetAttr;
+     Body_Type.tp_alloc = PyType_GenericAlloc;
+     Body_Type.tp_new = PyType_GenericNew;
+     Body_Type.tp_free = _PyObject_GC_Del;
+
+     FixedBody_Type.ob_type = &PyType_Type;
+
+     Planet_Type.ob_type = &PyType_Type;
+
+     Saturn_Type.ob_type = &PyType_Type;
+
+     Moon_Type.ob_type = &PyType_Type;
+
+     EllipticalBody_Type.ob_type = &PyType_Type;
+
+     HyperbolicBody_Type.ob_type = &PyType_Type;
+
+     ParabolicBody_Type.ob_type = &PyType_Type;
+
+     EarthSatellite_Type.ob_type = &PyType_Type;
+
+     Date_Type.ob_type = &PyType_Type;
      Date_Type.tp_base = &PyFloat_Type;
+
+     Observer_Type.ob_type = &PyType_Type;
+     Observer_Type.tp_dealloc = _PyObject_Del;
+     Observer_Type.tp_getattro = PyObject_GenericGetAttr;
 
      /* Build type dictionaries. */
 

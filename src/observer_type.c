@@ -91,7 +91,7 @@ static PyTypeObject Observer_Type = {
      "Observer",
      sizeof(ObserverObject),
      0,
-     (destructor) _PyObject_Del, /* tp_dealloc */
+     0,	/*_PyObject_Del*/	/* tp_dealloc */
      0,				/* tp_print */
      0,				/* tp_getattr */
      0,				/* tp_setattr */
@@ -103,7 +103,7 @@ static PyTypeObject Observer_Type = {
      0,				/* tp_hash */
      0,				/* tp_call */
      0,				/* tp_str */
-     PyObject_GenericGetAttr,	/* tp_getattro */
+     0, /*PyObject_GenericGetAttr,*/ /* tp_getattro */
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
      Py_TPFLAGS_DEFAULT,	/* tp_flags */

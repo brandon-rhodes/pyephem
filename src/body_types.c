@@ -580,7 +580,7 @@ static PyTypeObject Body_Type = {
      "Body",
      sizeof(BodyObject),
      0,
-     (destructor) _PyObject_Del, /* tp_dealloc */
+     0, /*_PyObject_Del,*/	/* tp_dealloc */
      0,				/* tp_print */
      0,				/* tp_getattr */
      0,				/* tp_setattr */
@@ -592,7 +592,7 @@ static PyTypeObject Body_Type = {
      0,				/* tp_hash */
      0,				/* tp_call */
      /*(reprfunc)*/ body_str, /* tp_str */
-     PyObject_GenericGetAttr,	/* tp_getattro */
+     0, /*PyObject_GenericGetAttr,*/ /* tp_getattro */
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
      Py_TPFLAGS_DEFAULT /*| Py_TPFLAGS_HAVE_GC*/
@@ -613,9 +613,9 @@ static PyTypeObject Body_Type = {
      0,				/* tp_descr_set */
      0,				/* tp_dictoffset */
      body_init,			/* tp_init */
-     PyType_GenericAlloc,	/* tp_alloc */
-     PyType_GenericNew,		/* tp_new */
-     _PyObject_GC_Del,		/* tp_free */
+     0, /*PyType_GenericAlloc,*/ /* tp_alloc */
+     0, /*PyType_GenericNew,*/	/* tp_new */
+     0, /*_PyObject_GC_Del,*/	/* tp_free */
 };
 
 static PyTypeObject FixedBody_Type = {
