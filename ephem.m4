@@ -864,6 +864,8 @@ this function returns the local sidereal time (in hours).')
 FUNCTION_END
 
 %{
+/* This function is Copyright 1998 by Elwood Charles Downey, and is
+   from the GUI/xephem/datamenu.c file of his xephem-3.1 distribution. */
 /* compute and display the separation between the two sky locations */
 double dm_separation (Obj *p, Obj *q)
 {
