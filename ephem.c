@@ -1333,9 +1333,9 @@ static PyGetSetDef Planet_getset[] = {
 
 /* Some day, when planetary moons support all Body and Planet fields,
    this will become a list only of fields peculiar to planetary moons,
-   and PlanetMoon will inherit from Planet; but for now, this lists
-   all fields valid for them.  See libastro's plmoon.c to review which
-   fields have information specific to the moon. */
+   and PlanetMoon will inherit from Planet; but for now, there is no
+   inheritance, and this must list every fields valid for a planetary
+   moon (see libastro's plmoon.c for details). */
 
 static PyGetSetDef PlanetMoon_getset[] = {
      {"name", Get_name, Set_name, "arbitrary name of up to 20 characters"},
@@ -1460,9 +1460,9 @@ static PyGetSetDef EarthSatellite_getset[] = {
       "Argument of perigee at epoch (degrees)", VOFF(es_ap)},
      {"_M", getf_dd, setf_dd,
       "Mean anomaly (degrees from perigee at epoch)", VOFF(es_M)},
-     {"sublat", getf_rd, setf_rd,
+     {"sublat", getf_rd, 0,
       "Latitude below satellite (degrees east)", VOFF(s_sublat)},
-     {"sublong", getf_rd, setf_rd,
+     {"sublong", getf_rd, 0,
       "Longitude below satellite (degrees north)", VOFF(s_sublng)},
      {NULL}
 };
