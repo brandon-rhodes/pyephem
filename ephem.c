@@ -2180,13 +2180,15 @@ static PyObject* constellation
 			       "coordinates");
 	       goto fail;
 	  }
-	  if (b->obj.o_flags == 0 && Body_obj_cir(b, 0, 0) == -1) {
+	  if (b->obj.o_flags == 0) {
 	       PyErr_SetString(PyExc_TypeError, "you cannot ask about "
 			       "the constellation in which a body "
 			       "lies until you have used compute() to "
 			       "determine its position");
 	       goto fail;
 	  }
+	  if (Body_obj_cir(b, "ra", 0) == -1)
+	       goto fail;
 	  ra = b->obj.s_ra;
 	  dec = b->obj.s_dec;
 	  epoch = b->now.n_epoch;
