@@ -1,0 +1,610 @@
+<HTML>
+<HEAD><TITLE>PyEphem 1.0</TITLE></HEAD>
+<BODY><H1>PyEphem 1.0</H1>
+Wrapped by
+<A HREF="http://www.rhodesmill.org/brandon/">Brandon Craig Rhodes</A>.
+<P>
+PyEphem is a library of astronomical computation functions
+accessible from the Python language.
+The library functions themselves are the hard work of Elwood Downey
+and his contributors,
+and are taken with his permission from the internals of his excellent
+<A HREF="http://iraf.noao.edu/~ecdowney/xephem.html">XEphem</A> application.
+These functions have been incorporated into a Python module through
+David Beazley's <A HREF="http://www.swig.org/">SWIG</A> utility
+and a set of M4 scripts that allow the production
+of both documentation and SWIG source from the same file.
+<P>
+Note that in wrapping the XEphem library,
+I have not retained
+the (rather cryptic) variable and function names of the C library.
+Instead I have sought names that, while brief, are expressive enough
+that I would not mind reading a program that uses this library.
+If you need briefer names for common functions,
+you can just use Python's equality operator to bind
+functions and variables to more convenient names.
+<P>
+Please mail comments, corrections, or additional ideas
+to <A HREF="brandon@rhodesmill.org">brandon@rhodesmill.org</A>.
+The PyEphem web page is located at
+<A HREF="http://www.rhodesmill.org/pyephem">
+http://www.rhodesmill.org/pyephem</A>.
+<HR>
+Wrapping code and documentation is copyright 1998 by Brandon Craig Rhodes,
+and is licensed for use under the terms of the GNU General Public License.
+The internal astronomical computation library
+is copyright 1998 by Elwood Charles Downey,
+and is licensed for noncommercial use and redistribution
+(but not modification).
+The full text of these licenses is available
+in the PyEphem source code package.
+
+<HR><H2>Table of Contents</H2>
+<B><A HREF="#1">1. Constants</A></B><BR>
+<B><A HREF="#2">2. Measurement</A></B><BR>
+<A HREF="#2.1">2.1. Time</A><BR>
+<A HREF="#2.1.1">2.1.1. Input and Output</A><BR>
+<A HREF="#2.1.2">2.1.2. Conversions</A><BR>
+<A HREF="#2.2">2.2. Angles</A><BR>
+<A HREF="#2.2.1">2.2.1. Input and Output</A><BR>
+<A HREF="#2.2.2">2.2.2. Arithmetic</A><BR>
+<A HREF="#2.2.3">2.2.3. Conversions</A><BR>
+<A HREF="#2.3">2.3. Convenient Formatting</A><BR>
+<B><A HREF="#3">3. Objects</A></B><BR>
+<A HREF="#3.1">3.1. Constants</A><BR>
+<A HREF="#3.2">3.2. Object types</A><BR>
+<A HREF="#3.3">3.3. Object fields</A><BR>
+<A HREF="#3.3.1">3.3.1. any fields</A><BR>
+<A HREF="#3.3.2">3.3.2. anyss fields</A><BR>
+<A HREF="#3.3.3">3.3.3. pl field</A><BR>
+<A HREF="#3.3.4">3.3.4. f fields</A><BR>
+<A HREF="#3.3.5">3.3.5. e fields</A><BR>
+<A HREF="#3.3.6">3.3.6. h fields</A><BR>
+<A HREF="#3.3.7">3.3.7. p fields</A><BR>
+<A HREF="#3.3.8">3.3.8. es fields</A><BR>
+<A HREF="#3.4">3.4. Magnitudes</A><BR>
+<A HREF="#3.5">3.5. Functions</A><BR>
+<B><A HREF="#4">4. Computation</A></B><BR>
+<A HREF="#4.1">4.1. General Computations</A><BR>
+<A HREF="#4.2">4.2. Risings and Settings</A><BR>
+<A HREF="#4.2.1">4.2.1. Flags</A><BR>
+<A HREF="#4.2.2">4.2.2. Functions</A><BR>
+<A HREF="#4.3">4.3. Constellation Identification</A><BR>
+<B><A HREF="#5">5. Ephem Database Format</A></B><BR>
+<B><A HREF="#6">6. Low-Level Computations</A></B><BR>
+<B><A HREF="#7">7. Preferences</A></B><BR>
+<HR><A NAME="1"><H2>1. Constants</H2></A>
+<UL>
+<LI><B><TT>MetersPerAU</TT></B> - Meters per AU.
+<LI><B><TT>LightTimeAU</TT></B> - Seconds light takes to travel one AU.
+<LI><B><TT>EarthRadius</TT></B> - Earth equatorial radius in meters.
+<LI><B><TT>MoonRadius</TT></B> - Moon equatorial radius in meters.
+<LI><B><TT>SunRadius</TT></B> - Sun equatorial radius in meters.
+<LI><B><TT>FeetPerMeter</TT></B> - Feet per meter.
+</UL>
+<HR><A NAME="2"><H2>2. Measurement</H2></A>
+<H3><A NAME=2.1>2.1. Time</H3></A>
+<P>The library represents a time as a double precision floating point number
+indicating the number of days that have passed
+since noon universal time on 1 January 1900.
+This measure of time is called a "modified Julian day."
+The Julian Day itself is a more traditional measure of time,
+and indicates the number of days that have passed
+since 12h UTC 1 Jan 4714 BC.
+</P>
+<UL>
+<LI><B><TT>MJD0</TT></B> - The Julian day of 12h UTC 31 December 1889,
+and therefore the difference between
+a time expressed in modified Julian days
+and the same time expressed in traditional Julian days.
+<LI><B><TT>J2000</TT></B> - The modified Julian day of 12h UTC 1 January 2000, which is
+very commonly used as the epoch for modern astronomical
+computations.
+<LI><B><TT>SecondsPerDay</TT></B> - Number of seconds per day.
+</UL>
+<H4><A NAME="2.1.1">2.1.1. Input and Output</H4></A>
+<DL>
+<DT><TABLE WIDTH=100%><TR><TD><B>formatDate</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>-&gt; string <B>date</B></TABLE><DD>Formats the date corresponding to the given modified Julian day
+using the format currently selected through the preferences;
+see the Preferences section below.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>scanDate</B> (string <B>date</B>, integer <B>format</B>)<TD ALIGN=RIGHT>-&gt; (integer <B>month</B>, float <B>day</B>, integer <B>year</B>)</TABLE><DD>Split a date string of the form X/Y/Z (determined by the format
+preference specifier - see the Preferences section below) into its
+components.  It allows the day to be a floating point number.  A
+lone component is always a year if it contains a decimal point or
+if format is MDY or DMY and it is not a reasonable month or day
+value, respectively.  The separators may be anything but digits or
+a decimal point.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>rescanDate</B> (string <B>date</B>, format <B>integer,</B><B></B>
+	 integer <B>month</B>, float <B>day</B>, integer <B>year</B>)<TD ALIGN=RIGHT>-&gt; (integer <B>month</B>, float <B>day</B>, integer <B>year</B>)</TABLE><DD>Split a date string just like the function scanDate does, except
+that you provide default values for each field and any unspecified
+component of the date will be left unchanged.</P>
+</DL>
+<H4><A NAME="2.1.2">2.1.2. Conversions</H4></A>
+<P>
+Note that these routines follow the standard astronomical convention
+of having negative years preceding the year <NOBR>AD 1</NOBR>.
+So the year <NOBR>1 BC</NOBR>,
+which was the year before <NOBR>AD 1</NOBR>,
+is called <NOBR>year 0</NOBR>;
+<NOBR>2 BC</NOBR> is called the <NOBR>year -1</NOBR>;
+and in general year <NOBR><I>n</I> BC</NOBR>
+is numbered as the -(<I>n</I>-1)th year.
+</P>
+<DL>
+<DT><TABLE WIDTH=100%><TR><TD><B>fromGregorian</B> (integer <B>month</B>, float <B>day</B>, integer <B>year</B>)<TD ALIGN=RIGHT>-&gt; float <B>mjd</B></TABLE><DD>Given a month, day (which can include a fraction), and year in the
+Gregorian calendar, return the corresponding modified Julian
+day.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>toGregorian</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>-&gt; (integer <B>month</B>, double <B>day</B>, integer <B>year</B>)</TABLE><DD>Given a modified Julian day, this returns a tuple containing the
+corresponding Gregorian month, day, and year.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>toDayOfWeek</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>-&gt; int <B>dayOfWeek</B></TABLE><DD>Given a modified Julian day, this returns the day of the week in
+which the given time falls, from 0 (Sunday) to 6 (Saturday).</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>toDaysInMonth</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>-&gt; int <B>daysInMonth</B></TABLE><DD>Given a modified Julian day, this returns the number of days in the
+month in which it falls.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>toYear</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>-&gt; float <B>year</B></TABLE><DD>Convert the modified Julian day to a Gregorian year, which might
+include a fraction indicating how far into that year the date fell.
+Years BC are indicated by nonpositive numbers whose magnitude is one
+less than the corresponding year BC.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>fromYear</B> (float <B>year</B>)<TD ALIGN=RIGHT>-&gt; float <B>mjd</B></TABLE><DD>Convert a year - which may include a fraction - to a modified
+Julian day.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>toNearestSecond</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>-&gt; float <B>mjd</B></TABLE><DD>Return the given modified Julian day, with the result rounded to
+the nearest second.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>toDay</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>-&gt; float <B>mjd</B></TABLE><DD>Return the given modified Julian day, with the result rounded to
+the beginning of the previous day.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>toHourOfDay</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>-&gt; float <B>hours</B></TABLE><DD>Return how many hours (including any fraction) the given modified
+Julian day is from the previous midnight UTC.</P>
+</DL>
+<H3><A NAME=2.2>2.2. Angles</H3></A>
+<P>
+Angles are of course critical to astronomical computations of all kinds.
+The libastro library always uses radians internally when representing
+angles, except in the orbital elements of a celestial body, where degrees
+are used to maintain the original form of the published elements.
+</P>
+<H4><A NAME="2.2.1">2.2.1. Input and Output</H4></A>
+<DL>
+<DT><TABLE WIDTH=100%><TR><TD><B>formatSexagesimal</B> (float <B>angle</B>, integer <B>w</B>, integer <B>fracbase</B>)<TD ALIGN=RIGHT>-&gt; string <B>output</B></TABLE><DD>Return the variable a formatted in sexagesimal format.  <B>w</B> is the number
+of characters that should be reserved for the whole part.  <B>fracbase</B> is
+the number of pieces a whole is to broken into, and may be one of:<PRE>
+	360000:	whole:mm:ss.ss
+	36000:	whole:mm:ss.s
+	3600:	whole:mm:ss
+	600:	whole:mm.m
+	60:	whole:mm
+</PRE></P>
+<DT><TABLE WIDTH=100%><TR><TD><B>scanSexagesimal</B> (string <B>input</B>)<TD ALIGN=RIGHT>-&gt; float <B>output</B></TABLE><DD>Given a string of the form xx:mm[:ss] or xx:mm.dd, convert it to a
+double.  The delimiter ":" may also be ";", "/", or ",".  All
+components may be floats.
+Raises a ValueError if a problem in translation is encountered.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>rescanSexagesimal</B> (float <B>default</B>, string <B>angle</B>)<TD ALIGN=RIGHT>-&gt; float <B>output</B></TABLE><DD>Scans a sexagesimal string (like a time or angle, in which
+fractional parts are prefixed by ":" and represent sixtieths of the
+next larger unit) and returns its numerical value.  A negative
+value may be indicated by a "-" character before any component.
+Each component may be integral or real.  In addition to ":", the
+separator may also be "/", ";", ",", or "-".  Any components not
+specified are copied from the corresponding sexagesimal component
+of the double provided as the first argument.</P>
+</DL>
+<H4><A NAME="2.2.2">2.2.2. Arithmetic</H4></A>
+<DL>
+<DT><TABLE WIDTH=100%><TR><TD><B>deltaRA</B> (float <B>difference</B>)<TD ALIGN=RIGHT>-&gt; float <B>normalized</B></TABLE><DD>Given the difference between two right ascensions, this function
+normalizes the value to an angle between zero and twice pi.</P>
+</DL>
+<H4><A NAME="2.2.3">2.2.3. Conversions</H4></A>
+<DL>
+<DT><TABLE WIDTH=100%><TR><TD><B>degrad</B> (float <B>d</B>)<TD ALIGN=RIGHT>-&gt; float <B>r</B></TABLE><DD>Degrees to radians.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>raddeg</B> (float <B>r</B>)<TD ALIGN=RIGHT>-&gt; float <B>d</B></TABLE><DD>Radians to degrees.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>hrdeg</B> (float <B>h</B>)<TD ALIGN=RIGHT>-&gt; float <B>d</B></TABLE><DD>Hours to degrees.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>deghr</B> (float <B>d</B>)<TD ALIGN=RIGHT>-&gt; float <B>h</B></TABLE><DD>Degrees to hours.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>hrrad</B> (float <B>h</B>)<TD ALIGN=RIGHT>-&gt; float <B>r</B></TABLE><DD>Hours to radians.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>radhr</B> (float <B>r</B>)<TD ALIGN=RIGHT>-&gt; float <B>h</B></TABLE><DD>Radians to hours.</P>
+</DL>
+<H3><A NAME=2.3>2.3. Convenient Formatting</H3></A>
+<P>These functions are not actually present in the raw libastro library,
+ but are written just for PyEphem
+ to make some common formatting operations more convenient.
+ In each of these functions the variable <B>fracbase</B> has the same
+ significance as in the <B>formatSexagesimal</B> function described above.</P>
+<DL>
+<DT><TABLE WIDTH=100%><TR><TD><B>formatHours</B> (float <B>angle</B>, int <B>fracbase</B>)<TD ALIGN=RIGHT>-&gt; string <B>output</B></TABLE><DD>Formats a radian angle as hours (such as those of right ascension).</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>formatDegrees</B> (float <B>angle</B>, int <B>fracbase</B>)<TD ALIGN=RIGHT>-&gt; string <B>output</B></TABLE><DD>Formats a radian angle as degrees.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>formatDay</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>-&gt; string <B>output</B></TABLE><DD>Formats the date corresponding to the given modified Julian day
+	using the format currently selected through the preferences
+	(see the Preferences section below).
+	The fractional part of the day is ignored.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>formatTime</B> (float <B>mjd</B>, int <B>fracbase</B>)<TD ALIGN=RIGHT>-&gt; string <B>output</B></TABLE><DD>Given the time expressed as a modified Julian day,
+	this function returns a formatted representation of the time of day.</P>
+</DL>
+<HR><A NAME="3"><H2>3. Objects</H2></A>
+<P>
+The computational routines all take as input an "Obj" instance
+which identifies and describes the object whose position is being calculated.
+An Obj is represented internally by a union of several structures,
+which are accessed through its various components.
+So a reference to an object attribute will have the form "obj.set.field",
+where the possible field sets are listed below under the class Obj.
+Note that all of the subobjects will <B>not</B> be valid simultaneously.
+Specifically, here are the valid field sets for each type:</P>
+<TABLE BORDER>
+<TR><TD><TD> <TH COLSPAN=8>Field sets
+<TR><TD><TD> <TH><TT>any</TT> <TH><TT>anyss</TT> <TH><TT>f</TT>
+ <TH><TT>e</TT> <TH><TT>h</TT> <TH><TT>p</TT> <TH><TT>es</TT> <TH><TT>pl</TT>
+<TR><TH ROWSPAN=6>Object type
+    <TH>FIXED		<TD>X<TD> <TD>X<TD> <TD> <TD> <TD> <TD> 
+<TR><TH>ELLIPTICAL	<TD>X<TD>X<TD> <TD>X<TD> <TD> <TD> <TD> 
+<TR><TH>HYPERBOLIC	<TD>X<TD>X<TD> <TD> <TD>X<TD> <TD> <TD> 
+<TR><TH>PARABOLIC	<TD>X<TD>X<TD> <TD> <TD> <TD>X<TD> <TD> 
+<TR><TH>EARTHSAT	<TD>X<TD> <TD> <TD> <TD> <TD> <TD>X<TD> 
+<TR><TH>PLANET		<TD>X<TD>X<TD> <TD> <TD> <TD> <TD> <TD>X
+</TABLE>
+</P>
+<H3><A NAME=3.1>3.1. Constants</H3></A>
+<UL>
+<LI><B><TT>MaxName</TT></B> - Longest possible object name, including the trailing "\0".
+</UL>
+<H3><A NAME=3.2>3.2. Object types</H3></A>
+<P>
+There are six kinds of objects,
+each identified by a particular constant in its any.type field:
+<TABLE>
+<TR><TH ALIGN=LEFT>UNDEFOBJ <TD> An object of undefined type.
+<TR><TH ALIGN=LEFT>FIXED <TD> An object whose position in the sky is fixed.
+<TR><TH ALIGN=LEFT>ELLIPTICAL <TD> An object in an elliptical solar orbit.
+<TR><TH ALIGN=LEFT>HYPERBOLIC <TD> An object in a hyperbolic solar orbit.
+<TR><TH ALIGN=LEFT>PARABOLIC <TD> An object in a parabolic solar orbit.
+<TR><TH ALIGN=LEFT>EARTHSAT <TD> A satellite in orbit around the Earth.
+<TR><TH ALIGN=LEFT>PLANET <TD> One of the planets, or the sun or moon.
+</TABLE>
+</P>
+<H3><A NAME=3.3>3.3. Object fields</H3></A>
+<P>
+When the user wants to compute information about a celestial object,
+he should create an instance of the class Obj
+and fill in enough information so that the computation routines
+can identify the object.
+For a planet,
+it is enough to set its type and planet code;
+other objects require full sets of orbital elements.
+</P>
+</P><B>Class Obj:</B><UL>
+<LI><B>any</B> - These fields are valid for all types.
+<LI><B>anyss</B> - Fields valid for all solar system types.
+<LI><B>pl</B> - Planet fields.
+<LI><B>f</B> - Fixed object fields.
+<LI><B>e</B> - Heliocentric elliptical orbit fields.
+<LI><B>h</B> - Heliocentric hyperbolic trajectory fields.
+<LI><B>p</B> - Heliocentric parabolic trajectory fields.
+<LI><B>es</B> - Earth satellite fields.
+</UL>
+<H4><A NAME="3.3.1">3.3.1. any fields</H4></A>
+<P>Fields that are available for every object.</P>
+<P>
+Note that magnitudes are stored as scaled short integer values
+in the "mag" field of the Object class.
+This interface does the conversion automatically for you,
+but keep it in mind in case you lose any precision of your stored values
+and wonder why.
+</P>
+</P><UL>
+<LI><B>type</B> - The object's current type; see above.
+<LI><B>flags</B> - Flags available for user's use.
+<LI><B>name</B> - Text name of object.
+<LI><B>ra</B> - Geocentric/topocentric apparent/mean right ascension, in radians.
+<LI><B>dec</B> - Geocentric/topocentric apparent/mean declination, in radians.
+<LI><B>gaera</B> - Geocentric apparent right ascension, in radians.
+<LI><B>gaedec</B> - Geocentric apparent declination, in radians.
+<LI><B>azimuth</B> - Azimuth angle, in radians east of north.
+<LI><B>altitude</B> - Altitude above topocentric horizon, in radians.
+<LI><B>elongation</B> - Angular separation between
+	the object and the sun, positive if the object is east of the sun.
+<LI><B>size</B> - Angular size of object in arc seconds.
+<LI><B>magnitude</B> - Visual magnitude.
+<LI><B>age</B> - Room for an aging value
+	if the user is maintaining a dynamic database.
+</UL>
+<H4><A NAME="3.3.2">3.3.2. anyss fields</H4></A>
+<P>Fields that apply to any solar system object.</P>
+</P><UL>
+<LI><B>sunDistance</B> - Distance from object to sun in AU.
+<LI><B>earthDistance</B> - Distance from object to earth in AU.
+<LI><B>helioLongitude</B> - Heliocentric longitude in radians.
+<LI><B>helioLatitude</B> - Heliocentric latitude radians.
+<LI><B>phase</B> - Phase (percent illumination).
+</UL>
+<H4><A NAME="3.3.3">3.3.3. pl field</H4></A>
+</P><UL>
+<LI><B>code</B> - One of the following planet codes:
+</UL>
+<UL>
+<LI><B><TT>MERCURY</TT></B> - The planet Mercury.
+<LI><B><TT>VENUS</TT></B> - The planet Venus.
+<LI><B><TT>MARS</TT></B> - The planet Mars.
+<LI><B><TT>JUPITER</TT></B> - The planet Jupiter.
+<LI><B><TT>SATURN</TT></B> - The planet Saturn.
+<LI><B><TT>URANUS</TT></B> - The planet Uranus.
+<LI><B><TT>NEPTUNE</TT></B> - The planet Neptune.
+<LI><B><TT>PLUTO</TT></B> - The planet Pluto.
+<LI><B><TT>SUN</TT></B> - The Sun.
+<LI><B><TT>MOON</TT></B> - The satellite of earth.
+</UL>
+<H4><A NAME="3.3.4">3.3.4. f fields</H4></A>
+</P><UL>
+<LI><B>class</B> - Object class (see below).
+<LI><B>spectral</B> - Spectral class, if appropriate.
+<LI><B>ratio</B> - Minor/major diameter ratio (scaled by SRSCALE).
+<LI><B>positionAngle</B> - Position angle east of north in degrees (scaled by PASCALE).
+<LI><B>epoch</B> - Epoch of right ascension and declination.
+<LI><B>ra</B> - Right ascension at given epoch, in radians.
+<LI><B>dec</B> - Declination at given epoch, in radians.
+</UL>
+<UL>
+<LI><B><TT>SRSCALE</TT></B> - Galaxy size ratio scale factor.
+<LI><B><TT>PASCALE</TT></B> - Position angle scale factor.
+</UL>
+<P>
+The object classes used by Ephem and its databases are:
+<UL>
+<LI>A - Cluster of Galaxies
+<LI>B - Binary Star
+<LI>C - Globular Cluster
+<LI>D - Double Star
+<LI>F - Diffuse Nebula
+<LI>G - Spiral Galaxy
+<LI>H - Spherical Galaxy
+<LI>J - Radio
+<LI>K - Dark Nebula
+<LI>L - Pulsar
+<LI>M - Multiple Star
+<LI>N - Bright Nebula
+<LI>O - Open Cluster
+<LI>P - Planetary Nebula
+<LI>Q - Quasar
+<LI>R - Supernova Remnant
+<LI>S - Star
+<LI>T - Star-like Object
+<LI>U - Cluster, with nebulosity
+<LI>V - Variable Star
+</UL>
+</P>
+<P>In theory any symbol from zero up to "NCLASSES" may be used
+for an object type:</P>
+<LI><B><TT>NCLASSES</TT></B> - Number of potential object classes
+ (allows for all ASCII values).
+<H4><A NAME="3.3.5">3.3.5. e fields</H4></A>
+<P>Information for an object in elliptical heliocentric orbit.</P>
+</P><UL>
+<LI><B>inc</B> - Inclination in degrees.
+<LI><B>Omega</B> - Longitude of ascending node in degrees.
+<LI><B>omega</B> - Argument of perihelion in degress.
+<LI><B>a</B> - Mean distance (semimajor axis) in AU.
+<LI><B>e</B> - Eccentricity.
+<LI><B>M</B> - Mean anomaly (degrees from perihelion at epoch date).
+<LI><B>size</B> - Angular size in arc seconds at 1 AU distant.
+<LI><B>cepoch</B> - Epoch date (M reference), as an mjd.
+<LI><B>epoch</B> - Equinox year (inc/Om/om reference), as an mjd.
+<LI><B>magnitude</B> - Magnitude coefficent structure; see below.
+</UL>
+<H4><A NAME="3.3.6">3.3.6. h fields</H4></A>
+<P>Information about an object in hyperbolic heliocentric orbit.</P>
+</P><UL>
+<LI><B>epoch</B> - Equinox year (inc/Om/om reference), as an mjd.
+<LI><B>ep</B> - Epoch of perihelion, as an mjd.
+<LI><B>inc</B> - Inclination in degrees.
+<LI><B>Omega</B> - Longitude of ascending node in degrees.
+<LI><B>omega</B> - Argument of perihelion in degrees.
+<LI><B>e</B> - Eccentricity.
+<LI><B>qp</B> - Perihelion distance in AU.
+<LI><B>g</B> - Magnitude model coefficient.
+<LI><B>k</B> - Magnitude model coefficient.
+<LI><B>size</B> - Angular size in arc seconds at 1 AU.
+</UL>
+<H4><A NAME="3.3.7">3.3.7. p fields</H4></A>
+<P>Information about an object in parabolic heliocentric orbit.</P>
+</P><UL>
+<LI><B>epoch</B> - Reference epoch, as an mjd.
+<LI><B>ep</B> - Epoch of perihelion, as an mjd.
+<LI><B>inc</B> - Inclination in degrees.
+<LI><B>qp</B> - Perihelion distance in AU.
+<LI><B>omega</B> - Argument of perihelion, in degrees.
+<LI><B>Omega</B> - Longitude of ascending node, in degrees.
+<LI><B>g</B> - Magnitude model coefficient.
+<LI><B>k</B> - Magnitude model coefficient.
+<LI><B>size</B> - Angular size in arc seconds at 1 AU.
+</UL>
+<H4><A NAME="3.3.8">3.3.8. es fields</H4></A>
+<P>Information about an earth orbiting satellite.</P>
+<P>Orbital elements:</P>
+</P><UL>
+<LI><B>epoch</B> - Reference epoch, as an mjd.
+<LI><B>n</B> - Mean motion in revolutions per day.
+<LI><B>inc</B> - Inclination in degrees.
+<LI><B>raan</B> - Right ascension of ascending node in degrees.
+<LI><B>e</B> - Eccentricity.
+<LI><B>ap</B> - Argument of perigee at epoch, in degrees.
+<LI><B>M</B> - Mean anomaly, in degrees (angle from perigee at epoch).
+<LI><B>decay</B> - Orbit decay rate, in revolutions per day squared.
+<LI><B>orbitNumber</B> - Integer orbit number of epoch.
+</UL>
+<P>Computed results:</P>
+</P><UL>
+<LI><B>elevation</B> - Height of satellite above sea level,
+	in meters.
+<LI><B>range</B> - The line-of-site distance from observer to satellite, .
+<LI><B>rangev</B> - Rate-of-change of range,
+	in meters per second.
+<LI><B>sublatitude</B> - Latitude of the location below satellite,
+	positive is north, in radians.
+<LI><B>sublongitude</B> - Longitude of the location below satellite,
+	positive is east, in radians.
+<LI><B>isEclipsed</B> - Set to 1 if satellite is in earth's shadow, else 0.
+</UL>
+<H3><A NAME=3.4>3.4. Magnitudes</H3></A>
+<P>
+Objects in elliptical solar orbit are allowed to employ
+either of two magnitude models: the gk system or the HG system.
+So instead of simple magnitude parameter fields,
+elliptical objects contain a small structure called "magnitude" whose fields
+and their possible values are as follows.
+</P>
+<UL>
+<LI><B><TT>MAG_HG</TT></B> - Select the HG magnitude system.
+<LI><B><TT>MAG_gk</TT></B> - Select the gk magnitude system.
+</UL>
+</P><B>Class Mag:</B><UL>
+<LI><B>m1</B> - The value of g or H.
+<LI><B>m2</B> - The value of k or G.
+<LI><B>whichm</B> - One of the constants MAG_gk or MAG_HG.
+</UL>
+<H3><A NAME=3.5>3.5. Functions</H3></A>
+<DL>
+<DT><TABLE WIDTH=100%><TR><TD><B>describe</B> (Obj <B>o</B>)<TD ALIGN=RIGHT>-&gt; string <B>description</B></TABLE><DD>Returns a textual description of the object.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>isDeepsky</B> (Obj <B>o</B>)<TD ALIGN=RIGHT>-&gt; integer <B>boolean</B></TABLE><DD>Returns integer true or false indicating whether the object is
+a deep-sky object.</P>
+</DL>
+<HR><A NAME="4"><H2>4. Computation</H2></A>
+<P>
+Routines that compute positions and other information
+need to know where and at what time the observer is located.
+This information is stored in a "Circumstance" object,
+which is then provided to any of the several routines
+involving time-specific calculations.
+</P>
+</P><B>Class Circumstance:</B><UL>
+<LI><B>mjd</B> - Modified Julian date.
+<LI><B>latitude</B> - Geographic (surface-normal) latitude in radians; positive is north.
+<LI><B>longitude</B> - Longitude in radians; positive is east of Greenwich.
+<LI><B>timezone</B> - Time zone, as the number of hours behind UTC.
+<LI><B>temperature</B> - Atmospheric temperature, degrees C.
+<LI><B>pressure</B> - Atmospheric pressure, mBar.
+<LI><B>elevation</B> - Elevation above sea level, earth radii.
+<LI><B>sunDip</B> - Angular dip of sun below horizon at twilight,
+	 as a positive number of radians.
+<LI><B>epoch</B> - Desired precession epoch as an mjd,
+	or the constant EOD (defined below).
+<LI><B>tzname</B> - Time zone name (7 characters or less).
+</UL>
+<P>There is a single constant, for use with the epoch field:</P>
+<UL>
+<LI><B><TT>EOD</TT></B> - Special epoch value indicating routines should use
+	 the current date as the epoch.
+</UL>
+<H3><A NAME=4.1>4.1. General Computations</H3></A>
+<DL>
+<DT><TABLE WIDTH=100%><TR><TD><B>computeLocation</B> (Circumstance <B>c</B>, Object <B>o</B>)<TD ALIGN=RIGHT>-&gt; int <B>error</B></TABLE><DD>Given a circumstance and an object,
+the position of the object at that time and location is computed
+and its field values are updated to reflect this.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>computeSeparation</B> (Obj <B>o1</B>, Obj <B>o2</B>)<TD ALIGN=RIGHT>-&gt; (float <B>separation</B>)</TABLE><DD>Given two objects whose locations have been computed with
+	 <B>computeLocation</B>, return the angular separation between
+	 the two objects.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>computeSiderealTime</B> (Circumstance <B>c</B>)<TD ALIGN=RIGHT>-&gt; float <B>sidhours</B></TABLE><DD>Given a circumstance,
+this function returns the local sidereal time (in hours).</P>
+</DL>
+<H3><A NAME=4.2>4.2. Risings and Settings</H3></A>
+<P>
+Since the rising, transit, and setting times of an object
+are of great interest to observational astronomers,
+the library provides a routine to compute these times for an object.
+</P>
+</P><B>Class RiseSet:</B><UL>
+<LI><B>flags</B> - Information about what has been computed; see, below.
+<LI><B>riseTime</B> - Time of rising today.
+<LI><B>riseAzimuth</B> - Azimuth of rise, in radians east of north.
+<LI><B>transitTime</B> - Time of transit today.
+<LI><B>transitAltitude</B> - Altitude of transit, in radians up from the horizon.
+<LI><B>setTime</B> - Time of setting today.
+<LI><B>setAzimuth</B> - Azimuth of set, in radians east of north.
+</UL>
+<H4><A NAME="4.2.1">4.2.1. Flags</H4></A>
+<UL>
+<LI><B><TT>RS_NORISE</TT></B> - Object does not rise today.
+<LI><B><TT>RS_NOSET</TT></B> - Object does not set today.
+<LI><B><TT>RS_NOTRANS</TT></B> - Object does not transit today.
+<LI><B><TT>RS_CIRCUMPOLAR</TT></B> - Object stays up all day today.
+<LI><B><TT>RS_NEVERUP</TT></B> - Object is never up at all today.
+<LI><B><TT>RS_ERROR</TT></B> - Computation was completely unsuccessful.
+<LI><B><TT>RS_RISERR</TT></B> - Error occurred when computing rise.
+<LI><B><TT>RS_SETERR</TT></B> - Error occurred when computing set.
+<LI><B><TT>RS_TRANSERR</TT></B> - Error occurred when computing transit.
+</UL>
+<H4><A NAME="4.2.2">4.2.2. Functions</H4></A>
+<DL>
+<DT><TABLE WIDTH=100%><TR><TD><B>computeRiseSet</B> (Circumstance <B>c</B>, Object <B>o</B>, float <B>distance</B>, RiseSet <B>riseset</B>)<TD ALIGN=RIGHT>-&gt; <B>None</B></TABLE><DD>Given a circumstance, an object, and the angular distance in radians
+below the ideal horizon at which point an object is considered to be
+rising or setting,
+this routine fills in the given RiseSet structure
+with information about when the object will rise and set.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>computeTwilight</B> (Circumstance <B>c</B>, float <B>distance</B>)<TD ALIGN=RIGHT>-&gt; (float <B>mjdDawn</B>, float <B>mjdDusk</B>, integer <B>flags</B>)</TABLE><DD>Given a circumstance and a distance similar to that of the above function,
+this returns a tuple containing the time of dawn, the time of dusk,
+and a set of flags like that returned from the computeRiseSet function
+indicating whether the calculation was successful.</P>
+</DL>
+<H3><A NAME=4.3>4.3. Constellation Identification</H3></A>
+<DL>
+<DT><TABLE WIDTH=100%><TR><TD><B>constellation</B> (float <B>ra</B>, float <B>dec</B>, float <B>epoch</B>)<TD ALIGN=RIGHT>-&gt; (string <B>abbreviation</B>)</TABLE><DD>Given a location in the sky and an mjd epoch,
+ returns the three-letter abbreviation of the constellation
+ at that location.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>constellationName</B> (float <B>ra</B>, float <B>dec</B>, float <B>epoch</B>)<TD ALIGN=RIGHT>-&gt; (string <B>name</B>)</TABLE><DD>Given a location in the sky and an mjd epoch,
+ returns the full scientific (Latin) name of the constellation
+ at that location.</P>
+</DL>
+<HR><A NAME="5"><H2>5. Ephem Database Format</H2></A>
+<P>
+These two functions allow you to read and write lines
+in the venerable ephem database format.
+</P>
+<DL>
+<DT><TABLE WIDTH=100%><TR><TD><B>scanDB</B> (string <B>entry</B>, Object <B>o</B>)<TD ALIGN=RIGHT>-&gt; <B>None</B></TABLE><DD>Interpret the string as a database entry and fill in the object data
+structure accordingly.
+Raises a ValueError if the routine encounters a failure.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>formatDB</B> (Object <B>o</B>)<TD ALIGN=RIGHT>-&gt; string <B>entry</B></TABLE><DD>Generate a line in ephem database format describing the given object.
+The line will not include a terminal newline.</P>
+</DL>
+<HR><A NAME="6"><H2>6. Low-Level Computations</H2></A>
+<DL>
+<DT><TABLE WIDTH=100%><TR><TD><B>ap_as</B> (Circumstance <B>c</B>, float <B>mjd</B>, float <B>ra</B>, float <B>dec</B>)<TD ALIGN=RIGHT>-&gt; (float <B>ra</B>, float <B>dec</B>)</TABLE><DD>Converts the given apparent right ascension and declination
+to the astrometrically precessed values
+for the given modified Julian date.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>as_ap</B> (Circumstance <B>c</B>, float <B>mjd</B>, float <B>ra</B>, float <B>dec</B>)<TD ALIGN=RIGHT>-&gt; (float <B>ra</B>, float <B>dec</B>)</TABLE><DD>Calculate the given astrometric right ascension and declination
+which are precessed to the modified Julian date
+of the time of the circumstance.
+Returns a (right ascension, declination) double.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>deltat</B> (float <B>mjd</B>)<TD ALIGN=RIGHT>-&gt; (float <B>seconds</B>)</TABLE><DD>Number of seconds by which Terrestrial Dynamical Time (known as
+Ephemeris Time prior to 1982) leads UTC.</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>heliocorr</B> (float <B>mjd</B>, float <B>ra</B>, float <B>dec</B>)<TD ALIGN=RIGHT>-&gt; float <B>hcp</B></TABLE><DD>Given geocentric time julian date
+and coords of a distant object at the given right ascension
+and declination (for the epoch J2000),
+find the difference in time between light arriving at earth versus the sun.
+"hcp" must be subtracted from geocentric jd to get heliocentric jd.
+(From RLM Oct 12, 1995.)</P>
+<DT><TABLE WIDTH=100%><TR><TD><B>mm_mjed</B> (Circumstance <B>c</B>)<TD ALIGN=RIGHT>-&gt; float <B>mjd</B></TABLE><DD>Given a circumstance,
+return its modified julian date, modified for terrestrial dynamical time.</P>
+</DL>
+<HR><A NAME="7"><H2>7. Preferences</H2></A>
+<P>Two of XEphem's numerous options are relevant for this
+ computational library.</P>
+<P>The variable <B>preference.whichEquatorial</B> sets whether locations
+ should be computed from the center of the earth,
+ or for a particular observer on the earth's surface.
+ If geocentric (based on the center of the earth) computation is selected,
+ most of the fields in a Circumstance object
+ become irrelevant since they are used to specify a location on earth.
+ It may take on either of these values:</P>
+<UL>
+<LI><B><TT>topocentric</TT></B> - Asserts that computations should be relative to an
+ observer on the surface of the earth (the default).
+<LI><B><TT>geocentric</TT></B> - Asserts that computations should be relative to the
+ center of the earth.
+</UL>
+<P>The variable <B>preference.whichDateFormat</B> selects the manner
+ in which the <B>formatDate</B> function formats its output.
+ Its value should be one of:</P>
+<UL>
+<LI><B><TT>MDY</TT></B> - Asserts that dates should be expressed as month/day/year
+ in the manner familiar to Americans (this option is selected as the default
+ to conform to the default behavior of XEphem,
+ even though this system makes less sense than the other two).
+<LI><B><TT>YMD</TT></B> - Asserts that dates should be expressed as year/month/day
+ as commonly used by astronomers.
+<LI><B><TT>DMY</TT></B> - Asserts that dates should be expressed as day/month/year
+ as used by Europeans.
+</UL>
+</BODY></HTML>
