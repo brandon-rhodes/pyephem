@@ -1150,8 +1150,8 @@ GET_FIELD(size, obj.s_size, PyFloat_FromDouble)
 
 GET_FIELD(hlong, obj.s_hlong, build_degrees)
 GET_FIELD(hlat, obj.s_hlat, build_degrees)
-GET_FIELD(sdist, obj.s_sdist, PyFloat_FromDouble)
-GET_FIELD(edist, obj.s_edist, PyFloat_FromDouble)
+GET_FIELD(sun_distance, obj.s_sdist, PyFloat_FromDouble)
+GET_FIELD(earth_distance, obj.s_edist, PyFloat_FromDouble)
 GET_FIELD(phase, obj.s_phase, PyFloat_FromDouble)
 
 GET_FIELD(x, obj.pl_x, PyFloat_FromDouble)
@@ -1165,8 +1165,8 @@ GET_FIELD(sun_visible, obj.pl_svis, PyFloat_FromDouble)
 #undef CARGS
 #define CARGS ,1
 
-GET_FIELD(gaera, obj.s_gaera, build_hours)
-GET_FIELD(gaedec, obj.s_gaedec, build_degrees)
+GET_FIELD(apparent_ra, obj.s_gaera, build_hours)
+GET_FIELD(apparent_dec, obj.s_gaedec, build_degrees)
 GET_FIELD(az, obj.s_az, build_degrees)
 GET_FIELD(alt, obj.s_alt, build_degrees)
 
@@ -1182,12 +1182,12 @@ GET_FIELD(alt, obj.s_alt, build_degrees)
  (body->riset.rs_flags & (mask | RS_CIRCUMPOLAR | RS_NEVERUP)) \
  ? (Py_INCREF(Py_None), Py_None) : builder
 
-GET_FIELD(risetm, riset.rs_risetm, FLAGGED(RS_NORISE, build_Date))
-GET_FIELD(riseaz, riset.rs_riseaz, FLAGGED(RS_NORISE, build_degrees))
-GET_FIELD(trantm, riset.rs_trantm, FLAGGED(RS_NOTRANS, build_Date))
-GET_FIELD(tranalt, riset.rs_tranalt, FLAGGED(RS_NOTRANS, build_degrees))
-GET_FIELD(settm, riset.rs_settm, FLAGGED(RS_NOSET, build_Date))
-GET_FIELD(setaz, riset.rs_setaz, FLAGGED(RS_NOSET, build_degrees))
+GET_FIELD(rise_time, riset.rs_risetm, FLAGGED(RS_NORISE, build_Date))
+GET_FIELD(rise_az, riset.rs_riseaz, FLAGGED(RS_NORISE, build_degrees))
+GET_FIELD(transit_time, riset.rs_trantm, FLAGGED(RS_NOTRANS, build_Date))
+GET_FIELD(transit_alt, riset.rs_tranalt, FLAGGED(RS_NOTRANS, build_degrees))
+GET_FIELD(set_time, riset.rs_settm, FLAGGED(RS_NOSET, build_Date))
+GET_FIELD(set_az, riset.rs_setaz, FLAGGED(RS_NOSET, build_degrees))
 
 #undef CALCULATOR
 #undef BODY
@@ -1212,8 +1212,8 @@ GET_FIELD(subsolar_lat, s, build_degrees)
 #define BODY Saturn
 #define CALCULATOR Saturn_satrings
 
-GET_FIELD(etilt, etilt, build_degrees)
-GET_FIELD(stilt, stilt, build_degrees)
+GET_FIELD(earth_tilt, etilt, build_degrees)
+GET_FIELD(sun_tilt, stilt, build_degrees)
 
 #undef CALCULATOR
 #undef BODY
@@ -1322,17 +1322,19 @@ static PyGetSetDef Body_getset[] = {
      {"mag", Get_mag, 0, "magnitude"},
      {"size", Get_size, 0, "visual size (arcseconds)"},
 
-     {"apparent_ra", Get_gaera, 0, "apparent right ascension (hours of arc)"},
-     {"apparent_dec", Get_gaedec, 0, "apparent declination (degrees)"},
+     {"apparent_ra", Get_apparent_ra, 0,
+      "apparent right ascension (hours of arc)"},
+     {"apparent_dec", Get_apparent_dec, 0,
+      "apparent declination (degrees)"},
      {"az", Get_az, 0, "azimuth (degrees)"},
      {"alt", Get_alt, 0, "altitude (degrees)"},
 
-     {"rise_time", Get_risetm, 0, "rise time"},
-     {"rise_az", Get_riseaz, 0, "rise azimuth (degrees)"},
-     {"transit_time", Get_trantm, 0, "transit time"},
-     {"transit_alt", Get_tranalt, 0, "transit altitude (degrees)"},
-     {"set_time", Get_settm, 0, "set time"},
-     {"set_az", Get_setaz, 0, "set azimuth (degrees)"},
+     {"rise_time", Get_rise_time, 0, "rise time"},
+     {"rise_az", Get_rise_az, 0, "rise azimuth (degrees)"},
+     {"transit_time", Get_transit_time, 0, "transit time"},
+     {"transit_alt", Get_transit_alt, 0, "transit altitude (degrees)"},
+     {"set_time", Get_set_time, 0, "set time"},
+     {"set_az", Get_set_az, 0, "set azimuth (degrees)"},
      {"circumpolar", Get_circumpolar, 0,
       "whether object remains above the horizon this day"},
      {"neverup", Get_neverup, 0,
@@ -1343,8 +1345,8 @@ static PyGetSetDef Body_getset[] = {
 static PyGetSetDef Planet_getset[] = {
      {"hlong", Get_hlong, 0, "heliocentric longitude (degrees)"},
      {"hlat", Get_hlat, 0, "heliocentric latitude (degrees)"},
-     {"sun_distance", Get_sdist, 0, "distance from sun (AU)"},
-     {"earth_distance", Get_edist, 0, "distance from earth (AU)"},
+     {"sun_distance", Get_sun_distance, 0, "distance from sun (AU)"},
+     {"earth_distance", Get_earth_distance, 0, "distance from earth (AU)"},
      {"phase", Get_phase, 0, "phase (percent illuminated)"},
      {NULL}
 };
@@ -1388,9 +1390,10 @@ static PyGetSetDef Moon_getset[] = {
 };
 
 static PyGetSetDef Saturn_getset[] = {
-     {"earth_tilt", Get_etilt, 0,
+     {"earth_tilt", Get_earth_tilt, 0,
       "tilt of rings towards earth (degrees south)"},
-     {"sun_tilt", Get_stilt, 0, "tilt of rings towards sun (degrees south)"},
+     {"sun_tilt", Get_sun_tilt, 0,
+      "tilt of rings towards sun (degrees south)"},
      {NULL}
 };
 
