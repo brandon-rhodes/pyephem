@@ -515,15 +515,15 @@ C/2002 Y1 (Juels-Hol
 ('And', 'Andromeda') 5.96
 </pre>
 
-(Unfortunately the underlying library truncates object names
-to twenty characters, as you can see.)
+(Unfortunately the library upon which PyEphem is build
+truncates object names to twenty characters, as you can see.)
 Each call to <tt>readdb()</tt> returns an object appropriate
 for the orbit specified in the database entry;
 in this case it has returned an <tt>EllipticalBody</tt>:
 
 <pre class=interactive>
 >>> print yh
-&lt;ephem.EllipticalBody "C/2002 Y1 (Juels-Hol"&gt;
+&lt;ephem.EllipticalBody "C/2002 Y1 (Juels-Hol" at 0x81ae450&gt;
 </pre>
 
 For objects for which you cannot find an entry in ephem database format,

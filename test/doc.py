@@ -34,6 +34,8 @@ def compare(lineno, command, result):
         traceback.print_exception(t, v)
     output = sys.stdout.getvalue()
     sys.stdout, sys.stderr = real_stdout, real_stderr
+    output = output.replace('&', '&amp;').replace('<', '&lt;')\
+             .replace('>', '&gt;')
     if output != result:
         print '=' * 60
         print '%d:' % lineno, command
@@ -93,3 +95,5 @@ for line in file(premanual_path):
 
     else:
         raise RuntimeError, 'unknown state %r' % state
+
+x = "Test complete"
