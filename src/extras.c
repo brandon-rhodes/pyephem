@@ -104,7 +104,7 @@ static PyObject* readdb(PyObject *self, PyObject *args)
      char *s, errmsg[256];
      Obj obj;
      if (!PyArg_ParseTuple(args, "s:readdb", &s)) return 0;
-     if (db_crack_line(s, &obj, errmsg)) {
+     if (db_crack_line(s, &obj, 0, 0, errmsg) == -1) {
 	  PyErr_SetString(PyExc_ValueError,
 			  errmsg[0] ? errmsg :
 			  "line does not conform to ephem database format");

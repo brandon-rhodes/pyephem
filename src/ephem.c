@@ -3,9 +3,7 @@
 
 #include <string.h>
 
-#include "P_.h"
 #include "astro.h"
-#include "circum.h"
 #include "preferences.h"
 
 #undef mjd

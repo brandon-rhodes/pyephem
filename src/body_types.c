@@ -55,7 +55,7 @@ static PyObject* build_planet
      body_init((PyObject*) body, 0, 0);
      strcpy(body->obj.o_name, name);
      body->obj.o_type = PLANET; 
-     body->obj.pl.pl_code = typecode;
+     body->obj.pl.plo_code = typecode;
      if (PyTuple_Check(args) && PyTuple_Size(args)) {
 	  compute_result = body_compute((PyObject*) body, args, kw);
 	  if (! compute_result) return 0;

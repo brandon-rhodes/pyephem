@@ -32,7 +32,7 @@ static int parse_mjd_from_string(PyObject *so, double *mjdp)
      f_sscandate(datestr, PREF_YMD, &month, &day, &year);
      if (conversions == 2) {
 	  double hours;
-	  if (scansex(timestr, &hours) == -1) {
+	  if (f_scansexa(timestr, &hours) == -1) {
 	       PyErr_SetString(PyExc_ValueError,
 			       "the second field of your time string does "
 			       "appear to be hours:minutes:seconds");
