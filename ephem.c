@@ -1044,6 +1044,11 @@ static PyObject* build_degrees(double radians)
      return new_Angle(radians, raddeg(1));
 }
 
+static PyObject* build_degrees_from_degrees(double degrees)
+{
+     return build_degrees(degrees / raddeg(1));
+}
+
 static PyObject* build_mag(double raw)
 {
      return PyFloat_FromDouble(raw / MAGSCALE);
@@ -1172,7 +1177,7 @@ static int Saturn_satrings(Saturn *saturn, char *fieldname)
 
 GET_FIELD(ra, obj.s_ra, build_hours)
 GET_FIELD(dec, obj.s_dec, build_degrees)
-GET_FIELD(elong, obj.s_elong, build_degrees)
+GET_FIELD(elong, obj.s_elong, build_degrees_from_degrees)
 GET_FIELD(mag, obj.s_mag, build_mag)
 GET_FIELD(size, obj.s_size, PyFloat_FromDouble)
 
@@ -1205,15 +1210,19 @@ GET_FIELD(alt, obj.s_alt, build_degrees)
 #define CALCULATOR Body_riset_cir
 #define CARGS
 #define FLAGGED(mask, builder) \
- (body->riset.rs_flags & (mask | RS_CIRCUMPOLAR | RS_NEVERUP)) \
+ (body->riset.rs_flags & (mask | RS_NEVERUP)) \
  ? (Py_INCREF(Py_None), Py_None) : builder
 
-GET_FIELD(rise_time, riset.rs_risetm, FLAGGED(RS_NORISE, build_Date))
-GET_FIELD(rise_az, riset.rs_riseaz, FLAGGED(RS_NORISE, build_degrees))
+GET_FIELD(rise_time, riset.rs_risetm,
+	  FLAGGED(RS_CIRCUMPOLAR | RS_NORISE, build_Date))
+GET_FIELD(rise_az, riset.rs_riseaz,
+	  FLAGGED(RS_CIRCUMPOLAR | RS_NORISE, build_degrees))
 GET_FIELD(transit_time, riset.rs_trantm, FLAGGED(RS_NOTRANS, build_Date))
 GET_FIELD(transit_alt, riset.rs_tranalt, FLAGGED(RS_NOTRANS, build_degrees))
-GET_FIELD(set_time, riset.rs_settm, FLAGGED(RS_NOSET, build_Date))
-GET_FIELD(set_az, riset.rs_setaz, FLAGGED(RS_NOSET, build_degrees))
+GET_FIELD(set_time, riset.rs_settm,
+	  FLAGGED(RS_CIRCUMPOLAR | RS_NOSET, build_Date))
+GET_FIELD(set_az, riset.rs_setaz,
+	  FLAGGED(RS_CIRCUMPOLAR | RS_NOSET, build_degrees))
 
 #undef CALCULATOR
 #undef BODY
