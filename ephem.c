@@ -711,7 +711,7 @@ static PyTypeObject ObserverType = {
      "ephem.Observer",
      sizeof(Observer),
      0,
-     0,	/*_PyObject_Del*/	/* tp_dealloc */
+     0,				/* tp_dealloc */
      0,				/* tp_print */
      0,				/* tp_getattr */
      0,				/* tp_setattr */
@@ -723,7 +723,7 @@ static PyTypeObject ObserverType = {
      0,				/* tp_hash */
      0,				/* tp_call */
      0,				/* tp_str */
-     0, /*PyObject_GenericGetAttr,*/ /* tp_getattro */
+     0,				/* tp_getattro */
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
      Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,	/* tp_flags */
@@ -734,7 +734,7 @@ static PyTypeObject ObserverType = {
      0,				/* tp_weaklistoffset */
      0,				/* tp_iter */
      0,				/* tp_iternext */
-     0, /*ephem_observer_methods,*/	/* tp_methods */
+     0,				/* tp_methods */
      ephem_observer_members,	/* tp_members */
      ephem_observer_getset,	/* tp_getset */
      0,				/* tp_base */
@@ -745,7 +745,7 @@ static PyTypeObject ObserverType = {
      Observer_init,		/* tp_init */
      0,				/* tp_alloc */
      0,				/* tp_new */
-     /*_PyObject_GC_Del,*/	/* tp_free */
+     0				/* tp_free */
 };
 
 /*
@@ -1218,7 +1218,7 @@ GET_FIELD(sun_tilt, stilt, build_degrees)
 #undef CALCULATOR
 #undef BODY
 
-/* */
+/* Attribute access that needs to be hand-written. */
 
 static PyObject *Get_name(PyObject *self, void *v)
 {
@@ -1538,7 +1538,7 @@ static PyTypeObject BodyType = {
      "ephem.Body",
      sizeof(Body),
      0,
-     0, /*_PyObject_Del,*/	/* tp_dealloc */
+     0,				/* tp_dealloc */
      0,				/* tp_print */
      0,				/* tp_getattr */
      0,				/* tp_setattr */
@@ -1550,7 +1550,7 @@ static PyTypeObject BodyType = {
      0,				/* tp_hash */
      0,				/* tp_call */
      Body_str,			/* tp_str */
-     0, /*PyObject_GenericGetAttr,*/ /* tp_getattro */
+     0,				/* tp_getattro */
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
      Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
@@ -1570,9 +1570,9 @@ static PyTypeObject BodyType = {
      0,				/* tp_descr_set */
      0,				/* tp_dictoffset */
      Body_init,			/* tp_init */
-     0, /*PyType_GenericAlloc,*/ /* tp_alloc */
-     0, /*PyType_GenericNew,*/	/* tp_new */
-     0, /*_PyObject_GC_Del,*/	/* tp_free */
+     0,				/* tp_alloc */
+     0,				/* tp_new */
+     0,				/* tp_free */
 };
 
 static PyTypeObject PlanetType = {
@@ -2307,17 +2307,8 @@ PyMODINIT_FUNC initephem(void)
      AngleType.tp_base = &PyFloat_Type;
      DateType.tp_base = &PyFloat_Type;
 
-     //BodyType.tp_dealloc = (destructor) _PyObject_Del;
-     //BodyType.tp_getattro = PyObject_GenericGetAttr;
-     //BodyType.tp_alloc = PyType_GenericAlloc;
-     //BodyType.tp_free = _PyObject_GC_Del;
-
      ObserverType.tp_new = PyType_GenericNew;
      BodyType.tp_new = PyType_GenericNew;
-
-     /*ObserverType.tp_alloc = PyType_GenericAlloc;*/
-     /*ObserverType.tp_dealloc = (destructor) _PyObject_Del;*/
-     /*ObserverType.tp_getattro = PyObject_GenericGetAttr;*/
 
      /* Ready each type. */
 
