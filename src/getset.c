@@ -135,34 +135,6 @@ static int setf_dd(PyObject *self, PyObject *value, void *v)
      return status;
 }
 
-/*     int year, month;
-     double day;
-     mjd_cal(value, &month, &day, &year);*/
-
-static PyObject* rebuild_date(PyObject *self, PyObject *args)
-{
-     PyObject *o;
-     double the_mjd;
-     int status;
-     if (!PyArg_ParseTuple(args, "O", &o)) return 0;
-     status = parse_mjd(o, &the_mjd);
-     if (status == -1) return 0;
-     return build_date(the_mjd);
-}
-
-static double to_mjd(PyObject *value, int *status)
-{
-     int year, month;
-     double day, result;
-     if (!PyArg_ParseTuple(value, "iid", &year, &month, &day)) {
-	  *status = -1;
-	  return 0;
-     }
-     cal_mjd(month, day, year, &result);
-     *status = 0;
-     return result;
-}
-
 /* MJD stored as float. */
 
 static PyObject* getf_mjd(PyObject *self, void *v)
