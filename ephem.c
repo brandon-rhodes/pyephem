@@ -52,7 +52,8 @@ typedef struct {
 } Body;
 
 typedef Body Planet, Mercury, Venus, Mars, Jupiter, Uranus, Neptune, Pluto;
-typedef Body FixedBody, BinaryStar, EllipticalBody, ParabolicBody, EarthSatellite;
+typedef Body FixedBody, BinaryStar;
+typedef Body EllipticalBody, ParabolicBody, EarthSatellite;
 
 typedef struct {
      PyObject_HEAD
@@ -548,8 +549,8 @@ static int setd_mjd(PyObject *self, PyObject *value, void *v)
      return 0;
 }
 
-#undef THE_FLOAT
-#undef THE_DOUBLE
+/* #undef THE_FLOAT
+   #undef THE_DOUBLE */
 
 /*
  * The following values are ones for which XEphem provides special
@@ -995,22 +996,27 @@ static int Body_obj_cir(Body *body, char *fieldname, unsigned topocentric)
 
 static int Body_riset_cir(Body *body, char *fieldname)
 {
-     if (body->obj.o_flags & VALID_RISET)
-	  return 0;
-     if (body->obj.o_flags == 0) {
-	  PyErr_Format(PyExc_RuntimeError,
-		       "field %s undefined until first compute()", fieldname);
+     if ((body->obj.o_flags & VALID_RISET) == 0) {
+	  if (body->obj.o_flags == 0) {
+	       PyErr_Format(PyExc_RuntimeError, "field %s undefined"
+			    " until first compute()", fieldname);
+	       return -1;
+	  }
+	  if ((body->obj.o_flags & VALID_TOPO) == 0) {
+	       PyErr_Format(PyExc_RuntimeError, "field %s undefined because"
+			    " last compute() supplied a date"
+			    " rather than an Observer", fieldname);
+	       return -1;
+	  }
+	  riset_cir(& body->now, & body->obj,
+		    body->now.n_dip, & body->riset);
+	  body->obj.o_flags |= VALID_RISET;
+     }
+     if (body->riset.rs_flags & RS_ERROR) {
+	  PyErr_Format(PyExc_RuntimeError, "error computing rise, transit,"
+		       " and set circumstances");
 	  return -1;
      }
-     if ((body->obj.o_flags & VALID_TOPO) == 0) {
-	  PyErr_Format(PyExc_RuntimeError,
-		       "field %s undefined because last compute() supplied "
-		       "a date rather than an Observer", fieldname);
-	  return -1;
-     }
-     riset_cir(& body->now, & body->obj,
-	       body->now.n_dip, & body->riset);
-     body->obj.o_flags |= VALID_RISET;
      return 0;
 }
 
@@ -1108,7 +1114,8 @@ GET_FIELD(alt, obj.s_alt, build_degrees)
 #define CALCULATOR Body_riset_cir
 #define CARGS
 #define FLAGGED(mask, builder) \
- (body->riset.rs_flags & mask) ? (Py_INCREF(Py_None), Py_None) : builder
+ (body->riset.rs_flags & (mask | RS_CIRCUMPOLAR | RS_NEVERUP)) \
+ ? (Py_INCREF(Py_None), Py_None) : builder
 
 GET_FIELD(risetm, riset.rs_risetm, FLAGGED(RS_NORISE, build_Date))
 GET_FIELD(riseaz, riset.rs_riseaz, FLAGGED(RS_NORISE, build_degrees))
@@ -1146,14 +1153,102 @@ GET_FIELD(stilt, stilt, build_degrees)
 #undef CALCULATOR
 #undef BODY
 
+/* */
+
+static PyObject *Get_name(PyObject *self, void *v)
+{
+     Body *body = (Body*) self;
+     int i=0;
+     while (i < MAXNM && body->obj.o_name[i]) i++;
+     return PyString_FromStringAndSize(body->obj.o_name, i);
+}
+
+static int Set_name(PyObject *self, PyObject *value, void *v)
+{
+     Body *body = (Body*) self;
+     char *s;
+     if (!PyString_Check(value)) {
+	  PyErr_Format(PyExc_ValueError, "body name must be a string");
+	  return -1;
+     }
+     s = PyString_AsString(value);
+     strncpy(body->obj.o_name, s, 20);
+     body->obj.o_name[MAXNM - 1] = '\0';
+     return 0;
+}
+
+static int Set_mag(PyObject *self, PyObject *value, void *v)
+{
+     Body *b = (Body*) self;
+     double mag;
+     if (PyNumber_AsDouble(value, &mag) == -1) return -1;
+     set_fmag(&b->obj, mag);
+     return 0;
+}
+
+static PyObject *Get_circumpolar(PyObject *self, void *v)
+{
+     Body *body = (Body*) self;
+     if (Body_riset_cir(body, "circumpolar") == -1) return 0;
+     return PyBool_FromLong(body->riset.rs_flags & RS_CIRCUMPOLAR);
+}
+
+static PyObject *Get_neverup(PyObject *self, void *v)
+{
+     Body *body = (Body*) self;
+     if (Body_riset_cir(body, "neverup") == -1) return 0;
+     return PyBool_FromLong(body->riset.rs_flags & RS_NEVERUP);
+}
+
+/* */
+
+static PyObject *Get_HG(PyObject *self, void *v)
+{
+     Body *body = (Body*) self;
+     if (body->obj.e_mag.whichm != MAG_HG) {
+	  PyErr_Format(PyExc_RuntimeError,
+		       "this object has g/k magnitude coefficients");
+	  return 0;
+     }
+     return PyFloat_FromDouble(THE_FLOAT);
+}
+
+static PyObject *Get_gk(PyObject *self, void *v)
+{
+     Body *body = (Body*) self;
+     if (body->obj.e_mag.whichm != MAG_gk) {
+	  PyErr_Format(PyExc_RuntimeError,
+		       "this object has H/G magnitude coefficients");
+	  return 0;
+     }
+     return PyFloat_FromDouble(THE_FLOAT);
+}
+
+static int Set_HG(PyObject *self, PyObject *value, void *v)
+{
+     Body *body = (Body*) self;
+     double n;
+     if (PyNumber_AsDouble(value, &n) == -1) return -1;
+     THE_FLOAT = n;
+     body->obj.e_mag.whichm = MAG_HG;
+     return 0;
+}
+
+static int Set_gk(PyObject *self, PyObject *value, void *v)
+{
+     Body *body = (Body*) self;
+     double n;
+     if (PyNumber_AsDouble(value, &n) == -1) return -1;
+     THE_FLOAT = n;
+     body->obj.e_mag.whichm = MAG_gk;
+     return 0;
+}
+
 /* Get/Set arrays. */
 
-static PyMemberDef body_members[] = {
-     {"name", T_STRING_INPLACE, OFF(o_name), RO, "body name"},
-     {NULL}
-};
-
 static PyGetSetDef body_getset[] = {
+     {"name", Get_name, Set_name, "arbitrary name of up to 20 characters"},
+
      {"ra", Get_ra, 0, "right ascension (hours of arc)"},
      {"dec", Get_dec, 0, "declination (degrees)"},
      {"elong", Get_elong, 0, "elongation"},
@@ -1171,6 +1266,10 @@ static PyGetSetDef body_getset[] = {
      {"transit_alt", Get_tranalt, 0, "transit altitude"},
      {"set_time", Get_settm, 0, "set time"},
      {"set_az", Get_setaz, 0, "set azimuth"},
+     {"circumpolar", Get_circumpolar, 0,
+      "whether object remains above the horizon this day"},
+     {"neverup", Get_neverup, 0,
+      "whether the object never rises above the horizon this day"},
      {NULL}
 };
 
@@ -1202,6 +1301,7 @@ static PyGetSetDef saturn_getset[] = {
 };
 
 static PyGetSetDef body_f_getset[] = {
+     {"mag", Get_mag, Set_mag, "magnitude", 0},
      {"_spect",  get_f_spect, set_f_spect, "spectral codes", 0},
      {"_ratio", get_f_ratio, set_f_ratio,
       "ratio of minor to major diameter", VOFF(f_ratio)},
@@ -1218,11 +1318,18 @@ static PyMemberDef body_f_members[] = {
 };
 
 static PyGetSetDef body_e_getset[] = {
-     {"_inc", getf_dd, setf_dd, "Inclination (degrees)", VOFF(e_inc)},
+     {"_inc", getf_dd, setf_dd, "inclination (degrees)", VOFF(e_inc)},
      {"_Om", getf_dd, setf_dd,
       "longitude of ascending node (degrees)", VOFF(e_Om)},
      {"_om", getf_dd, setf_dd, "argument of perihelion (degrees)", VOFF(e_om)},
      {"_M", getf_dd, setf_dd, "mean anomaly (degrees)", VOFF(e_M)},
+     {"_cepoch", getd_mjd, setd_mjd, "epoch date of mean anomaly",
+      VOFF(e_cepoch)},
+     {"_epoch", getd_mjd, setd_mjd, "equinox year", VOFF(e_epoch)},
+     {"_H", Get_HG, Set_HG, "H magnitude coefficient", VOFF(e_mag.m1)},
+     {"_G", Get_HG, Set_HG, "G magnitude coefficient", VOFF(e_mag.m2)},
+     {"_g", Get_gk, Set_gk, "g magnitude coefficient", VOFF(e_mag.m1)},
+     {"_k", Get_gk, Set_gk, "k magnitude coefficient", VOFF(e_mag.m2)},
      {NULL}
 };
 
@@ -1230,9 +1337,6 @@ static PyMemberDef body_e_members[] = {
      {"_a", T_FLOAT, OFF(e_a), 0, "mean distance (AU)"},
      {"_size", T_FLOAT, OFF(e_size), 0, "angular size at 1 AU (arcseconds)"},
      {"_e", T_DOUBLE, OFF(e_e), 0, "eccentricity"},
-     {"_cepoch", T_DOUBLE, OFF(e_cepoch), 0, "epoch date of mean anomaly"},
-     {"_epoch", T_DOUBLE, OFF(e_epoch), 0, "equinox year"},
-     /* Mag */
      {NULL}
 };
 
@@ -1356,7 +1460,7 @@ static PyTypeObject BodyType = {
      0,				/* tp_iter */
      0,				/* tp_iternext */
      body_methods,		/* tp_methods */
-     body_members,		/* tp_members */
+     0,				/* tp_members */
      body_getset,		/* tp_getset */
      0,				/* tp_base */
      0,				/* tp_dict */

@@ -92,8 +92,6 @@ class dates(unittest.TestCase):
 
 # fixed
 
-saturn_attributes = ('earth_tilt', 'sun_tilt')
-
 satellite_attributes = ('sublat', 'sublong', 'elevation',
                         'range', 'range_velocity', 'eclipsed')
 
@@ -102,8 +100,8 @@ attribute_list = (
      ('ra', 'dec', 'elong', 'mag', 'size')),
     (Body, True,
      ('az', 'alt', 'apparent_ra', 'apparent_dec',
-      'rise_time', 'rise_az', 'transit_time', 'transit_alt',
-      'set_time', 'set_az')),
+      'circumpolar', 'neverup', 'rise_time', 'rise_az',
+      'transit_time', 'transit_alt', 'set_time', 'set_az')),
     (Planet, False,
      ('hlong', 'hlat', 'sun_distance', 'earth_distance', 'phase')),
     (Moon, False,
@@ -112,30 +110,34 @@ attribute_list = (
      ('earth_tilt', 'sun_tilt')),
     )
 
+# Return a dictionary whose keys are all known body attributes,
+# and whose values are the exceptions we expect to receive for
+# trying to access each attribute from the given body, or the
+# value True for attributes which should not raise exceptions.
+
+def predict_attributes(body, was_computed, was_given_observer):
+    predictions = {}
+    for bodytype, needs_observer, attrs in attribute_list:
+        for attr in attrs:
+            if not isinstance(body, bodytype):
+                predictions[attr] = AttributeError
+            elif not was_computed:
+                predictions[attr] = RuntimeError
+            elif needs_observer and not was_given_observer:
+                predictions[attr] = RuntimeError
+            else:
+                predictions[attr] = None
+    return predictions
+
+#
+
 class bodies(MyTestCase):
     def setUp(self):
-        self.o = o = Observer()
-        o.lat, o.long, o.elev = '33:45:10', '-84:23:37', 320.0
-        o.date = '1997/2/15'
+        self.date = Date('1955/05/21')
 
-    # Return a dictionary whose keys are all known body attributes,
-    # and whose values are the exceptions we expect to receive for
-    # trying to access each attribute from the given body, or the
-    # value True for attributes which should not raise exceptions.
-
-    def predict_attributes(self, body, was_computed, was_given_observer):
-        predictions = {}
-        for bodytype, needs_observer, attrs in attribute_list:
-            for attr in attrs:
-                if not isinstance(body, bodytype):
-                    predictions[attr] = AttributeError
-                elif not was_computed:
-                    predictions[attr] = RuntimeError
-                elif needs_observer and not was_given_observer:
-                    predictions[attr] = RuntimeError
-                else:
-                    predictions[attr] = None
-        return predictions
+        self.obs = obs = Observer()
+        obs.lat, obs.long, obs.elev = '33:45:10', '-84:23:37', 320.0
+        obs.date = '1997/2/15'
 
     # Try accessing each attribute in attribute_list from the given
     # body, recording the exceptions we receive in a dictionary, and
@@ -158,7 +160,7 @@ class bodies(MyTestCase):
     # the reality matches our prediction.
 
     def compare_attributes(self, body, was_computed, was_given_observer):
-        p = self.predict_attributes(body, was_computed, was_given_observer)
+        p = predict_attributes(body, was_computed, was_given_observer)
         t = self.measure_attributes(body)
         for a in Set(p).union(t):
             if p[a] is None and t[a] is None:
@@ -182,20 +184,92 @@ class bodies(MyTestCase):
         self.compare_attributes(body, False, False)
         body.compute()
         self.compare_attributes(body, True, False)
-        body.compute(self.o)
+        body.compute(self.obs)
         self.compare_attributes(body, True, True)
         body.compute()
         self.compare_attributes(body, True, False)
 
     def test_Planets(self):
-        for init in (Mercury, Venus, Mars, Jupiter, Saturn, Uranus,
-                     Neptune, Pluto, Sun, Moon):
+        for init in (Mercury, Venus, Mars, Jupiter, Saturn,
+                     Uranus, Neptune, Pluto, Sun, Moon):
             self.run(init())
 
-    def test_Fixed(self):
-        fb = FixedBody()
-        fb._epoch, fb._ra, fb._dec = '2000', '1:30', '15:00'
-        self.run(fb)
+    # For each flavor of user-definable body, 
+
+    def build(self, bodytype, line, attributes):
+
+        # Build one body from the Ephem-formatted entry.
+
+        bl = readdb(line)
+
+        # Build another body by setting the attributes on a body.
+
+        ba = bodytype()
+        for attribute, value in attributes.iteritems():
+            try:
+                setattr(ba, attribute, value)
+            except TypeError:
+                raise TestError, ('cannot modify attribute %s of %r: %s'
+                                  % (attribute, ba, sys.exc_info()[1]))
+        if not isinstance(bl, bodytype):
+            raise TestError, ('ephem database entry returned type %s'
+                              ' rather than type %s' % (type(bl), bodytype))
+
+        # Now, compare the bodies to see if they are equivalent.
+        # First test whether they present the right attributes.
+
+        self.run(bl), self.run(ba)
+
+        # Check whether they appear in the same positions.
+
+        for circumstance in self.date, self.obs:
+            is_observer = isinstance(circumstance, Observer)
+            bl.compute(circumstance), ba.compute(circumstance)
+            attrs = [ a for (a,e)
+                      in predict_attributes(bl, 1, is_observer).items()
+                      if not e ]
+            for attr in attrs:
+                vl, va = getattr(bl, attr), getattr(ba, attr)
+                if isinstance(vl, float):
+                    vl, va = str(float(vl)), str(float(va))
+                #print attr, vl, va
+                if vl != va:
+                    raise TestError, ("%s item from line returns %s for %s"
+                                      " but constructed object returns %s"
+                                      % (type(bl), vl, attr, va))
+
+    def test_FixedBody(self):
+        self.build(
+            bodytype=FixedBody,
+            line='Achernar,f|V|B3,1:37:42.9,-57:14:12,0.46,2000',
+            attributes = {'name': 'Achernar',
+                          '_ra': '1:37:42.9', '_dec': '-57:14:12',
+                          'mag': 0.46, '_epoch': '2000'})
+
+    def test_EllipticalBody(self):
+        self.build(
+            bodytype=EllipticalBody,
+            line=('C/1995 O1 (Hale-Bopp),e,89.3918,282.4192,130.8382,'
+                  '186.4302,0.0003872,0.99500880,0.0000,'
+                  '03/30.4376/1997,2000,g -2.0,4.0'),
+            attributes = {'name': 'Hale-Bopp', '_inc': 89.3918,
+                          '_Om': 282.4192, '_om': 130.8382,
+                          '_a': 186.4302, '_e': 0.99500880, '_M': 0.0000,
+                          '_cepoch': '1997/03/30.4376', '_epoch': '2000',
+                          '_size': 0, '_g': -2.0, '_k': 4.0
+                          })
 
 if __name__ == '__main__':
     unittest.main()
+
+sys.exit(0)
+
+line=('C/1995 O1 (Hale-Bopp),e,89.3918,282.4192,130.8382,'
+      '186.4302,0.0003872,0.99500880,0.0000,'
+      '03/30.4376/1997,2000,g -2.0,4.0')
+bopp = readdb(line)
+for a in dir(bopp):
+    try:
+        print a, getattr(bopp, a)
+    except:
+        print a, '---'
