@@ -1,6 +1,9 @@
-all: ephem_wrap.c ephem.i ../web/pyephem-manual.html
+all: ../ephem.py ephem.i ../web/pyephem-manual.html
 
-ephem_wrap.c: ephem.i
+../ephem.py: ephem.py
+	cp $< $@
+
+ephem.py: ephem.i
 	swig -dnone -python -globals preference -shadow $<
 
 ephem.i: format_swig.m4 ephem.m4

@@ -682,20 +682,40 @@ int twoarg_db_crack_line (char s[], Obj *op)
 
 
 
+typedef int Preferences;
+
+
+%name (pref_get) extern int pref_get(Preferences p);
+%name (pref_set) extern int pref_set(Preferences p, int value);
+
+
 /* NOTE: these constants must remain in agreement with those in the
    libastro preferences.h file. */
 
-
-
-
-#define topocentric PREF_TOPO
-#define geocentric PREF_GEO
+#define PREF_EQUATORIAL PREF_EQUATORIAL
 
 
 
 
 
-#define MDY PREF_MDY
-#define YMD PREF_YMD
-#define DMY PREF_DMY
 
+#define PREF_TOPO PREF_TOPO
+#define PREF_GEO PREF_GEO
+
+
+#define PREF_DATE_FORMAT PREF_DATE_FORMAT
+
+
+
+
+
+
+#define PREF_MDY PREF_MDY
+#define PREF_YMD PREF_YMD
+#define PREF_DMY PREF_DMY
+
+
+%init %{
+	pref_set(PREF_EQUATORIAL, PREF_TOPO);
+	pref_set(PREF_DATE_FORMAT, PREF_MDY);
+%}

@@ -91,7 +91,7 @@ m4_define(FIELD_END, `ON_</UL>OFF_')
 m4_define(FUNCTION_BEGIN, `ON_<DL>OFF_')
 m4_define(ARGIZE_, `m4_patsubst($1, `\([^ )]*\)\(,\|)\|$\)', `<B>\1</B>\2')')
 m4_define(FUNCTION_,
- `ON_<DT><TABLE WIDTH=100%><TR><TD><B>$1</B> ARGIZE_($3)<TD ALIGN=RIGHT>-&gt; ARGIZE_($4)</TABLE><DD>$5</P>OFF_')
+ `ON_<DT><TABLE WIDTH=100%><TR><TD><B>$1</B> ARGIZE_($3)<TD ALIGN=RIGHT>&#8594; ARGIZE_($4)</TABLE><DD>$5</P>OFF_')
 m4_define(FUNCTION_END, `ON_</DL>OFF_')
 
 Titles the table of contents, and sets up the head and foot of the

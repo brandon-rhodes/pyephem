@@ -794,6 +794,10 @@ heliocorr = ephemc.heliocorr
 
 mm_mjed = ephemc.mm_mjed
 
+pref_get = ephemc.pref_get
+
+pref_set = ephemc.pref_set
+
 
 
 #-------------- VARIABLE WRAPPERS ------------------
@@ -841,8 +845,10 @@ RS_ERROR = ephemc.RS_ERROR
 RS_RISERR = ephemc.RS_RISERR
 RS_SETERR = ephemc.RS_SETERR
 RS_TRANSERR = ephemc.RS_TRANSERR
-topocentric = ephemc.topocentric
-geocentric = ephemc.geocentric
-MDY = ephemc.MDY
-YMD = ephemc.YMD
-DMY = ephemc.DMY
+PREF_EQUATORIAL = ephemc.PREF_EQUATORIAL
+PREF_TOPO = ephemc.PREF_TOPO
+PREF_GEO = ephemc.PREF_GEO
+PREF_DATE_FORMAT = ephemc.PREF_DATE_FORMAT
+PREF_MDY = ephemc.PREF_MDY
+PREF_YMD = ephemc.PREF_YMD
+PREF_DMY = ephemc.PREF_DMY

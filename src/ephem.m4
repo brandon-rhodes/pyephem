@@ -170,7 +170,7 @@ the (rather cryptic) variable and function names of the C library.
 Instead I have sought names that, while brief, are expressive enough
 that I would not mind reading a program that uses this library.
 If you need briefer names for common functions,
-you can just use Python''`s equality operator to bind
+you can just use Python''`s assignment statement to bind
 functions and variables to more convenient names.
 <P>
 Please mail comments, corrections, or additional ideas
@@ -851,7 +851,7 @@ the position of the object at that time and location is computed
 and its field values are updated to reflect this.')
 
 FUNCTION_(computeSeparation, double dm_separation (Obj *p, Obj *q),
-	(Obj o1, Obj o2), (float separation),
+	(Obj o1, Obj o2), float separation,
 	`Given two objects whose locations have been computed with
 	 <B>computeLocation</B>, return the angular separation between
 	 the two objects.')
@@ -970,7 +970,7 @@ void constellationName (double ra, double dec, double epoch, char *out)
 FUNCTION_BEGIN
 FUNCTION_(constellation,
 	`void constellation(double ra, double dec, double epoch, char *OUT)',
-	(float ra, float dec, float epoch), (string abbreviation),
+	(float ra, float dec, float epoch), string abbreviation,
 `Given a location in the sky and an mjd epoch,
  returns the three-letter abbreviation of the constellation
  at that location.')
@@ -978,7 +978,7 @@ FUNCTION_(constellation,
 FUNCTION_(constellationName,
 	`void constellationName(double ra, double dec, double epoch,
 		char *OUT)',
-	(float ra, float dec, float epoch), (string name),
+	(float ra, float dec, float epoch), string name,
 `Given a location in the sky and an mjd epoch,
  returns the full scientific (Latin) name of the constellation
  at that location.')
@@ -1032,7 +1032,7 @@ of the time of the circumstance.
 Returns a (right ascension, declination) double.')
 
 FUNCTION_(deltat, extern double deltat (double mjd),
-	(float mjd), (float seconds),
+	(float mjd), float seconds,
 `Number of seconds by which Terrestrial Dynamical Time (known as
 Ephemeris Time prior to 1982) leads UTC.')
 
@@ -1054,43 +1054,63 @@ return its modified julian date, modified for terrestrial dynamical time.')
 FUNCTION_END
 
 SECTION_(Preferences)
-TEXT_(`Two of XEphem''`s numerous options are relevant for this
- computational library.')
+TEXT_(`Preferences are integer values
+ which can assume various predefined values which are provied as macros.
+ They are accessed through two functions;
+ see the sections below to learn about the preferences available:')
+
+typedef int Preferences;
+
+FUNCTION_BEGIN
+FUNCTION_(pref_get, extern int pref_get(Preferences p),
+	(int preference), int value,
+`Returns the current value of the given preference.')
+FUNCTION_(pref_set, extern int pref_set(Preferences p, int value),
+	(int preference, int value), int value,
+`Sets the given preference to a new value, returning the old value.')
+FUNCTION_END
 
 /* NOTE: these constants must remain in agreement with those in the
    libastro preferences.h file. */
 
-TEXT_(`The variable <B>preference.whichEquatorial</B> sets whether locations
- should be computed from the center of the earth,
- or for a particular observer on the earth''`s surface.
- If geocentric (based on the center of the earth) computation is selected,
- most of the fields in a Circumstance object
- become irrelevant since they are used to specify a location on earth.
- It may take on either of these values:')
+#define PREF_EQUATORIAL PREF_EQUATORIAL
+
+SUBSECTION_(PREF_EQUATORIAL)
+
+TEXT_(`Sets whether solar system object positions and angles
+ should be computed for an observer at the center of the earth,
+ or for an observer at a particular location on the earth''`s surface.')
 
 CONSTANT_BEGIN
-CONSTANT_(topocentric, PREF_TOPO,
+CONSTANT_(PREF_TOPO, PREF_TOPO,
 `Asserts that computations should be relative to an
  observer on the surface of the earth (the default).')
-CONSTANT_(geocentric, PREF_GEO,
+CONSTANT_(PREF_GEO, PREF_GEO,
 `Asserts that computations should be relative to the
- center of the earth.')
+ center of the earth.
+ Note that geocentric mode ignores those fields of the Circumstance object
+ that specify your location.')
 CONSTANT_END
 
-TEXT_(`The variable <B>preference.whichDateFormat</B> selects the manner
- in which the <B>formatDate</B> function formats its output.
- Its value should be one of:')
+#define PREF_DATE_FORMAT PREF_DATE_FORMAT
+
+SUBSECTION_(PREF_DATE_FORMAT)
+
+TEXT_(`Determines how the <B>formatDate</B> function formats its output:')
 
 CONSTANT_BEGIN
-CONSTANT_(MDY,PREF_MDY,
-`Asserts that dates should be expressed as month/day/year
- in the manner familiar to Americans (this option is selected as the default
+CONSTANT_(PREF_MDY,PREF_MDY,
+`Writes dates as month/day/year like an American.
+ This option is the default,
  to conform to the default behavior of XEphem,
- even though this system makes less sense than the other two).')
-CONSTANT_(YMD,PREF_YMD,
-`Asserts that dates should be expressed as year/month/day
- as commonly used by astronomers.')
-CONSTANT_(DMY,PREF_DMY,
-`Asserts that dates should be expressed as day/month/year
- as used by Europeans.')
+ even though this custom makes less sense than the other two.')
+CONSTANT_(PREF_YMD,PREF_YMD,
+`Writes dates as year/month/day like an astronomer.')
+CONSTANT_(PREF_DMY,PREF_DMY,
+`Writes dates as day/month/year like a European.')
 CONSTANT_END
+
+%init %{
+	pref_set(PREF_EQUATORIAL, PREF_TOPO);
+	pref_set(PREF_DATE_FORMAT, PREF_MDY);
+%}

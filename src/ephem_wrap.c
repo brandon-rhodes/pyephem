@@ -20,7 +20,7 @@
 
 #define SWIGPYTHON
 /***********************************************************************
- * $Header: /home/brandon/archive/cvs/rhodesmill/pyephem/src/Attic/ephem_wrap.c,v 1.1 2003/03/04 05:49:33 brandon Exp $
+ * $Header: /home/brandon/archive/cvs/rhodesmill/pyephem/src/Attic/ephem_wrap.c,v 1.2 2003/03/05 03:23:57 brandon Exp $
  * swig_lib/python/python.cfg
  *
  * Contains variable linking and pointer type-checking code.
@@ -646,6 +646,8 @@ int twoarg_db_crack_line (char s[], Obj *op)
 extern double deltat(double );
 extern void heliocorr(double ,double ,double ,double *);
 extern double mm_mjed(Now *);
+extern int pref_get(Preferences );
+extern int pref_set(Preferences ,int );
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -1715,6 +1717,33 @@ static PyObject *_wrap_mm_mjed(PyObject *self, PyObject *args) {
     }
     _result = (double )mm_mjed(_arg0);
     _resultobj = Py_BuildValue("d",_result);
+    return _resultobj;
+}
+
+static PyObject *_wrap_pref_get(PyObject *self, PyObject *args) {
+    PyObject * _resultobj;
+    int  _result;
+    Preferences  _arg0;
+
+    self = self;
+    if(!PyArg_ParseTuple(args,"i:pref_get",&_arg0)) 
+        return NULL;
+    _result = (int )pref_get(_arg0);
+    _resultobj = Py_BuildValue("i",_result);
+    return _resultobj;
+}
+
+static PyObject *_wrap_pref_set(PyObject *self, PyObject *args) {
+    PyObject * _resultobj;
+    int  _result;
+    Preferences  _arg0;
+    int  _arg1;
+
+    self = self;
+    if(!PyArg_ParseTuple(args,"ii:pref_set",&_arg0,&_arg1)) 
+        return NULL;
+    _result = (int )pref_set(_arg0,_arg1);
+    _resultobj = Py_BuildValue("i",_result);
     return _resultobj;
 }
 
@@ -6594,6 +6623,8 @@ static PyMethodDef ephemcMethods[] = {
 	 { "Obj_any_set", _wrap_Obj_any_set, METH_VARARGS },
 	 { "delete_Obj", _wrap_delete_Obj, METH_VARARGS },
 	 { "new_Obj", _wrap_new_Obj, METH_VARARGS },
+	 { "pref_set", _wrap_pref_set, METH_VARARGS },
+	 { "pref_get", _wrap_pref_get, METH_VARARGS },
 	 { "mm_mjed", _wrap_mm_mjed, METH_VARARGS },
 	 { "heliocorr", _wrap_heliocorr, METH_VARARGS },
 	 { "deltat", _wrap_deltat, METH_VARARGS },
@@ -6652,10 +6683,14 @@ static struct { char *n1; char *n2; void *(*pcnv)(void *); } _swig_mapping[] = {
     { "_byte","_ObjAge_t",0},
     { "_long","_unsigned_long",0},
     { "_long","_signed_long",0},
+    { "_Preferences","_int",0},
+    { "_Preferences","_signed_int",0},
+    { "_Preferences","_unsigned_int",0},
     { "_ObjType_t","_byte",0},
     { "_ObjType_t","_ObjAge_t",0},
     { "_ObjType_t","_unsigned_char",0},
     { "_unsigned_long","_long",0},
+    { "_signed_int","_Preferences",0},
     { "_signed_int","_int",0},
     { "_unsigned_short","_short",0},
     { "_signed_short","_short",0},
@@ -6663,9 +6698,11 @@ static struct { char *n1; char *n2; void *(*pcnv)(void *); } _swig_mapping[] = {
     { "_unsigned_char","_byte",0},
     { "_unsigned_char","_ObjAge_t",0},
     { "_unsigned_char","_ObjType_t",0},
+    { "_unsigned_int","_Preferences",0},
     { "_unsigned_int","_int",0},
     { "_short","_unsigned_short",0},
     { "_short","_signed_short",0},
+    { "_int","_Preferences",0},
     { "_int","_unsigned_int",0},
     { "_int","_signed_int",0},
     { "_ObjAge_t","_byte",0},
@@ -6725,11 +6762,16 @@ SWIGEXPORT(void) initephemc() {
 	 PyDict_SetItemString(d,"RS_RISERR", PyInt_FromLong((long) (0x0100|(0x1000))));
 	 PyDict_SetItemString(d,"RS_SETERR", PyInt_FromLong((long) (0x0200|(0x1000))));
 	 PyDict_SetItemString(d,"RS_TRANSERR", PyInt_FromLong((long) (0x0400|(0x1000))));
-	 PyDict_SetItemString(d,"topocentric", PyInt_FromLong((long) PREF_TOPO));
-	 PyDict_SetItemString(d,"geocentric", PyInt_FromLong((long) PREF_GEO));
-	 PyDict_SetItemString(d,"MDY", PyInt_FromLong((long) PREF_MDY));
-	 PyDict_SetItemString(d,"YMD", PyInt_FromLong((long) PREF_YMD));
-	 PyDict_SetItemString(d,"DMY", PyInt_FromLong((long) PREF_DMY));
+	 PyDict_SetItemString(d,"PREF_EQUATORIAL", PyInt_FromLong((long) PREF_EQUATORIAL));
+	 PyDict_SetItemString(d,"PREF_TOPO", PyInt_FromLong((long) PREF_TOPO));
+	 PyDict_SetItemString(d,"PREF_GEO", PyInt_FromLong((long) PREF_GEO));
+	 PyDict_SetItemString(d,"PREF_DATE_FORMAT", PyInt_FromLong((long) PREF_DATE_FORMAT));
+	 PyDict_SetItemString(d,"PREF_MDY", PyInt_FromLong((long) PREF_MDY));
+	 PyDict_SetItemString(d,"PREF_YMD", PyInt_FromLong((long) PREF_YMD));
+	 PyDict_SetItemString(d,"PREF_DMY", PyInt_FromLong((long) PREF_DMY));
+
+	pref_set(PREF_EQUATORIAL, PREF_TOPO);
+	pref_set(PREF_DATE_FORMAT, PREF_MDY);
 {
    int i;
    for (i = 0; _swig_mapping[i].n1; i++)
