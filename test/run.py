@@ -256,8 +256,25 @@ class bodies(MyTestCase):
                           '_Om': 282.4192, '_om': 130.8382,
                           '_a': 186.4302, '_e': 0.99500880, '_M': 0.0000,
                           '_cepoch': '1997/03/30.4376', '_epoch': '2000',
-                          '_size': 0, '_g': -2.0, '_k': 4.0
+                          '_size': 0, '_g': -2.0, '_k': 4.0,
                           })
+
+    def test_HyperbolicBody(self):
+        self.build(
+            bodytype=HyperbolicBody,
+            line=('C/1999 J2 (Skiff),h,04/05.7769/2000,86.3277,50.0353,'
+                  '127.1286,1.002879,7.110858,2000,2.0,4.0'),
+            attributes = {'name': 'Skiff', '_ep': '2000/4/5.7769',
+                          '_inc': 86.3277, '_Om': 50.0353, '_om': 127.1286,
+                          '_e': 1.002879, '_q': 7.110858, '_epoch': '2000',
+                          '_g': 2.0, '_k': 4.0,
+                          })
+
+    #def test_ParabolicBody(self):
+    #    ...
+
+    #def test_EarthSatellite(self):
+    #    ...
 
     #def test_sanity(self):
     #    s = Sun()

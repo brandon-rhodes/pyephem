@@ -939,8 +939,8 @@ static PyObject* Body_compute(PyObject *self, PyObject *args, PyObject *kwds)
 	  /* Since libastro always does topocentric computation, we
 	     need to provide a reasonable location and weather. */
 	  body->now.n_mjd = when_mjd;
-	  body->now.n_lat = body->now.n_lng = body->now.n_tz = body->now.n_elev
-	       = body->now.n_dip = 0;
+	  body->now.n_lat = body->now.n_lng = body->now.n_tz
+	       = body->now.n_elev = body->now.n_dip = 0;
 	  body->now.n_temp = 15.0;
 	  body->now.n_pressure = 0; /* no refraction */
 	  body->now.n_epoch = epoch_mjd;
@@ -1407,20 +1407,20 @@ static PyMemberDef EllipticalBody_members[] = {
 };
 
 static PyGetSetDef HyperbolicBody_getset[] = {
+     {"_ep", getd_mjd, setd_mjd, "epoch of perihelion (Date)", VOFF(h_ep)},
      {"_inc", getf_dd, setf_dd, "inclination (degrees)", VOFF(h_inc)},
      {"_Om", getf_dd, setf_dd,
       "longitude of ascending node (degrees)", VOFF(h_Om)},
      {"_om", getf_dd, setf_dd,
       "argument of perihelion (degrees)", VOFF(h_om)},
+     {"_epoch", getd_mjd, setd_mjd, "epoch of _inc, _Om, and _om (Date)",
+      VOFF(h_epoch)},
      {NULL}
 };
 
 static PyMemberDef HyperbolicBody_members[] = {
-     {"_epoch", T_DOUBLE, OFF(h_epoch), 0,
-      "Equinox year of _inc, _Om, and _om (mjd)"},
-     {"_ep", T_DOUBLE, OFF(h_ep), 0, "epoch of perihelion (mjd)"},
      {"_e", T_FLOAT, OFF(h_e), 0, "eccentricity"},
-     {"_qp", T_FLOAT, OFF(h_qp), 0, "perihelion distance (AU)"},
+     {"_q", T_FLOAT, OFF(h_qp), 0, "perihelion distance (AU)"},
      {"_g", T_FLOAT, OFF(h_g), 0, "magnitude coefficient g"},
      {"_k", T_FLOAT, OFF(h_k), 0, "magnitude coefficient g"},
      {"_size", T_FLOAT, OFF(h_size), 0, "angular size at 1 AU (arcseconds)"},
