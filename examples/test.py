@@ -145,10 +145,11 @@ outputs = map(lambda (o): format_test(o), objects)
 errors = 0
 
 for i in range(0,7):
+    print repr(i) + " returned: " + outputs[i][14:]
     if standards[i][14:] != outputs[i][14:]:
         print repr(i) + " expected: " + standards[i][14:]
-        print repr(i) + " returned: " + outputs[i][14:]
         errors = errors + 1
+    print
 
 if errors == 0:
     print "Test completed successfully."
