@@ -1,6 +1,10 @@
 %module ephem
 %include typemaps.i
 
+/* PyEphem version 0.9
+ * 25 July 1998
+ */
+
 /* Copyright 1998 Brandon Craig Rhodes
  * Licensed under the terms of the GNU General Public License
  */
