@@ -61,7 +61,7 @@ class angles(unittest.TestCase):
 
 class dates(unittest.TestCase):
     def setUp(self):
-        self.date = Date('2004/09/04 00:17:15.8')
+        self.date = date('2004/09/04 00:17:15.8')
 
     def test_date_constructor(self):
         std = ('2004/09/04 00:17:15.8',)
@@ -79,7 +79,7 @@ class dates(unittest.TestCase):
                  ]
         for i in range(0, len(pairs), 2):
             args1, args2 = pairs[i:i+2]
-            d1, d2 = Date(*args1), Date(*args2)
+            d1, d2 = date(*args1), date(*args2)
             self.assert_(-1e-15 < (d1 / d2 - 1) < 1e-15,
                          'dates not equal:\n %r = date%r\n %r = date%r'
                          % (d1.tuple(), args1, d2.tuple(), args2))
@@ -139,7 +139,7 @@ def predict_attributes(body, was_computed, was_given_observer):
 
 class bodies(MyTestCase):
     def setUp(self):
-        self.date = Date('1955/05/21')
+        self.date = date('1955/05/21')
 
         self.obs = obs = Observer()
         obs.lat, obs.long, obs.elev = '33:45:10', '-84:23:37', 320.0
@@ -304,7 +304,7 @@ class bodies(MyTestCase):
                      '2 20580  28.4694  17.3953 0004117 265.2946  '
                      '94.7172 14.99359833594524'),
             attributes={'name': 'Hubble Telescope',
-                        '_epoch': Date('2004') + 296.45910607 - 1,
+                        '_epoch': date('2004') + 296.45910607 - 1,
                         '_decay': .00000912, '_drag': .59688e-4,
                         '_inc': 28.4694, '_raan': 17.3953,
                         '_e': 4117e-7, '_ap': 265.2946, '_M': 94.7172,

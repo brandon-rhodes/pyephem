@@ -262,10 +262,10 @@ you must pass them back through <tt>ephem.Date()</tt>
 to turn them back into dates:
 
 <pre class=interactive>
->>> d = ephem.Date('1950/2/28')
+>>> d = ephem.date('1950/2/28')
 >>> print d + 1
 18321.5
->>> print ephem.Date(d + 1)
+>>> print ephem.date(d + 1)
 1950/3/1 00:00:00
 </pre>
 
@@ -286,11 +286,11 @@ and give the first six elements it returns to PyEphem.
 The following assignments are all equivalent:
 
 <pre class=interactive>
->>> d = ephem.Date(34530.34375)
->>> d = ephem.Date('1994/7/16.84375')
->>> d = ephem.Date('1994/7/16 20:15')
->>> d = ephem.Date((1994, 7, 16.84375))
->>> d = ephem.Date((1994, 7, 16, 20, 15, 0))
+>>> d = ephem.date(34530.34375)
+>>> d = ephem.date('1994/7/16.84375')
+>>> d = ephem.date('1994/7/16 20:15')
+>>> d = ephem.date((1994, 7, 16.84375))
+>>> d = ephem.date((1994, 7, 16, 20, 15, 0))
 </pre>
 
 And to complement the fact that you can specify dates as a tuple,

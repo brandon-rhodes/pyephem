@@ -135,7 +135,7 @@ static int Angle_print(PyObject *self, FILE *fp, int flags)
 static PyTypeObject AngleType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "ephem.Angle",
+     "ephem.angle",
      sizeof(AngleObject),
      0,
      0,				/* tp_dealloc */
@@ -342,7 +342,7 @@ static PyMethodDef Date_methods[] = {
 static PyTypeObject DateType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "ephem.Date",
+     "ephem.date",
      sizeof(PyFloatObject),
      0,
      0,				/* tp_dealloc */
@@ -2000,7 +2000,7 @@ static PyTypeObject EarthSatelliteType = {
 
 static PyObject* build_now(PyObject *self, PyObject *args)
 {
-     if (!PyArg_ParseTuple(args, "")) return 0;
+     if (!PyArg_ParseTuple(args, ":ephem.now")) return 0;
      return build_Date(mjd_now());
 }
 
@@ -2336,8 +2336,8 @@ PyMODINIT_FUNC initephem(void)
 			"Module providing astronomical routines from Ephem");
      if (!m) return;
 
-     ADD("Angle", AngleType);
-     ADD("Date", DateType);
+     ADD("angle", AngleType);
+     ADD("date", DateType);
 
      ADD("Observer", ObserverType);
 
