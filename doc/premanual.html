@@ -508,20 +508,22 @@ in <i>ephem database format</i> and the resulting object is ready to use:
 ...    "04/13.2508/2003,2000,g  6.5,4.0")
 >>> yh.compute('2003/4/11')
 >>> print yh.name
-C/2002 Y1 (Juels-Holvorcem)
+C/2002 Y1 (Juels-Hol
 >>> print yh.ra, yh.dec
 0:22:36.80 26:48:57.47
 >>> print ephem.constellation(yh), yh.mag
 ('And', 'Andromeda') 5.96
 </pre>
 
+(Unfortunately the underlying library truncates object names
+to twenty characters, as you can see.)
 Each call to <tt>readdb()</tt> returns an object appropriate
 for the orbit specified in the database entry;
 in this case it has returned an <tt>EllipticalBody</tt>:
 
 <pre class=interactive>
 >>> print yh
-&lt;ephem.EllipticalBody "C/2002 Y1 (Juels-Holvorcem)"&gt;
+&lt;ephem.EllipticalBody "C/2002 Y1 (Juels-Hol"&gt;
 </pre>
 
 For objects for which you cannot find an entry in ephem database format,
