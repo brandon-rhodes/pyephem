@@ -626,6 +626,14 @@ static int set_f_pa(PyObject *self, PyObject *value, void *v)
  * Constructor and methods.
  */
 
+static void now_init(Now *now)
+{
+     now->n_lat = now->n_lng = now->n_elev = 0;
+     now->n_temp = 15.0;
+     now->n_dip = 0;
+     now->n_tz = 0;
+}
+
 static int Observer_init(PyObject *self, PyObject *args, PyObject *kwds)
 {
      Observer *o = (Observer*) self;
@@ -634,11 +642,8 @@ static int Observer_init(PyObject *self, PyObject *args, PyObject *kwds)
 	  return -1;
      o->now.n_mjd = mjd_now();
      o->now.n_epoch = J2000;
-     o->now.n_lat = o->now.n_lng = o->now.n_elev = 0;
-     o->now.n_temp = 15.0;
      o->now.n_pressure = 1010;
-     o->now.n_dip = 0;
-     o->now.n_tz = 0;
+     now_init(&o->now);
      return 0;
 }
 
@@ -937,8 +942,13 @@ static PyObject* Body_compute(PyObject *self, PyObject *args, PyObject *kwds)
 	  } else
 	       epoch_mjd = J2000;
      
+	  /* Since libastro always does topocentric computation, we
+	     need to provide a reasonable location and weather. */
 	  body->now.n_mjd = when_mjd;
 	  body->now.n_epoch = epoch_mjd;
+	  now_init(&body->now);
+	  body->now.n_pressure = 0; /* no refraction */
+
 	  body->obj.o_flags = VALID_GEO;
      }
 
@@ -961,7 +971,7 @@ static PyObject* Body_str(PyObject *body_object)
 {
      Body *body = (Body*) body_object;
      char *format = body->obj.o_name[0] ?
-	  "<%s named \"%s\" at 0x%x>" : "<%s at 0x%x>";
+	  "<%s \"%s\" at 0x%x>" : "<%s at 0x%x>";
      return PyString_FromFormat
 	  (format, body->ob_type->tp_name, body->obj.o_name, body);
 }
