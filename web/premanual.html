@@ -15,7 +15,12 @@ pre { margin-left: 2em; margin-right: 2em; background-color: d0d0a0 }
 <body>
 <h1>The PyEphem Manual</h1>
 
-The PyEphem library provides <a href="http://www.python.org/">Python</a>
+Version 2003.April.19, for PyEphem version 3.5.2b.
+<p>
+_TABLE_OF_CONTENTS_
+<p>
+The <a href="http://www.rhodesmill.org/brandon/projects/pyephem.html">PyEphem
+library</a> provides <a href="http://www.python.org/">Python</a>
 programmers with access to the scientific-grade astronomical routines
 used by the <a href="http://www.clearskyinstitute.com/xephem/">XEphem</a>
 interactive astronomical ephemeris application; its author
@@ -318,7 +323,7 @@ rather than having to pass the tuple through the
 <tt>date()</tt> function before using it
 (though the latter approach would also work).
 
-<h3>Computations for particular observers</h3>
+<h3>Computations for Particular Observers</h3>
 
 The examples so far have determined
 the position of bodies against the background of stars,
@@ -932,9 +937,10 @@ you can recreate the object at any later time
 by submitting this string to the module's <tt>readdb()</tt> function.
 </dl>
 
-<h3><a name="bodyattrs">5. Body Attributes</a></h3>
+<h3>5. Body Attributes</h3>
 
-These attributes store the results of the most recent <tt>compute()</tt>
+<a name="bodyattrs">These attributes</a>
+store the results of the most recent <tt>compute()</tt>
 that you have performed on a body;
 before the first call, most of these values are zero.
 
@@ -1012,9 +1018,10 @@ for several other times during the day.
  in the earth's shadow
 </dl>
 
-<h3><a name="orbital-elements">6. Orbital Elements</a></h3>
+<h3>6. Orbital Elements</h3>
 
-Bodies with supplied orbital elements can be of any of the following types;
+<a name="orbital-elements">Bodies with supplied orbital elements</a>
+can be of any of the following types;
 you can create such bodies
 either by submitting an ephem database entry to <tt>ephem.readdb()</tt>
 or by creating one of these objects directly
