@@ -126,12 +126,6 @@ static PyObject* Angle_str(PyObject *self)
      return PyString_FromString(Angle_format(self));
 }
 
-static int Angle_print(PyObject *self, FILE *fp, int flags)
-{
-     fputs(Angle_format(self), fp);
-     return 0;
-}
-
 static PyTypeObject AngleType = {
      PyObject_HEAD_INIT(NULL)
      0,
@@ -139,7 +133,7 @@ static PyTypeObject AngleType = {
      sizeof(AngleObject),
      0,
      0,				/* tp_dealloc */
-     Angle_print,		/* tp_print */
+     0,				/* tp_print */
      0,				/* tp_getattr */
      0,				/* tp_setattr */
      0,				/* tp_compare */
@@ -297,13 +291,6 @@ static PyObject* Date_str(PyObject *self)
      return PyString_FromString(Date_format(self));
 }
 
-static int Date_print(PyObject *self, FILE *fp, int flags)
-{
-     char *s = Date_format(self);
-     fputs(s, fp);
-     return 0;
-}
-
 static PyObject *Date_triple(PyObject *self, PyObject *args)
 {
      int year, month;
@@ -346,7 +333,7 @@ static PyTypeObject DateType = {
      sizeof(PyFloatObject),
      0,
      0,				/* tp_dealloc */
-     Date_print,		/* tp_print */
+     0,				/* tp_print */
      0,				/* tp_getattr */
      0,				/* tp_setattr */
      0,				/* tp_compare */
@@ -1999,7 +1986,7 @@ static int separation_arg(PyObject *arg, double *lngi, double *lati)
 	  return 0;
      } else if (PyObject_IsInstance(arg, (PyObject*) &BodyType)) {
 	  Body *b = (Body*) arg;
-	  if (Body_obj_cir(b, "ra", 1)) return -1;
+	  if (Body_obj_cir(b, "ra", 0)) return -1;
 	  *lngi = b->obj.s_ra;
 	  *lati = b->obj.s_dec;
 	  return 0;
