@@ -1,64 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
 <html><head><title>PyEphem</title></head>
 <body>
+<h1 align=center>PyEphem</h1>
+<p align=center>The astronomy library for Python</p>
 <br>
-<img align=right src="pyephem.jpg" alt="PyEphem Logo" height=257 width=251>
-<b>Update (22 April 2003):</b>
-<a href="pyephem-3.5.2b2.tar.gz">PyEphem version 3.5.2b2</a>
-resolves further problems with Windows compilation
-and users now report that the module works under Windows.
-Also the manual under doc/pyephem-manual.html has been updated;
-the last two releases accidentally included the old version instead.
-<p>
-<b>Update (21 April 2003):</b>
-<a href="pyephem-3.5.2b1.tar.gz">PyEphem version 3.5.2b1</a>
-removes several problems with compiling under Windows.
-<p>
-<b>Completely New Version! (20 April 2003):</b>
-The previous version of PyEphem was too painfully awkward
-for me to leave it alone,
-so I have rewritten it entirely.
-The <a href="pyephem-3.5.2b.tar.gz">new version 3.5.2b</a> is now available
-(denoting the second PyEphem version released
-while XEphem remains at version 3.5.2),
-and you can check out its much improved interface
-through the extensive tutorial in the new
-<a href="pyephem-manual.html">manual</a>.
-<p>
-<b>Update (4 March 2003):</b>
-After several years of neglecting this project
-I have finally updated it
-so that it should work with modern versions of Python,
-and so that it uses the now-standard distutils installation method.
-While I am rather appalled by the condition of the programming interface,
-it might not be without further encouragement
-that I attempt more thorough improvements.
-The new version is <a href="pyephem-3.5.2a.tar.gz">3.5.2a</a>.
-<hr>
+<table align=right summary="example PyEphem code"><tr><td align=center>
+<b><i>A Quick Example</i></b>
+</td></tr><tr><td bgcolor=#f0d080>
+<pre>>>> <b>from ephem import *</b>
+>>> <b>mars = Mars()</b>
+>>> <b>mars.compute()</b>
+>>> <b>print mars.ra, mars.dec</b>
+14:28:35.52 -14:08:24.77
+>>> <b>print constellation(mars)</b>
+('Lib', 'Libra')
+>>> <b>boston = Observer()</b>
+>>> <b>boston.lat = '42.37'</b>
+>>> <b>boston.long = '-71.03'</b>
+>>> <b>mars.compute(boston)</b>
+>>> <b>print mars.ra, mars.dec</b>
+14:28:35.74 -14:08:27.21
+>>> <b>print mars.rise_time</b>
+2004/11/25 09:44:27</pre>
+</td></tr></table>
 <b>PyEphem</b> provides scientific-grade astronomical computations
 for the <a href="http://www.python.org/">Python</a> programming language.
-It can compute for arbitrary dates and locations
+It can compute for an arbitrary date and location on Earth
 the positions of the sun, moon, and planets,
-and any asteroids, comets, or earth satellites
-whose orbital elements are available.
-Additional functions can compute the angular separation
+as well as any asteroids, comets, or earth satellites
+whose orbital elements the user can provide.
+Additional functions are provided to compute the angular separation
 between two objects in the sky,
 determine the constellation in which an object lies,
 and find the times at which
 an object rises, transits, and sets on a particular day.
+<p align=center>
+<b>Latest release: 3.6.1a<br>2004 November 25<br>
+<a href="pyephem-3.6.1a.tar.gz">pyephem-3.6.1a.tar.gz</a></b>
+<p>
+With this release,
+PyEphem can compute the position of the <b>major moons</b>
+of Jupiter, Saturn, Mars and Uranus,
+and provides much better access to the <b>orbital parameters</b>
+of user-defined objects like comets and asteroids.
+Many other less-visible changes have been made
+and the module should compile more cleanly on several platforms.
+<p>
+(In case you need it, the previous version is still available
+<a href="pyephem-3.5.2b2.tar.gz">here</a>.)
 <hr>
+<h2>Resources</h2>
 <ul>
-<li>Read the <a href="pyephem-manual.html">PyEphem Manual</a>,
- which is also included in the source distribution.
-<li>Download the source for the module itself:
- <a href="pyephem-3.5.2b2.tar.gz">pyephem-3.5.2b2.tar.gz</a>.
- <b>Note that this module is written</b>
- for <a href="http://www.python.org/2.2.2/">Python 2.2.2</a>;
- with earlier versions of Python it is not likely to compile.
-<li><a href="http://www.rhodesmill.org/brandon">Brandon Craig Rhodes</a>
- wrote the PyEphem interface.
-<li>The underlying library of astronomical procedures is extracted from
- <a href="http://www.clearskyinstitute.com/xephem/">XEphem</a>,
- the excellent X-Windows planetarium application written and maintained by
+<li>The <a href="pyephem-manual.html">PyEphem Manual</a>
+ is the authoritative guide to programming with PyEphem.
+ If you download the source distribution from the link above,
+ the manual is included,
+ along with a few short sample programs in the <tt>examples/</tt> directory.
+<li>PyEphem now includes a
+ <tt><a href="pyephem-CHANGELOG">CHANGELOG</a></tt>
+ which records in more detail the differences between versions.
+<li>You can learn more about and download the wonderful
+ <a href="http://www.clearskyinstitute.com/xephem/">XEphem</a> application
+ from which PyEphem derives its computation engine;
+ it has long been written and maintained by
  <a href="http://www.clearskyinstitute.com/resumes/ecdowney/resume.html">Elwood
  Charles Downey</a>.
 </ul>
@@ -94,7 +98,7 @@ by PyEphem's <tt>readtle()</tt> function.
 This directory has not been updated for several years,
 but has quite extensive collections of objects in ephem format.
 Though many of its comet and asteroid elements are doubtless out of date,
-its files of fixed objects from galaxies to pulsars
+its files of fixed objects like galaxies to pulsars
 should remain valuable.
 <dt>
 <a href="http://toyvax.glendale.ca.us/"
@@ -104,9 +108,8 @@ This page has elements in ephem format
 for several of our longer-lived space probes.
 </dl>
 <!-- astorb.dat.gz -->
-</ul>
 <hr>
-This page last updated by
-<a href="mailto:brandon@rhodesmill.org">brandon@rhodesmill.org</a>
-on 4 March 2003.
+This page updated by
+<a href="http://rhodesmill.org/brandon">Brandon Craig Rhodes</a>
+on 25 November 2004.
 </body></html>

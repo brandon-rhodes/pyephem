@@ -1,3 +1,4 @@
+include CHANGELOG
 include COPYING
 include doc/pyephem-manual.html
 include examples/*.py
