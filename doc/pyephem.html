@@ -1,8 +1,18 @@
 <html><head><title>PyEphem</title></head>
-<body text=#ffffff bgcolor=#000000 link=#ffffd0 vlink=#ffffff>
+<body>
 <br>
-<img src="pyephem.jpg" alt="PyEphem Logo" height=257 width=251>
-<blockquote>
+<img align=right src="pyephem.jpg" alt="PyEphem Logo" height=257 width=251>
+<b>Completely New Version! (20 April 2003):</b>
+The previous version of PyEphem was too painfully awkward
+for me to leave it alone,
+so I have rewritten it entirely.
+The new version 3.5.2b is now available
+(denoting the second PyEphem version released
+while XEphem remains at version 3.5.2),
+and you can check out its much improved interface
+through the extensive tutorial in the new
+<a href="pyephem-manual.html">manual</a>.
+<p>
 <b>Update (4 March 2003):</b>
 After several years of neglecting this project
 I have finally updated it
@@ -11,33 +21,75 @@ and so that it uses the now-standard distutils installation method.
 While I am rather appalled by the condition of the programming interface,
 it might not be without further encouragement
 that I attempt more thorough improvements.
-</blockquote>
-PyEphem is a module
-for performing astronomical computations from the Python scripting language.
-Its primary purpose is to compute
-for an arbitrary date and location on earth
-the position of the sun, moon, a planet,
-or any asteroid or comet whose orbital elements are available.
-Additional functions are also included,
-including facilities
-to compute the angular separation between two objects in the sky,
-to determine the constellation in which an object lies,
-and to find the times at which
-any object rises, transits, and sets on a particular day.
+<hr>
+PyEphem provides scientific-grade astronomical computations
+for the <a href="http://www.python.org/">Python</a> programming language.
+It can compute for arbitrary dates and locations
+the positions of the sun, moon, and planets,
+and any asteroids, comets, or earth satellites
+whose orbital elements are available.
+Additional functions can compute the angular separation
+between two objects in the sky,
+determine the constellation in which an object lies,
+and find the times at which
+an object rises, transits, and sets on a particular day.
 <hr>
 <ul>
-<li>An online copy of the <a href="pyephem-manual.html">documentation</a>.
-<li>The source for the module itself: download
- <a href="pyephem-3.5.2a.tar.gz">pyephem-3.5.2a.tar.gz</a>.
+<li>Read the <a href="pyephem-manual.html">PyEphem Manual</a>,
+ which is also included in the source distribution.
+<li>Download the source for the module itself:
+ <a href="pyephem-3.5.2b.tar.gz">pyephem-3.5.2b.tar.gz</a>.
 <li><a href="http://www.rhodesmill.org/brandon">Brandon Craig Rhodes</a>
  wrote the PyEphem interface.
 <li>The underlying library of astronomical procedures is extracted from
- <a href="http://www.clearskyinstitute.com/xephem/xephem.html">XEphem</a>,
+ <a href="http://www.clearskyinstitute.com/xephem/">XEphem</a>,
  the excellent X-Windows planetarium application written and maintained by
- <a href="http://www.netins.net/showcase/ecdowney/resume.html">Elwood
+ <a href="http://www.clearskyinstitute.com/resumes/ecdowney/resume.html">Elwood
  Charles Downey</a>.
-</UL>
-<br>
+</ul>
+<hr>
+<h2>Catalogues</h2>
+After learning to program with PyEphem
+you will probably want to download the orbital elements
+of comets or asteroids that interest you,
+or perhaps coordinates for stars and other fixed objects.
+Here are several sources from which such data may be obtained:
+
+<dl>
+<dt>
+<a href="http://cfa-www.harvard.edu/iau/Ephemerides/Soft03.html"
+>http://cfa-www.harvard.edu/iau/Ephemerides/Soft03.html</a>
+<dd>
+The International Astronomical Union's
+<i>Central Bureau for Astronomical Telegrams and Minor Planet Center</i>
+is where comet and asteroid discoveries are traditionally reported,
+and is a source of ephemerides and orbital elements for these objects.
+They provide updated orbital elements, in ephem format,
+for many currently visible comets and asteroids.
+<dt>
+<a href="http://celestrak.com/NORAD/elements/"
+>http://celestrak.com/NORAD/elements/</a>
+<dd>
+Orbital elements for man-made earth satellites are available from NORAD,
+whose Two-Line Element format can be understood
+by PyEphem's <tt>readtle()</tt> function.
+<dt><a href="http://www.maa.mhn.de/Tools/Xephem/"
+>http://www.maa.mhn.de/Tools/Xephem/</a>
+<dd>
+This directory has not been updated for several years,
+but has quite extensive collections of objects in ephem format.
+Though many of its comet and asteroid elements are doubtless out of date,
+its files of fixed objects from galaxies to to pulsars
+should remain valuable.
+<dt>
+<a href="http://toyvax.glendale.ca.us/"
+>http://toyvax.glendale.ca.us/</a>
+<dd>
+This page has elements in ephem format
+for several of our longer-lived space probes.
+</dl>
+<!-- astorb.dat.gz -->
+</ul>
 <hr>
 This page last updated by
 <a href="mailto:brandon@rhodesmill.org">brandon@rhodesmill.org</a>

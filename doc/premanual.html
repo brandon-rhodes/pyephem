@@ -786,7 +786,13 @@ This function accepts an entry from an XEphem database file
 and returns an object representing it.
 Problems parsing the line result in a <tt>ValueError</tt> being raised.
 Its type will be one of the following five,
-but with all of its orbital elements already set.
+with all relevant orbital elements already set.
+<dt>
+<code>readtle(<i>name</i>, <i>line1</i>, <i>line2</i>)</code>
+<dd>
+This function parses an earth satellite description
+that is in the Two-Line Element format used by NORAD.
+The resulting object will be an <tt>EarthSatellite</tt>.
 <dt>
 <code>FixedBody()
  EllipticalBody() ParabolicBody() HyperbolicBody()
