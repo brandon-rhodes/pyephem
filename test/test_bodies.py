@@ -104,7 +104,7 @@ class body_suite(MyTestCase):
     # whether its attributes become available when we think they
     # should.
 
-    def run(self, body):
+    def run_body(self, body):
         self.compare_attributes(body, False, False)
         body.compute()
         self.compare_attributes(body, True, False)
@@ -121,7 +121,7 @@ class body_suite(MyTestCase):
                              Mimas, Enceladus, Tethys, Dione, Rhea,
                              Titan, Hyperion, Iapetus, Ariel, Umbriel,
                              Titania, Oberon, Miranda):
-            self.run(named_object())
+            self.run_body(named_object())
 
     # For each flavor of user-definable body, 
 
@@ -150,7 +150,7 @@ class body_suite(MyTestCase):
         # Now, compare the bodies to see if they are equivalent.
         # First test whether they present the right attributes.
 
-        self.run(bl), self.run(ba)
+        self.run_body(bl), self.run_body(ba)
 
         # Check whether they appear in the same positions.
 
