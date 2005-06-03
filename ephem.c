@@ -670,6 +670,11 @@ static int set_elev(PyObject *self, PyObject *value, void *v)
 
 /*
  * Observer class type.
+ *
+ * Note that we commandeer the n_dip field for our own purposes.
+ * XEphem uses it to compute the beginning and end of twilight; since
+ * we have no twilight functions, we use it to store the displacement
+ * for rising and setting calculations.
  */
 
 #define VOFF(member) ((void*) OFF(member))
@@ -680,8 +685,10 @@ static PyGetSetDef ephem_observer_getset[] = {
      {"lat", getd_rd, setd_rd, "Latitude (degrees north)", VOFF(n_lat)},
      {"long", getd_rd, setd_rd, "Longitude (degrees east)", VOFF(n_lng)},
      {"elev", get_elev, set_elev, "Elevation above sea level (meters)", NULL},
-     /*{"dip", getd_rd, setd_rd,
-       "dip of sun below horizon at twilight (degrees)", VOFF(n_dip)},*/
+     {"horizon", getd_rd, setd_rd,
+      "The angle above (+) or below (-) the horizon at which an object"
+      " should be considered at the moment of rising or setting (degrees)",
+      VOFF(n_dip)},
      {"epoch", getd_mjd, setd_mjd, "Precession epoch", VOFF(n_epoch)},
      {NULL}
 };
@@ -1092,7 +1099,7 @@ static int Body_riset_cir(Body *body, char *fieldname)
 	       return -1;
 	  }
 	  riset_cir(& body->now, & body->obj,
-		    body->now.n_dip, & body->riset);
+		    - body->now.n_dip, & body->riset);
 	  body->obj.o_flags |= VALID_RISET;
      }
      if (body->riset.rs_flags & RS_ERROR) {
