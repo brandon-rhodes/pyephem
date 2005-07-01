@@ -20,13 +20,11 @@
 #undef tznm
 #undef mjed
 
-/* These structures describe the actual in-memory storage of all of
-   the new Python types we define.  Since different computations are
-   required depending on what fields the user wants to access, the
-   compute() function of bodies actually just writes the time into
-   `now' and we use the VALID bits - stored in the user flags field of
-   each `obj' - to coordinate lazy computation of the fields the user
-   actually tries to access. */
+/* Since different Body attributes are calculated with different
+   routines, the compute() function itself just writes the time into
+   the Body's `now' cache, and the VALID bits - stored in the user
+   flags field of each `obj' - are used to coordinate lazy computation
+   of the fields the user actually tries to access. */
 
 #define VALID_GEO   FUSER0	/* Now has mjd and epoch */
 #define VALID_TOPO  FUSER1	/* Now has entire Observer */
@@ -623,8 +621,6 @@ static int set_f_pa(PyObject *self, PyObject *value, void *v)
  * Observer object.
  */
 
-/*static PyTypeObject ObserverType;*/
-
 /*
  * Constructor and methods.
  */
@@ -642,6 +638,20 @@ static int Observer_init(PyObject *self, PyObject *args, PyObject *kwds)
      o->now.n_pressure = 1010;
      o->now.n_epoch = J2000;
      return 0;
+}
+
+static PyObject *Observer_julian_date(PyObject *self)
+{
+     Observer *o = (Observer*) self;
+     return PyFloat_FromDouble(o->now.n_mjd + 2415020.0);
+}
+
+static PyObject *Observer_sidereal_time(PyObject *self)
+{
+     Observer *o = (Observer*) self;
+     double lst;
+     now_lst(&o->now, &lst);
+     return new_Angle(lst / 24.0, 24.0);
 }
 
 /*
@@ -680,7 +690,15 @@ static int set_elev(PyObject *self, PyObject *value, void *v)
 #define VOFF(member) ((void*) OFF(member))
 #define OFF(member) offsetof(Observer, now.member)
 
-static PyGetSetDef ephem_observer_getset[] = {
+static PyMethodDef Observer_methods[] = {
+     {"julian_date", (PyCFunction) Observer_julian_date, METH_NOARGS,
+      "compute the Julian day corresponding to this current date and time"},
+     {"sidereal_time", (PyCFunction) Observer_sidereal_time, METH_NOARGS,
+      "compute the local sidereal time for this location and time"},
+     {NULL}
+};
+
+static PyGetSetDef Observer_getset[] = {
      {"date", getd_mjd, setd_mjd, "Date", VOFF(n_mjd)},
      {"lat", getd_rd, setd_rd, "Latitude (degrees north)", VOFF(n_lat)},
      {"long", getd_rd, setd_rd, "Longitude (degrees east)", VOFF(n_lng)},
@@ -693,7 +711,7 @@ static PyGetSetDef ephem_observer_getset[] = {
      {NULL}
 };
 
-static PyMemberDef ephem_observer_members[] = {
+static PyMemberDef Observer_members[] = {
      {"temp", T_DOUBLE, OFF(n_temp), 0, "atmospheric temperature (C)"},
      {"pressure", T_DOUBLE, OFF(n_pressure), 0,
       "atmospheric pressure (mBar)"},
@@ -731,9 +749,9 @@ static PyTypeObject ObserverType = {
      0,				/* tp_weaklistoffset */
      0,				/* tp_iter */
      0,				/* tp_iternext */
-     0,				/* tp_methods */
-     ephem_observer_members,	/* tp_members */
-     ephem_observer_getset,	/* tp_getset */
+     Observer_methods,		/* tp_methods */
+     Observer_members,		/* tp_members */
+     Observer_getset,		/* tp_getset */
      0,				/* tp_base */
      0,				/* tp_dict */
      0,				/* tp_descr_get */
