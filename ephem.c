@@ -2434,6 +2434,12 @@ initephem(void)
 
      o = PyFloat_FromDouble(1./24./60./60.);
      if (!o || PyModule_AddObject(m, "second", o)) return;
-     
+
+     /* Set a default preference. */
+
      pref_set(PREF_DATE_FORMAT, PREF_YMD);
+
+     /* Tell libastro that we do not have data files anywhere. */
+
+     setMoonDir(NULL);
 }
