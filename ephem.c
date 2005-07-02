@@ -2380,10 +2380,6 @@ static PyMethodDef ephem_methods[] = {
      {NULL}
 };
 
-#define ADD(name, type) \
- if (PyModule_AddObject(m, name, (PyObject*) &type)) \
-  return;
-
 #ifdef PyMODINIT_FUNC
 PyMODINIT_FUNC
 #else
@@ -2391,7 +2387,7 @@ DL_EXPORT(void)
 #endif
 initephem(void)
 {
-     PyObject *m, *o;
+     PyObject *module;
 
      /* Initialize pointers to external objects. */
 
@@ -2422,36 +2418,57 @@ initephem(void)
      PyType_Ready(&ParabolicBodyType);
      PyType_Ready(&EarthSatelliteType);
 
-     m = Py_InitModule3("ephem", ephem_methods,
-			"Module providing astronomical routines from Ephem");
-     if (!m) return;
+     module = Py_InitModule3("ephem", ephem_methods,
+			"Astronomical calculations for Python");
+     if (!module) return;
 
-     ADD("angle", AngleType);
-     ADD("date", DateType);
+     {
+	  struct {
+	       char *name;
+	       PyObject *obj;
+	  } objects[] = {
+	       { "angle", (PyObject*) & AngleType },
+	       { "date", (PyObject*) & DateType },
 
-     ADD("Observer", ObserverType);
+	       { "Observer", (PyObject*) & ObserverType },
 
-     ADD("Body", BodyType);
-     ADD("Planet", PlanetType);
-     ADD("PlanetMoon", PlanetMoonType);
-     ADD("Saturn", SaturnType);
-     ADD("Moon", MoonType);
-     
-     ADD("FixedBody", FixedBodyType);
-     /*ADD("BinaryStar", BinaryStarType);*/
-     ADD("EllipticalBody", EllipticalBodyType);
-     ADD("ParabolicBody", ParabolicBodyType);
-     ADD("HyperbolicBody", HyperbolicBodyType);
-     ADD("EarthSatellite", EarthSatelliteType);
+	       { "Body", (PyObject*) & BodyType },
+	       { "Planet", (PyObject*) & PlanetType },
+	       { "PlanetMoon", (PyObject*) & PlanetMoonType },
+	       { "Saturn", (PyObject*) & SaturnType },
+	       { "Moon", (PyObject*) & MoonType },
 
-     o = PyFloat_FromDouble(1./24.);
-     if (!o || PyModule_AddObject(m, "hour", o)) return;
+	       { "FixedBody", (PyObject*) & FixedBodyType },
+	       /* { "BinaryStar", (PyObject*) & BinaryStarType }, */
+	       { "EllipticalBody", (PyObject*) & EllipticalBodyType },
+	       { "ParabolicBody", (PyObject*) & ParabolicBodyType },
+	       { "HyperbolicBody", (PyObject*) & HyperbolicBodyType },
+	       { "EarthSatellite", (PyObject*) & EarthSatelliteType },
 
-     o = PyFloat_FromDouble(1./24./60.);
-     if (!o || PyModule_AddObject(m, "minute", o)) return;
+	       { "hour", PyFloat_FromDouble(1./24.) },
+	       { "minute", PyFloat_FromDouble(1./24./60.) },
+	       { "second", PyFloat_FromDouble(1./24./60./60.) },
+	       { "meters_per_au", PyFloat_FromDouble(MAU) },
+	       { "earth_radius", PyFloat_FromDouble(ERAD) },
+	       { "moon_radius", PyFloat_FromDouble(MRAD) },
+	       { "sun_radius", PyFloat_FromDouble(SRAD) },
 
-     o = PyFloat_FromDouble(1./24./60./60.);
-     if (!o || PyModule_AddObject(m, "second", o)) return;
+	       { NULL }
+	  };
+	  int i;
+	  for (i=0; objects[i].name; i++)
+	       if (PyModule_AddObject(module, objects[i].name, objects[i].obj)
+		   == -1)
+		    return;
+     }
+
+     /* add:
+	all three star atlases
+	deltat?
+	eq_ecl functions
+	eq_gal functions
+	moonnf functions
+     */
 
      /* Set a default preference. */
 
