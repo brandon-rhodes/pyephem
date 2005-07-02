@@ -2237,6 +2237,31 @@ static PyObject *hours(PyObject *self, PyObject *args)
      return new_Angle(value, radhr(1));
 }
 
+/* Finally, we wrap some helpful libastro functions. */
+
+/* Return which page of a star atlas on which a location lies. */
+
+static PyObject* uranometria(PyObject *self, PyObject *args)
+{
+     double ra, dec;
+     if (!PyArg_ParseTuple(args, "dd", &ra, &dec)) return 0;
+     return PyString_FromString(um_atlas(ra, dec));
+}
+
+static PyObject* uranometria2000(PyObject *self, PyObject *args)
+{
+     double ra, dec;
+     if (!PyArg_ParseTuple(args, "dd", &ra, &dec)) return 0;
+     return PyString_FromString(u2k_atlas(ra, dec));
+}
+
+static PyObject* millennium_atlas(PyObject *self, PyObject *args)
+{
+     double ra, dec;
+     if (!PyArg_ParseTuple(args, "dd", &ra, &dec)) return 0;
+     return PyString_FromString(msa_atlas(ra, dec));
+}
+
 /* Return in which constellation a particular coordinate lies. */
 
 int cns_pick(double r, double d, double e);
@@ -2374,6 +2399,16 @@ static PyMethodDef ephem_methods[] = {
      {"separation", separation, METH_VARARGS,
       "Return the angular separation between two objects or positions "
       "(degrees)"},
+
+     {"uranometria", uranometria, METH_VARARGS,
+      "given right ascension and declination (in radians), return the page"
+      " of the original Uranometria displaying that location"},
+     {"uranometria2000", uranometria2000, METH_VARARGS,
+      "given right ascension and declination (in radians), return the page"
+      " of the Uranometria 2000.0 displaying that location"},
+     {"millennium_atlas", millennium_atlas, METH_VARARGS,
+      "given right ascension and declination (in radians), return the page"
+      " of the Millenium Star Atlas displaying that location"},
      {"constellation", (PyCFunction) constellation,
       METH_VARARGS | METH_KEYWORDS,
       "Return the constellation in which the object or coordinates lie"},
@@ -2463,7 +2498,6 @@ initephem(void)
      }
 
      /* add:
-	all three star atlases
 	deltat?
 	eq_ecl functions
 	eq_gal functions
