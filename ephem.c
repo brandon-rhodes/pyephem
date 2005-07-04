@@ -225,7 +225,7 @@ static int parse_mjd_from_tuple(PyObject *value, double *mjdp)
 {
      double day = 1.0, hours = 0.0, minutes = 0.0, seconds = 0.0;
      int year, month = 1;
-     if (!PyArg_ParseTuple(value, "i|idddd:date tuple", &year, &month, &day,
+     if (!PyArg_ParseTuple(value, "i|idddd:date.tuple", &year, &month, &day,
 			   &hours, &minutes, &seconds)) return -1;
      cal_mjd(month, day, year, mjdp);
      if (hours) *mjdp += hours / 24.;
@@ -276,7 +276,7 @@ static PyObject *Date_new(PyObject *self, PyObject *args, PyObject *kw)
 			  "this function does not accept keyword arguments");
 	  return 0;
      }
-     if (!PyArg_ParseTuple(args, "O", &arg)) return 0;
+     if (!PyArg_ParseTuple(args, "O:date", &arg)) return 0;
      if (parse_mjd(arg, &mjd)) return 0;
      return build_Date(mjd);
 }
@@ -310,7 +310,7 @@ static PyObject *Date_triple(PyObject *self, PyObject *args)
      int year, month;
      double day;
      DateObject *d = (DateObject*) self;
-     if (!PyArg_ParseTuple(args, "")) return 0;
+     if (!PyArg_ParseTuple(args, ":date.triple")) return 0;
      mjd_cal(d->ob_fval, &month, &day, &year);
      return Py_BuildValue("iid", year, month, day);
 }
@@ -321,7 +321,7 @@ static PyObject *Date_tuple(PyObject *self, PyObject *args)
      double fday, fhour, fminute, fsecond;
      int day, hour, minute;
      DateObject *d = (DateObject*) self;
-     if (!PyArg_ParseTuple(args, "")) return 0;
+     if (!PyArg_ParseTuple(args, ":date.tuple")) return 0;
      mjd_cal(d->ob_fval, &month, &fday, &year);
      day = (int) fday;
      fhour = fmod(fday, 1.0) * 24;
@@ -941,7 +941,7 @@ static PyObject* Body_compute(PyObject *self, PyObject *args, PyObject *kwds)
      static char *kwlist[] = {"when", "epoch", 0};
      PyObject *when_arg = 0, *epoch_arg = 0;
 
-     if (!PyArg_ParseTupleAndKeywords(args, kwds, "|OO", kwlist,
+     if (!PyArg_ParseTupleAndKeywords(args, kwds, "|OO:Body.compute", kwlist,
 				      &when_arg, &epoch_arg))
 	  return 0;
 
@@ -2072,7 +2072,7 @@ static PyTypeObject EarthSatelliteType = {
 
 static PyObject* build_now(PyObject *self, PyObject *args)
 {
-     if (!PyArg_ParseTuple(args, ":ephem.now")) return 0;
+     if (!PyArg_ParseTuple(args, ":now")) return 0;
      return build_Date(mjd_now());
 }
 
@@ -2121,7 +2121,7 @@ static PyObject* separation(PyObject *self, PyObject *args)
      double plat, plng, qlat, qlng;
      double spy, cpy, px, qx, sqy, cqy;
      PyObject *p, *q;
-     if (!PyArg_ParseTuple(args, "OO", &p, &q)) return 0;
+     if (!PyArg_ParseTuple(args, "OO:separation", &p, &q)) return 0;
      if (separation_arg(p, &plng, &plat)) return 0;
      if (separation_arg(q, &qlng, &qlat)) return 0;
 
@@ -2223,7 +2223,7 @@ static PyObject *degrees(PyObject *self, PyObject *args)
 {
      PyObject *o;
      double value;
-     if (!PyArg_ParseTuple(args, "O", &o)) return 0;
+     if (!PyArg_ParseTuple(args, "O:degrees", &o)) return 0;
      if (parse_angle(o, raddeg(1), &value) == -1) return 0;
      return new_Angle(value, raddeg(1));
 }
@@ -2232,7 +2232,7 @@ static PyObject *hours(PyObject *self, PyObject *args)
 {
      PyObject *o;
      double value;
-     if (!PyArg_ParseTuple(args, "O", &o)) return 0;
+     if (!PyArg_ParseTuple(args, "O:hours", &o)) return 0;
      if (parse_angle(o, radhr(1), &value) == -1) return 0;
      return new_Angle(value, radhr(1));
 }
@@ -2244,21 +2244,21 @@ static PyObject *hours(PyObject *self, PyObject *args)
 static PyObject* uranometria(PyObject *self, PyObject *args)
 {
      double ra, dec;
-     if (!PyArg_ParseTuple(args, "dd", &ra, &dec)) return 0;
+     if (!PyArg_ParseTuple(args, "dd:uranometria", &ra, &dec)) return 0;
      return PyString_FromString(um_atlas(ra, dec));
 }
 
 static PyObject* uranometria2000(PyObject *self, PyObject *args)
 {
      double ra, dec;
-     if (!PyArg_ParseTuple(args, "dd", &ra, &dec)) return 0;
+     if (!PyArg_ParseTuple(args, "dd:uranometria2000", &ra, &dec)) return 0;
      return PyString_FromString(u2k_atlas(ra, dec));
 }
 
 static PyObject* millennium_atlas(PyObject *self, PyObject *args)
 {
      double ra, dec;
-     if (!PyArg_ParseTuple(args, "dd", &ra, &dec)) return 0;
+     if (!PyArg_ParseTuple(args, "dd:millennium_atlas", &ra, &dec)) return 0;
      return PyString_FromString(msa_atlas(ra, dec));
 }
 
@@ -2276,7 +2276,7 @@ static PyObject* constellation
      PyObject *result;
      double ra, dec, epoch = J2000;
      
-     if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|O", kwlist,
+     if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|O:constellation", kwlist,
 				      &position_arg, &epoch_arg))
 	  return 0;
      
