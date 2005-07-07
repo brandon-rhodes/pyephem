@@ -2,11 +2,17 @@
 
 Version 3.6.1?
 
-  - Added two functions to the Observer class, which take no arguments
-    but compute values from the circumstances stored in the Observer:
+  - Added several functions to the module:
 
-     julian_date() - computes the Julian Date
-     sidereal_time() - computes the sidereal time
+     julian_date() - computes the Julian Date for a date or Observer
+     uranometria(),
+     uranometria2000(),
+     millennium_atlas() - determine the star atlas page on which a
+        given location falls, given as right ascension and declination
+
+  - Added a function to the Observer class, which takes no arguments:
+
+     sidereal_time() - computes the sidereal time for the Observer
 
   - Each Observer now has a "horizon" attribute with, which you can
     specify the degrees altitude at which you define an object to be
