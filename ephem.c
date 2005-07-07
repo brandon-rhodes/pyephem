@@ -2371,6 +2371,29 @@ static PyObject *delta_t(PyObject *self, PyObject *args)
      return PyFloat_FromDouble(deltat(mjd));
 }
 
+static PyObject *moon_phases(PyObject *self, PyObject *args)
+{
+     PyObject *o = 0, *d;
+     double mjd, mjn, mjf;
+     if (!PyArg_ParseTuple(args, "|O:moon_phases", &o)) return 0;
+     if (!o)
+	  mjd = mjd_now();
+     else if (PyObject_IsInstance(o, (PyObject*) &ObserverType))
+	  mjd = ((Observer*) o)->now.n_mjd;
+     else if (parse_mjd(o, &mjd) == -1)
+	  return 0;
+     moonnf(mjd, &mjn, &mjf);
+     o = PyDict_New();
+     if (!o) return 0;
+     d = build_Date(mjn);
+     if (!d) return 0;
+     if (PyDict_SetItemString(o, "new", d) == -1) return 0;
+     d = build_Date(mjf);
+     if (!d) return 0;
+     if (PyDict_SetItemString(o, "full", d) == -1) return 0;
+     return o;
+}
+
 /*
  * The global methods table and the module initialization function.
  */
@@ -2434,9 +2457,12 @@ static PyMethodDef ephem_methods[] = {
       METH_VARARGS | METH_KEYWORDS,
       "Return the constellation in which the object or coordinates lie"},
      {"julian_date", (PyCFunction) julian_date, METH_VARARGS,
-      "compute the Julian date for a given date and time"},
+      "compute the Julian date"},
      {"delta_t", (PyCFunction) delta_t, METH_VARARGS,
-      "compute the Julian date for a given date and time"},
+      "compute the difference between Terrestrial Time and Coordinated"
+      " Universal Time"},
+     {"moon_phases", (PyCFunction) moon_phases, METH_VARARGS,
+      "compute the new and full moons nearest a given date"},
      {NULL}
 };
 
@@ -2525,7 +2551,6 @@ initephem(void)
      /* add:
 	eq_ecl functions
 	eq_gal functions
-	moonnf functions
      */
 
      /* Set a default preference. */
