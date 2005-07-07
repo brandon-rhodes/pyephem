@@ -640,12 +640,6 @@ static int Observer_init(PyObject *self, PyObject *args, PyObject *kwds)
      return 0;
 }
 
-static PyObject *Observer_julian_date(PyObject *self)
-{
-     Observer *o = (Observer*) self;
-     return PyFloat_FromDouble(o->now.n_mjd + 2415020.0);
-}
-
 static PyObject *Observer_sidereal_time(PyObject *self)
 {
      Observer *o = (Observer*) self;
@@ -691,8 +685,6 @@ static int set_elev(PyObject *self, PyObject *value, void *v)
 #define OFF(member) offsetof(Observer, now.member)
 
 static PyMethodDef Observer_methods[] = {
-     {"julian_date", (PyCFunction) Observer_julian_date, METH_NOARGS,
-      "compute the Julian day corresponding to this current date and time"},
      {"sidereal_time", (PyCFunction) Observer_sidereal_time, METH_NOARGS,
       "compute the local sidereal time for this location and time"},
      {NULL}
@@ -2351,6 +2343,17 @@ leave:
      return result;
 }
 
+static PyObject *julian_date(PyObject *self, PyObject *args)
+{
+     PyObject *o;
+     double mjd;
+     if (!PyArg_ParseTuple(args, "O:julian_date", &o)) return 0;
+     if (PyObject_IsInstance(o, (PyObject*) &ObserverType))
+	  mjd = ((Observer*) o)->now.n_mjd;
+     else if (parse_mjd(o, &mjd) == -1) return 0;
+     return PyFloat_FromDouble(mjd + 2415020.0);
+}
+
 /*
  * The global methods table and the module initialization function.
  */
@@ -2409,9 +2412,12 @@ static PyMethodDef ephem_methods[] = {
      {"millennium_atlas", millennium_atlas, METH_VARARGS,
       "given right ascension and declination (in radians), return the page"
       " of the Millenium Star Atlas displaying that location"},
+
      {"constellation", (PyCFunction) constellation,
       METH_VARARGS | METH_KEYWORDS,
       "Return the constellation in which the object or coordinates lie"},
+     {"julian_date", (PyCFunction) julian_date, METH_VARARGS,
+      "compute the Julian date for a given date and time"},
      {NULL}
 };
 
@@ -2498,7 +2504,6 @@ initephem(void)
      }
 
      /* add:
-	deltat?
 	eq_ecl functions
 	eq_gal functions
 	moonnf functions
