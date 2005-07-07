@@ -2345,13 +2345,30 @@ leave:
 
 static PyObject *julian_date(PyObject *self, PyObject *args)
 {
-     PyObject *o;
+     PyObject *o = 0;
      double mjd;
-     if (!PyArg_ParseTuple(args, "O:julian_date", &o)) return 0;
-     if (PyObject_IsInstance(o, (PyObject*) &ObserverType))
+     if (!PyArg_ParseTuple(args, "|O:julian_date", &o)) return 0;
+     if (!o)
+	  mjd = mjd_now();
+     else if (PyObject_IsInstance(o, (PyObject*) &ObserverType))
 	  mjd = ((Observer*) o)->now.n_mjd;
-     else if (parse_mjd(o, &mjd) == -1) return 0;
+     else if (parse_mjd(o, &mjd) == -1)
+	  return 0;
      return PyFloat_FromDouble(mjd + 2415020.0);
+}
+
+static PyObject *delta_t(PyObject *self, PyObject *args)
+{
+     PyObject *o = 0;
+     double mjd;
+     if (!PyArg_ParseTuple(args, "|O:delta_t", &o)) return 0;
+     if (!o)
+	  mjd = mjd_now();
+     else if (PyObject_IsInstance(o, (PyObject*) &ObserverType))
+	  mjd = ((Observer*) o)->now.n_mjd;
+     else if (parse_mjd(o, &mjd) == -1)
+	  return 0;
+     return PyFloat_FromDouble(deltat(mjd));
 }
 
 /*
@@ -2417,6 +2434,8 @@ static PyMethodDef ephem_methods[] = {
       METH_VARARGS | METH_KEYWORDS,
       "Return the constellation in which the object or coordinates lie"},
      {"julian_date", (PyCFunction) julian_date, METH_VARARGS,
+      "compute the Julian date for a given date and time"},
+     {"delta_t", (PyCFunction) delta_t, METH_VARARGS,
       "compute the Julian date for a given date and time"},
      {NULL}
 };
