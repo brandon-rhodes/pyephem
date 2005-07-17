@@ -54,7 +54,7 @@ char *err)			/* err message if return < 0 */
 	s = geomg1(wmmdat,alt,dlat,dlon,y,&dec,&dp,&ti,&gv);
 	fclose(wmmdat);
 	if (s < 0) {
-	    sprintf (err, "Magnetic model only available for %g .. %g. See http://www.ngdc.noaa.gov", ti, ti+5);
+	    sprintf (err, "%s: Magnetic model only available for %g .. %g. See http://www.ngdc.noaa.gov", mfile, ti, ti+5);
 	    return (-2);
 	}
 	*mdp = degrad(dec);
@@ -378,4 +378,4 @@ float *dec, float *mdp, float *ti, float *gv)
 }
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: magdecl.c,v $ $Date: 2003/03/20 08:51:37 $ $Revision: 1.5 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: magdecl.c,v $ $Date: 2004/10/12 15:21:48 $ $Revision: 1.6 $ $Name:  $"};

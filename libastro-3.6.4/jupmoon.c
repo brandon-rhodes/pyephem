@@ -12,8 +12,10 @@ static int use_bdl (double jd, char *dir, MoonData md[J_NMOONS]);
 static void meeus_jupiter (double d, double *cmlI, double *cmlII,
     MoonData md[J_NMOONS]);
 static void moonradec (double jupsize, MoonData md[J_NMOONS]);
-static void moonSVis (Obj *eop, Obj *jop, MoonData md[J_NMOONS]);
+static void moonSVis (Obj *sop, Obj *jop, MoonData md[J_NMOONS]);
 static void moonEVis (MoonData md[J_NMOONS]);
+static void moonPShad (Obj *sop, Obj *jop, MoonData md[J_NMOONS]);
+static void moonTrans (MoonData md[J_NMOONS]);
 
 /* moon table and a few other goodies and when it was last computed */
 static double mdmjd = -123456;
@@ -31,25 +33,37 @@ static double cmlIImjd;	/*    "                      II      " */
 /* file containing BDL coefficients */
 static char jbdlfn[] = "jupiter.9910";
 
+/* These values are from the Explanatory Supplement.
+ * Precession degrades them gradually over time.
+ */
+#define POLE_RA   degrad(268.05)	 /* RA of Jupiter's north pole */
+#define POLE_DEC  degrad(64.50)		/* Dec of Jupiter's north pole */
+
+
 /* get jupiter info in md[0], moon info in md[1..J_NMOONS-1].
  * if !dir always use meeus model.
  * if !jop caller just wants md[] for names
- * N.B. we assume eop and jop are updated.
+ * N.B. we assume sop and jop are updated.
  */
 void
 jupiter_data (
 double Mjd,		/* mjd */
 char dir[],             /* dir in which to look for helper files */
-Obj *eop,               /* earth == Sun */
+Obj *sop,               /* Sun */
 Obj *jop,		/* jupiter */
 double *sizep,		/* jup angular diam, rads */
-double *cmlI, double *cmlII,	/* central meridian longitude, rads */
+double *cmlI, double *cmlII,		/* central meridian longitude, rads */
+double *polera, double *poledec,	/* pole location */
 MoonData md[J_NMOONS])	/* return info */
 {
         double JD;
 
 	/* always copy back at least for name */
 	memcpy (md, jmd, sizeof(jmd));
+
+	/* pole */
+	if (polera) *polera = POLE_RA;
+	if (poledec) *poledec = POLE_DEC;
 
 	/* nothing else if repeat call or just want names */
 	if (Mjd == mdmjd || !jop) {
@@ -90,8 +104,10 @@ MoonData md[J_NMOONS])	/* return info */
 	    meeus_jupiter (Mjd, cmlI, cmlII, md);
 
 	/* set visibilities */
-	moonSVis (eop, jop, md);
+	moonSVis (sop, jop, md);
+	moonPShad (sop, jop, md);
 	moonEVis (md);
+	moonTrans (md);
 
 	/* fill in moon ra and dec */
 	moonradec (*sizep, md);
@@ -167,8 +183,6 @@ MoonData md[J_NMOONS])	/* fill in md[1..NM-1].x/y/z for each moon.
 			 * N.B. md[0].ra/dec must already be set
 			 */
 {
-#define POLE_RA         degrad(268.05)  /* RA of Jupiter's north pole */
-#define POLE_DEC        degrad(64.50)   /* Dec of Jupiter's north pole */
 #define	dsin(x)	sin(degrad(x))
 #define	dcos(x)	cos(degrad(x))
 	double A, B, Del, J, K, M, N, R, V;
@@ -295,11 +309,11 @@ MoonData md[J_NMOONS])	/* fill in RA and Dec */
 /* set svis according to whether moon is in sun light */
 static void
 moonSVis(
-Obj *eop,		/* earth == SUN */
+Obj *sop,		/* SUN */
 Obj *jop,		/* jupiter */
 MoonData md[J_NMOONS])
 {
-	double esd = eop->s_edist;
+	double esd = sop->s_edist;
 	double eod = jop->s_edist;
 	double sod = jop->s_sdist;
 	double soa = degrad(jop->s_elong);
@@ -338,5 +352,33 @@ moonEVis (MoonData md[J_NMOONS])
 	}
 }
 
+/* set pshad and sx,sy shadow info */
+static void
+moonPShad(
+Obj *sop,		/* SUN */
+Obj *jop,		/* jupiter */
+MoonData md[J_NMOONS])
+{
+	int i;
+
+	for (i = 1; i < J_NMOONS; i++) {
+	    MoonData *mdp = &md[i];
+	    mdp->pshad = !plshadow (jop, sop, POLE_RA, POLE_DEC, mdp->x,
+					    mdp->y, mdp->z, &mdp->sx, &mdp->sy);
+	}
+}
+
+/* set whether moons are transiting */
+static void
+moonTrans (MoonData md[J_NMOONS])
+{
+	int i;
+
+	for (i = 1; i < J_NMOONS; i++) {
+	    MoonData *mdp = &md[i];
+	    mdp->trans = mdp->z > 0 && mdp->x*mdp->x + mdp->y*mdp->y < 1;
+	}
+}
+
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: jupmoon.c,v $ $Date: 2003/03/20 08:51:37 $ $Revision: 1.4 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: jupmoon.c,v $ $Date: 2004/12/18 02:50:11 $ $Revision: 1.6 $ $Name:  $"};

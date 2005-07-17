@@ -13,6 +13,8 @@ static void bruton_saturn (Obj *sop, double JD, MoonData md[S_NMOONS]);
 static void moonradec (double satsize, MoonData md[S_NMOONS]);
 static void moonSVis (Obj *eop, Obj *sop, MoonData md[S_NMOONS]);
 static void moonEVis (MoonData md[S_NMOONS]);
+static void moonPShad (Obj *eop, Obj *sop, MoonData md[S_NMOONS]);
+static void moonTrans (MoonData md[S_NMOONS]);
 
 /* moon table and a few other goodies and when it was last computed */
 static double mdmjd = -123456;
@@ -34,6 +36,13 @@ static double stiltmjd;
 /* file containing BDL coefficients */
 static char sbdlfn[] = "saturne.9910";
 
+/* These values are from the Explanatory Supplement.
+ * Precession degrades them gradually over time.
+ */
+#define POLE_RA         degrad(40.58)   /* RA of Saturn's north pole */
+#define POLE_DEC        degrad(83.54)   /* Dec of Saturn's north pole */
+
+
 /* get saturn info in md[0], moon info in md[1..S_NMOONS-1].
  * if !dir always use bruton model.
  * if !sop caller just wants md[] for names
@@ -47,12 +56,17 @@ Obj *eop,			/* earth == Sun */
 Obj *sop,			/* saturn */
 double *sizep,			/* saturn's angular diam, rads */
 double *etiltp, double *stiltp,	/* earth and sun tilts -- +S */
+double *polera, double *poledec,/* pole location */
 MoonData md[S_NMOONS])		/* return info */
 {
 	double JD;
 
 	/* always copy back at least for name */
 	memcpy (md, smd, sizeof(smd));
+
+	/* pole */
+	if (polera) *polera = POLE_RA;
+	if (poledec) *poledec = POLE_DEC;
 
 	/* nothing else if repeat call or just want names */
 	if (Mjd == mdmjd || !sop) {
@@ -93,7 +107,9 @@ MoonData md[S_NMOONS])		/* return info */
 
 	/* set visibilities */
 	moonSVis (eop, sop, md);
+	moonPShad (eop, sop, md);
 	moonEVis (md);
+	moonTrans (md);
 
 	/* fill in moon ra and dec */
 	moonradec (*sizep, md);
@@ -454,5 +470,34 @@ moonEVis (MoonData md[S_NMOONS])
 	}
 }
 
+/* set pshad and sx,sy shadow info */
+static void
+moonPShad(
+Obj *eop,             /* earth == SUN */
+Obj *sop,             /* saturn */
+MoonData md[S_NMOONS])
+{
+	int i;
+
+	for (i = 1; i < S_NMOONS; i++) {
+	    MoonData *mdp = &md[i];
+	    mdp->pshad = !plshadow (sop, eop, POLE_RA, POLE_DEC, mdp->x,
+					  mdp->y, mdp->z, &mdp->sx, &mdp->sy);
+	}
+}
+
+
+/* set whether moons are transiting */
+static void
+moonTrans (MoonData md[S_NMOONS])
+{
+	int i;
+
+	for (i = 1; i < S_NMOONS; i++) {
+	    MoonData *mdp = &md[i];
+	    mdp->trans = mdp->z > 0 && mdp->x*mdp->x + mdp->y*mdp->y < 1;
+	}
+}
+
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: satmoon.c,v $ $Date: 2003/03/20 08:51:37 $ $Revision: 1.4 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: satmoon.c,v $ $Date: 2004/12/18 02:50:11 $ $Revision: 1.6 $ $Name:  $"};

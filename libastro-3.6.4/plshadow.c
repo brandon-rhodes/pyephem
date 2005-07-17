@@ -5,14 +5,14 @@
 #undef sqr
 #define	sqr(x)		((x)*(x))
 
-/* given a time, a planet, the sun, the planet's eq pole position and a
+/* given a planet, the sun, the planet's eq pole position and a
  * position of a satellite (as eq x=+e y=+s z=front in planet radii) find x,y
  * position of shadow.
  * return 0 if ok else -1 if shadow not on planet
  */
 int
-plshadow (Now *np, Obj *op, Obj *sop, double polera, double poledec, double x,
-double y, double z, double *sxp, double *syp)
+plshadow (Obj *op, Obj *sop, double polera, double poledec, double x,
+double y, double z, float *sxp, float *syp)
 {
 	/* equatorial to ecliptic sky-plane rotation */
 	double sa = cos(op->s_dec) * cos(poledec) *
@@ -47,4 +47,4 @@ double y, double z, double *sxp, double *syp)
 }
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: plshadow.c,v $ $Date: 2004/04/19 19:33:50 $ $Revision: 1.2 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: plshadow.c,v $ $Date: 2004/12/17 20:53:43 $ $Revision: 1.3 $ $Name:  $"};

@@ -807,8 +807,9 @@ double *ra, double *dec)/* geocentric equatoreal */
 
 	elongation(lpd, psi, lsn-PI, &el);
 	el = fabs(el);
-	/* only continue if object is within about 10 deg around the sun
-	 * and not obscured by the sun's disc (radius 0.25 deg)
+	/* only continue if object is within about 10 deg around the sun,
+	 * not obscured by the sun's disc (radius 0.25 deg) and farther away
+	 * than the sun.
 	 *
 	 * precise geocentric deflection is:  g1 * tan(el/2)
 	 *	radially outwards from sun;  the vector munching below
@@ -817,7 +818,7 @@ double *ra, double *dec)/* geocentric equatoreal */
 	 *		g1 is always about 0.004 arc seconds
 	 *		g2 varies from 0 (highest contribution) to 2
 	 */
-	if (el<degrad(170) || el>degrad(179.75)) return;
+	if (el<degrad(170) || el>degrad(179.75) || rho<rsn) return;
 
 	/* get cartesian vectors */
 	sphcart(*ra, *dec, rho, u, u+1, u+2);
@@ -859,4 +860,4 @@ h_albsize (double H)
 }
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: circum.c,v $ $Date: 2004/05/13 03:48:29 $ $Revision: 1.18 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: circum.c,v $ $Date: 2004/11/25 20:49:44 $ $Revision: 1.18 $ $Name:  $"};

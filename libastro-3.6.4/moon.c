@@ -100,6 +100,7 @@ static int gecmoon (double J, struct plantbl *lrtab,
 
 static double Args[NARGS];
 static double LP_equinox;
+static double NF_arcsec;
 static double Ea_arcsec;
 static double pA_precession;
 
@@ -2926,6 +2927,7 @@ mean_elements (double JED)
 	      - 2.165750777942e-006) * T
 	      - 7.5311878482337989e-04) * T /* F, t^3 */
 	     - 1.3117809789650071e+01) * T2; /* F, t^2 */
+  NF_arcsec = x;
   Args[10] = x;
 
 /* Mean anomaly of sun = l' (J. Laskar) */
@@ -3462,4 +3464,4 @@ double *mdp)
 }
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: moon.c,v $ $Date: 2004/05/13 03:51:49 $ $Revision: 1.5 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: moon.c,v $ $Date: 2003/03/20 08:51:37 $ $Revision: 1.4 $ $Name:  $"};

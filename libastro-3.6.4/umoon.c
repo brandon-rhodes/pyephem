@@ -10,8 +10,10 @@
 
 static int use_bdl (double jd, char *dir, MoonData md[U_NMOONS]);
 static void moonradec (double usize, MoonData md[U_NMOONS]);
-static void moonSVis (Obj *eop, Obj *uop, MoonData md[U_NMOONS]);
+static void moonSVis (Obj *sop, Obj *uop, MoonData md[U_NMOONS]);
 static void moonEVis (MoonData md[U_NMOONS]);
+static void moonPShad (Obj *sop, Obj *uop, MoonData md[U_NMOONS]);
+static void moonTrans (MoonData md[U_NMOONS]);
 
 /* moon table and a few other goodies and when it was last computed */
 static double mdmjd = -123456;
@@ -28,23 +30,35 @@ static double sizemjd;	/* size at last mjd */
 /* file containing BDL coefficients */
 static char ubdlfn[] = "uranus.9910";
 
+/* These values are from the Explanatory Supplement.
+ * Precession degrades them gradually over time.
+ */
+#define POLE_RA         degrad(257.43)  /* RA of Uranus' north pole */
+#define POLE_DEC        degrad(-15.10)  /* Dec of Uranus' north pole */
+
+
 /* get uranus info in md[0], moon info in md[1..U_NMOONS-1].
  * if !uop caller just wants md[] for names
- * N.B. we assume eop and uop are updated.
+ * N.B. we assume sop and uop are updated.
  */
 void
 uranus_data (
 double Mjd,		/* mjd */
 char dir[],             /* dir in which to look for helper files */
-Obj *eop,               /* earth == Sun */
+Obj *sop,               /* Sun */
 Obj *uop,		/* uranus */
 double *sizep,		/* u angular diam, rads */
+double *polera, double *poledec,      /* pole location */
 MoonData md[U_NMOONS])	/* return info */
 {
         double JD;
 
 	/* always copy back at least for name */
 	memcpy (md, umd, sizeof(umd));
+
+	/* pole */
+	if (polera) *polera = POLE_RA;
+	if (poledec) *poledec = POLE_DEC;
 
 	/* nothing else if repeat call or just want names */
 	if (Mjd == mdmjd || !uop) {
@@ -81,12 +95,14 @@ MoonData md[U_NMOONS])	/* return info */
 	    int i;
 	    for (i = 1; i < U_NMOONS; i++)
 		md[i].x = md[i].y = md[i].z = 0.0;
-	    /*fprintf (stderr, "No mars model available\n");*/
+	    fprintf (stderr, "No mars model available\n");
 	}
 
 	/* set visibilities */
-	moonSVis (eop, uop, md);
+	moonSVis (sop, uop, md);
+	moonPShad (sop, uop, md);
 	moonEVis (md);
+	moonTrans (md);
 
 	/* fill in moon ra and dec */
 	moonradec (*sizep, md);
@@ -171,11 +187,11 @@ MoonData md[U_NMOONS])	/* fill in RA and Dec */
 /* set svis according to whether moon is in sun light */
 static void
 moonSVis(
-Obj *eop,		/* earth == SUN */
+Obj *sop,		/* SUN */
 Obj *uop,		/* uranus */
 MoonData md[U_NMOONS])
 {
-	double esd = eop->s_edist;
+	double esd = sop->s_edist;
 	double eod = uop->s_edist;
 	double sod = uop->s_sdist;
 	double soa = degrad(uop->s_elong);
@@ -214,5 +230,34 @@ moonEVis (MoonData md[U_NMOONS])
 	}
 }
 
+/* set pshad and sx,sy shadow info */
+static void
+moonPShad(
+Obj *sop,             /* SUN */
+Obj *uop,             /* uranus */
+MoonData md[U_NMOONS])
+{
+	int i;
+
+	for (i = 1; i < U_NMOONS; i++) {
+	    MoonData *mdp = &md[i];
+	    mdp->pshad = !plshadow (uop, sop, POLE_RA, POLE_DEC, mdp->x,
+					  mdp->y, mdp->z, &mdp->sx, &mdp->sy);
+	}
+}
+
+/* set whether moons are transiting */
+static void
+moonTrans (MoonData md[U_NMOONS])
+{
+	int i;
+
+	for (i = 1; i < U_NMOONS; i++) {
+	    MoonData *mdp = &md[i];
+	    mdp->trans = mdp->z > 0 && mdp->x*mdp->x + mdp->y*mdp->y < 1;
+	}
+}
+
+
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: umoon.c,v $ $Date: 2003/03/20 08:51:37 $ $Revision: 1.5 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: umoon.c,v $ $Date: 2004/12/18 02:50:11 $ $Revision: 1.7 $ $Name:  $"};

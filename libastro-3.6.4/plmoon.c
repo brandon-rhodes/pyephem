@@ -105,6 +105,7 @@ plmoon_cir (Now *np, Obj *moonop)
 	Obj *sunop = (Obj*)&plobj[SUN];
 	MoonData md[X_MAXNMOONS];
 	double sz, t1, t2;
+	double pra, pdec;
 	MoonData *mdp;
 	Obj *planop;
 
@@ -135,7 +136,7 @@ plmoon_cir (Now *np, Obj *moonop)
 	    }
 
 	    /* don't worry, this already caches based on same mjd */
-	    marsm_data (mjd, moondir, sunop, planop, &sz, md);
+	    marsm_data (mjd, moondir, sunop, planop, &sz, &pra, &pdec, md);
 	    mdp = &md[moonop->pl_moon];
 	    break;
 
@@ -153,7 +154,7 @@ plmoon_cir (Now *np, Obj *moonop)
 	    }
 
 	    /* don't worry, this already caches based on same mjd */
-	    jupiter_data (mjd, moondir, sunop, planop, &sz, &t1, &t2, md);
+	    jupiter_data (mjd,moondir,sunop,planop,&sz,&t1,&t2,&pra,&pdec,md);
 	    mdp = &md[moonop->pl_moon];
 	    moonop->pl_aux1 = t1;
 	    moonop->pl_aux2 = t2;
@@ -177,7 +178,7 @@ plmoon_cir (Now *np, Obj *moonop)
 	    }
 
 	    /* don't worry, this already caches based on same mjd */
-	    saturn_data (mjd, moondir, sunop, planop, &sz, &t1, &t2, md);
+	    saturn_data (mjd,moondir,sunop,planop,&sz,&t1,&t2,&pra,&pdec,md);
 	    mdp = &md[moonop->pl_moon];
 	    moonop->pl_aux1 = t1;
 	    moonop->pl_aux2 = t2;
@@ -198,7 +199,7 @@ plmoon_cir (Now *np, Obj *moonop)
 	    }
 
 	    /* don't worry, this already caches based on same mjd */
-	    uranus_data (mjd, moondir, sunop, planop, &sz, md);
+	    uranus_data (mjd, moondir, sunop, planop, &sz, &pra, &pdec, md);
 	    mdp = &md[moonop->pl_moon];
 	    break;
 

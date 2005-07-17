@@ -530,11 +530,14 @@ typedef struct {
 typedef struct {
     char *full;		/* full name */
     char *tag;		/* Roman numeral tag */
-    float x, y, z;	/* radii: +x:east +y:south +z:front */
-    float ra, dec;
-    float mag;
+    float x, y, z;	/* sky loc in planet radii: +x:east +y:south +z:front */
+    float ra, dec;	/* sky location in ra/dec */
+    float mag;		/* magnitude */
     int evis;		/* whether geometrically visible from earth */
     int svis;		/* whether in sun light */
+    int pshad;		/* whether moon is casting shadow on planet */
+    int trans;		/* whether moon is transiting */
+    float sx, sy;	/* shadow sky loc in planet radii: +x:east +y:south */
 } MoonData;
 
 /* separate set for each planet -- use in pl_moon */
@@ -657,8 +660,9 @@ extern void f_sscandate (char *bp, int pref, int *m, double *d, int *y);
 extern void heliocorr (double jd, double ra, double dec, double *hcp);
 
 /* jupmoon.c */
-extern void jupiter_data (double Mjd, char dir[], Obj *eop, Obj *jop,
-    double *jupsize, double *cmlI, double *cmlII, MoonData md[J_NMOONS]); 
+extern void jupiter_data (double Mjd, char dir[], Obj *sop, Obj *jop,
+    double *jupsize, double *cmlI, double *cmlII, double *polera,
+    double *poledec, MoonData md[J_NMOONS]); 
 
 /* libration.c */
 extern void llibration (double JD, double *llatp, double *llonp);
@@ -668,8 +672,8 @@ extern int magdecl (double l, double L, double e, double y, char *dir,
     double *dp, char *err);
 
 /* marsmoon.c */
-extern void marsm_data (double Mjd, char dir[], Obj *eop, Obj *mop,
-    double *marssize, MoonData md[M_NMOONS]); 
+extern void marsm_data (double Mjd, char dir[], Obj *sop, Obj *mop,
+    double *marssize, double *polera, double *poledec, MoonData md[M_NMOONS]); 
 
 /* misc.c */
 extern void zero_mem (void *loc, unsigned len);
@@ -737,8 +741,8 @@ extern void plans (double m, PLCode p, double *lpd0, double *psi0,
     double *mag);
 
 /* plshadow.c */
-extern int plshadow (Now *np, Obj *op, Obj *sop, double polera,
-double poledec, double x, double y, double z, double *sxp, double *syp);
+extern int plshadow (Obj *op, Obj *sop, double polera,
+    double poledec, double x, double y, double z, float *sxp, float *syp);
 
 /* plmoon_cir.c */
 extern int plmoon_cir (Now *np, Obj *moonop);
@@ -771,7 +775,8 @@ extern void twilight_cir (Now *np, double dis, double *dawn, double *dusk,
 
 /* satmoon.c */
 extern void saturn_data (double Mjd, char dir[], Obj *eop, Obj *sop,
-    double *satsize, double *etilt, double *stlit, MoonData md[S_NMOONS]); 
+    double *satsize, double *etilt, double *stlit, double *polera, 
+    double *poledec, MoonData md[S_NMOONS]); 
 
 /* sphcart.c */
 extern void sphcart (double l, double b, double r, double *x, double *y,
@@ -786,8 +791,8 @@ extern void sunpos (double m, double *lsn, double *rsn, double *bsn);
 extern int vrc (double *v, double *r, double tp, double e, double q);
 
 /* umoon.c */
-extern void uranus_data (double Mjd, char dir[], Obj *eop, Obj *uop,
-    double *usize, MoonData md[U_NMOONS]); 
+extern void uranus_data (double Mjd, char dir[], Obj *sop, Obj *uop,
+    double *usize, double *polera, double *poledec, MoonData md[U_NMOONS]); 
 
 /* utc_gst.c */
 extern void utc_gst (double m, double utc, double *gst);
@@ -799,5 +804,5 @@ extern int vsop87 (double m, int obj, double prec, double *ret);
 #endif /* _ASTRO_H */
 
 /* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: astro.h,v $ $Date: 2004/04/20 04:17:08 $ $Revision: 1.25 $ $Name:  $
+ * @(#) $RCSfile: astro.h,v $ $Date: 2004/12/18 02:50:11 $ $Revision: 1.27 $ $Name:  $
  */

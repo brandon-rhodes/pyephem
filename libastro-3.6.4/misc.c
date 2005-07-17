@@ -372,10 +372,14 @@ solve_sphere (double A, double b, double cc, double sc, double *cap, double *Bp)
 	if (!Bp)
 	    return;
 
-	sA = sin(A);
-	y = sA*sb*sc;
-	x = cb - ca*cc;
-	B = y ? (x ? atan2(y,x) : (y>0 ? PI/2 : -PI/2)) : (x>=0 ? 0 : PI);
+	if (sc < 1e-7)
+	    B = cc < 0 ? A : PI-A;
+	else {
+	    sA = sin(A);
+	    y = sA*sb*sc;
+	    x = cb - ca*cc;
+	    B = y ? (x ? atan2(y,x) : (y>0 ? PI/2 : -PI/2)) : (x>=0 ? 0 : PI);
+	}
 
 	*Bp = B;
 	range (Bp, 2*PI);
@@ -476,4 +480,4 @@ is_deepsky (Obj *op)
 }
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: misc.c,v $ $Date: 2004/05/05 17:45:49 $ $Revision: 1.16 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: misc.c,v $ $Date: 2005/01/31 20:48:27 $ $Revision: 1.17 $ $Name:  $"};

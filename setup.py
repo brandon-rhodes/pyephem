@@ -4,7 +4,7 @@ from glob import glob
 # The `pyephem' module is built from every .c file in the libastro
 # directory plus ...
 
-libastro_version = '3.6.1'
+libastro_version = '3.6.4'
 libastro_files = glob('libastro-%s/*.c' % libastro_version)
 
 ext_modules = [
@@ -15,7 +15,7 @@ ext_modules = [
               )]
 
 setup(name = 'pyephem',
-      version = '3.6.1b',
+      version = '3.6.4a',
       description = 'computational astronomy routines from XEphem',
       author = 'Brandon Craig Rhodes',
       author_email = 'brandon@rhodesmill.org',

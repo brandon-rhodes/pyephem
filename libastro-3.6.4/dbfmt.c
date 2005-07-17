@@ -386,7 +386,8 @@ crack_f (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 
 	if (nf < 5 || nf > 7) {
 	    if (whynot)
-		sprintf (whynot, "%s: f needs 5-7 fields, not %d",enm(flds),nf);
+		sprintf (whynot, "%s: type f needs 5-7 fields, not %d",
+								enm(flds),nf);
 	    return (-1);
 	}
 
@@ -410,7 +411,8 @@ crack_f (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 		    						sflds[1][0]);
 		return (-1);
 	    }
-	}
+	} else
+	    op->f_class = 'T';		/* default to star-like */
 	if (nsf > 2) {
 	    /* fill f_spect all the way */
 	    char buf[sizeof(op->f_spect)+1];
@@ -464,7 +466,7 @@ crack_e (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 {
 	if (nf != 13 && nf != 14) {
 	    if (whynot)
-		sprintf (whynot, "%s: e needs 13 or 14 fields, not %d",
+		sprintf (whynot, "%s: type e needs 13 or 14 fields, not %d",
 								enm(flds), nf);
 	    return (-1);
 	}
@@ -505,7 +507,7 @@ crack_h (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 {
 	if (nf != 11 && nf != 12) {
 	    if (whynot)
-		sprintf (whynot, "%s: h needs 11 or 12 fields, not %d",
+		sprintf (whynot, "%s: type h needs 11 or 12 fields, not %d",
 								enm(flds), nf);
 	    return (-1);
 	}
@@ -535,7 +537,7 @@ crack_p (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 {
 	if (nf != 10 && nf != 11) {
 	    if (whynot)
-		sprintf (whynot, "%s: p needs 10 or 11 fields, not %d",	
+		sprintf (whynot, "%s: type p needs 10 or 11 fields, not %d",	
 								enm(flds), nf);
 	    return (-1);
 	}
@@ -564,7 +566,7 @@ crack_E (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 {
 	if (nf != 11 && nf != 12) {
 	    if (whynot)
-		sprintf (whynot, "%s: E needs 11 or 12 fields, not %d",
+		sprintf (whynot, "%s: type E needs 11 or 12 fields, not %d",
 							    enm(flds), nf);
 	    return (-1);
 	}
@@ -746,7 +748,7 @@ crack_B (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 	} else {
 	    if (whynot)
 		sprintf (whynot,
-			"%s: B needs 3,6 or 7 subfields in field 7, not %d",
+		       "%s: type B needs 3,6 or 7 subfields in field 7, not %d",
 								enm(flds), nsf);
 	    return (-1);
 	}
@@ -1003,4 +1005,4 @@ write_P (Obj *op, char lp[])
 }
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: dbfmt.c,v $ $Date: 2004/05/05 17:45:49 $ $Revision: 1.39 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: dbfmt.c,v $ $Date: 2005/02/10 03:36:04 $ $Revision: 1.40 $ $Name:  $"};
