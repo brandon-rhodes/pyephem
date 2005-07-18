@@ -1,6 +1,6 @@
 PyEphem
-Version 3.6.1a
-25 November 2004 (Thanksgiving)
+Version 3.6.4
+18 July 2005 (Thanksgiving)
 
 PyEphem provides an `ephem' Python module that can perform many
 astronomical computations.  You can find the most recent version at
@@ -31,9 +31,9 @@ or perhaps a
 
 	from ephem import *
 
-The scripts in the examples/ directory might help you learn how to use
-PyEphem, and also to test whether it is running properly on your
-system.
+to avoid putting "ephem." in front of all the names.  The scripts in
+the examples/ directory might help you learn how to use PyEphem, and
+also to test whether it is running properly on your system.
 
 DOCUMENTATION
 
