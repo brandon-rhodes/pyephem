@@ -1,14 +1,26 @@
 			  PyEphem CHANGELOG
 
-Version 3.6.1?
+Version 3.6.4a
+
+  - Upgraded to the libastro from XEphem 3.6.4, which:
+
+     - No longer incorrectly applies relativistic refraction to
+       objects on this side of the Sun, whose light will obviously not
+       go past the sun and be deflected.
+     - Now correctly handles earth satellites with a negative es_decay
+       parameter.
 
   - Added several functions to the module:
 
-     julian_date() - computes the Julian Date for a date or Observer
-     uranometria(),
-     uranometria2000(),
-     millennium_atlas() - determine the star atlas page on which a
-        given location falls, given as right ascension and declination
+     moon_phases() - computes a new and full moon following a date.
+     delta_t() - computes the difference between Terrestrial Time and
+       Universal Time.
+     julian_date() - computes the Julian Date for a date or Observer.
+
+     millennium_atlas()
+     uranometria()
+     uranometria2000() - determine the star atlas page on which a
+       given location falls, given as right ascension and declination.
 
   - Added a function to the Observer class, which takes no arguments:
 
