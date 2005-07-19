@@ -27,8 +27,8 @@
 for the <a href="http://www.python.org/">Python</a> programming language.
 It can compute for an arbitrary date and location on Earth
 the positions of the Sun and Moon;
-the planets and their moons;
-and any asteroids, comets, or earth satellites
+of the planets and their moons;
+and of any asteroids, comets, or earth satellites
 whose orbital elements the user can provide.
 Additional functions are provided to compute the angular separation
 between two objects in the sky,
@@ -39,13 +39,15 @@ an object rises, transits, and sets on a particular day.
 <b>Latest release: 3.6.4a<br>2005 July 18<br>
 <a href="pyephem-3.6.4a.tar.gz">pyephem-3.6.4a.tar.gz</a></b>
 <p>
-With this release,
-PyEphem can compute the position of the <b>major moons</b>
-of Jupiter, Saturn, Mars and Uranus,
-and provides much better access to the <b>orbital parameters</b>
-of user-defined objects like comets and asteroids.
-Many other less-visible changes have been made
-and the module should compile more cleanly on several platforms.
+This release is built atop a fresh version of the libastro library
+which fixes two minor bugs, as described in the
+<tt><a href="pyephem-CHANGELOG">CHANGELOG</a></tt>.
+Plus, observers can now compute the sidereal time
+at their location and date;
+several minor functions have been added;
+and a parameter is now available that lets the user
+specify at what height above or below the horizon
+they consider an object to be rising or setting.
 <p>
 (In case you need it, the previous version is still available
 <a href="pyephem-3.6.1a.tar.gz">here</a>.)
