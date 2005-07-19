@@ -4,11 +4,12 @@ Version 3.6.4a
 
   - Upgraded to the libastro from XEphem 3.6.4, which:
 
-     - No longer incorrectly applies relativistic refraction to
-       objects on this side of the Sun, whose light will obviously not
-       go past the sun and be deflected.
-     - Now correctly handles earth satellites with a negative es_decay
-       parameter.
+     No longer incorrectly applies relativistic deflection to
+     objects on this side of the Sun, whose light will obviously not
+     go past the sun and be deflected.
+
+     Now correctly handles earth satellites with a negative es_decay
+     parameter.
 
   - Added several functions to the module:
 
