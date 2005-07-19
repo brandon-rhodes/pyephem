@@ -15,7 +15,7 @@ pre { margin-left: 2em; margin-right: 2em; background-color: d0d0a0 }
 <body>
 <h1>The PyEphem Manual</h1>
 
-Version 2004.November.25, for PyEphem version 3.6.1a.
+Version 2005.July.18, for PyEphem version 3.6.4a.
 <p>
 _TABLE_OF_CONTENTS_
 <p>
@@ -729,7 +729,7 @@ than if the two were based on the same epoch:
 >>> print ephem.separation(j1, j2)    # coordinates are both epoch-of-date
 1:46:31.56
 </pre>
-Comparing coordinates of the same epoch, as in the first call,
+Comparing coordinates of the same epoch, as in the first call above,
 measures motion against the background of stars;
 comparing coordinates from different epochs, as in the second call,
 measures motion against the slowly shifting coordinate system of the earth.
@@ -758,7 +758,7 @@ not how they are positioned with respect to you.
 <hr>
 <h2>The PyEphem Reference</h2>
 
-<h3>1. Module Contents: Objects.</h3>
+<h3>1. Module Contents: Astronomical Objects.</h3>
 
 <dl class=ref>
 <dt>
@@ -907,6 +907,61 @@ Determines the constellation in which the given body or coordinates lie.
 If you provide coordinates without an epoch,
 then epoch 2000 is assumed.
 
+<dt><code>delta_t(<i>date</i>)</code>
+<br><code>delta_t(<i>observer</i>)</code>
+<br><code>delta_t()</code>
+<dd>
+Return for the given date
+the offset between Terrestrial Time and Universal Time.
+The former marches forward with equal-length days
+regardless of the behavior of the Earth,
+while the latter is constantly tweaked and adjusted through leap seconds
+to follow the Earth's actual rotation.
+If given an Observer object,
+the function uses <code><i>observer</i>.date</code>,
+and if given no argument it uses <code>now()</code>.
+
+<dt><code>julian_date(<i>date</i>)</code>
+<br><code>julian_date(<i>observer</i>)</code>
+<br><code>julian_date()</code>
+<dd>
+Return the Julian Date for the given PyEphem date object.
+If given an Observer,
+the function uses <code><i>observer</i>.date</code>,
+and if given no argument it uses <code>now()</code>.
+(The Julian Date is the number of days that have elapsed
+since noon Universal Time on Monday, January~1, 4713~BC.)
+
+
+<dt><code>millennium_atlas(<i>ra</i>, <i>dec</i>)</code>
+<br><code>uranometria(<i>ra</i>, <i>dec</i>)</code>
+<br><code>uranometria2000(<i>ra</i>, <i>dec</i>)</code>
+<dd>
+These three functions return the page number
+on which a particular right ascension and declination fall
+in each of three star atlases:
+<p>
+<i><a href="http://www.amazon.com/exec/obidos/tg/detail/-/0933346840/"
+>Millennium Star Atlas</a></i> by Roger W. Sinnott and Michael A. C. Perryman
+<br>
+<i><a href="http://www.amazon.com/exec/obidos/tg/detail/-/1852970219/"
+>Uranometria</a></i> by Johannes Bayer
+<br>
+<i><a href="http://www.amazon.com/exec/obidos/tg/detail/-/0943396719/"
+>Uranometria 2000.0</a></i> edited by Wil Tirion
+</p>
+
+<dt><code>moon_phases(<i>date</i>)</code>
+<br><code>moon_phases(<i>observer</i>)</code>
+<br><code>moon_phases()</code>
+<dd>
+Given a date, returns a dictionary
+<code>{'new': <i>new_date</i>, 'full': <i>full_date</i>}</code>
+giving the dates of a consecutive new and full moon
+that are near the date you specified.
+If given an Observer object it uses <code><i>observer</i>.date</code>,
+and if given no argument, uses <code>now()</code>.
+
 <dt>
 <code>separation(<i>position0</i>, <i>position1</i>)</code>
 <dd>
@@ -926,7 +981,8 @@ whose right ascension and declination will be used.
 
 <a name="observer"><h3>4. Observer Objects</h3></a>
 
-Default values are shown in parenthesis.
+All of these values can be set by the user;
+default values are shown in parentheses.
 <p>
 <code><i>observer</i>.date</code> --- the date for which the position
  should be computed (current time)
@@ -942,11 +998,28 @@ Default values are shown in parenthesis.
  (15&deg;C)
 <br><code><i>observer</i>.pressure</code> --- atmospheric pressure in milibars
  (1010~mB)
+<br><code><i>observer</i>.horizon</code> --- at what angle you consider
+ an object to be rising or setting~(0&deg;)
 <p>
 The <tt>temp</tt> and <tt>pressure</tt> are used
 to estimate how the object's position will be distorted by the atmosphere
-when it is close to the horizon.
-Setting <tt>pressure</tt> to zero makes PyEphem ignore atmospheric refraction.
+when it is close to the horizon;
+setting <tt>pressure</tt> to zero makes PyEphem ignore atmospheric refraction.
+The <tt>horizon</tt> value sets how far above (for positive angles)
+or below (for negative ones) the horizon an object needs to appear
+for you to consider it at the point of rising or setting;
+normally this is set to zero,
+meaning that rising and setting times tell you
+when an object appears exactly at the horizon.
+<p>
+Observers support a single function:
+
+<dl>
+<dt>
+<code>sidereal_time()</code>
+<dd>
+Returns the sidereal time for the observer's date and location.
+</dl>
 
 <h3>5. Body Methods</h3>
 
