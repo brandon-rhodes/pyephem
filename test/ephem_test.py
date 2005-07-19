@@ -1,23 +1,13 @@
 #!/usr/bin/env python
 
 import math, sys, unittest
-from glob import glob
 from sets import Set
 
 class TestError(Exception):
     pass
 
-# Work backwords from the `test' directory in which this script sits
-# to find where the distutils have placed the new module; note that
-# this attempt to find the `lib.*' directory will fail if the user has
-# created several by building the module for several architectures.
+# Import the module.
 
-(build_lib,) = glob(sys.path[0] + '/../build/lib.*')
-sys.path.insert(0, build_lib)
-
-# Now we can import the module.
-
-import ephem
 from ephem import *
 
 # Improve the standard TestCase class by providing a routine to check
