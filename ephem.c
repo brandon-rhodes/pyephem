@@ -1205,8 +1205,6 @@ GET_FIELD(sun_visible, obj.pl_svis, PyFloat_FromDouble)
 GET_FIELD(sublat, obj.s_sublat, build_degrees)
 GET_FIELD(sublong, obj.s_sublng, build_degrees)
 GET_FIELD(elevation, obj.s_elev, PyFloat_FromDouble)
-GET_FIELD(range, obj.s_range, PyFloat_FromDouble)
-GET_FIELD(range_velocity, obj.s_rangev, PyFloat_FromDouble)
 GET_FIELD(eclipsed, obj.s_eclipsed, PyBool_FromLong)
 
 /* Attributes computed by obj_cir that need an Observer. */
@@ -1216,6 +1214,9 @@ GET_FIELD(eclipsed, obj.s_eclipsed, PyBool_FromLong)
 
 GET_FIELD(az, obj.s_az, build_degrees)
 GET_FIELD(alt, obj.s_alt, build_degrees)
+
+GET_FIELD(range, obj.s_range, PyFloat_FromDouble)
+GET_FIELD(range_velocity, obj.s_rangev, PyFloat_FromDouble)
 
 #undef CALCULATOR
 #undef CARGS
