@@ -1202,6 +1202,13 @@ GET_FIELD(z, obj.pl_z, PyFloat_FromDouble)
 GET_FIELD(earth_visible, obj.pl_evis, PyFloat_FromDouble)
 GET_FIELD(sun_visible, obj.pl_svis, PyFloat_FromDouble)
 
+GET_FIELD(sublat, obj.s_sublat, build_degrees)
+GET_FIELD(sublong, obj.s_sublng, build_degrees)
+GET_FIELD(elevation, obj.s_elev, PyFloat_FromDouble)
+GET_FIELD(range, obj.s_range, PyFloat_FromDouble)
+GET_FIELD(range_velocity, obj.s_rangev, PyFloat_FromDouble)
+GET_FIELD(eclipsed, obj.s_eclipsed, PyBool_FromLong)
+
 /* Attributes computed by obj_cir that need an Observer. */
 
 #undef CARGS
@@ -1544,10 +1551,13 @@ static PyGetSetDef EarthSatellite_getset[] = {
 
      /* results: */
 
-     {"sublat", getf_rd, 0,
-      "latitude below satellite (degrees north)", VOFF(s_sublat)},
-     {"sublong", getf_rd, 0,
-      "longitude below satellite (degrees east)", VOFF(s_sublng)},
+     {"sublat", Get_sublat, 0, "latitude below satellite (degrees north)"},
+     {"sublong", Get_sublong, 0, "longitude below satellite (degrees east)"},
+     {"elevation", Get_elevation, 0, "height above sea level (meters)"},
+     {"range", Get_range, 0, "distance from observer to satellite (meters)"},
+     {"range_velocity", Get_range_velocity, 0,
+      "range rate of change (meters per second)"},
+     {"eclipsed", Get_eclipsed, 0, "whether satellite is in earth's shadow"},
      {NULL}
 };
 
@@ -1559,17 +1569,6 @@ static PyMemberDef EarthSatellite_members[] = {
      {"_drag", T_FLOAT, OFF(es_drag), 0,
       "object drag coefficient (per earth radius)"},
      {"_orbit", T_INT, OFF(es_orbit), 0, "integer orbit number of epoch"},
-
-     /* results: */
-
-     {"elevation", T_FLOAT, OFF(s_elev), RO,
-      "satellite height above sea level (meters)"},
-     {"range", T_FLOAT, OFF(s_range), RO,
-      "distance from observer to satellite (meters)"},
-     {"range_velocity", T_FLOAT, OFF(s_rangev), RO,
-      "range rate of change (meters per second)"},
-     {"eclipsed", T_INT, OFF(s_eclipsed), RO,
-      "whether satellite is in earth's shadow"},
      {NULL}
 };
 
