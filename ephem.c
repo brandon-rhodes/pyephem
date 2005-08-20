@@ -133,6 +133,20 @@ static int Angle_print(PyObject *self, FILE *fp, int flags)
      return 0;
 }
 
+static PyObject *Angle_get_norm(PyObject *self, void *v)
+{
+     AngleObject *ea = (AngleObject*) self;
+     float radians = ea->f.ob_fval;
+     if (0 >= radians && radians < 2*PI)
+	  return self;
+     return new_Angle(fmod(radians, 2*PI), ea->factor);
+}
+
+static PyGetSetDef Angle_getset[] = {
+     {"norm", Angle_get_norm, NULL, "Date", 0},
+     {NULL}
+};
+
 static PyTypeObject AngleType = {
      PyObject_HEAD_INIT(NULL)
      0,
@@ -164,7 +178,7 @@ static PyTypeObject AngleType = {
      0,				/* tp_iternext */
      0,				/* tp_methods */
      0,				/* tp_members */
-     0,				/* tp_getset */
+     Angle_getset,		/* tp_getset */
      0, /* &PyFloatType*/	/* tp_base */
      0,				/* tp_dict */
      0,				/* tp_descr_get */
@@ -2434,8 +2448,8 @@ static PyMethodDef ephem_methods[] = {
      CREATE(Oberon),
      CREATE(Miranda),
 
-     {"degrees", degrees, METH_VARARGS, "build an angle"},
-     {"hours", hours, METH_VARARGS, "build an angle"},
+     {"degrees", degrees, METH_VARARGS, "build an angle measured in degrees"},
+     {"hours", hours, METH_VARARGS, "build an angle measured in hours of arc"},
      {"now", build_now, METH_VARARGS, "Return the current time"},
      {"readdb", readdb, METH_VARARGS, "Read an ephem database entry"},
      {"readtle", readtle, METH_VARARGS, "Read TLE-format satellite elements"},
