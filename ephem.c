@@ -51,7 +51,7 @@ typedef struct {
 
 typedef Body Planet, PlanetMoon;
 typedef Body FixedBody, BinaryStar;
-typedef Body EllipticalBody, ParabolicBody, EarthSatellite;
+typedef Body EllipticalBody, ParabolicBody;
 
 typedef struct {
      PyObject_HEAD
@@ -71,6 +71,15 @@ typedef struct {
      PyObject *name;		/* object name */
      double etilt, stilt;	/* tilt of rings */
 } Saturn;
+
+typedef struct {
+     PyObject_HEAD
+     Now now;			/* cache of last observer */
+     Obj obj;			/* the ephemeris object */
+     RiseSet riset;		/* rising and setting */
+     PyObject *name;		/* object name */
+     PyObject *catalog_number;	/* TLE catalog number */
+} EarthSatellite;
 
 /* */
 
@@ -947,7 +956,8 @@ static int NAME##_init(PyObject* self, PyObject* args, PyObject *kw) \
 { \
      Body *body = (Body*) self; \
      Body_setup(body); \
-     body->name = PyString_FromString("unnamed"); \
+     body->name = Py_None; \
+     Py_INCREF(Py_None); \
      body->obj.o_name[0] = '\0'; \
      body->obj.o_type = CODE; \
      return 0; \
@@ -957,7 +967,8 @@ static int FixedBody_init(PyObject* self, PyObject* args, PyObject *kw)
 {
      Body *body = (Body*) self;
      Body_setup(body);
-     body->name = PyString_FromString("unnamed");
+     body->name = Py_None;
+     Py_INCREF(Py_None);
      body->obj.o_name[0] = '\0';
      body->obj.o_type = FIXED;
      body->obj.f_epoch = J2000;
@@ -968,7 +979,19 @@ INIT(BinaryStar, BINARYSTAR)
 INIT(EllipticalBody, ELLIPTICAL)
 INIT(HyperbolicBody, HYPERBOLIC)
 INIT(ParabolicBody, PARABOLIC)
-INIT(EarthSatellite, EARTHSAT)
+
+static int EarthSatellite_init(PyObject* self, PyObject* args, PyObject *kw)
+{
+     EarthSatellite *body = (EarthSatellite*) self;
+     Body_setup((Body*) body);
+     body->name = Py_None;
+     Py_INCREF(Py_None);
+     body->catalog_number = Py_None;
+     Py_INCREF(Py_None);
+     body->obj.o_name[0] = '\0';
+     body->obj.o_type = EARTHSAT;
+     return 0;
+}
 
 #undef INIT
 
@@ -1622,6 +1645,8 @@ static PyMemberDef EarthSatellite_members[] = {
      {"_drag", T_FLOAT, OFF(es_drag), 0,
       "object drag coefficient (per earth radius)"},
      {"_orbit", T_INT, OFF(es_orbit), 0, "integer orbit number of epoch"},
+     {"catalog_number", T_OBJECT, offsetof(EarthSatellite, catalog_number), 0,
+      "catalog number from TLE file"},
      {NULL}
 };
 
@@ -2073,7 +2098,7 @@ static PyTypeObject EarthSatelliteType = {
      PyObject_HEAD_INIT(NULL)
      0,
      "ephem.EarthSatellite",
-     sizeof(Body),
+     sizeof(EarthSatellite),
      0,
      0,				/* tp_dealloc */
      0,				/* tp_print */
@@ -2179,7 +2204,7 @@ static PyObject* separation(PyObject *self, PyObject *args)
      return new_Angle(acos(spy*sqy + cpy*cqy*cos(px-qx)), raddeg(1));
 }
 
-/* Read an  database entry from a string. */
+/* Read various database formats, with strings as input. */
 
 static PyObject *build_body_from_obj(PyObject *name, Obj *op)
 {
@@ -2245,7 +2270,7 @@ static PyObject* readdb(PyObject *self, PyObject *args)
 static PyObject* readtle(PyObject *self, PyObject *args)
 {
      char *l1, *l2;
-     PyObject *name, *stripped_name;
+     PyObject *name, *stripped_name, *body, *catalog_number;
      Obj obj;
      if (!PyArg_ParseTuple(args, "O!ss:readtle",
 			   &PyString_Type, &name, &l1, &l2))
@@ -2258,7 +2283,14 @@ static PyObject* readtle(PyObject *self, PyObject *args)
      stripped_name = PyObject_CallMethod(name, "strip", 0);
      if (!stripped_name)
 	  return 0;
-     return build_body_from_obj(stripped_name, &obj);
+     body = build_body_from_obj(stripped_name, &obj);
+     if (!body)
+	  return 0;
+     catalog_number = PyInt_FromLong(strtod(l1+2, 0));
+     if (!catalog_number)
+	  return 0;
+     ((EarthSatellite*) body)->catalog_number = catalog_number;
+     return body;
 }
 
 /* Create various sorts of angles. */

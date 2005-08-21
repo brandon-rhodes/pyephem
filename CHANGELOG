@@ -9,6 +9,12 @@ Next version
   - You can normalize an Angle into the range [0, 2pi) by requesting
     the attribute ".norm".
 
+  - Earth satellite objects read in from TLE files now retain their
+    TLE catalog number as an attribute "catalog_number".
+
+  - Uninitialized bodies now start off with None for their name,
+    rather than the string "unnamed".
+
 Version 3.6.4a
 
   - Upgraded to the libastro from XEphem 3.6.4, which:
