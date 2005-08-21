@@ -662,6 +662,40 @@ static PyObject *Observer_sidereal_time(PyObject *self)
      return new_Angle(lst / 24.0, 24.0);
 }
 
+static PyObject *Observer_radec_of(PyObject *self, PyObject *args,
+				   PyObject *kwds)
+{
+     Observer *o = (Observer*) self;
+     static char *kwlist[] = {"az", "alt", 0};
+     PyObject *azo, *alto, *rao, *deco;
+     double az, alt, lst, ha, ra, dec;
+
+     if (!PyArg_ParseTupleAndKeywords(args, kwds, "OO:Observer.radec_of",
+				      kwlist, &azo, &alto))
+	  return 0;
+
+     if (parse_angle(azo, raddeg(1), &az) == -1)
+	  return 0;
+     if (parse_angle(alto, raddeg(1), &alt) == -1)
+	  return 0;
+
+     now_lst(&o->now, &lst);
+     lst = hrrad(lst);
+     unrefract(o->now.n_pressure, o->now.n_temp, alt, &alt);
+     aa_hadec(o->now.n_lat, alt, az, &ha, &dec);
+     ra = fmod(lst - ha, 2*PI);
+
+     pref_set(PREF_EQUATORIAL, PREF_TOPO); /* affects call to ap_as? */
+     if (o->now.n_epoch != EOD)
+	  ap_as(&o->now, o->now.n_epoch, &ra, &dec);
+
+     rao = new_Angle(ra, radhr(1));
+     if (!rao) return 0;
+     deco = new_Angle(dec, raddeg(1));
+     if (!deco) return 0;
+     return Py_BuildValue("OO", rao, deco);
+}
+
 /*
  * Member access.
  */
@@ -701,6 +735,10 @@ static int set_elev(PyObject *self, PyObject *value, void *v)
 static PyMethodDef Observer_methods[] = {
      {"sidereal_time", (PyCFunction) Observer_sidereal_time, METH_NOARGS,
       "compute the local sidereal time for this location and time"},
+     {"radec_of", (PyCFunction) Observer_radec_of,
+      METH_VARARGS | METH_KEYWORDS,
+      "compute the right ascension and declination of a point"
+      " identified by its azimuth and altitude"},
      {NULL}
 };
 

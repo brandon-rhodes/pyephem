@@ -2,6 +2,10 @@
 
 Next version
 
+  - The Observer now has an radec_of(az=, alt=) function that returns
+    the right ascension and declination of the given location in the
+    sky.
+
   - You can normalize an Angle into the range [0, 2pi) by requesting
     the attribute ".norm".
 
