@@ -1,5 +1,10 @@
 			  PyEphem CHANGELOG
 
+Next version
+
+  - You can normalize an Angle into the range [0, 2pi) by requesting
+    the attribute ".norm".
+
 Version 3.6.4a
 
   - Upgraded to the libastro from XEphem 3.6.4, which:
