@@ -668,7 +668,7 @@ static PyObject *Observer_sidereal_time(PyObject *self)
      Observer *o = (Observer*) self;
      double lst;
      now_lst(&o->now, &lst);
-     return new_Angle(lst / 24.0, 24.0);
+     return new_Angle(hrrad(lst), radhr(1));
 }
 
 static PyObject *Observer_radec_of(PyObject *self, PyObject *args,
