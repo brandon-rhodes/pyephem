@@ -145,7 +145,7 @@ static int Angle_print(PyObject *self, FILE *fp, int flags)
 static PyObject *Angle_get_norm(PyObject *self, void *v)
 {
      AngleObject *ea = (AngleObject*) self;
-     float radians = ea->f.ob_fval;
+     double radians = ea->f.ob_fval;
      if (0 >= radians && radians < 2*PI)
 	  return self;
      return new_Angle(fmod(radians, 2*PI), ea->factor);
@@ -615,8 +615,8 @@ static PyObject* get_f_ratio(PyObject *self, void *v)
 static int set_f_ratio(PyObject *self, PyObject *value, void *v)
 {
      Body *b = (Body*) self;
-     float maj, min;
-     if (!PyArg_ParseTuple(value, "ff", &maj, &min)) return -1;
+     double maj, min;
+     if (!PyArg_ParseTuple(value, "dd", &maj, &min)) return -1;
      set_ratio(&b->obj, maj, min);
      return 0;
 }
