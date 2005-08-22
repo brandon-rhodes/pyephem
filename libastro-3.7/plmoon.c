@@ -22,7 +22,6 @@ static char *moondir;
 static void setMoon (Now *np, Obj *moonop, Obj *planop, MoonData *mdp);
 static void init1BI (int idx, int pl, int moon, char *name);
 static void initPlobj(void);
-static void initDir(void);
 static void rotate (double a, double *x, double *y);
 
 /* directory in which to look for auxil moon data files.
@@ -110,10 +109,8 @@ plmoon_cir (Now *np, Obj *moonop)
 	Obj *planop;
 
 	/* init plobj[] */
-	if (!((Obj *)&plobj[0])->o_type) {
+	if (!((Obj *)&plobj[0])->o_type)
 	    initPlobj();
-	    initDir();
-	}
 
 	/* get sun @ np */
 	if (memcmp (&plnow[SUN], np, sizeof(Now))) {
@@ -225,14 +222,6 @@ initPlobj()
 	    ((Obj*)&plobj[i])->o_type = PLANET;
 	    ((Obj*)&plobj[i])->pl_code = i;
 	}
-}
-
-/* install a default if no moondir set yet */
-static void
-initDir()
-{
-	if (!moondir)
-	    moondir = ".";
 }
 
 /* set moonop->s_* fields.

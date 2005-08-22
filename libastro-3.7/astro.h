@@ -1,6 +1,8 @@
 #ifndef _ASTRO_H
 #define _ASTRO_H
 
+#include <stdio.h>
+
 #ifndef PI
 #define	PI		3.141592653589793
 #endif
@@ -116,6 +118,7 @@ typedef struct {
 #define	set_smag(op,m)	((op)->s_mag = (short)floor((m)*MAGSCALE + 0.5))
 #define	set_fmag(op,m)	((op)->f_mag = (short)floor((m)*MAGSCALE + 0.5))
 #define	get_mag(op)	((op)->s_mag / MAGSCALE)
+#define	get_fmag(op)	((op)->f_mag / MAGSCALE)
 
 /* longest object name, including trailing '\0' */
 #define	MAXNM	21
@@ -624,8 +627,7 @@ extern int cns_edges (double e, double **ra0p, double **dec0p, double **ra1p,
     double **dec1p);
 extern int cns_list (double ra, double dec, double e, double rad, int ids[]);
 extern int cns_figure (int id, double e, double ra[],double dec[],int dcodes[]);
-extern int cns_reyfigure (int id, double e, double ra[], double dec[],
-    int dcodes[]);
+extern int cns_loadfigs (FILE *fp, char msg[]);
 
 /* dbfmt.c */
 extern int db_crack_line (char s[], Obj *op, char nm[][MAXNM], int nnm,
@@ -691,6 +693,7 @@ extern void solve_sphere (double A, double b, double cc, double sc,
 extern double delra (double dra);
 extern void now_lst (Now *np, double *lstp);
 extern void radec2ha (Now *np, double ra, double dec, double *hap);
+extern void gha (Now *np, Obj *op, double *ghap);
 extern char *obj_description (Obj *op);
 extern int is_deepsky (Obj *op);
 
@@ -804,5 +807,5 @@ extern int vsop87 (double m, int obj, double prec, double *ret);
 #endif /* _ASTRO_H */
 
 /* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: astro.h,v $ $Date: 2004/12/18 02:50:11 $ $Revision: 1.27 $ $Name:  $
+ * @(#) $RCSfile: astro.h,v $ $Date: 2005/03/11 16:47:46 $ $Revision: 1.30 $ $Name:  $
  */

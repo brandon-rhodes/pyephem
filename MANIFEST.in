@@ -2,5 +2,5 @@ include CHANGELOG
 include COPYING
 include doc/pyephem-manual.html
 include examples/*.py
-include libastro-3.6.4/*.h libastro-3.6.4/Copyright
+include libastro-3.7/*.h libastro-3.7/Copyright
 include test/ephem_test.py

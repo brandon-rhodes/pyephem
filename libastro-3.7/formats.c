@@ -148,7 +148,7 @@ double *dp)		/* cracked value, if return 0 */
 /* crack a floating date string, bp, of the form X/Y/Z determined by the
  *   PREF_DATE_FORMAT preference into its components. allow the day to be a
  *   floating point number,
- * actually the slashes may be anything but digits.
+ * the slashes may also be spaces or colons.
  * a lone component with a decimal point is considered a year.
  */
 void
@@ -159,46 +159,46 @@ int *m,
 double *d,
 int *y)
 {
-        double c[3]; /* the three components */
+        double X,Y,Z; /* the three components */
 	int n;
 
-	memset (c, 0, sizeof(c));
-	n = sscanf (bp, "%lf%*[^0-9]%lf%*[^0-9]%lf", &c[0], &c[1], &c[2]);
+	X = Y = Z = 0.0;
+	n = sscanf (bp, "%lf%*[/: ]%lf%*[/: ]%lf", &X, &Y, &Z);
 	if (n == 1 && (strchr(bp, '.')
-			|| (pref == PREF_MDY && (c[0] < 1 || c[0] > 12))
-			|| (pref == PREF_DMY && (c[0] < 1 || c[0] > 31)))) {
+			|| (pref == PREF_MDY && (X < 1 || X > 12))
+			|| (pref == PREF_DMY && (X < 1 || X > 31)))) {
 	    double Mjd;
-	    year_mjd (c[0], &Mjd);
+	    year_mjd (X, &Mjd);
 	    mjd_cal (Mjd, m, d, y);
 	} else {
 	    switch (pref) {
 	    case PREF_MDY:
-		if (n > 0 && c[0] != 0)
-		    *m = (int)c[0];
-		if (n > 1 && c[1] != 0)
-		    *d = c[1];
-		if (n > 2 && c[2] != 0)
-		    *y = (int)c[2];
+		if (n > 0 && X != 0)
+		    *m = (int)X;
+		if (n > 1 && Y != 0)
+		    *d = Y;
+		if (n > 2 && Z != 0)
+		    *y = (int)Z;
 		break;
 	    case PREF_YMD:
-		if (n > 0 && c[0] != 0)
-		    *y = (int)c[0];
-		if (n > 1 && c[1] != 0)
-		    *m = (int)c[1];
-		if (n > 2 && c[2] != 0)
-		    *d = c[2];
+		if (n > 0 && X != 0)
+		    *y = (int)X;
+		if (n > 1 && Y != 0)
+		    *m = (int)Y;
+		if (n > 2 && Z != 0)
+		    *d = Z;
 		break;
 	    case PREF_DMY:
-		if (n > 1 && c[0] != 0)
-		    *d = c[0];
-		if (n > 2 && c[1] != 0)
-		    *m = (int)c[1];
-		if (n > 3 && c[2] != 0)
-		    *y = (int)c[2];
+		if (n > 0 && X != 0)
+		    *d = X;
+		if (n > 1 && Y != 0)
+		    *m = (int)Y;
+		if (n > 2 && Z != 0)
+		    *y = (int)Z;
 		break;
 	    }
 	}
 }
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: formats.c,v $ $Date: 2004/05/05 17:45:49 $ $Revision: 1.13 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: formats.c,v $ $Date: 2005/03/06 05:03:12 $ $Revision: 1.15 $ $Name:  $"};

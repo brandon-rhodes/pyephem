@@ -95,7 +95,7 @@ MoonData md[U_NMOONS])	/* return info */
 	    int i;
 	    for (i = 1; i < U_NMOONS; i++)
 		md[i].x = md[i].y = md[i].z = 0.0;
-	    /*fprintf (stderr, "No mars model available\n");*/
+	    fprintf (stderr, "No uranus model available\n");
 	}
 
 	/* set visibilities */
@@ -260,4 +260,4 @@ moonTrans (MoonData md[U_NMOONS])
 
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: umoon.c,v $ $Date: 2004/12/18 02:50:11 $ $Revision: 1.7 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: umoon.c,v $ $Date: 2005/06/13 03:03:22 $ $Revision: 1.8 $ $Name:  $"};

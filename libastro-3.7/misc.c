@@ -179,7 +179,7 @@ now_lst (Now *np, double *lstp)
 	*lstp = last_lst = lst;
 }
 
-/* convert ra to ha, in range -PI .. PI.
+/* convert ra to ha, in range 0..2*PI
  * need dec too if not already apparent.
  */
 void
@@ -191,9 +191,29 @@ radec2ha (Now *np, double ra, double dec, double *hap)
 	    as_ap (np, epoch, &ra, &dec);
 	now_lst (np, &lst);
 	ha = hrrad(lst) - ra;
-	if (ha < -PI) ha += 2*PI;
-	if (ha >  PI) ha -= 2*PI;
+	if (ha < 0)
+	    ha += 2*PI;
 	*hap = ha;
+}
+
+/* find Greenwich Hour Angle of the given object at the given time, 0..2*PI.
+ */
+void
+gha (Now *np, Obj *op, double *ghap)
+{
+	Now n = *np;
+	Obj o = *op;
+	double tmp;
+
+	n.n_epoch = EOD;
+	n.n_lng = 0.0;
+	n.n_lat = 0.0;
+	obj_cir (&n, &o);
+	now_lst (&n, &tmp);
+	tmp = hrrad(tmp) - o.s_ra;
+	if (tmp < 0)
+	    tmp += 2*PI;
+	*ghap = tmp;
 }
 
 /* given a circle and a line segment, find a segment of the line inside the 
@@ -480,4 +500,4 @@ is_deepsky (Obj *op)
 }
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: misc.c,v $ $Date: 2005/01/31 20:48:27 $ $Revision: 1.17 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: misc.c,v $ $Date: 2005/03/11 16:47:46 $ $Revision: 1.18 $ $Name:  $"};

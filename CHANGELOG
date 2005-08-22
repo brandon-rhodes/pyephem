@@ -1,6 +1,8 @@
 			  PyEphem CHANGELOG
 
-Next version
+Version 3.7a
+
+  - Upgraded to the libastro from XEphem 3.7.
 
   - The Observer now has an radec_of(az=, alt=) function that returns
     the right ascension and declination of any location in the sky.
