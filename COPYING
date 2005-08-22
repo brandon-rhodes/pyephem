@@ -1,11 +1,11 @@
-The libastro library, provided here in the ./libastro-3.6.4 directory,
+The libastro library, provided here in the ./libastro-3.7 directory,
 is the work of Elwood Charles Downey, who has generously allowed me to
 redistribute his code within PyEphem.  If you want to use the libastro
 library for anything other than compiling PyEphem, you need to seek
 his permission yourself; see the "Copyright" file in the libastro
 directory for his general license terms.
 
-Everything outside of the ./libastro-3.6.4 directory is part of
+Everything outside of the ./libastro-3.7 directory is part of
 the PyEphem code base itself, and is
 
    Copyright 2005 by Brandon Craig Rhodes
