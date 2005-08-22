@@ -15,7 +15,7 @@ pre { margin-left: 2em; margin-right: 2em; background-color: d0d0a0 }
 <body>
 <h1>The PyEphem Manual</h1>
 
-Version 2005.July.18, for PyEphem version 3.6.4a.
+Version 2005.August.22, for PyEphem version 3.7a.
 <p>
 _TABLE_OF_CONTENTS_
 <p>
@@ -245,6 +245,19 @@ For example:
 0.0221584026149
 >>> print ephem.degrees(peri_angle * 2)
 1:16:10.50
+</pre>
+
+You may find that your angle arithmetic often returns angles
+that are less than zero or that exceed twice pi.
+You can access the <tt>norm</tt> attribute of an angle
+to force it into this range:
+
+<pre class=interactive>
+>>> deg = ephem.degrees
+>>> print deg(deg('270') + deg('180'))
+450:00:00.00
+>>> print deg(deg('270') + deg('180')).norm
+90:00:00.00
 </pre>
 
 <h3>Computing With Dates</h3>
@@ -836,7 +849,7 @@ the following functions are useful:
 <dt><code>degrees(<i>radians_float</i>)</code>
 <br><code>degrees(<i>degrees_string</i>)</code>
 <dd>
-Returns a floating point number of radians
+Returns an angle as a floating point number of radians
 which formats itself as degrees of arc
 when printed or subjected to <tt>str()</tt>.
 It can be initialized directly with a float in radians,
@@ -850,6 +863,16 @@ Strings produced by the angle are always sexigesimal.
 Like the above function except that the string taken as input,
 returned by <tt>str()</tt>, or printed,
 uses hours of arc (of which there are twenty-four in a circle).
+</dl>
+
+Angle arithmetic may result in angles less than zero
+or greater than twice&nbsp;pi;
+if you want your result normalized to within this range,
+access the <tt>norm</tt> attribute:
+
+<dl><dt>
+<code><i>angle</i>.norm</code> ---
+Returns the angle normalized to the interval [0,&nbsp;2&pi;).
 </dl>
 
 Dates are stored as the number of days since noon on 1899 December~31,
@@ -1012,13 +1035,21 @@ normally this is set to zero,
 meaning that rising and setting times tell you
 when an object appears exactly at the horizon.
 <p>
-Observers support a single function:
+Observers support two functions:
 
 <dl>
 <dt>
 <code>sidereal_time()</code>
 <dd>
 Returns the sidereal time for the observer's date and location.
+<dt>
+<code>radec_of(az=<i>azimuth</i>, alt=<i>altitude</i>)</code>
+<dd>
+Given a point in the sky above the observer
+specified by its azimuth (angle east of north)
+and altitude (angle above the horizon),
+return the right ascension and declination
+that lie at the point.
 </dl>
 
 <h3>5. Body Methods</h3>
@@ -1149,6 +1180,9 @@ when you provided an <tt>Observer</tt> to <tt>compute()</tt>.
  whether the moon is visible from the Sun (boolean)
 
 <dt><a name="satellite-attributes"><b>Earth Satellite Attributes</b></a>
+<dd><code><i>body</i>.catalog_number</code> ---
+ if the satellite was created with&nbsp;<tt>readtle()</tt>,
+ this gives the integer catalog number of the source TLE entry
 <dd><code><i>body</i>.sublat, <i>body</i>.sublong</code> ---
  the point on Earth above which the satellite is positioned
  (radians that print as degrees)
