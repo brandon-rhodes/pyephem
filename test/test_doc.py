@@ -10,7 +10,13 @@ from cStringIO import StringIO
 # created several by building the module for several architectures.
 
 test_dir = sys.path[0]
-(build_lib,) = glob(test_dir + '/../build/lib.*')
+try:
+    (build_lib,) = glob(test_dir + '/../build/lib.*')
+except ValueError:
+    print 'error: cannot find Python module'
+    print ('       please run "python setup.py build"'
+           ' from the pyephem main directory')
+    sys.exit(1)
 sys.path.insert(0, build_lib)
 
 import ephem
