@@ -1,10 +1,37 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
 <html><head><title>PyEphem</title></head>
 <body>
+<table summary="download, introduction, and code example"><tr><td>
 <h1 align=center>PyEphem</h1>
+</td></tr><tr><td rowspan=2>
 <p align=center>The astronomy library for Python</p>
+<p align=center><b>Latest release: 3.7a<br>2005 August 22<br>
+<a href="pyephem-3.7a.tar.gz">pyephem-3.7a.tar.gz</a></b><br>
 <br>
-<table align=right summary="example PyEphem code"><tr><td align=center>
+This version includes two <b>bug fixes</b><br>
+as well as some small enhancements;<br>
+please consult its <tt><a href="pyephem-CHANGELOG">CHANGELOG</a></tt>
+for details.
+</p>
+<p>
+<b>PyEphem</b> provides scientific-grade astronomical computations
+for the <a href="http://www.python.org/">Python</a> programming language.
+Given a date and location on the Earth's surface,
+it can compute the positions of the Sun and Moon,
+of the planets and their moons,
+and of any asteroids, comets, or earth satellites
+whose orbital elements the user can provide.
+Additional functions are provided to compute the angular separation
+between two objects in the sky,
+to determine the constellation in which an object lies,
+and to find the times at which
+an object rises, transits, and sets on a particular day.
+</p>
+<p>
+(In case you need it, the previous version is still available
+<a href="pyephem-3.6.4a.tar.gz">here</a>.)
+</p>
+<td align=center>
 <b><i>A Quick Example</i></b>
 </td></tr><tr><td bgcolor=#f0d080>
 <pre>>>> <b>from ephem import *</b>
@@ -23,34 +50,7 @@
 >>> <b>print mars.rise_time</b>
 2004/11/25 09:44:27</pre>
 </td></tr></table>
-<b>PyEphem</b> provides scientific-grade astronomical computations
-for the <a href="http://www.python.org/">Python</a> programming language.
-It can compute for an arbitrary date and location on Earth
-the positions of the Sun and Moon;
-of the planets and their moons;
-and of any asteroids, comets, or earth satellites
-whose orbital elements the user can provide.
-Additional functions are provided to compute the angular separation
-between two objects in the sky,
-determine the constellation in which an object lies,
-and find the times at which
-an object rises, transits, and sets on a particular day.
-<p align=center>
-<b>Latest release: 3.6.4a<br>2005 July 18<br>
-<a href="pyephem-3.6.4a.tar.gz">pyephem-3.6.4a.tar.gz</a></b>
-<p>
-This release is built atop a fresh version of the libastro library
-which fixes two minor bugs, as described in the
-<tt><a href="pyephem-CHANGELOG">CHANGELOG</a></tt>.
-Plus, observers can now compute the sidereal time
-at their location and date;
-several minor functions have been added;
-and a parameter is now available that lets the user
-specify at what height above or below the horizon
-they consider an object to be rising or setting.
-<p>
-(In case you need it, the previous version is still available
-<a href="pyephem-3.6.1a.tar.gz">here</a>.)
+
 <hr>
 <h2>Resources</h2>
 <ul>
@@ -114,5 +114,5 @@ for several of our longer-lived space probes.
 <hr>
 This page updated by
 <a href="http://rhodesmill.org/brandon">Brandon Craig Rhodes</a>
-on 2005 July 18.
+on 2005 August 22.
 </body></html>

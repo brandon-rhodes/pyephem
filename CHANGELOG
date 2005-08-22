@@ -4,15 +4,20 @@ Version 3.7a
 
   - Upgraded to the libastro from XEphem 3.7.
 
+  - Bugfix: after creating an earth satellite and calling compute(),
+    some attributes (including "sublat" and "sublong") would always
+    equal zero until you had accessed a more mainstream attribute
+    (like "ra" or "dec"); now all attributes should return correct
+    values on their first access.
+
+  - Bugfix: the sidereal_time() function of an Observer now returns a
+    correct floating-point number that measures in radians, rather
+    than a number in the range [0,1).
+
   - The Observer now has an radec_of(az=, alt=) function that returns
-    the right ascension and declination of any location in the sky.
+    the right ascension and declination of a point in the sky.
 
-  - The sidereal_time() function of an Observer now returns a correct
-    floating-point number that measures in radians; thanks to Dirk
-    Muders of the Max-Planck-Institut for pointing out that its
-    numeric value had ranged from [0, 1) rather than [0, 2pi).
-
-  - You can normalize an Angle into the range [0, 2pi) by requesting
+  - You can normalize an Angle into the range [0,2pi) by requesting
     the attribute ".norm".
 
   - Earth satellite objects read in from TLE files now retain their
