@@ -1,5 +1,12 @@
 			  PyEphem CHANGELOG
 
+Version 3.7b
+
+  - Bugfix: in the underlying library, earth satellite objects do not
+    support "SOLSYS" attributes like "sun_distance"; so EarthSatellite
+    must inherit from Body rather than Planet (and lose several
+    attributes, which were returning nonsense values).
+
 Version 3.7a
 
   - Upgraded to the libastro from XEphem 3.7.

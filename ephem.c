@@ -2126,7 +2126,7 @@ static PyTypeObject EarthSatelliteType = {
      0,				/* tp_methods */
      EarthSatellite_members,	/* tp_members */
      EarthSatellite_getset,	/* tp_getset */
-     &PlanetType,		/* tp_base */
+     &BodyType,			/* tp_base */
      0,				/* tp_dict */
      0,				/* tp_descr_get */
      0,				/* tp_descr_set */

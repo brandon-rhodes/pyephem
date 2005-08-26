@@ -13,7 +13,7 @@ ext_modules = [
               )]
 
 setup(name = 'pyephem',
-      version = '3.7a',
+      version = '3.7b',
       description = 'computational astronomy routines from XEphem',
       author = 'Brandon Craig Rhodes',
       author_email = 'brandon@rhodesmill.org',
