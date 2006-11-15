@@ -35,7 +35,7 @@ class date_suite(unittest.TestCase):
     def test_date_triple_value(self):
         self.assertEqual(self.date.triple(), (2004, 9, 4.0119884259256651))
 
-    def test_date_triple_value(self):
+    def test_date_tuple_value(self):
         self.assertEqual(self.date.tuple(),
                          (2004, 9, 4, 0, 17, 15.799999977461994))
 
