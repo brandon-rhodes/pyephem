@@ -223,10 +223,13 @@ static int parse_mjd_from_string(PyObject *so, double *mjdp)
      if (conversions == -1 || !conversions ||
 	 (conversions == 1 && s[dchars] != '\0') ||
 	 (conversions == 2 && s[tchars] != '\0')) {
-	  PyErr_SetString(PyExc_ValueError,
-			  "your date string does not seem to have "
-			  "year/month/day followed optionally by "
-			  "hours:minutes:seconds");
+	  PyObject *complaint = PyString_Format(
+	       PyString_FromString(
+		    "your date string %r does not contain a year/month/day"
+		    " optionally followed by hours:minutes:seconds"),
+	       Py_BuildValue("O", so));
+	  PyErr_SetObject(PyExc_ValueError, complaint);
+	  Py_DECREF(complaint);
 	  return -1;
      }
      f_sscandate(datestr, PREF_YMD, &month, &day, &year);
