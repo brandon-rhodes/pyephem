@@ -24,7 +24,7 @@ double *l, double *b, double *r)	/* result: spherical coordinates */
 {
 	double rho = x*x + y*y;
 
-	if (rho > 1e-35) {	/* standard case: off axis */
+	if (rho > 0) {	/* standard case: off axis */
 	    *l = atan2(y, x);
 	    range (l, 2*PI);
 	    *b = atan2(z, sqrt(rho));
@@ -40,4 +40,4 @@ double *l, double *b, double *r)	/* result: spherical coordinates */
 }
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: sphcart.c,v $ $Date: 2003/03/20 08:51:37 $ $Revision: 1.3 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: sphcart.c,v $ $Date: 2006/08/28 00:20:27 $ $Revision: 1.4 $ $Name:  $"};

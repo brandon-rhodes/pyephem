@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 #include <math.h>
 
 #include "astro.h"
@@ -29,9 +30,6 @@ static MoonData jmd[J_NMOONS] = {
 static double sizemjd;	/* size at last mjd */
 static double cmlImjd;	/* central meridian long sys I, at last mjd */
 static double cmlIImjd;	/*    "                      II      " */
-
-/* file containing BDL coefficients */
-static char jbdlfn[] = "jupiter.9910";
 
 /* These values are from the Explanatory Supplement.
  * Precession degrades them gradually over time.
@@ -133,26 +131,35 @@ MoonData md[J_NMOONS])	/* fill md[1..NM-1].x/y/z for each moon */
 	double x[J_NMOONS], y[J_NMOONS], z[J_NMOONS];
 	char buf[1024];
 	FILE *fp;
+	char *fn;
 	int i;
 
-	/* only valid 1999 through 2010 */
-	if (JD < 2451179.50000 || JD >= 2455562.5)
+	/* check ranges and appropriate data file */
+	if (JD < 2451179.50000)		/* Jan 1 1999 UTC */
+	    return (-1);
+	if (JD < 2455562.5)		/* Jan 1 2011 UTC */
+	    fn = "jupiter.9910";
+	else if (JD < 2459215.5)	/* Jan 1 2021 UTC */
+	    fn = "jupiter.1020";
+	else
 	    return (-1);
 
 	/* open */
-	(void) sprintf (buf, "%s/%s", dir, jbdlfn);
+	(void) sprintf (buf, "%s/%s", dir, fn);
 	fp = fopen (buf, "r");
-	if (!fp)
+	if (!fp) {
+	    fprintf (stderr, "%s: %s\n", fn, strerror(errno));
 	    return (-1);
+	}
 
 	/* use it */
 	if ((i = read_bdl (fp, JD, x, y, z, buf)) < 0) {
-	    fprintf (stderr, "%s: %s\n", jbdlfn, buf);
+	    fprintf (stderr, "%s: %s\n", fn, buf);
 	    fclose (fp);
 	    return (-1);
 	}
 	if (i != J_NMOONS-1) {
-	    fprintf (stderr, "%s: BDL says %d moons, code expects %d", jbdlfn, 
+	    fprintf (stderr, "%s: BDL says %d moons, code expects %d", fn, 
 								i, J_NMOONS-1);
 	    fclose (fp);
 	    return (-1);
@@ -381,4 +388,4 @@ moonTrans (MoonData md[J_NMOONS])
 }
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: jupmoon.c,v $ $Date: 2004/12/18 02:50:11 $ $Revision: 1.6 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: jupmoon.c,v $ $Date: 2006/08/29 03:16:47 $ $Revision: 1.7 $ $Name:  $"};

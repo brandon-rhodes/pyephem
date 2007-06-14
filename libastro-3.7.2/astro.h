@@ -654,7 +654,7 @@ extern void gal_eq (double m, double lt, double lg, double *ra,double *dec);
 
 /* formats.c */
 extern int fs_sexa (char *out, double a, int w, int fracbase);
-extern int fs_date (char out[], double jd);
+extern int fs_date (char out[], int format, double jd);
 extern int f_scansexa (const char *str, double *dp);
 extern void f_sscandate (char *bp, int pref, int *m, double *d, int *y);
 
@@ -807,5 +807,5 @@ extern int vsop87 (double m, int obj, double prec, double *ret);
 #endif /* _ASTRO_H */
 
 /* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: astro.h,v $ $Date: 2005/03/11 16:47:46 $ $Revision: 1.30 $ $Name:  $
+ * @(#) $RCSfile: astro.h,v $ $Date: 2006/04/10 09:00:06 $ $Revision: 1.31 $ $Name:  $
  */

@@ -76,14 +76,13 @@ fs_sexa (char *out, double a, int w, int fracbase)
 	return (out - out0);
 }
 
-/* put the given modified Julian date, jd, in out[] according to preference
- * format.
+/* put the given modified Julian date, jd, in out[] according to the given
+ * preference format.
  * return number of characters written to out, not counting final '\0'.
  */
 int
-fs_date (char out[], double jd)
+fs_date (char out[], int format, double jd)
 {
-	int p = pref_get (PREF_DATE_FORMAT);
 	char *out0 = out;
 	int m, y;
 	double d;
@@ -95,7 +94,7 @@ fs_date (char out[], double jd)
 				    || (d >= 10.0 && d - floor(d) >= .99995))
 	    mjd_cal (mjd_day(jd+0.5), &m, &d, &y);
 
-	switch (p) {
+	switch (format) {
 	case PREF_YMD:
 	    out += sprintf (out, "%4d/%02d/%02.6g", y, m, d);
 	    break;
@@ -106,7 +105,7 @@ fs_date (char out[], double jd)
 	    out += sprintf (out, "%2d/%02.6g/%-4d", m, d, y);
 	    break;
 	default:
-	    printf ("fs_date: bad date pref: %d\n", p);
+	    printf ("fs_date: bad date pref: %d\n", format);
 	    abort();
 	}
 
@@ -124,23 +123,32 @@ f_scansexa (
 const char *str0,	/* input string */
 double *dp)		/* cracked value, if return 0 */
 {
-	double a = 0, b = 0, c = 0;
-	char str[128];
+	double a, b, c;
+	char str[256];
 	char *neg;
-	int r;
+	int isneg, r;
 
 	/* copy str0 so we can play with it */
 	strncpy (str, str0, sizeof(str)-1);
 	str[sizeof(str)-1] = '\0';
 
+	/* note first negative (but not fooled by neg exponent) */
+	isneg = 0;
 	neg = strchr(str, '-');
-	if (neg)
+	if (neg && (neg == str || (neg[-1] != 'E' && neg[-1] != 'e'))) {
 	    *neg = ' ';
+	    isneg = 1;
+	}
+
+	/* crack up to three components */
+	a = b = c = 0.0;
 	r = sscanf (str, "%lf%*[^0-9]%lf%*[^0-9]%lf", &a, &b, &c);
 	if (r < 1)
 	    return (-1);
-	*dp = a + b/60 + c/3600;
-	if (neg)
+
+	/* back to one value, restoring neg */
+	*dp = (c/60.0 + b)/60.0 + a;
+	if (isneg)
 	    *dp *= -1;
 	return (0);
 }
@@ -201,4 +209,4 @@ int *y)
 }
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: formats.c,v $ $Date: 2005/03/06 05:03:12 $ $Revision: 1.15 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: formats.c,v $ $Date: 2006/04/10 09:00:06 $ $Revision: 1.17 $ $Name:  $"};

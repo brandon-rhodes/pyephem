@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 #include <math.h>
 
 #include "astro.h"
@@ -23,9 +24,6 @@ static MoonData mmd[M_NMOONS] = {
     {"Deimos", "II"},
 };
 static double sizemjd;
-
-/* file containing BDL coefficients */
-static char mbdlfn[] = "mars.9910";
 
 /* These values are from the Explanatory Supplement.
  * Precession degrades them gradually over time.
@@ -86,7 +84,7 @@ MoonData md[M_NMOONS])		/* return info */
 	md[2].mag = 12.9 + dmag;
 
 	/* get moon x,y,z from BDL if possible */
-	if (dir && use_bdl (JD, dir, md) < 0) {
+	if (!dir || use_bdl (JD, dir, md) < 0) {
 	    int i;
 	    for (i = 1; i < M_NMOONS; i++)
 		md[i].x = md[i].y = md[i].z = 0.0;
@@ -121,26 +119,35 @@ MoonData md[M_NMOONS])	/* fill md[1..NM-1].x/y/z for each moon */
 	double x[M_NMOONS], y[M_NMOONS], z[M_NMOONS];
 	char buf[1024];
 	FILE *fp;
+	char *fn;
 	int i;
 
-	/* only valid 1999 through 2010 */
-	if (JD < 2451179.50000 || JD >= 2455562.5)
+	/* check ranges and appropriate data file */
+	if (JD < 2451179.50000)		/* Jan 1 1999 UTC */
+	    return (-1);
+	if (JD < 2455562.5)		/* Jan 1 2011 UTC */
+	    fn = "mars.9910";
+	else if (JD < 2459215.5)	/* Jan 1 2021 UTC */
+	    fn = "mars.1020";
+	else
 	    return (-1);
 
 	/* open */
-	(void) sprintf (buf, "%s/%s", dir, mbdlfn);
+	(void) sprintf (buf, "%s/%s", dir, fn);
 	fp = fopen (buf, "r");
-	if (!fp)
+	if (!fp) {
+	    fprintf (stderr, "%s: %s\n", fn, strerror(errno));
 	    return (-1);
+	}
 
 	/* use it */
 	if ((i = read_bdl (fp, JD, x, y, z, buf)) < 0) {
-	    fprintf (stderr, "%s: %s\n", mbdlfn, buf);
+	    fprintf (stderr, "%s: %s\n", fn, buf);
 	    fclose (fp);
 	    return (-1);
 	}
 	if (i != M_NMOONS-1) {
-	    fprintf (stderr, "%s: BDL says %d moons, code expects %d", mbdlfn,
+	    fprintf (stderr, "%s: BDL says %d moons, code expects %d", fn,
 								i, M_NMOONS-1);
 	    fclose (fp);
 	    return (-1);
@@ -255,4 +262,4 @@ moonTrans (MoonData md[M_NMOONS])
 
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: marsmoon.c,v $ $Date: 2004/12/18 02:50:11 $ $Revision: 1.6 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: marsmoon.c,v $ $Date: 2006/08/29 03:16:47 $ $Revision: 1.8 $ $Name:  $"};

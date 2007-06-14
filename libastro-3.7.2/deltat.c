@@ -143,10 +143,9 @@ static short dt[TABSIZ] = {
      6163, 6230,
     /* 1999 USNO data 1998.0 thru 2000.0 (McBurnett) */
      6297, 6347, 6383, 
-    /* 1999 extrapolation (McBurnett), 2001.0 thru 2006.0
-       Ramp up to 1.6 s/yr to transition smoothly to Stevenson formula
-       in 2130.0 */
-     6440, 6510, 6600, 6750, 6900, 7060
+    /* 1999 extrapolation (McBurnett), 2001.0 thru 2006.0 */
+     /* 6440, 6510, 6600, 6750, 6900, 7060 */
+     6409, 6430, 6447, 6507, 6578, 6610	/* ECD */
 
     /* original 1997 USNO extrapolation (stern), 1998.0 thru 2004.0
      6296, 6420,
@@ -177,16 +176,16 @@ double deltat(double mj)
 
 	Y = 2000.0 + (mj - J2000)/365.25;
 
-	if( Y > TABEND  &&  Y < 2130.0 ) {
+	if( Y > TABEND) {
 	    /* linear interpolation from table end; stern */
 	    B = Y - TABEND;
-	    ans = dt[TABSIZ-1] + B * (dt[TABSIZ-1]  - dt[TABSIZ-2]);
+	    ans = dt[TABSIZ-1] + B * (dt[TABSIZ-1]  - dt[TABSIZ-11])/10;
 	    ans *= 0.01;
 	    return(ans);
 	}
 
-	if( Y < TABSTART  ||  Y >= 2130.0 ) {
-	    if( (Y >= 948.0 - 15.0  &&  Y < TABSTART) ||  Y >= 2130.0 ) {
+	if( Y < TABSTART) {
+	    if( Y >= 948.0 - 15.0 ) {
 		/* Stephenson and Morrison, stated domain is 948 to 1600:
 		 * 25.5(centuries from 1800)^2 - 1.9159(centuries from 1955)^2
 		 * Here we offset by -15 y to minimize the discontinuity,
@@ -303,4 +302,4 @@ main()
 #endif
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: deltat.c,v $ $Date: 2003/03/20 08:51:37 $ $Revision: 1.6 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: deltat.c,v $ $Date: 2006/02/25 03:24:09 $ $Revision: 1.9 $ $Name:  $"};

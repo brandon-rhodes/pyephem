@@ -141,13 +141,6 @@ db_crack_line (char s[], Obj *op, char nm[][MAXNM], int nnm, char whynot[])
 void
 db_write_line (Obj *op, char lp[])
 {
-	int priorpref;
-
-	/* .edb format always uses MDY.
-	 * N.B. must restore old value before returning from here!
-	 */
-	priorpref = pref_set (PREF_DATE_FORMAT, PREF_MDY);
-
 	switch (op->o_type) {
 	case FIXED:
 	    write_f (op, lp);
@@ -181,9 +174,6 @@ db_write_line (Obj *op, char lp[])
 	    printf ("Unknown type for %s: %d\n", op->o_name, op->o_type);
 	    abort();
 	}
-
-	/* restore date format preference */
-	(void) pref_set (PREF_DATE_FORMAT, priorpref);
 }
 
 /* given 3 lines, first of which is name and next 2 are TLE, fill op.
@@ -835,10 +825,10 @@ get_okdates (char *lp, float *sp, float *ep)
 	if (*sp || *ep) {
 	    *lp++ = '|';
 	    if (*sp)
-		lp += fs_date (lp, *sp);
+		lp += fs_date (lp, PREF_MDY, *sp);
 	    if (*ep) {
 		*lp++ = '|';
-		lp += fs_date (lp, *ep);
+		lp += fs_date (lp, PREF_MDY, *ep);
 	    }
 	}
 
@@ -884,10 +874,10 @@ write_e (Obj *op, char lp[])
 	lp += sprintf (lp, ",%.7g", op->e_e);
 	lp += sprintf (lp, ",%.7g", op->e_M);
 	*lp++ = ',';
-	lp += fs_date (lp, op->e_cepoch);
+	lp += fs_date (lp, PREF_MDY, op->e_cepoch);
 	lp += get_okdates (lp, &op->e_startok, &op->e_endok);
 	*lp++ = ',';
-	lp += fs_date (lp, op->e_epoch);
+	lp += fs_date (lp, PREF_MDY, op->e_epoch);
 	if (op->e_mag.whichm == MAG_gk)
 	    lp += sprintf (lp, ",g%.7g", op->e_mag.m1);
 	else if (op->e_mag.whichm == MAG_HG)
@@ -903,7 +893,7 @@ write_h (Obj *op, char lp[])
 {
 	lp += sprintf (lp, "%s,h", op->o_name);
 	*lp++ = ',';
-	lp += fs_date (lp, op->h_ep);
+	lp += fs_date (lp, PREF_MDY, op->h_ep);
 	lp += get_okdates (lp, &op->h_startok, &op->h_endok);
 	lp += sprintf (lp, ",%.7g", op->h_inc);
 	lp += sprintf (lp, ",%.7g", op->h_Om);
@@ -911,7 +901,7 @@ write_h (Obj *op, char lp[])
 	lp += sprintf (lp, ",%.7g", op->h_e);
 	lp += sprintf (lp, ",%.7g", op->h_qp);
 	*lp++ = ',';
-	lp += fs_date (lp, op->h_epoch);
+	lp += fs_date (lp, PREF_MDY, op->h_epoch);
 	lp += sprintf (lp, ",%.7g", op->h_g);
 	lp += sprintf (lp, ",%.7g", op->h_k);
 	lp += sprintf (lp, ",%.7g", op->h_size);
@@ -922,14 +912,14 @@ write_p (Obj *op, char lp[])
 {
 	lp += sprintf (lp, "%s,p", op->o_name);
 	*lp++ = ',';
-	lp += fs_date (lp, op->p_ep);
+	lp += fs_date (lp, PREF_MDY, op->p_ep);
 	lp += get_okdates (lp, &op->p_startok, &op->p_endok);
 	lp += sprintf (lp, ",%.7g", op->p_inc);
 	lp += sprintf (lp, ",%.7g", op->p_om);
 	lp += sprintf (lp, ",%.7g", op->p_qp);
 	lp += sprintf (lp, ",%.7g", op->p_Om);
 	*lp++ = ',';
-	lp += fs_date (lp, op->p_epoch);
+	lp += fs_date (lp, PREF_MDY, op->p_epoch);
 	lp += sprintf (lp, ",%.7g", op->p_g);
 	lp += sprintf (lp, ",%.7g", op->p_k);
 	lp += sprintf (lp, ",%.7g", op->p_size);
@@ -940,7 +930,7 @@ write_E (Obj *op, char lp[])
 {
 	lp += sprintf (lp, "%s,E", op->o_name);
 	*lp++ = ',';
-	lp += fs_date (lp, op->es_epoch);
+	lp += fs_date (lp, PREF_MDY, op->es_epoch);
 	lp += get_okdates (lp, &op->es_startok, &op->es_endok);
 	lp += sprintf (lp, ",%.7g", op->es_inc);
 	lp += sprintf (lp, ",%.7g", op->es_raan);
@@ -1005,4 +995,4 @@ write_P (Obj *op, char lp[])
 }
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: dbfmt.c,v $ $Date: 2005/02/10 03:36:04 $ $Revision: 1.40 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: dbfmt.c,v $ $Date: 2006/04/10 09:00:06 $ $Revision: 1.41 $ $Name:  $"};

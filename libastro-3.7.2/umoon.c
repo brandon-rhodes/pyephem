@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 #include <math.h>
 
 #include "astro.h"
@@ -26,9 +27,6 @@ static MoonData umd[U_NMOONS] = {
     {"Miranda", "V"},
 };
 static double sizemjd;	/* size at last mjd */
-
-/* file containing BDL coefficients */
-static char ubdlfn[] = "uranus.9910";
 
 /* These values are from the Explanatory Supplement.
  * Precession degrades them gradually over time.
@@ -91,7 +89,7 @@ MoonData md[U_NMOONS])	/* return info */
 	md[5].mag = 16.3;
 
 	/* get moon x,y,z from BDL if possible */
-	if (dir && use_bdl (JD, dir, md) < 0) {
+	if (!dir || use_bdl (JD, dir, md) < 0) {
 	    int i;
 	    for (i = 1; i < U_NMOONS; i++)
 		md[i].x = md[i].y = md[i].z = 0.0;
@@ -126,26 +124,35 @@ MoonData md[U_NMOONS])	/* fill md[1..NM-1].x/y/z for each moon */
 	double x[U_NMOONS], y[U_NMOONS], z[U_NMOONS];
 	char buf[1024];
 	FILE *fp;
+	char *fn;
 	int i;
 
-	/* only valid 1999 through 2010 */
-	if (JD < 2451179.50000 || JD >= 2455562.5)
+	/* check ranges and appropriate data file */
+	if (JD < 2451179.50000)		/* Jan 1 1999 UTC */
+	    return (-1);
+	if (JD < 2455562.5)		/* Jan 1 2011 UTC */
+	    fn = "uranus.9910";
+	else if (JD < 2459215.5)	/* Jan 1 2021 UTC */
+	    fn = "uranus.1020";
+	else
 	    return (-1);
 
 	/* open */
-	(void) sprintf (buf, "%s/%s", dir, ubdlfn);
+	(void) sprintf (buf, "%s/%s", dir, fn);
 	fp = fopen (buf, "r");
-	if (!fp)
+	if (!fp) {
+	    fprintf (stderr, "%s: %s\n", fn, strerror(errno));
 	    return (-1);
+	}
 
 	/* use it */
 	if ((i = read_bdl (fp, JD, x, y, z, buf)) < 0) {
-	    fprintf (stderr, "%s: %s\n", ubdlfn, buf);
+	    fprintf (stderr, "%s: %s\n", fn, buf);
 	    fclose (fp);
 	    return (-1);
 	}
 	if (i != U_NMOONS-1) {
-	    fprintf (stderr, "%s: BDL says %d moons, code expects %d", ubdlfn, 
+	    fprintf (stderr, "%s: BDL says %d moons, code expects %d", fn, 
 								i, U_NMOONS-1);
 	    fclose (fp);
 	    return (-1);
@@ -260,4 +267,4 @@ moonTrans (MoonData md[U_NMOONS])
 
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: umoon.c,v $ $Date: 2005/06/13 03:03:22 $ $Revision: 1.8 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: umoon.c,v $ $Date: 2006/08/29 03:16:47 $ $Revision: 1.10 $ $Name:  $"};

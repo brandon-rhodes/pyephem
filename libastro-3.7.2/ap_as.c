@@ -1,4 +1,5 @@
 #include <string.h>
+#include <math.h>
 
 #include "astro.h"
 
@@ -10,9 +11,11 @@
 void
 ap_as (Now *np, double Mjd, double *rap, double *decp)
 {
+	double r0 = *rap, d0 = *decp;
 	Obj o;
 	Now n;
 
+	/* as -> ap */
 	zero_mem ((void *)&o, sizeof(o));
 	o.o_type = FIXED;
 	o.f_RA = (float)*rap;
@@ -23,6 +26,18 @@ ap_as (Now *np, double Mjd, double *rap, double *decp)
 	obj_cir (&n, &o);
 	*rap -= o.s_ra - *rap;
 	*decp -= o.s_dec - *decp;
+
+	/* then back to start for second order correction */
+	o.o_type = FIXED;
+	o.f_RA = (float)*rap;
+	o.f_dec = (float)*decp;
+	o.f_epoch = (float)mjd;
+	memcpy ((void *)&n, (void *)np, sizeof(Now));
+	n.n_epoch = EOD;
+	obj_cir (&n, &o);
+	*rap -= o.s_ra - r0;
+	*decp -= o.s_dec - d0;
+
 	radecrange (rap, decp);
 	precess (mjd, Mjd, rap, decp);
 	radecrange (rap, decp);
@@ -50,4 +65,4 @@ as_ap (Now *np, double Mjd, double *rap, double *decp)
 }
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: ap_as.c,v $ $Date: 2003/05/04 13:56:21 $ $Revision: 1.7 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: ap_as.c,v $ $Date: 2006/08/28 00:20:58 $ $Revision: 1.8 $ $Name:  $"};

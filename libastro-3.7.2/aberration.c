@@ -34,7 +34,41 @@ ab_ecl (double mj, double lsn, double *lam, double *bet)
 void
 ab_eq (double mj, double lsn, double *ra, double *dec)
 {
+#if defined(USE_MEEUS_AB_EQ)
+
+	/* this claims to account for earth orbit excentricity and is also
+	 * smooth clear to dec=90 but it does not work well backwards with
+	 * ap_as()
+	 */
 	ab_aux(mj, ra, dec, lsn, AB_EQ_EOD);
+
+#else /* use Montenbruck */
+
+	/* this agrees with Meeus to within 0.2 arcsec until dec gets larger
+	 * than about 89.9, then grows to 1as at 89.97. but it works very
+	 * smoothly with ap_as
+	 */
+	double x, y, z;		/* equatorial rectangular coords */
+	double vx, vy, vz;	/* aberration velocity in rectangular coords */
+	double L;		/* helio long of earth */
+	double cL;
+	double r;
+
+
+	sphcart (*ra, *dec, 1.0, &x, &y, &z);
+
+	L = 2*PI*(0.27908 + 100.00214*(mj-J2000)/36525.0);
+	cL = cos(L);
+	vx = -0.994e-4*sin(L);
+	vy = 0.912e-4*cL;
+	vz = 0.395e-4*cL;
+	x += vx;
+	y += vy;
+	z += vz;
+
+	cartsph (x, y, z, ra, dec, &r);
+
+#endif
 }
 
 /* because the e-terms are secular, keep the real transformation for both
@@ -110,8 +144,8 @@ ab_aux (double mj, double *x, double *y, double lsn, int mode)
 			    eexc * (cp * ce * ddec + cr * sd * sp) );
 		
 		*ra += dra;
-		range (ra, 2*PI);
 		*dec += ddec;
+		radecrange (ra, dec);
 	    }
 	    break;
 
@@ -124,4 +158,4 @@ ab_aux (double mj, double *x, double *y, double lsn, int mode)
 }
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: aberration.c,v $ $Date: 2004/05/05 17:45:49 $ $Revision: 1.5 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: aberration.c,v $ $Date: 2006/08/28 00:22:26 $ $Revision: 1.6 $ $Name:  $"};
