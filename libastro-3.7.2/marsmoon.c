@@ -88,7 +88,7 @@ MoonData md[M_NMOONS])		/* return info */
 	    int i;
 	    for (i = 1; i < M_NMOONS; i++)
 		md[i].x = md[i].y = md[i].z = 0.0;
-	    fprintf (stderr, "No mars model available\n");
+	    /*fprintf (stderr, "No mars model available\n");*/
 	}
 
 	/* set visibilities */

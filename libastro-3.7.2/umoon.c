@@ -93,7 +93,7 @@ MoonData md[U_NMOONS])	/* return info */
 	    int i;
 	    for (i = 1; i < U_NMOONS; i++)
 		md[i].x = md[i].y = md[i].z = 0.0;
-	    fprintf (stderr, "No uranus model available\n");
+	    /*fprintf (stderr, "No uranus model available\n");*/
 	}
 
 	/* set visibilities */
