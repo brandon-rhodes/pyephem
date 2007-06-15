@@ -207,7 +207,7 @@ staticforward PyTypeObject DateType;
 
 typedef PyFloatObject DateObject;
 
-inline int parse_mjd_from_number(PyObject *o, double *mjdp)
+static int parse_mjd_from_number(PyObject *o, double *mjdp)
 {
      return PyNumber_AsDouble(o, mjdp);
 }
