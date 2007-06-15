@@ -214,37 +214,58 @@ static int parse_mjd_from_number(PyObject *o, double *mjdp)
 
 static int parse_mjd_from_string(PyObject *so, double *mjdp)
 {
-     char *s = PyString_AsString(so);
-     char datestr[32], timestr[32];
+     /* Run the Python code: s = so.strip() */
+     PyObject *emptytuple = PyTuple_New(0);
+     PyObject *split_func = PyObject_GetAttrString(so, "split");
+     PyObject *pieces = PyObject_Call(split_func, emptytuple, 0);
+     int size = PyObject_Size(pieces);
+     int year, month = 1;
      double day = 1.0;
-     int year, month = 1, dchars, tchars;
-     int conversions = sscanf(s, " %31[-0-9/.] %n%31[0-9:.] %n",
-			      datestr, &dchars, timestr, &tchars);
-     if (conversions == -1 || !conversions ||
-	 (conversions == 1 && s[dchars] != '\0') ||
-	 (conversions == 2 && s[tchars] != '\0')) {
-	  PyObject *complaint = PyString_Format(
-	       PyString_FromString(
-		    "your date string %r does not contain a year/month/day"
-		    " optionally followed by hours:minutes:seconds"),
-	       Py_BuildValue("O", so));
-	  PyErr_SetObject(PyExc_ValueError, complaint);
-	  Py_DECREF(complaint);
-	  return -1;
+
+     Py_DECREF(emptytuple);
+     Py_DECREF(split_func);
+
+     if ((size < 1) || (size > 2))
+	  goto fail;
+
+     if (size >= 1) {
+	  char *s = PyString_AsString(PyList_GetItem(pieces, 0));
+	  int i;
+
+	  /* Make sure all characters are in set '-/.0123456789' */
+
+	  for (i=0; s[i]; i++)
+	       if (s[i] != '-' && s[i] != '/' && s[i] != '.'
+		   && (s[i] < '0' || s[i] > '9'))
+		    goto fail;
+
+	  f_sscandate(s, PREF_YMD, &month, &day, &year);
      }
-     f_sscandate(datestr, PREF_YMD, &month, &day, &year);
-     if (conversions == 2) {
+
+     if (size >= 2) {
+	  char *s = PyString_AsString(PyList_GetItem(pieces, 1));
 	  double hours;
-	  if (f_scansexa(timestr, &hours) == -1) {
-	       PyErr_SetString(PyExc_ValueError,
-			       "the second field of your time string does "
-			       "not appear to be hours:minutes:seconds");
-	       return -1;
-	  }
+	  if (f_scansexa(s, &hours) == -1)
+	       goto fail;
 	  day += hours / 24.;
      }
+
      cal_mjd(month, day, year, mjdp);
+     Py_DECREF(pieces);
      return 0;
+
+fail:
+     {
+	  PyObject *repr = PyObject_Repr(so);
+          PyObject *complaint = PyString_FromFormat(
+	       "your date string %s does not look like a year/month/day"
+	       " optionally followed by hours:minutes:seconds",
+	       PyString_AsString(repr));
+	  PyErr_SetObject(PyExc_ValueError, complaint);
+	  Py_DECREF(repr);
+	  Py_DECREF(complaint);
+     }
+     return -1;
 }
 
 static int parse_mjd_from_tuple(PyObject *value, double *mjdp)
