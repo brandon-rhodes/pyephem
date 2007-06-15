@@ -218,22 +218,23 @@ static int parse_mjd_from_string(PyObject *so, double *mjdp)
      PyObject *emptytuple = PyTuple_New(0);
      PyObject *split_func = PyObject_GetAttrString(so, "split");
      PyObject *pieces = PyObject_Call(split_func, emptytuple, 0);
-     int size = PyObject_Size(pieces);
+     int len = PyObject_Length(pieces);
+     char *s = (len >= 1) ? PyString_AsString(PyList_GetItem(pieces, 0)) : 0;
+     char *t = (len >= 2) ? PyString_AsString(PyList_GetItem(pieces, 1)) : 0;
      int year, month = 1;
      double day = 1.0;
 
      Py_DECREF(emptytuple);
      Py_DECREF(split_func);
+     Py_DECREF(pieces);
 
-     if ((size < 1) || (size > 2))
+     if ((len < 1) || (len > 2))
 	  goto fail;
 
-     if (size >= 1) {
-	  char *s = PyString_AsString(PyList_GetItem(pieces, 0));
-	  int i;
-
+     if (s) {
 	  /* Make sure all characters are in set '-/.0123456789' */
 
+	  int i;
 	  for (i=0; s[i]; i++)
 	       if (s[i] != '-' && s[i] != '/' && s[i] != '.'
 		   && (s[i] < '0' || s[i] > '9'))
@@ -242,16 +243,14 @@ static int parse_mjd_from_string(PyObject *so, double *mjdp)
 	  f_sscandate(s, PREF_YMD, &month, &day, &year);
      }
 
-     if (size >= 2) {
-	  char *s = PyString_AsString(PyList_GetItem(pieces, 1));
+     if (t) {
 	  double hours;
-	  if (f_scansexa(s, &hours) == -1)
+	  if (f_scansexa(t, &hours) == -1)
 	       goto fail;
 	  day += hours / 24.;
      }
 
      cal_mjd(month, day, year, mjdp);
-     Py_DECREF(pieces);
      return 0;
 
 fail:
