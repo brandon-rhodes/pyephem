@@ -4,7 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <unistd.h>
+/* #include <unistd.h>
+ * breaks compilation under windows, and seems
+ * unnecessary for error-free Unix compilation */
 
 #include "astro.h"
 #include "bdl.h"
