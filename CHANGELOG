@@ -1,5 +1,19 @@
 			  PyEphem CHANGELOG
 
+Version 3.7.2a (2007 June)
+
+  - Upgraded to the libastro from XEphem 3.7.2.
+
+  - Should now compile under Windows!
+
+  - Bugfix: rewrote date-and-time parsing to avoid the use of
+    sscanf(), which was breaking under Windows and requiring the
+    insertion of a leading space to succeed.
+
+  - Improved the error returned when a date string cannot be parsed,
+    so that it now quotes the objectionable string (so you can tell
+    which of several date strings on the same line gave an error!).
+
 Version 3.7b  (2005 August 25)
 
   - Bugfix: in the underlying library, earth satellite objects do not
