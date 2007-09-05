@@ -51,7 +51,7 @@ typedef struct {
 
 typedef Body Planet, PlanetMoon;
 typedef Body FixedBody, BinaryStar;
-typedef Body EllipticalBody, ParabolicBody;
+typedef Body EllipticalBody, ParabolicBody, HyperbolicBody;
 
 typedef struct {
      PyObject_HEAD
