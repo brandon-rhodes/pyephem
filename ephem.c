@@ -1187,7 +1187,16 @@ static int Body_obj_cir(Body *body, char *fieldname, unsigned topocentric)
 	  return 0;
      pref_set(PREF_EQUATORIAL, body->obj.o_flags & VALID_TOPO ?
 	      PREF_TOPO : PREF_GEO);
-     obj_cir(& body->now, & body->obj);
+     if (body->obj.o_type == FIXED) {
+          float ra = body->obj.f.fo_ra;
+          float dec = body->obj.f.fo_dec;
+          float epoch = body->obj.f.fo_epoch;
+          obj_cir(& body->now, & body->obj);
+          body->obj.f.fo_ra = ra;
+          body->obj.f.fo_dec = dec;
+          body->obj.f.fo_epoch = epoch;
+     } else
+          obj_cir(& body->now, & body->obj);
      body->obj.o_flags |= VALID_OBJ;
      return 0;
 }
