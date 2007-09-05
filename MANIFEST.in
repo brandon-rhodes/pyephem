@@ -3,4 +3,4 @@ include COPYING
 include doc/pyephem-manual.html
 include examples/*.py
 include libastro-3.7.2/*.h libastro-3.7.2/Copyright
-include test/ephem_test.py
+include tests/ephem_test.py
