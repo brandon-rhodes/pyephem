@@ -1743,7 +1743,7 @@ static PyTypeObject PlanetType = {
      PyObject_HEAD_INIT(NULL)
      0,
      "ephem.Planet",
-     sizeof(Body),
+     sizeof(Planet),
      0,
      0,				/* tp_dealloc */
      0,				/* tp_print */
@@ -1915,7 +1915,7 @@ static PyTypeObject FixedBodyType = {
      PyObject_HEAD_INIT(NULL)
      0,
      "ephem.FixedBody",
-     sizeof(Body),
+     sizeof(FixedBody),
      0,
      0,				/* tp_dealloc */
      0,				/* tp_print */
@@ -1958,7 +1958,7 @@ static PyTypeObject BinaryStarType = {
      PyObject_HEAD_INIT(NULL)
      0,
      "ephem.BinaryStar",
-     sizeof(Body),
+     sizeof(BinaryStar),
      0,
      0,				/* tp_dealloc */
      0,				/* tp_print */
@@ -2001,7 +2001,7 @@ static PyTypeObject EllipticalBodyType = {
      PyObject_HEAD_INIT(NULL)
      0,
      "ephem.EllipticalBody",
-     sizeof(Body),
+     sizeof(EllipticalBody),
      0,
      0,				/* tp_dealloc */
      0,				/* tp_print */
@@ -2044,7 +2044,7 @@ static PyTypeObject HyperbolicBodyType = {
      PyObject_HEAD_INIT(NULL)
      0,
      "ephem.HyperbolicBody",
-     sizeof(Body),
+     sizeof(HyperbolicBody),
      0,
      0,				/* tp_dealloc */
      0,				/* tp_print */
@@ -2087,7 +2087,7 @@ static PyTypeObject ParabolicBodyType = {
      PyObject_HEAD_INIT(NULL)
      0,
      "ephem.ParabolicBody",
-     sizeof(Body),
+     sizeof(ParabolicBody),
      0,
      0,				/* tp_dealloc */
      0,				/* tp_print */
@@ -2587,7 +2587,7 @@ PyMODINIT_FUNC
 #else
 DL_EXPORT(void)
 #endif
-initephem(void)
+init_ephem(void)
 {
      PyObject *module;
 
@@ -2620,8 +2620,8 @@ initephem(void)
      PyType_Ready(&ParabolicBodyType);
      PyType_Ready(&EarthSatelliteType);
 
-     module = Py_InitModule3("ephem", ephem_methods,
-			"Astronomical calculations for Python");
+     module = Py_InitModule3("_ephem", ephem_methods,
+                             "Astronomical calculations for Python");
      if (!module) return;
 
      {
