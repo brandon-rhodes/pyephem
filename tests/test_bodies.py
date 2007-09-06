@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import sys
+from sets import Set
 from ephem_test import *
 
 # The attributes which each class of object should support (these

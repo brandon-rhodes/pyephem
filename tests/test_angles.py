@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from ephem_test import *
+import math
 
 # Determine whether angles work reasonably.
 

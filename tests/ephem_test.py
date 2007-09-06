@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
-import math, sys, unittest
-from sets import Set
+import unittest
 
 class TestError(Exception):
     pass
