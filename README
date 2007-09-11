@@ -1,15 +1,15 @@
 PyEphem
-Version 3.7
-22 August 2005
+Version 3.7.2
+September 2007
 
-PyEphem provides an `ephem' Python module that can perform many
+PyEphem provides an "ephem" Python module that can perform many
 astronomical computations.  You can find the most recent version at
 
    http://rhodesmill.org/brandon/projects/pyephem.html
 
-The computation routines behind PyEphem were extracted from the XEphem
-program of Elwood Charles Downey (ecdowney@ClearSkyInstitute.com),
-available from http://iraf.noao.edu/~ecdowney/xephem.html.
+The computation routines behind PyEphem are from the "XEphem" program
+by Elwood Charles Downey (ecdowney@ClearSkyInstitute.com), available
+from http://iraf.noao.edu/~ecdowney/xephem.html.
 
 See the COPYING file in this directory for copyright information.
 
