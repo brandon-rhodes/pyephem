@@ -17,8 +17,9 @@ setup(name = 'pyephem',
       author_email = 'brandon@rhodesmill.org',
       url = 'http://rhodesmill.org/brandon/projects/pyephem.html',
       packages = [ 'ephem' ],
+      package_dir = { 'ephem': 'src' },
       ext_modules = [
-    Extension('ephem._libastro', ['_libastro.c'] + libastro_files,
+    Extension('ephem._libastro', ['src/_libastro.c'] + libastro_files,
               include_dirs=['libastro-' + libastro_version],
               )],
       )
