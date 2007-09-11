@@ -209,7 +209,7 @@ static PyGetSetDef Angle_getset[] = {
 static PyTypeObject AngleType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_ephem.angle",
+     "_libastro.angle",
      sizeof(AngleObject),
      0,
      0,				/* tp_dealloc */
@@ -439,7 +439,7 @@ static PyMethodDef Date_methods[] = {
 static PyTypeObject DateType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_ephem.date",
+     "_libastro.date",
      sizeof(PyFloatObject),
      0,
      0,				/* tp_dealloc */
@@ -849,7 +849,7 @@ static PyMemberDef Observer_members[] = {
 static PyTypeObject ObserverType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_ephem.Observer",
+     "_libastro.Observer",
      sizeof(Observer),
      0,
      0,				/* tp_dealloc */
@@ -1701,7 +1701,7 @@ static PyMemberDef EarthSatellite_members[] = {
 static PyTypeObject BodyType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_ephem.Body",
+     "_libastro.Body",
      sizeof(Body),
      0,
      Body_dealloc,		/* tp_dealloc */
@@ -1744,7 +1744,7 @@ static PyTypeObject BodyType = {
 static PyTypeObject PlanetType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_ephem.Planet",
+     "_libastro.Planet",
      sizeof(Planet),
      0,
      0,				/* tp_dealloc */
@@ -1787,7 +1787,7 @@ static PyTypeObject PlanetType = {
 static PyTypeObject PlanetMoonType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_ephem.PlanetMoon",
+     "_libastro.PlanetMoon",
      sizeof(PlanetMoon),
      0,
      Body_dealloc,		/* tp_dealloc */
@@ -1830,7 +1830,7 @@ static PyTypeObject PlanetMoonType = {
 static PyTypeObject SaturnType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_ephem.Saturn",
+     "_libastro.Saturn",
      sizeof(Saturn),
      0,
      0,				/* tp_dealloc */
@@ -1873,7 +1873,7 @@ static PyTypeObject SaturnType = {
 static PyTypeObject MoonType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_ephem.Moon",
+     "_libastro.Moon",
      sizeof(Moon),
      0,
      0,				/* tp_dealloc */
@@ -1916,7 +1916,7 @@ static PyTypeObject MoonType = {
 static PyTypeObject FixedBodyType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_ephem.FixedBody",
+     "_libastro.FixedBody",
      sizeof(FixedBody),
      0,
      0,				/* tp_dealloc */
@@ -1959,7 +1959,7 @@ static PyTypeObject FixedBodyType = {
 static PyTypeObject BinaryStarType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_ephem.BinaryStar",
+     "_libastro.BinaryStar",
      sizeof(BinaryStar),
      0,
      0,				/* tp_dealloc */
@@ -2002,7 +2002,7 @@ static PyTypeObject BinaryStarType = {
 static PyTypeObject EllipticalBodyType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_ephem.EllipticalBody",
+     "_libastro.EllipticalBody",
      sizeof(EllipticalBody),
      0,
      0,				/* tp_dealloc */
@@ -2045,7 +2045,7 @@ static PyTypeObject EllipticalBodyType = {
 static PyTypeObject HyperbolicBodyType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_ephem.HyperbolicBody",
+     "_libastro.HyperbolicBody",
      sizeof(HyperbolicBody),
      0,
      0,				/* tp_dealloc */
@@ -2088,7 +2088,7 @@ static PyTypeObject HyperbolicBodyType = {
 static PyTypeObject ParabolicBodyType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_ephem.ParabolicBody",
+     "_libastro.ParabolicBody",
      sizeof(ParabolicBody),
      0,
      0,				/* tp_dealloc */
@@ -2131,7 +2131,7 @@ static PyTypeObject ParabolicBodyType = {
 static PyTypeObject EarthSatelliteType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_ephem.EarthSatellite",
+     "_libastro.EarthSatellite",
      sizeof(EarthSatellite),
      0,
      0,				/* tp_dealloc */
@@ -2516,7 +2516,7 @@ static PyObject *moon_phases(PyObject *self, PyObject *args)
  * The global methods table and the module initialization function.
  */
 
-static PyMethodDef ephem_methods[] = {
+static PyMethodDef libastro_methods[] = {
 
      {"degrees", degrees, METH_VARARGS, "build an angle measured in degrees"},
      {"hours", hours, METH_VARARGS, "build an angle measured in hours of arc"},
@@ -2558,7 +2558,7 @@ PyMODINIT_FUNC
 #else
 DL_EXPORT(void)
 #endif
-init_ephem(void)
+init_libastro(void)
 {
      PyObject *module;
 
@@ -2592,7 +2592,7 @@ init_ephem(void)
      PyType_Ready(&ParabolicBodyType);
      PyType_Ready(&EarthSatelliteType);
 
-     module = Py_InitModule3("_ephem", ephem_methods,
+     module = Py_InitModule3("_libastro", libastro_methods,
                              "Astronomical calculations for Python");
      if (!module) return;
 
