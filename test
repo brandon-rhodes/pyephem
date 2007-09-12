@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
+import doctest
 
 import tests.test_angles
 import tests.test_bodies
@@ -11,5 +12,6 @@ loader = unittest.defaultTestLoader
 suite.addTest(loader.loadTestsFromModule(tests.test_angles))
 suite.addTest(loader.loadTestsFromModule(tests.test_bodies))
 suite.addTest(loader.loadTestsFromModule(tests.test_dates))
+suite.addTest(doctest.DocFileSuite('doc/dates.rst'))
 runner = unittest.TextTestRunner()
 runner.run(suite)

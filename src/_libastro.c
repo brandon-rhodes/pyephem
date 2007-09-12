@@ -1,6 +1,7 @@
 /* Python header files. */
 
 #include <Python.h>
+#include <datetime.h>
 #include <structmember.h>
 
 #include "astro.h"
@@ -81,7 +82,7 @@ typedef struct {
      PyObject *catalog_number;	/* TLE catalog number */
 } EarthSatellite;
 
-/* */
+/* Return the mjd of the current time. */
 
 static double mjd_now(void)
 {
@@ -103,9 +104,9 @@ static int PyNumber_AsDouble(PyObject *o, double *dp)
    initializes the list of planets that XEphem displays by default.
    Rather than duplicate its logic for how to build each objects, we
    simply make a copy of one of its objects when the user asks for a
-   planet or moon. */
+   planet or moon.
 
-/* This function is exposed by the module so that ephem.py can build
+   This function is exposed by the module so that ephem.py can build
    Planet classes dynamically; each element of the list it returns is
    a tuple that looks like (7, "Planet", "Pluto"): */
 
@@ -330,6 +331,20 @@ static int parse_mjd_from_tuple(PyObject *value, double *mjdp)
      return 0;
 }
 
+static int parse_mjd_from_datetime(PyObject *value, double *mjdp)
+{
+     cal_mjd(PyDateTime_GET_MONTH(value),
+             PyDateTime_GET_DAY(value),
+             PyDateTime_GET_YEAR(value),
+             mjdp);
+     if (PyDateTime_Check(value)) {
+          *mjdp += PyDateTime_DATE_GET_HOUR(value) / 24.;
+          *mjdp += PyDateTime_DATE_GET_MINUTE(value) / (24. * 60.);
+          *mjdp += PyDateTime_DATE_GET_SECOND(value) / (24. * 60. * 60.);
+     }
+     return 0;
+}
+
 static int parse_mjd(PyObject *value, double *mjdp)
 {
      if (PyNumber_Check(value))
@@ -338,6 +353,8 @@ static int parse_mjd(PyObject *value, double *mjdp)
 	  return parse_mjd_from_string(value, mjdp);
      else if (PyTuple_Check(value))
 	  return parse_mjd_from_tuple(value, mjdp);
+     else if (PyDate_Check(value))
+          return parse_mjd_from_datetime(value, mjdp);
      PyErr_SetString(PyExc_ValueError,
 		     "dates must be specified by a number, string, or tuple");
      return -1;
@@ -2561,6 +2578,8 @@ DL_EXPORT(void)
 init_libastro(void)
 {
      PyObject *module;
+
+     PyDateTime_IMPORT;
 
      /* Initialize pointers to objects external to this module. */
 
