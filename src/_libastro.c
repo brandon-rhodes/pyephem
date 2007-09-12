@@ -418,23 +418,21 @@ static int Date_print(PyObject *self, FILE *fp, int flags)
      return 0;
 }
 
-static PyObject *Date_triple(PyObject *self, PyObject *args)
+static PyObject *Date_triple(PyObject *self)
 {
      int year, month;
      double day;
      DateObject *d = (DateObject*) self;
-     if (!PyArg_ParseTuple(args, ":date.triple")) return 0;
      mjd_cal(d->ob_fval, &month, &day, &year);
      return Py_BuildValue("iid", year, month, day);
 }
 
-static PyObject *Date_tuple(PyObject *self, PyObject *args)
+static PyObject *Date_tuple(PyObject *self)
 {
      int year, month;
      double fday, fhour, fminute, fsecond;
      int day, hour, minute;
      DateObject *d = (DateObject*) self;
-     if (!PyArg_ParseTuple(args, ":date.tuple")) return 0;
      mjd_cal(d->ob_fval, &month, &fday, &year);
      day = (int) fday;
      fhour = fmod(fday, 1.0) * 24;
@@ -458,9 +456,9 @@ static PyObject *Date_datetime(PyObject *self)
 }
 
 static PyMethodDef Date_methods[] = {
-     {"triple", Date_triple, METH_VARARGS,
+     {"triple", (PyCFunction) Date_triple, METH_NOARGS,
       "Return the date as a (year, month, day_with_fraction) tuple"},
-     {"tuple", Date_tuple, METH_VARARGS,
+     {"tuple", (PyCFunction) Date_tuple, METH_NOARGS,
       "Return the date as a (year, month, day, hour, minute, second) tuple"},
      {"datetime", (PyCFunction) Date_datetime, METH_NOARGS,
       "Return the date as a (year, month, day, hour, minute, second) tuple"},
@@ -2204,9 +2202,8 @@ static PyTypeObject EarthSatelliteType = {
 
 /* Return the current time. */
 
-static PyObject* build_now(PyObject *self, PyObject *args)
+static PyObject* build_now(PyObject *self)
 {
-     if (!PyArg_ParseTuple(args, ":now")) return 0;
      return build_Date(mjd_now());
 }
 
@@ -2551,7 +2548,7 @@ static PyMethodDef libastro_methods[] = {
 
      {"degrees", degrees, METH_VARARGS, "build an angle measured in degrees"},
      {"hours", hours, METH_VARARGS, "build an angle measured in hours of arc"},
-     {"now", build_now, METH_VARARGS, "Return the current time"},
+     {"now", (PyCFunction) build_now, METH_NOARGS, "Return the current time"},
      {"readdb", readdb, METH_VARARGS, "Read an ephem database entry"},
      {"readtle", readtle, METH_VARARGS, "Read TLE-format satellite elements"},
      {"separation", separation, METH_VARARGS,
