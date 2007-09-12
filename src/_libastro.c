@@ -355,8 +355,8 @@ static int parse_mjd(PyObject *value, double *mjdp)
 	  return parse_mjd_from_tuple(value, mjdp);
      else if (PyDate_Check(value))
           return parse_mjd_from_datetime(value, mjdp);
-     PyErr_SetString(PyExc_ValueError,
-		     "dates must be specified by a number, string, or tuple");
+     PyErr_SetString(PyExc_ValueError, "dates must be initialized"
+                     " from a number, string, tuple, or datetime");
      return -1;
 }
 
@@ -445,10 +445,24 @@ static PyObject *Date_tuple(PyObject *self, PyObject *args)
      return Py_BuildValue("iiiiid", year, month, day, hour, minute, fsecond);
 }
 
+static PyObject *Date_datetime(PyObject *self)
+{
+     int year, month, day, hour, minute;
+     double second;
+     DateObject *d = (DateObject*) self;
+     mjd_six(d->ob_fval, &year, &month, &day, &hour, &minute, &second);
+     return PyDateTime_FromDateAndTime(
+          year, month, day, hour, minute, (int) floor(second),
+          (int) floor(1e6 * fmod(second, 1.0))
+          );
+}
+
 static PyMethodDef Date_methods[] = {
      {"triple", Date_triple, METH_VARARGS,
       "Return the date as a (year, month, day_with_fraction) tuple"},
      {"tuple", Date_tuple, METH_VARARGS,
+      "Return the date as a (year, month, day, hour, minute, second) tuple"},
+     {"datetime", (PyCFunction) Date_datetime, METH_NOARGS,
       "Return the date as a (year, month, day, hour, minute, second) tuple"},
      {NULL}
 };
