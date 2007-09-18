@@ -1,7 +1,7 @@
 # Just typing "make" will build the web page; typing "make web" will
 # actually copy it into our Rhodes Mill content directory.
 
-WEB = /home/brandon/sites/rhodesmill/html/brandon/projects
+WEB = ./www
 
 all: pyephem.html pyephem-manual.html
 web: $(WEB)/pyephem.html $(WEB)/pyephem-manual.html $(WEB)/pyephem-CHANGELOG
@@ -24,3 +24,9 @@ $(WEB)/pyephem-CHANGELOG: ../CHANGELOG
 $(WEB)/pyephem-$(VERSION).tar.gz: ../dist/pyephem-$(VERSION).tar.gz
 	umask 022; cat ../dist/pyephem-$(VERSION).tar.gz > $@
 
+PAGENAMES = angle date
+PAGES = $(patsubst %, $(WEB)/%.html, $(PAGENAMES))
+
+rst: $(PAGES)
+$(PAGES): $(WEB)/%.html: %.rst style.css
+	umask 022; rst2html --stylesheet-path=style.css < $< > $@

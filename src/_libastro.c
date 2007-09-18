@@ -203,7 +203,8 @@ static PyObject *Angle_get_norm(PyObject *self, void *v)
 }
 
 static PyGetSetDef Angle_getset[] = {
-     {"norm", Angle_get_norm, NULL, "Date", 0},
+     {"norm", Angle_get_norm, NULL,
+      "Return this angle normalized to the interval [0, 2*pi).", 0},
      {NULL}
 };
 
@@ -413,8 +414,7 @@ static PyObject* Date_str(PyObject *self)
 
 static int Date_print(PyObject *self, FILE *fp, int flags)
 {
-     char *s = Date_format(self);
-     fputs(s, fp);
+     fputs(Date_format(self), fp);
      return 0;
 }
 
@@ -429,18 +429,11 @@ static PyObject *Date_triple(PyObject *self)
 
 static PyObject *Date_tuple(PyObject *self)
 {
-     int year, month;
-     double fday, fhour, fminute, fsecond;
-     int day, hour, minute;
+     int year, month, day, hour, minute;
+     double second;
      DateObject *d = (DateObject*) self;
-     mjd_cal(d->ob_fval, &month, &fday, &year);
-     day = (int) fday;
-     fhour = fmod(fday, 1.0) * 24;
-     hour = (int) fhour;
-     fminute = fmod(fhour, 1.0) * 60;
-     minute = (int) fminute;
-     fsecond = fmod(fminute, 1.0) * 60;
-     return Py_BuildValue("iiiiid", year, month, day, hour, minute, fsecond);
+     mjd_six(d->ob_fval, &year, &month, &day, &hour, &minute, &second);
+     return Py_BuildValue("iiiiid", year, month, day, hour, minute, second);
 }
 
 static PyObject *Date_datetime(PyObject *self)

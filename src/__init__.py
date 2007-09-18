@@ -8,8 +8,10 @@ import ephem._libastro as _libastro
 
 Observer = _libastro.Observer
 degrees = _libastro.degrees
-date = _libastro.date
 hours = _libastro.hours
+
+date = _libastro.date
+hour = _libastro.hour
 minute = _libastro.minute
 second = _libastro.second
 
