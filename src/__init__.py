@@ -51,7 +51,6 @@ Moon = _libastro.Moon
 
 # THINGS TO DO:
 # Better docs
-# Easy date conversions (to and from datetime)
 # Newton solver
 # Use newton to provide risings and settings
 # Use newton to find equinoxes/solstices
