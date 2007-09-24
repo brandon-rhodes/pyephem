@@ -7,6 +7,8 @@ import ephem._libastro as _libastro
 # We make available several basic types from _libastro.
 
 Observer = _libastro.Observer
+
+angle = _libastro.angle
 degrees = _libastro.degrees
 hours = _libastro.hours
 

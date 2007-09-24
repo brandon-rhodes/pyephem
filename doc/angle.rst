@@ -1,0 +1,103 @@
+
+ephem.angle
+===========
+
+PyEphem measures all angles in radians.
+But rather than simply returning angles as bare Python floats,
+it returns each of them as an ``ephem.angle``
+which can print itself out in a more attractive format
+than do raw floating-point numbers.
+
+The vast majority of angles print as degrees.
+For example,
+the declination of Jupiter will print itself attractively
+as degrees, minutes of arc, and seconds of arc:
+
+    >>> import ephem
+    >>> j = ephem.Jupiter('1994/7/16 20:13:16')
+    >>> print j.dec
+    -12:10:57.48
+    >>> print repr(j.dec)
+    -0.21262708306312561
+
+The only kind of angle which does not use degrees for display
+is right ascension,
+which instead traditionally breaks the celestial equator
+into twenty-four “hours” which are each fifteen degress wide.
+
+    >>> print j.ra
+    14:13:02.19
+    >>> print repr(j.ra)
+    3.7220737934112549
+
+As with PyEphem dates,
+doing math with a PyEphem angle results in an unadorned float being returned.
+
+    >>> type(j.dec)
+    <type 'ephem.angle'>
+    >>> a = j.dec + 3.14
+    >>> type(a)
+    <type 'float'>
+    >>> a
+    2.9273729169368745
+
+If you want to display the result of a computation
+as an attractively formatted angle,
+you can convert the float back to a PyEphem angle type
+using either the ``degrees()`` function
+or, for right ascension, the ``hours()`` function.
+For example,
+here are the results of adding fifteen degrees
+to both Jupiter's declination and right ascension;
+whereas the declination simply moves north by fifteen degrees
+(passing north across the celestial equator into positive numbers),
+the right ascension calls fifteen additional degrees “one hour” of motion:
+
+    >>> import math
+    >>> fifteen_degrees = ephem.degrees(math.pi / 12.)
+    >>> print j.dec, ephem.degrees(j.dec + fifteen_degrees)
+    -12:10:57.48 2:49:02.52
+    >>> print j.ra, ephem.hours(j.ra + fifteen_degrees)
+    14:13:02.19 15:13:02.19
+
+Often when adding or subtracting with angles,
+you will get a very large or small result
+that you will want to normalize back to a respectable angle.
+PyEphem angles offer two ways to make this convenient:
+a ``norm`` attribute that returns the angle
+normalized to the interval [0, 2π)
+and a ``znorm`` attribute that returns the angle
+normalized to the interval (-π, π] centered on zero.
+
+    >>> circle = 2 * math.pi
+
+    >>> a = + fifteen_degrees
+    >>> print a, a.norm, a.znorm
+    15:00:00.00 15:00:00.00 15:00:00.00
+
+    >>> a = - fifteen_degrees
+    >>> print a, a.norm, a.znorm
+    -15:00:00.00 345:00:00.00 -15:00:00.00
+
+    >>> a = ephem.degrees(circle - fifteen_degrees)
+    >>> print a, a.norm, a.znorm
+    345:00:00.00 345:00:00.00 -15:00:00.00
+    
+    >>> a = ephem.degrees(circle + fifteen_degrees)
+    >>> print a, a.norm, a.znorm
+    375:00:00.00 15:00:00.00 15:00:00.00
+    
+    >>> a = ephem.degrees(- circle + fifteen_degrees)
+    >>> print a, a.norm, a.znorm
+    -345:00:00.00 15:00:00.00 15:00:00.00
+
+    >>> a = ephem.degrees(- circle - fifteen_degrees)
+    >>> print a, a.norm, a.znorm
+    -375:00:00.00 345:00:00.00 -15:00:00.00
+
+Note that you cannot instantiate a raw ``angle``:
+
+    >>> ephem.angle()
+    Traceback (most recent call last):
+     ...
+    TypeError: you can only create an ephem.angle through ephem.degrees() or ephem.hours()

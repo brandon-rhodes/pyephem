@@ -161,6 +161,14 @@ typedef struct {
      double factor;
 } AngleObject;
 
+static PyObject *Angle_new(PyObject *self, PyObject *args, PyObject *kw)
+{
+     PyErr_SetString(PyExc_TypeError,
+                     "you can only create an ephem.angle"
+                     " through ephem.degrees() or ephem.hours()");
+     return 0;
+}
+
 static PyObject* new_Angle(double radians, double factor)
 {
      AngleObject *ea;
@@ -193,25 +201,62 @@ static int Angle_print(PyObject *self, FILE *fp, int flags)
      return 0;
 }
 
+static PyObject *Angle_pos(PyObject *self)
+{
+     Py_INCREF(self);
+     return self;
+}
+
+static PyObject *Angle_neg(PyObject *self)
+{
+     AngleObject *ea = (AngleObject*) self;
+     double radians = ea->f.ob_fval;
+     return new_Angle(- radians, ea->factor);
+}
+
 static PyObject *Angle_get_norm(PyObject *self, void *v)
 {
      AngleObject *ea = (AngleObject*) self;
      double radians = ea->f.ob_fval;
-     if (0 >= radians && radians < 2*PI)
-	  return self;
-     return new_Angle(fmod(radians, 2*PI), ea->factor);
+     if (radians < 0)
+          return new_Angle(fmod(radians, 2*PI) + 2*PI, ea->factor);
+     if (radians >= 2*PI)
+          return new_Angle(fmod(radians, 2*PI), ea->factor);
+     Py_INCREF(self);
+     return self;
 }
+
+static PyObject *Angle_get_znorm(PyObject *self, void *v)
+{
+     AngleObject *ea = (AngleObject*) self;
+     double radians = ea->f.ob_fval;
+     if (radians <= -PI)
+          return new_Angle(fmod(radians + PI, 2*PI) + PI, ea->factor);
+     if (radians > PI)
+          return new_Angle(fmod(radians - PI, 2*PI) - PI, ea->factor);
+     Py_INCREF(self);
+     return self;
+}
+
+static PyNumberMethods Angle_NumberMethods = {
+     NULL, NULL, NULL, NULL, NULL, NULL, NULL, /* skip seven fields */
+     Angle_neg, /* nb_negative */
+     Angle_pos, /* nb_positive */
+     NULL
+};
 
 static PyGetSetDef Angle_getset[] = {
      {"norm", Angle_get_norm, NULL,
       "Return this angle normalized to the interval [0, 2*pi).", 0},
+     {"znorm", Angle_get_znorm, NULL,
+      "Return this angle normalized to the interval (-pi, pi].", 0},
      {NULL}
 };
 
 static PyTypeObject AngleType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_libastro.angle",
+     "ephem.angle",
      sizeof(AngleObject),
      0,
      0,				/* tp_dealloc */
@@ -220,7 +265,7 @@ static PyTypeObject AngleType = {
      0,				/* tp_setattr */
      0,				/* tp_compare */
      0,				/* tp_repr */
-     0,				/* tp_as_number */
+     &Angle_NumberMethods,      /* tp_as_number */
      0,				/* tp_as_sequence */
      0,				/* tp_as_mapping */
      0,				/* tp_hash */
@@ -237,7 +282,7 @@ static PyTypeObject AngleType = {
      0,				/* tp_weaklistoffset */
      0,				/* tp_iter */
      0,				/* tp_iternext */
-     0,				/* tp_methods */
+     0,                         /* tp_methods */
      0,				/* tp_members */
      Angle_getset,		/* tp_getset */
      0, /* &PyFloatType*/	/* tp_base */
@@ -247,7 +292,7 @@ static PyTypeObject AngleType = {
      0,				/* tp_dictoffset */
      0,				/* tp_init */
      0,				/* tp_alloc */
-     0,				/* tp_new */
+     (newfunc) Angle_new,       /* tp_new */
      0,				/* tp_free */
 };
 
@@ -461,7 +506,7 @@ static PyMethodDef Date_methods[] = {
 static PyTypeObject DateType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_libastro.date",
+     "ephem.date",
      sizeof(PyFloatObject),
      0,
      0,				/* tp_dealloc */

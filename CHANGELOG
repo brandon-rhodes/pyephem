@@ -3,7 +3,10 @@
 Version 3.7.2b (2007 September)
 
   - Improved accuracy when a fixed body is repeatedly precessed to
-    different dates, by caching its original position unchanged.
+    different dates, by preserving its original position unchanged.
+
+  - Enabled ephem.angle instances to survive the unary + and - without
+    getting changed into plain floats.
 
 Version 3.7.2a (2007 June)
 

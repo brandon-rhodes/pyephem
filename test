@@ -12,6 +12,7 @@ loader = unittest.defaultTestLoader
 suite.addTest(loader.loadTestsFromModule(tests.test_angles))
 suite.addTest(loader.loadTestsFromModule(tests.test_bodies))
 suite.addTest(loader.loadTestsFromModule(tests.test_dates))
-suite.addTest(doctest.DocFileSuite('doc/dates.rst'))
+suite.addTest(doctest.DocFileSuite('doc/angle.rst'))
+suite.addTest(doctest.DocFileSuite('doc/date.rst'))
 runner = unittest.TextTestRunner()
 runner.run(suite)
