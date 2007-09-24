@@ -1,5 +1,5 @@
 
-ephem.date
+ephem.Date
 ==========
 
 PyEphem uses a simple floating point number
@@ -11,17 +11,17 @@ doing so — besides being slower —
 would have incurred a slight rounding error in every date returned,
 and the accumulation of this error could have caused problems
 for users who need high precision.
-So PyEphem provides its own ``ephem.date`` type,
+So PyEphem provides its own ``ephem.Date`` type,
 which preserves the full precision of the dates it uses internally.
 
-The ``ephem.date`` type simply subclasses the Python ``float``
+The ``ephem.Date`` type simply subclasses the Python ``float``
 to provide it with some extra features.
 The most important is that it displays itself as a date when printed
 (and also when formatted with ``%s``,
 and when converted with the ``str()`` function):
 
     >>> import ephem
-    >>> d = ephem.date('1984/05/30 16:23:45.12')
+    >>> d = ephem.Date('1984/05/30 16:23:45.12')
     >>> print d
     1984/5/30 16:23:45
 
@@ -77,7 +77,7 @@ Strings
   dates can be initialized with strings,
   and can display themselves as strings on demand.
 
-    >>> d = ephem.date('1984/05/30 16:23:45.12')
+    >>> d = ephem.Date('1984/05/30 16:23:45.12')
     >>> print d
     1984/5/30 16:23:45
 
@@ -88,10 +88,10 @@ Strings
   the day defaults to the first of the month;
   and hours, minutes, and seconds default to zero.
 
-    >>> print ephem.date('1984/05/30 16')
+    >>> print ephem.Date('1984/05/30 16')
     1984/5/30 16:00:00
 
-    >>> print ephem.date('1984')
+    >>> print ephem.Date('1984')
     1984/1/1 00:00:00
 
   Note that the string output does not include fractional seconds;
@@ -99,7 +99,7 @@ Strings
   if you need to be that precise.
 
 Datetime objects
-  When creating an ``ephem.date``,
+  When creating an ``ephem.Date``,
   you can specify the date
   as either a ``date`` or ``datetime`` object
   from the ``datetime`` standard Python module.
@@ -107,10 +107,10 @@ Datetime objects
   by calling its ``datetime()`` method.
 
     >>> from datetime import date, datetime
-    >>> print ephem.date(datetime(2005, 4, 18, 22, 15))
+    >>> print ephem.Date(datetime(2005, 4, 18, 22, 15))
     2005/4/18 22:15:00
 
-    >>> d = ephem.date('2000/12/25 12:41:16')
+    >>> d = ephem.Date('2000/12/25 12:41:16')
     >>> d.datetime()
     datetime.datetime(2000, 12, 25, 12, 41, 15, 999999)
 
@@ -128,10 +128,10 @@ Tuples
   You can also provide such a tuple when creating a PyEphem date.
 
     >>> timetuple = (1984, 5, 30, 12, 23, 45)
-    >>> print ephem.date(timetuple)
+    >>> print ephem.Date(timetuple)
     1984/5/30 12:23:45
 
-    >>> d = ephem.date('2001/12/14 16:07:57')
+    >>> d = ephem.Date('2001/12/14 16:07:57')
     >>> print d.tuple()
     (2001, 12, 14, 16, 7, 57.00000002514571)
 
@@ -149,10 +149,10 @@ Triples
   and receive one back by calling the ``triple()`` method.
 
     >>> timetriple = (1998, 2, 26.691458333334594)
-    >>> print ephem.date(timetriple)
+    >>> print ephem.Date(timetriple)
     1998/2/26 16:35:42
 
-    >>> d = ephem.date('1996/4/17 22:37:11.5')
+    >>> d = ephem.Date('1996/4/17 22:37:11.5')
     >>> print d.triple()
     (1996, 4, 17.942494212962629)
 
@@ -161,10 +161,10 @@ Floats
   since a PyEphem date is really just a floating-point number,
   so you can manually supply the value you want it to have.
 
-    >>> print ephem.date(37238.1721875)
+    >>> print ephem.Date(37238.1721875)
     2001/12/14 16:07:57
 
-    >>> d = ephem.date('2000/12/25 12:41:16')
+    >>> d = ephem.Date('2000/12/25 12:41:16')
     >>> print float(d)
     36884.0286574
 
@@ -180,19 +180,19 @@ which is the number of days (including any fraction)
 that have passed since the last day of 1899, at noon.
 From there, increasing the value by one moves to the next day: 
 
-    >>> print ephem.date(0)
+    >>> print ephem.Date(0)
     1899/12/31 12:00:00
-    >>> print ephem.date(1)
+    >>> print ephem.Date(1)
     1900/1/1 12:00:00
-    >>> print ephem.date(2)
+    >>> print ephem.Date(2)
     1900/1/2 12:00:00
 
 Negative numbers are also perfectly legitimate,
 and count backwards from the same reference point:
 
-    >>> print ephem.date(-1)
+    >>> print ephem.Date(-1)
     1899/12/30 12:00:00
-    >>> print ephem.date(-2)
+    >>> print ephem.Date(-2)
     1899/12/29 12:00:00
 
 Fractions of a day, of course,
@@ -201,21 +201,21 @@ Note that doing math on a date returns a simple Python float,
 which you have to re-cast to an XEphem date
 if you want to display it:
 
-    >>> n = ephem.date(7) + 0.5
+    >>> n = ephem.Date(7) + 0.5
     >>> print n
     7.5
-    >>> print ephem.date(n)
+    >>> print ephem.Date(n)
     1900/1/8 00:00:00
 
 To make math with dates more convenient,
 PyEphem provides constants ``hour``, ``minute``, and ``second``
 that represent those three fractions of a day.
 
-    >>> print ephem.date(n + ephem.hour)
+    >>> print ephem.Date(n + ephem.hour)
     1900/1/8 01:00:00
-    >>> print ephem.date(n + ephem.minute)
+    >>> print ephem.Date(n + ephem.minute)
     1900/1/8 00:01:00
-    >>> print ephem.date(n + ephem.second)
+    >>> print ephem.Date(n + ephem.second)
     1900/1/8 00:00:01
-    >>> print ephem.date(n + 12 * ephem.hour + 36 * ephem.minute)
+    >>> print ephem.Date(n + 12 * ephem.hour + 36 * ephem.minute)
     1900/1/8 12:36:00

@@ -164,7 +164,7 @@ typedef struct {
 static PyObject *Angle_new(PyObject *self, PyObject *args, PyObject *kw)
 {
      PyErr_SetString(PyExc_TypeError,
-                     "you can only create an ephem.angle"
+                     "you can only create an ephem.Angle"
                      " through ephem.degrees() or ephem.hours()");
      return 0;
 }
@@ -256,7 +256,7 @@ static PyGetSetDef Angle_getset[] = {
 static PyTypeObject AngleType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "ephem.angle",
+     "ephem.Angle",
      sizeof(AngleObject),
      0,
      0,				/* tp_dealloc */
@@ -506,7 +506,7 @@ static PyMethodDef Date_methods[] = {
 static PyTypeObject DateType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "ephem.date",
+     "ephem.Date",
      sizeof(PyFloatObject),
      0,
      0,				/* tp_dealloc */
@@ -2669,8 +2669,8 @@ init_libastro(void)
 	       char *name;
 	       PyObject *obj;
 	  } objects[] = {
-	       { "angle", (PyObject*) & AngleType },
-	       { "date", (PyObject*) & DateType },
+	       { "Angle", (PyObject*) & AngleType },
+	       { "Date", (PyObject*) & DateType },
 
 	       { "Observer", (PyObject*) & ObserverType },
 

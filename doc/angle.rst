@@ -1,10 +1,10 @@
 
-ephem.angle
+ephem.Angle
 ===========
 
 PyEphem measures all angles in radians.
 But rather than simply returning angles as bare Python floats,
-it returns each of them as an ``ephem.angle``
+it returns each of them as an ``ephem.Angle``
 which can print itself out in a more attractive format
 than do raw floating-point numbers.
 
@@ -34,7 +34,7 @@ As with PyEphem dates,
 doing math with a PyEphem angle results in an unadorned float being returned.
 
     >>> type(j.dec)
-    <type 'ephem.angle'>
+    <type 'ephem.Angle'>
     >>> a = j.dec + 3.14
     >>> type(a)
     <type 'float'>
@@ -95,9 +95,9 @@ normalized to the interval (-π, π] centered on zero.
     >>> print a, a.norm, a.znorm
     -375:00:00.00 345:00:00.00 -15:00:00.00
 
-Note that you cannot instantiate a raw ``angle``:
+Note that you cannot instantiate a raw ``Angle``:
 
-    >>> ephem.angle()
+    >>> ephem.Angle()
     Traceback (most recent call last):
      ...
-    TypeError: you can only create an ephem.angle through ephem.degrees() or ephem.hours()
+    TypeError: you can only create an ephem.Angle through ephem.degrees() or ephem.hours()
