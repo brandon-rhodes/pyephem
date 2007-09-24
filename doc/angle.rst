@@ -16,7 +16,7 @@ as degrees, minutes of arc, and seconds of arc:
     >>> import ephem
     >>> j = ephem.Jupiter('1994/7/16 20:13:16')
     >>> print j.dec
-    -12:10:57.48
+    -12:10:57.5
     >>> print repr(j.dec)
     -0.21262708306312561
 
@@ -56,7 +56,7 @@ the right ascension calls fifteen additional degrees “one hour” of motion:
     >>> import math
     >>> fifteen_degrees = ephem.degrees(math.pi / 12.)
     >>> print j.dec, ephem.degrees(j.dec + fifteen_degrees)
-    -12:10:57.48 2:49:02.52
+    -12:10:57.5 2:49:02.5
     >>> print j.ra, ephem.hours(j.ra + fifteen_degrees)
     14:13:02.19 15:13:02.19
 
@@ -73,27 +73,27 @@ normalized to the interval (-π, π] centered on zero.
 
     >>> a = + fifteen_degrees
     >>> print a, a.norm, a.znorm
-    15:00:00.00 15:00:00.00 15:00:00.00
+    15:00:00.0 15:00:00.0 15:00:00.0
 
     >>> a = - fifteen_degrees
     >>> print a, a.norm, a.znorm
-    -15:00:00.00 345:00:00.00 -15:00:00.00
+    -15:00:00.0 345:00:00.0 -15:00:00.0
 
     >>> a = ephem.degrees(circle - fifteen_degrees)
     >>> print a, a.norm, a.znorm
-    345:00:00.00 345:00:00.00 -15:00:00.00
+    345:00:00.0 345:00:00.0 -15:00:00.0
     
     >>> a = ephem.degrees(circle + fifteen_degrees)
     >>> print a, a.norm, a.znorm
-    375:00:00.00 15:00:00.00 15:00:00.00
+    375:00:00.0 15:00:00.0 15:00:00.0
     
     >>> a = ephem.degrees(- circle + fifteen_degrees)
     >>> print a, a.norm, a.znorm
-    -345:00:00.00 15:00:00.00 15:00:00.00
+    -345:00:00.0 15:00:00.0 15:00:00.0
 
     >>> a = ephem.degrees(- circle - fifteen_degrees)
     >>> print a, a.norm, a.znorm
-    -375:00:00.00 345:00:00.00 -15:00:00.00
+    -375:00:00.0 345:00:00.0 -15:00:00.0
 
 Note that you cannot instantiate a raw ``Angle``:
 

@@ -17,7 +17,7 @@ class angle_suite(MyTestCase):
     def test_degrees_float_value(self):
         self.assertApprox(self.d, 1.5)
     def test_degrees_string_value(self):
-        self.assertEqual(str(self.d), '85:56:37.21')
+        self.assertEqual(str(self.d), '85:56:37.2')
 
     def test_hours_constructor(self):
         self.assertApprox(self.h, hours('6:06:41.6'), arcsecond)

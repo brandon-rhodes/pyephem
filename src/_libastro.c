@@ -184,7 +184,8 @@ static char *Angle_format(PyObject *self)
 {
      AngleObject *ea = (AngleObject*) self;
      static char buffer[13];
-     fs_sexa(buffer, ea->f.ob_fval * ea->factor, 3, 360000);
+     fs_sexa(buffer, ea->f.ob_fval * ea->factor, 3,
+             ea->factor == radhr(1) ? 360000 : 36000);
      return buffer[0] != ' ' ? buffer
 	  : buffer[1] != ' ' ? buffer + 1
 	  : buffer + 2;
