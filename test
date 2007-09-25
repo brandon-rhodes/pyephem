@@ -6,13 +6,22 @@ import doctest
 import tests.test_angles
 import tests.test_bodies
 import tests.test_dates
+import tests.usno_appar_sun
+import tests.usno_astro_sun
+import tests.usno_topo_sun
+import tests.usno_equinoxes
 
 suite = unittest.TestSuite()
 loader = unittest.defaultTestLoader
 suite.addTest(loader.loadTestsFromModule(tests.test_angles))
 suite.addTest(loader.loadTestsFromModule(tests.test_bodies))
 suite.addTest(loader.loadTestsFromModule(tests.test_dates))
+suite.addTest(loader.loadTestsFromModule(tests.usno_appar_sun))
+suite.addTest(loader.loadTestsFromModule(tests.usno_astro_sun))
+suite.addTest(loader.loadTestsFromModule(tests.usno_topo_sun))
+suite.addTest(loader.loadTestsFromModule(tests.usno_equinoxes))
 suite.addTest(doctest.DocFileSuite('doc/angle.rst'))
 suite.addTest(doctest.DocFileSuite('doc/date.rst'))
+suite.addTest(doctest.DocFileSuite('doc/newton.rst'))
 runner = unittest.TextTestRunner()
 runner.run(suite)

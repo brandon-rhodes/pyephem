@@ -2,11 +2,28 @@
 
 Version 3.7.2b (2007 September)
 
-  - Improved accuracy when a fixed body is repeatedly precessed to
-    different dates, by preserving its original position unchanged.
+  - Bodies now cleanly offer three different versions of their
+    position, rather than making the user remember obscure rules for
+    having each of these three values computed:
 
-  - Enabled ephem.angle instances to survive the unary + and - without
+     * Astrometric geocetric right ascension and declination
+     * Apparent geocentric right ascension and declination
+     * Apparent topocentric right ascension and declination
+
+  - Functions now exist to find equinoxes and solstices.
+
+  - When a fixed body is repeatedly precessed to different dates, its
+    original position will no longer wander.
+
+  - Enabled ephem.angle instances to survive unary + and - without
     getting changed into plain floats.
+
+  - The "elev" Observer attribute has been renamed to "elevation".
+
+  - Observers now display useful information when printed.
+
+  - PyEphem's test suite now compares results with the United States
+    Naval Observatory, and insists upon arcsecond agreement.
 
 Version 3.7.2a (2007 June)
 

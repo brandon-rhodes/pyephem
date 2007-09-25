@@ -141,6 +141,8 @@ typedef unsigned char byte;
     double co_dec;	/* geo/topo app/mean dec, rads */		\
     double co_gaera;	/* geo apparent ra, rads */			\
     double co_gaedec;	/* geo apparent dec, rads */			\
+    double co_astrora;	/* geo astrometric ra, rads */			\
+    double co_astrodec;	/* geo astrometric dec, rads */			\
     float co_az;	/* azimuth, >0 e of n, rads */			\
     float co_alt;	/* altitude above topocentric horizon, rads */	\
     float co_elong;	/* angular sep btwen obj and sun, >0 E, degs */	\
@@ -368,6 +370,8 @@ typedef union {
 #define	s_dec		any.co_dec
 #define	s_gaera		any.co_gaera
 #define	s_gaedec 	any.co_gaedec
+#define	s_astrora	any.co_astrora
+#define	s_astrodec	any.co_astrodec
 #define	s_az		any.co_az
 #define	s_alt		any.co_alt
 #define	s_elong		any.co_elong

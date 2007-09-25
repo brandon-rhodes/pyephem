@@ -16,9 +16,9 @@ as degrees, minutes of arc, and seconds of arc:
     >>> import ephem
     >>> j = ephem.Jupiter('1994/7/16 20:13:16')
     >>> print j.dec
-    -12:10:57.5
+    -12:09:28.2
     >>> print repr(j.dec)
-    -0.21262708853492623
+    -0.21219402907146165
 
 The only kind of angle which does not use degrees for display
 is right ascension,
@@ -26,9 +26,9 @@ which instead traditionally breaks the celestial equator
 into twenty-four “hours” which are each fifteen degress wide.
 
     >>> print j.ra
-    14:13:02.19
+    14:12:45.77
     >>> print repr(j.ra)
-    3.7220736754213664
+    3.7208800741071806
 
 As with PyEphem dates,
 doing math with a PyEphem angle results in an unadorned float being returned.
@@ -39,7 +39,7 @@ doing math with a PyEphem angle results in an unadorned float being returned.
     >>> type(a)
     <type 'float'>
     >>> a
-    2.9273729114650737
+    2.9278059709285387
 
 If you want to display the result of a computation
 as an attractively formatted angle,
@@ -56,9 +56,9 @@ the right ascension calls fifteen additional degrees “one hour” of motion:
     >>> import math
     >>> fifteen_degrees = ephem.degrees(math.pi / 12.)
     >>> print j.dec, ephem.degrees(j.dec + fifteen_degrees)
-    -12:10:57.5 2:49:02.5
+    -12:09:28.2 2:50:31.8
     >>> print j.ra, ephem.hours(j.ra + fifteen_degrees)
-    14:13:02.19 15:13:02.19
+    14:12:45.77 15:12:45.77
 
 Often when adding or subtracting with angles,
 you will get a very large or small result

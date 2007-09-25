@@ -692,6 +692,12 @@ Obj *op)	/* object to set s_ra/dec as per equinox */
 	tra = ra;	/* keep mean coordinates */
 	tdec = dec;
 
+	/* precess and save astrometric coordinates */
+	if (mjed != epoch)
+	    precess (mjed, epoch, &tra, &tdec);
+	op->s_astrora = tra;
+	op->s_astrodec = tdec;
+
 	/* get sun position */
 	sunpos(mjed, &lsn, &rsn, NULL);
 
@@ -728,21 +734,13 @@ Obj *op)	/* object to set s_ra/dec as per equinox */
 	 */
 	if (pref_get(PREF_EQUATORIAL) == PREF_GEO) {
 	    /* no topo corrections to eq. coords */
-	    dra = ddec = 0.0;
 	} else {
 	    dra = ha_in - ha_out;	/* ra sign is opposite of ha */
 	    ddec = dec_out - dec;
 	    *rho = rho_topo * ERAD/MAU; /* return topocentric distance in AU */
-	}
 
-	/* fill in ra/dec fields */
-	if (epoch == EOD) {		/* apparent geo/topocentric */
 	    ra = ra + dra;
 	    dec = dec + ddec;
-	} else {			/* astrometric geo/topocent */
-	    ra = tra + dra;
-	    dec = tdec + ddec;
-	    precess (mjed, epoch, &ra, &dec);
 	}
 	range(&ra, 2*PI);
 	op->s_ra = ra;
