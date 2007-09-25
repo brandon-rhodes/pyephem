@@ -174,8 +174,8 @@ obj_earthsat (Now *np, Obj *op)
 	/* find geocentric EOD equatorial directly from xyz vector */
 	dtmp = atan2 (SatY, SatX);
 	range (&dtmp, 2*PI);
-	op->s_gaera = (float) dtmp;
-	op->s_gaedec = (float) atan2 (SatZ, sqrt(SatX*SatX + SatY*SatY));
+	op->s_gaera = dtmp;
+	op->s_gaedec = atan2 (SatZ, sqrt(SatX*SatX + SatY*SatY));
 
 	/* find topocentric from site location */
 	GetSitPosition(SiteLat,SiteLong,SiteAltitude,CrntTime,

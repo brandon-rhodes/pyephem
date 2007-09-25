@@ -139,8 +139,8 @@ typedef unsigned char byte;
     char co_name[MAXNM];/* name, including \0 */			\
     double co_ra;	/* geo/topo app/mean ra, rads */		\
     double co_dec;	/* geo/topo app/mean dec, rads */		\
-    float co_gaera;	/* geo apparent ra, rads */			\
-    float co_gaedec;	/* geo apparent dec, rads */			\
+    double co_gaera;	/* geo apparent ra, rads */			\
+    double co_gaedec;	/* geo apparent dec, rads */			\
     float co_az;	/* azimuth, >0 e of n, rads */			\
     float co_alt;	/* altitude above topocentric horizon, rads */	\
     float co_elong;	/* angular sep btwen obj and sun, >0 E, degs */	\

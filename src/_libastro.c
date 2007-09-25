@@ -1119,7 +1119,7 @@ static PyObject* Body_compute(PyObject *self, PyObject *args, PyObject *kwds)
 	  body->now = observer->now;
 	  body->obj.o_flags = VALID_GEO | VALID_TOPO;
      } else {
-	  double when_mjd = 0, epoch_mjd;
+	  double when_mjd, epoch_mjd;
 
 	  /* compute(date, epoch) where date defaults to current time
 	     and epoch defaults to 2000.0 */
@@ -1368,6 +1368,8 @@ static int Saturn_satrings(Saturn *saturn, char *fieldname)
 
 GET_FIELD(ra, obj.s_ra, build_hours)
 GET_FIELD(dec, obj.s_dec, build_degrees)
+GET_FIELD(gaera, obj.s_gaera, build_hours)
+GET_FIELD(gaedec, obj.s_gaedec, build_degrees)
 GET_FIELD(elong, obj.s_elong, build_degrees_from_degrees)
 GET_FIELD(mag, obj.s_mag, build_mag)
 GET_FIELD(size, obj.s_size, PyFloat_FromDouble)
@@ -1551,6 +1553,8 @@ static PyGetSetDef Body_getset[] = {
 
      {"ra", Get_ra, 0, "right ascension (radians that print as hours of arc)"},
      {"dec", Get_dec, 0, "declination (radians that print as degrees)"},
+     {"apparent_ra", Get_gaera, 0, "apparent geocentric ascension (radians that print as hours of arc)"},
+     {"apparent_dec", Get_gaedec, 0, "apparent geocentric declination (radians that print as degrees)"},
      {"elong", Get_elong, 0, "elongation (radians that print as degrees)"},
      {"mag", Get_mag, 0, "magnitude"},
      {"size", Get_size, 0, "visual size (seconds of arc)"},

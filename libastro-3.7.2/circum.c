@@ -262,8 +262,8 @@ obj_fixed (Now *np, Obj *op)
 	 */
 	nut_eq(mjed, &ra, &dec);
 	ab_eq(mjed, lsn, &ra, &dec);
-	op->s_gaera = (float)ra;
-	op->s_gaedec = (float)dec;
+	op->s_gaera = ra;
+	op->s_gaedec = dec;
 
 	/* set s_ra/dec -- apparent if EOD else astrometric */
 	if (epoch == EOD) {
@@ -705,8 +705,8 @@ Obj *op)	/* object to set s_ra/dec as per equinox */
 	nut_eq (mjed, &ra, &dec);
 	if (!is_planet(op,MOON))
 	    ab_eq (mjed, lsn, &ra, &dec);
-	op->s_gaera = (float)ra;
-	op->s_gaedec = (float)dec;
+	op->s_gaera = ra;
+	op->s_gaedec = dec;
 
 	/* find parallax correction for equatoreal coords */
 	now_lst (np, &lst);

@@ -12,7 +12,7 @@ satellite_attributes = ('sublat', 'sublong', 'elevation',
 
 attribute_list = (
     (Body, False,
-     ('ra', 'dec', 'elong', 'mag', 'size')),
+     ('ra', 'dec', 'apparent_ra', 'apparent_dec', 'elong', 'mag', 'size')),
     (Body, True,
      ('az', 'alt', 'circumpolar', 'neverup', 'rise_time', 'rise_az',
       'transit_time', 'transit_alt', 'set_time', 'set_az')),
