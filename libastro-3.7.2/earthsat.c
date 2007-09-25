@@ -246,8 +246,8 @@ obj_earthsat (Now *np, Obj *op)
 	}
 	if (epoch != EOD)
 	    precess (mjd, epoch, &ra, &dec);
-	op->s_ra = (float)ra;
-	op->s_dec = (float)dec;
+	op->s_ra = ra;
+	op->s_dec = dec;
 
 	/* just make up a size and brightness */
 	set_smag (op, ESAT_MAG);

@@ -267,8 +267,8 @@ obj_fixed (Now *np, Obj *op)
 
 	/* set s_ra/dec -- apparent if EOD else astrometric */
 	if (epoch == EOD) {
-	    op->s_ra = (float)ra;
-	    op->s_dec = (float)dec;
+	    op->s_ra = ra;
+	    op->s_dec = dec;
 	} else {
 	    /* annual parallax at time mjd is to be added here, too, but
 	     * technically in the frame of equinox (usually different from mjd)
@@ -745,8 +745,8 @@ Obj *op)	/* object to set s_ra/dec as per equinox */
 	    precess (mjed, epoch, &ra, &dec);
 	}
 	range(&ra, 2*PI);
-	op->s_ra = (float)ra;
-	op->s_dec = (float)dec;
+	op->s_ra = ra;
+	op->s_dec = dec;
 }
 
 /* given geocentric ecliptic longitude and latitude, lam and bet, of some object

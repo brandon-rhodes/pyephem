@@ -18,7 +18,7 @@ as degrees, minutes of arc, and seconds of arc:
     >>> print j.dec
     -12:10:57.5
     >>> print repr(j.dec)
-    -0.21262708306312561
+    -0.21262708853492623
 
 The only kind of angle which does not use degrees for display
 is right ascension,
@@ -28,7 +28,7 @@ into twenty-four “hours” which are each fifteen degress wide.
     >>> print j.ra
     14:13:02.19
     >>> print repr(j.ra)
-    3.7220737934112549
+    3.7220736754213664
 
 As with PyEphem dates,
 doing math with a PyEphem angle results in an unadorned float being returned.
@@ -39,7 +39,7 @@ doing math with a PyEphem angle results in an unadorned float being returned.
     >>> type(a)
     <type 'float'>
     >>> a
-    2.9273729169368745
+    2.9273729114650737
 
 If you want to display the result of a computation
 as an attractively formatted angle,

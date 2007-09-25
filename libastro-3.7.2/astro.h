@@ -137,8 +137,8 @@ typedef unsigned char byte;
     byte co_flags;	/* FUSER*... used by others */			\
     ObjAge_t co_age;	/* update aging code; see db.c */		\
     char co_name[MAXNM];/* name, including \0 */			\
-    float co_ra;	/* geo/topo app/mean ra, rads */		\
-    float co_dec;	/* geo/topo app/mean dec, rads */		\
+    double co_ra;	/* geo/topo app/mean ra, rads */		\
+    double co_dec;	/* geo/topo app/mean dec, rads */		\
     float co_gaera;	/* geo apparent ra, rads */			\
     float co_gaedec;	/* geo apparent dec, rads */			\
     float co_az;	/* azimuth, >0 e of n, rads */			\
