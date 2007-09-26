@@ -21,9 +21,9 @@ degrees = _libastro.degrees
 hours = _libastro.hours
 
 Date = _libastro.Date
-hour = _libastro.hour
-minute = _libastro.minute
-second = _libastro.second
+hour = 1. / 24.
+minute = hour / 60.
+second = minute / 60.
 
 delta_t = _libastro.delta_t
 
@@ -108,6 +108,8 @@ class Observer(_libastro.Observer):
     elev = _libastro.Observer.elevation
 
     def __str__(self):
+        "Display useful information when an Observer is printed."
+
         return ('<ephem.Observer date=%r epoch=%r'
                 ' long=%s lat=%s elevation=%sm'
                 ' horizon=%s temp=%sC pressure=%smBar>'

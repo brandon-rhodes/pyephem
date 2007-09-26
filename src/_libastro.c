@@ -2616,10 +2616,11 @@ static PyMethodDef libastro_methods[] = {
       METH_VARARGS | METH_KEYWORDS,
       "Return the constellation in which the object or coordinates lie"},
      {"julian_date", (PyCFunction) julian_date, METH_VARARGS,
-      "compute the Julian date"},
+      "Return the Julian date of the current time,"
+      " or of an argument that can be converted into an ephem.Date."},
      {"delta_t", (PyCFunction) delta_t, METH_VARARGS,
-      "compute the difference between Terrestrial Time and Coordinated"
-      " Universal Time"},
+      "Compute the difference between Terrestrial Time and Coordinated"
+      " Universal Time."},
      {"moon_phases", (PyCFunction) moon_phases, METH_VARARGS,
       "compute the new and full moons nearest a given date"},
 
@@ -2696,9 +2697,6 @@ init_libastro(void)
 	       { "HyperbolicBody", (PyObject*) & HyperbolicBodyType },
 	       { "EarthSatellite", (PyObject*) & EarthSatelliteType },
 
-	       { "hour", PyFloat_FromDouble(1./24.) },
-	       { "minute", PyFloat_FromDouble(1./24./60.) },
-	       { "second", PyFloat_FromDouble(1./24./60./60.) },
 	       { "meters_per_au", PyFloat_FromDouble(MAU) },
 	       { "earth_radius", PyFloat_FromDouble(ERAD) },
 	       { "moon_radius", PyFloat_FromDouble(MRAD) },
