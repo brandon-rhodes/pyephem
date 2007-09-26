@@ -222,7 +222,7 @@ obj_fixed (Now *np, Obj *op)
 	 * N.B. only compare and store jd's to lowest precission (f_epoch).
 	 * N.B. maintaining J2k ref (which is arbitrary) helps avoid accum err
 	 */
-	if (epoch != EOD && (float)epoch != (float)op->f_epoch) {
+	if (0 && epoch != EOD && (float)epoch != (float)op->f_epoch) {
 	    double pr = op->f_RA, pd = op->f_dec, fe = (float)epoch;
 	    /* first bring back to 2k */
 	    precess (op->f_epoch, J2000, &pr, &pd);
@@ -246,6 +246,11 @@ obj_fixed (Now *np, Obj *op)
 	dec = dpm;
 	precess (op->f_epoch, mjed, &ra, &dec);
 
+	/* compute astrometric @ requested equinox */
+	op->s_astrora = rpm;
+	op->s_astrodec = dpm;
+	precess (op->f_epoch, epoch, &op->s_astrora, &op->s_astrodec);
+
 	/* convert equatoreal ra/dec to mean geocentric ecliptic lat/long */
 	eq_ecl (mjed, ra, dec, &bet, &lam);
 
@@ -265,17 +270,9 @@ obj_fixed (Now *np, Obj *op)
 	op->s_gaera = ra;
 	op->s_gaedec = dec;
 
-	/* set s_ra/dec -- apparent if EOD else astrometric */
-	if (epoch == EOD) {
-	    op->s_ra = ra;
-	    op->s_dec = dec;
-	} else {
-	    /* annual parallax at time mjd is to be added here, too, but
-	     * technically in the frame of equinox (usually different from mjd)
-	     */
-	    op->s_ra = rpm;
-	    op->s_dec = dpm;
-	}
+	/* set s_ra/dec -- apparent */
+	op->s_ra = ra;
+	op->s_dec = dec;
 
 	/* compute elongation from ecliptic long/lat and sun geocentric long */
 	elongation (lam, bet, lsn, &el);
