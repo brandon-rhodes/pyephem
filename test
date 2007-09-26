@@ -7,9 +7,6 @@ import tests.test_angles
 import tests.test_bodies
 import tests.test_dates
 import tests.test_usno
-import tests.usno_appar_sun
-import tests.usno_astro_sun
-import tests.usno_topo_sun
 import tests.usno_equinoxes
 
 suite = unittest.TestSuite()
