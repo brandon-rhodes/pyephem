@@ -24,8 +24,8 @@ $(WEB)/pyephem-CHANGELOG: ../CHANGELOG
 $(WEB)/pyephem-$(VERSION).tar.gz: ../dist/pyephem-$(VERSION).tar.gz
 	umask 022; cat ../dist/pyephem-$(VERSION).tar.gz > $@
 
-PAGENAMES = angle date
-PAGES = $(patsubst %, $(WEB)/%.html, $(PAGENAMES))
+RSTS = $(wildcard *.rst)
+PAGES = $(patsubst %.rst, $(WEB)/%.html, $(RSTS))
 
 rst: $(PAGES)
 $(PAGES): $(WEB)/%.html: %.rst style.css
