@@ -3,13 +3,15 @@
 # convenient Python types.
 
 import ephem._libastro as _libastro
-from math import pi
+from math import pi, asin, tan
 
 twopi = pi * 2.
 halfpi = pi / 2.
 quarterpi = pi / 4.
 eighthpi = pi / 8.
-arcminute = twopi / 360. / 60.
+
+degree = twopi / 360.
+arcminute = degree / 60.
 arcsecond = arcminute / 60.
 half_arcsecond = arcsecond / 2.
 twentieth_arcsecond = arcsecond / 20.
@@ -59,7 +61,7 @@ del index, classname, name
 Saturn = _libastro.Saturn
 Moon = _libastro.Moon
 
-# The "newton" function supports finding the zero of a function.
+# The "newton" function finds the zero of a function.
 
 def newton(f, x0, x1):
     f0, f1 = f(x0), f(x1)
@@ -104,10 +106,14 @@ def next_cross_quarter_day(date): return holiday(date, halfpi, quarterpi)
 # We provide a Python extension to our C "Observer" class that can
 # find many circumstances.
 
+class CircumpolarError(ValueError): pass
+class NeverUpError(CircumpolarError): pass
+class AlwaysUpError(CircumpolarError): pass
+
 class Observer(_libastro.Observer):
     elev = _libastro.Observer.elevation
 
-    def __str__(self):
+    def __repr__(self):
         "Display useful information when an Observer is printed."
 
         return ('<ephem.Observer date=%r epoch=%r'
@@ -116,6 +122,54 @@ class Observer(_libastro.Observer):
                 % (str(self.date), str(self.epoch),
                    self.long, self.lat, self.elevation,
                    self.horizon, self.temp, self.pressure))
+
+    def next_transit(self, body):
+        "Find the next passage of a body across the meridian."
+
+        def f(d):
+            self.date = d
+            body.compute(self)
+            return degrees(body.ra - self.sidereal_time()).znorm
+        body.compute(self)
+        ha_to_move = (body.ra - self.sidereal_time()) % twopi
+        if ha_to_move < twentieth_arcsecond:
+            ha_to_move = twopi
+        d = self.date + ha_to_move / twopi
+        return newton(f, d, d + minute)
+
+    def disallow_circumpolar(self, declination):
+        "Raise an exception if the given declination is circumpolar."
+
+        if abs(self.lat - declination) >= halfpi:
+            raise NeverUpError('The declination %s never rises'
+                               ' above the horizon at latitude %s'
+                               % (declination, self.lat))
+        if abs(self.lat + declination) >= halfpi:
+            raise AlwaysUpError('The declination %s is always'
+                                ' above the horizon at latitude %s'
+                                % (declination, self.lat))
+
+    def ha_from_meridian_to_horizon(self, declination):
+        ("Return the distince in RA between the meridian and ideal horizon"
+         " along the given line of declination.")
+
+        self.disallow_circumpolar(declination)
+        return halfpi - asin(tan(-declination) / tan(halfpi - self.lat))
+
+
+def localtime(date):
+    "Convert a PyEphem date into the local time, as a Python datetime."
+
+    import calendar, time, datetime
+    timetuple = time.localtime(calendar.timegm(date.tuple()))
+    return datetime.datetime(*timetuple[:7])
+
+
+def city(name):
+    "Return a city from our world cities database."
+
+    from ephem.cities import create
+    return create(name)
 
 # THINGS TO DO:
 # Better docs

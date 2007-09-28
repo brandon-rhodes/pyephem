@@ -2,6 +2,8 @@
 
 Version 3.7.2b (2007 September)
 
+  - Functions now exist to find equinoxes and solstices.
+
   - Bodies now cleanly offer three different versions of their
     position, rather than making the user remember obscure rules for
     having each of these three values computed:
@@ -10,10 +12,7 @@ Version 3.7.2b (2007 September)
      * Apparent geocentric right ascension and declination
      * Apparent topocentric right ascension and declination
 
-  - Functions now exist to find equinoxes and solstices.
-
-  - When a fixed body is repeatedly precessed to different dates, its
-    original position will no longer wander.
+  - A "localtime()" function can convert PyEphem Dates to local time.
 
   - Enabled ephem.angle instances to survive unary + and - without
     getting changed into plain floats.
@@ -22,8 +21,12 @@ Version 3.7.2b (2007 September)
 
   - Observers now display useful information when printed.
 
-  - PyEphem's test suite now compares results with the United States
-    Naval Observatory, and insists upon arcsecond agreement.
+  - PyEphem has a much more extensive test suite, which, among other
+    things, now compares results with the United States Naval
+    Observatory, insisting upon arcsecond agreement.
+
+  - BUGFIX: When a fixed body is repeatedly precessed to different
+    dates, its original position will no longer wander.
 
 Version 3.7.2a (2007 June)
 

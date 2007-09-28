@@ -38,24 +38,19 @@ year zero, negative one, etc
 Time zones
 ----------
 
-PyEphem does *not* support time zones.
-All of its dates are in Universal Time (UTC),
+PyEphem's ``Date`` type itself does *not* support time zones.
+All PyEphem dates are expressed in Universal Time (UTC),
 which is similar to Standard Time in Greenwich, England.
-If you need a time displayed in your local timezone,
-then you will need to use something else,
-like the Python ``time`` module,
-to perform the conversion for you.
-For example,
-to display the date ``d`` (which we created in the examples above)
-in your local time zone,
-you could:
+But if you need a time displayed in your local timezone,
+then you can use the PyEphem ``localtime`` function,
+which takes a PyEphem date
+and returns a Python ``datetime`` giving your local time.
 
-    >>> import calendar, time
-    >>> timetuple = time.localtime(calendar.timegm(d.tuple()))
-    >>> timetuple
-    (1984, 5, 30, 12, 23, 45, 2, 151, 1)
-    >>> print time.asctime(timetuple)
-    Wed May 30 12:23:45 1984
+    >>> lt = ephem.localtime(d)
+    >>> print lt
+    1984-05-30 12:23:45.000002
+    >>> print repr(lt)
+    datetime.datetime(1984, 5, 30, 12, 23, 45, 2)
 
 The output of this code will differ
 depending on the time zone in which you live.
@@ -64,7 +59,7 @@ the ``time.localtime()`` call above
 subtracted four hours from 16:23,
 and returned 12:23 Eastern Daylight Time.
 (Note that Daylight Time was chosen because the date fell in May;
-had the date been in the winter, Standard Time would have been used).
+had the date been in the winter, Standard Time would have been used.)
 
 Conversions
 -----------
