@@ -45,8 +45,7 @@ def is_near(n, m):
                              ' but PyEphem instead returns %s'
                              % (n, m))
 
-class Mixin(object):
-
+class Trial(object):
     def select_body(self, name):
         if name == 'Deneb':
             return ephem.readdb('Deneb,f|D|A2,20:41:25.91|2.25,'
@@ -59,18 +58,33 @@ class Mixin(object):
         else:
             raise ValueError('USNO test: unknown body %r' % name)
 
-    # Check a line of an "Astrometric Positions" file.
+    def examine_content(self):
+        firstline = self.lines[0]
+        name = firstline.strip()
+        self.body = self.select_body(name)
 
-    def astrometric_test(self, line):
+    def run(self, content):
+        self.content = content
+        self.lines = content.split('\n')
+        self.examine_content()
+        for line in self.lines:
+            if line.strip() and line[0].isdigit():
+                self.check_line(line)
+
+# Check an "Astrometric Positions" file.
+
+class Astrometric_Trial(Trial):
+    def check_line(self, line):
         date, ra, dec = parse(line)
 
         self.body.compute(date)
         is_near(ra, self.body.astrometric_ra)
         is_near(dec, self.body.astrometric_dec)
 
-    # Check a line of an "Apparent Geocentric Positions" file.
+# Check an "Apparent Geocentric Positions" file.
 
-    def apparent_geocentric_test(self, line):
+class Apparent_Geocentric_Trial(Trial):
+    def check_line(self, line):
         date, ra, dec = parse(line)
 
         self.body.compute(date)
@@ -91,42 +105,42 @@ class Mixin(object):
         assert self.body.apparent_ra == self.body.ra
         assert self.body.apparent_dec == self.body.dec
 
-    # Check a line of an "Apparent Topocentric Positions" file.
+# Check an "Apparent Topocentric Positions" file.
 
-    def apparent_topocentric_test(self, line):
+class Apparent_Topocentric_Trial(Trial):
+    def examine_content(self):
+        Trial.examine_content(self)
+        for line in self.lines:
+            if 'Location:' in line:
+                self.observer = interpret_observer(line.strip())
+
+    def check_line(self, line):
         date, ra, dec = parse(line)
-
         self.observer.date = date
         self.body.compute(self.observer)
         is_near(ra, self.body.ra)
         is_near(dec, self.body.dec)
 
-    # The actual function that drives the test.
+# The actual function that drives the test.
 
+class Mixin(object):
     def test_usno(self):
 
         titles = {
-            'Astrometric Positions': self.astrometric_test,
-            'Apparent Geocentric Positions': self.apparent_geocentric_test,
-            'Apparent Topocentric Positions': self.apparent_topocentric_test,
+            'Astrometric Positions': Astrometric_Trial,
+            'Apparent Geocentric Positions': Apparent_Geocentric_Trial,
+            'Apparent Topocentric Positions': Apparent_Topocentric_Trial,
             }
 
-        self.body = func = None
-        for line in open(self.path):
-            stripped = line.strip()
-            if not stripped:
-                continue
-            elif not self.body:
-                self.body = self.select_body(stripped)
-            elif not func:
-                for title in titles:
-                    if title in stripped:
-                        func = titles[title]
-                        break
-            elif stripped.startswith('Location:'):
-                self.observer = interpret_observer(stripped)
-            elif line and line[0] != ' ':
-                func(line)
+        content = open(self.path).read()
+        for title in titles:
+            if title in content:
+                trial_class = titles[title]
+                trial = trial_class()
+                trial.run(content)
+                return
+        raise ValueError('Cannot find a test trial that recognizes %r'
+                         % self.path)
 
 #
 # Auto-detect files
