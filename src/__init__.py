@@ -70,10 +70,7 @@ def newton(f, x0, x1):
         f0, f1 = f1, f(x1)
     return x1
 
-# Find equinoxes and solstices using the ecliptic longitude, not right
-# ascension, since computing the cross-quarter days accurately means
-# following the sun on its course along the ecliptic, not the right
-# ascension numbers it trails along the equator above and below it.
+# Find equinoxes and solstices.
 
 _sun = Sun()                    # used for computing equinoxes
 
@@ -97,11 +94,11 @@ def next_equinox(date): return holiday(date, pi, 0)
 def previous_solstice(date): return holiday(date, -pi, halfpi)
 def next_solstice(date): return holiday(date, pi, halfpi)
 
-def previous_quarter_day(date): return holiday(date, -halfpi, 0)
-def next_quarter_day(date): return holiday(date, halfpi, 0)
+#def previous_quarter_day(date): return holiday(date, -halfpi, 0)
+#def next_quarter_day(date): return holiday(date, halfpi, 0)
 
-def previous_cross_quarter_day(date): return holiday(date, -halfpi, quarterpi)
-def next_cross_quarter_day(date): return holiday(date, halfpi, quarterpi)
+#def previous_cross_quarter_day(date): return holiday(date, -halfpi, quarterpi)
+#def next_cross_quarter_day(date): return holiday(date, halfpi, quarterpi)
 
 # We provide a Python extension to our C "Observer" class that can
 # find many circumstances.
@@ -155,6 +152,24 @@ class Observer(_libastro.Observer):
 
         self.disallow_circumpolar(declination)
         return halfpi - asin(tan(-declination) / tan(halfpi - self.lat))
+
+    def find_horizon(self, body, d):
+        def f(d):
+            self.date = d
+            body.compute(self)
+            return body.alt - self.horizon
+        return newton(f, d, d + minute)
+
+    def next_rising(self, body):
+        "Find the next time at which the given body rises."
+
+        body.compute(self)
+        target_ha = twopi - self.ha_from_meridian_to_horizon(body.dec)
+        current_ha = self.sidereal_time() - body.ra
+        ha_move = (target_ha - current_ha) % twopi
+        if body.alt > - twentieth_arcsecond and ha_move < halfpi:
+            ha_move = twopi
+        return self.find_horizon(body, self.date + ha_move / twopi)
 
 
 def localtime(date):

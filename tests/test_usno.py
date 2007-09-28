@@ -121,6 +121,68 @@ class Apparent_Topocentric_Trial(Trial):
         is_near(ra, self.body.ra)
         is_near(dec, self.body.dec)
 
+# Check a "Rise and Set for the * for *" file.
+
+class Rise_Set_Trial(Trial):
+    def examine_content(self):
+        name, year = re.search(r'Rise and Set for (.*) for (\d+)',
+                               self.content).groups()
+        if name.startswith('the '):
+            name = name[4:]
+        self.body = self.select_body(name)
+        self.year = int(year)
+
+        longstr, latstr = re.search(r'Location: (.\d\d\d \d\d), (.\d\d \d\d)',
+                                    self.content).groups()
+        longstr = longstr.replace(' ', ':').replace('W', '-').strip('E')
+        latstr = latstr.replace(' ', ':').replace('S', '-').strip('N')
+
+        self.observer = o = ephem.Observer()
+        o.lat = latstr
+        o.long = longstr
+        o.elevation = 0
+
+        if isinstance(self.body, ephem.Sun):
+            o.pressure = 0
+            o.horizon = '-0:50' # per USNO instructions for sun
+
+    def check_line(self, line):
+        """Determine whether PyEphem rising times match those of the USNO.
+        Lines from this data file look like:
+
+               Jan.       Feb.       Mar.       Apr.       May    ...
+        Day Rise  Set  Rise  Set  Rise  Set  Rise  Set  Rise  Set ...
+             h m  h m   h m  h m   h m  h m   h m  h m   h m  h m ...
+        01  0743 1740  0734 1808  0707 1834  0626 1858  0549 1921 ...
+        02  0743 1741  0734 1809  0705 1835  0624 1859  0548 1922 ...
+        """
+
+        o = self.observer
+        year = self.year
+        body = self.body
+        day = int(line[0:2])
+        for month in [ int(m) for m in range(1,13) ]:
+            offset = month * 11 - 7
+            piece = line[offset : offset + 9]
+            if not piece.strip():
+                continue
+            o.date = ephem.Date((year, month, day))
+            o.next_rising(body)
+            d = ephem.Date(o.date - 5 * ephem.hour)
+
+            usno_field = piece[:4]
+            hr, min = int(piece[:2]), int(piece[2:4])
+            usno_minutes_into_day = hr * 60 + min
+
+            hr, min, sec = d.tuple()[3:6]
+            our_minutes_into_day = hr * 60 + min + sec / 60.
+
+            difference = our_minutes_into_day - usno_minutes_into_day
+            if difference > 1.:
+                raise ValueError('On %s, the USNO and PyEphem'
+                                 ' differ about the time of sunrise'
+                                 ' by more than one minute' % d)
+
 # The actual function that drives the test.
 
 class Mixin(object):
@@ -130,6 +192,7 @@ class Mixin(object):
             'Astrometric Positions': Astrometric_Trial,
             'Apparent Geocentric Positions': Apparent_Geocentric_Trial,
             'Apparent Topocentric Positions': Apparent_Topocentric_Trial,
+            'Rise and Set for': Rise_Set_Trial,
             }
 
         content = open(self.path).read()
