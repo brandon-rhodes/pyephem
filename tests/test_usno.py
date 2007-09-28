@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import math, re, unittest
+import glob, math, re, unittest
 from datetime import datetime
 from time import strptime
 import ephem
@@ -112,7 +112,7 @@ class Mixin(object):
             }
 
         self.body = func = None
-        for line in open('tests/usno/' + self.filename):
+        for line in open(self.path):
             stripped = line.strip()
             if not stripped:
                 continue
@@ -128,19 +128,14 @@ class Mixin(object):
             elif line and line[0] != ' ':
                 func(line)
 
+#
+# Auto-detect files
+#
 
-class T01(unittest.TestCase, Mixin): filename = 'astrom_antares.txt'
-class T02(unittest.TestCase, Mixin): filename = 'astrom_mercury.txt'
-class T03(unittest.TestCase, Mixin): filename = 'astrom_neptune.txt'
-
-class T11(unittest.TestCase, Mixin): filename = 'appgeo_deneb.txt'
-class T12(unittest.TestCase, Mixin): filename = 'appgeo_jupiter.txt'
-class T13(unittest.TestCase, Mixin): filename = 'appgeo_moon.txt'
-class T14(unittest.TestCase, Mixin): filename = 'appgeo_sun.txt'
-
-class T21(unittest.TestCase, Mixin): filename = 'apptopo_deneb.txt'
-class T22(unittest.TestCase, Mixin): filename = 'apptopo_moon.txt'
-class T23(unittest.TestCase, Mixin): filename = 'apptopo_sun.txt'
+i = 1
+for path in glob.glob('tests/usno/*.txt'):
+    exec 'class T%d(unittest.TestCase, Mixin): path = %r' % (i, path)
+    i += 1
 
 if __name__ == '__main__':
     unittest.main()
