@@ -61,7 +61,7 @@ class Mixin(object):
 
     # Check a line of an "Astrometric Positions" file.
 
-    def astrometric_positions(self, line):
+    def astrometric_test(self, line):
         date, ra, dec = parse(line)
 
         self.body.compute(date)
@@ -70,7 +70,7 @@ class Mixin(object):
 
     # Check a line of an "Apparent Geocentric Positions" file.
 
-    def apparent_geocentric_positions(self, line):
+    def apparent_geocentric_test(self, line):
         date, ra, dec = parse(line)
 
         self.body.compute(date)
@@ -93,7 +93,7 @@ class Mixin(object):
 
     # Check a line of an "Apparent Topocentric Positions" file.
 
-    def apparent_topocentric_positions(self, line):
+    def apparent_topocentric_test(self, line):
         date, ra, dec = parse(line)
 
         self.observer.date = date
@@ -104,6 +104,13 @@ class Mixin(object):
     # The actual function that drives the test.
 
     def test_usno(self):
+
+        titles = {
+            'Astrometric Positions': self.astrometric_test,
+            'Apparent Geocentric Positions': self.apparent_geocentric_test,
+            'Apparent Topocentric Positions': self.apparent_topocentric_test,
+            }
+
         self.body = func = None
         for line in open('tests/usno/' + self.filename):
             stripped = line.strip()
@@ -112,7 +119,10 @@ class Mixin(object):
             elif not self.body:
                 self.body = self.select_body(stripped)
             elif not func:
-                func = getattr(self, stripped.lower().replace(' ', '_'))
+                for title in titles:
+                    if title in stripped:
+                        func = titles[title]
+                        break
             elif stripped.startswith('Location:'):
                 self.observer = interpret_observer(stripped)
             elif line and line[0] != ' ':
