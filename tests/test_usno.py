@@ -10,23 +10,28 @@ import ephem
 # confirm that PyEphem returns the same measurements to within one
 # arcsecond of accuracy.
 
+class Datum(object):
+    pass
+
 def interpret_observer(line):
     """Return the Observer represented by a line from a USNO file.
               Location:  W 84°24'36.0", N33°45'36.0",   322m
     """
+    line = line.replace('W ', 'W').replace('E ', 'E')
+    line = line.replace('N ', 'N').replace('S ', 'S')
     fields = line.split()
     observer = ephem.Observer()
-    observer.long = ':'.join(re.findall(r'[0-9.]+', fields[2]))
-    observer.lat = ':'.join(re.findall(r'[0-9.]+', fields[3]))
-    if fields[1] == 'W':
+    observer.long = ':'.join(re.findall(r'[0-9.]+', fields[1]))
+    observer.lat = ':'.join(re.findall(r'[0-9.]+', fields[2]))
+    if fields[1].startswith('W'):
         observer.long *= -1
-    if fields[3].startswith('S'):
+    if fields[2].startswith('S'):
         observer.lat *= -1
     observer.elevation = float(fields[-1][:-1])
     #observer.pressure = 0
     return observer
 
-def parse(line):
+def standard_parse(line):
     """Read the date, RA, and dec from a USNO data file line."""
 
     fields = re.split(r'   +', line)
@@ -76,6 +81,16 @@ class Trial(object):
         name = firstline.strip()
         self.body = self.select_body(name)
 
+    def finish(self):
+        """Conclude the test.
+
+        By overriding this function, the author of a Trial can do
+        processing at the end of his test run.  Commonly, this is used
+        when check_data_line() just stores what it finds in each data
+        line, and the results need to be checked as a unit.
+
+        """
+
     def run(self, content):
         self.content = content
         self.lines = content.split('\n')
@@ -83,6 +98,7 @@ class Trial(object):
         for line in self.lines:
             if line.strip() and line[0].isdigit():
                 self.check_data_line(line)
+        self.finish()
 
 # Check an "Astrometric Positions" file.
 
@@ -92,7 +108,7 @@ class Astrometric_Trial(Trial):
         return 'Astrometric Positions' in content
 
     def check_data_line(self, line):
-        date, ra, dec = parse(line)
+        date, ra, dec = standard_parse(line)
 
         self.body.compute(date)
         is_near(ra, self.body.astrometric_ra)
@@ -106,7 +122,7 @@ class Apparent_Geocentric_Trial(Trial):
         return 'Apparent Geocentric Positions' in content
 
     def check_data_line(self, line):
-        date, ra, dec = parse(line)
+        date, ra, dec = standard_parse(line)
 
         self.body.compute(date)
         is_near(ra, self.body.apparent_ra)
@@ -140,7 +156,7 @@ class Apparent_Topocentric_Trial(Trial):
                 self.observer = interpret_observer(line.strip())
 
     def check_data_line(self, line):
-        date, ra, dec = parse(line)
+        date, ra, dec = standard_parse(line)
         self.observer.date = date
         self.body.compute(self.observer)
         is_near(ra, self.body.ra)
@@ -149,6 +165,9 @@ class Apparent_Topocentric_Trial(Trial):
 # Check several days of risings, settings, and transits.
 
 class Rise_Transit_Set_Trial(Trial):
+    def __init__(self):
+        self.data = []
+
     @classmethod
     def matches(self, content):
         return 'Rise  Az.       Transit Alt.       Set  Az.' in content
@@ -174,58 +193,99 @@ The file looks something like:
 2006 May 01 (Mon)        10:03 100        15:37 42S        21:11 260
 
         """
-        body, observer = self.body, self.observer
+        datum = Datum()
         fields = line.split()
+
         dt = datetime(*strptime(' '.join(fields[0:3]), "%Y %b %d")[0:3])
-        raw_date = ephem.Date(dt)
-        date = ephem.Date(raw_date - self.tz)
+        midnight = ephem.Date(ephem.Date(dt) - self.tz)
+        datum.midnight = midnight
 
-        def check_time_and_angle((timestr, anglestr), our_angle):
-            datestr = str(raw_date).split()[0] + ' ' + timestr
-            their_date = ephem.Date(datestr)
-            our_date = ephem.Date(observer.date + self.tz)
-            is_near(their_date, our_date, ephem.minute)
+        def parse(fields, n):
+            if len(fields) < n + 2:
+                return None, None
+            (timestr, anglestr) = fields[n:n+2]
+            if timestr == '*****':
+                return None, None
+            h, m = [ int(s) for s in timestr.split(':') ]
+            date = ephem.Date(midnight + h * ephem.hour + m * ephem.minute)
+            angle = ephem.degrees(anglestr.strip('NS'))
+            return date, angle
 
-            their_angle = ephem.degrees(anglestr.strip('NS'))
-            is_near(their_angle, our_angle, ephem.degree)
+        datum.rising, datum.rising_az = parse(fields, 4)
+        datum.transit, datum.transit_alt = parse(fields, 6)
+        datum.setting, datum.setting_az = parse(fields, 8)
 
-        # Try in the forward direction, doing double calls to make
-        # sure none of them are susceptible to getting hung up on the
-        # previous result.
+        self.data.append(datum)
 
-        observer.date = date - 1
-        observer.next_rising(body)
-        observer.next_rising(body)
-        check_time_and_angle(fields[4:6], body.az)
+    def finish(self):
+        """Go back through and verify the data we have saved."""
 
-        observer.date = date - 1
-        observer.next_transit(body)
-        observer.next_transit(body)
-        check_time_and_angle(fields[6:8], body.alt)
+        body, observer = self.body, self.observer
+        data = self.data
 
-        observer.date = date - 1
-        observer.next_setting(body)
-        observer.next_setting(body)
-        check_time_and_angle(fields[8:10], body.az)
+        # This helper function, given an attribute name of
+        # "rising", "transit", or "setting", verifies that the
+        # observer and body are locate at the time and place that
+        # the named transit attributes say they should be.
 
-        # And again, in the reverse direction.
+        def check(attr):
+            is_near(getattr(datum, attr), observer.date, ephem.minute)
+            if attr == 'transit':
+                datum_angle = datum.transit_alt
+                our_angle = body.alt
+            else:
+                datum_angle = getattr(datum, attr + '_az')
+                our_angle = body.az
+            is_near(datum_angle, our_angle, ephem.degree)
 
-        observer.date = date + 2
-        observer.previous_setting(body)
-        observer.previous_setting(body)
-        check_time_and_angle(fields[8:10], body.az)
+        # Make sure that, from both the midnight starting the day and
+        # the midnight ending the day, we can move to the events that
+        # happen during each day.
 
-        observer.date = date + 2
-        observer.previous_transit(body)
-        observer.previous_transit(body)
-        check_time_and_angle(fields[6:8], body.alt)
+        for i in range(len(data)):
+            datum = data[i]
 
-        observer.date = date + 2
-        observer.previous_rising(body)
-        observer.previous_rising(body)
-        check_time_and_angle(fields[4:6], body.az)
+            for attr in ('rising', 'transit', 'setting'):
+                datum_date = getattr(datum, attr)
 
-        # Try doubles of each kind of call.
+                if datum_date is not None:
+                    observer.date = datum.midnight
+                    getattr(observer, 'next_' + attr)(body)
+                    check(attr)
+
+                    observer.date = datum.midnight + 1
+                    getattr(observer, 'previous_' + attr)(body)
+                    check(attr)
+
+        # Make sure we can also jump along similar events.
+
+        for attr in ('rising', 'transit', 'setting'):
+            prev = None
+            for i in range(len(data)):
+                datum = data[i]
+                datum_date = getattr(datum, attr)
+                if datum_date is None:
+                    prev = None
+                else:
+                    if prev is None:
+                        observer.date = datum.midnight
+                    getattr(observer, 'next_' + attr)(body)
+                    check(attr)
+                    prev = observer.date
+
+        for attr in ('rising', 'transit', 'setting'):
+            next = None
+            for i in range(len(data) - 1, 0, -1):
+                datum = data[i]
+                datum_date = getattr(datum, attr)
+                if datum_date is None:
+                    next = None
+                else:
+                    if next is None:
+                        observer.date = datum.midnight + 1
+                    getattr(observer, 'previous_' + attr)(body)
+                    check(attr)
+                    next = observer.date
 
 # Check a whole year of "Rise and Set for the * for *" file.
 
