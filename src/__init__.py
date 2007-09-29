@@ -111,7 +111,7 @@ class Observer(_libastro.Observer):
     elev = _libastro.Observer.elevation
 
     def __repr__(self):
-        "Display useful information when an Observer is printed."
+        """Print a useful representation of this Observer."""
 
         return ('<ephem.Observer date=%r epoch=%r'
                 ' long=%s lat=%s elevation=%sm'
@@ -121,7 +121,7 @@ class Observer(_libastro.Observer):
                    self.horizon, self.temp, self.pressure))
 
     def next_transit(self, body):
-        "Find the next passage of a body across the meridian."
+        """Find the next passage of a body across the meridian."""
 
         def f(d):
             self.date = d
@@ -135,8 +135,12 @@ class Observer(_libastro.Observer):
         return newton(f, d, d + minute)
 
     def disallow_circumpolar(self, declination):
-        "Raise an exception if the given declination is circumpolar."
+        """Raise an exception if the given declination is circumpolar.
 
+        Raises NeverUpError if the given declination is always below
+        this Observer's horizon, or AlwaysUpError if it is always up.
+
+        """
         if abs(self.lat - declination) >= halfpi:
             raise NeverUpError('The declination %s never rises'
                                ' above the horizon at latitude %s'
@@ -147,18 +151,24 @@ class Observer(_libastro.Observer):
                                 % (declination, self.lat))
 
     def ha_from_meridian_to_horizon(self, declination):
-        ("Return the distince in RA between the meridian and ideal horizon"
-         " along the given line of declination.")
+        """Return the HA between the meridian and ideal horizon.
 
+        Return the angle through which the sky has to rotate (thus,
+        the result could be called either a difference in RA or HA) in
+        order to bring an object at the given declination from the
+        meridian to the ideal horizon.
+
+        """
         self.disallow_circumpolar(declination)
         return halfpi - asin(tan(-declination) / tan(halfpi - self.lat))
 
-    def move_to_horizon(self, body, d):
+    def move_to_horizon(self, body, date):
+        """Run Netwon's method to bring the given body to the horizon."""
         def f(d):
             self.date = d
             body.compute(self)
             return body.alt - self.horizon
-        return newton(f, d, d + minute)
+        return newton(f, date, date + minute)
 
     def _rising_setting(self, body, rising=False, previous=False):
         """Computation for the rising and setting functions."""
@@ -166,9 +176,9 @@ class Observer(_libastro.Observer):
         setting = not rising
         body.compute(self)
 
-        # If we were dealing with the ideal horizon in the absence of
-        # refraction, how far would we turn the sky to place the
-        # object's current location at zero degrees altitude?
+        # Compute, for the ideal horizon in the absence of refraction,
+        # how far we must turn the sky in order to place the object's
+        # current RA/dec at zero degrees altitude.
 
         target_ha = self.ha_from_meridian_to_horizon(body.dec)
         if rising:
@@ -178,10 +188,10 @@ class Observer(_libastro.Observer):
         if previous:
             ha_move = ha_move - twopi
 
-        # But since we are dealing with refraction, and the user's
-        # choice of their own self.horizon, the object might already
-        # have risen when we think it its rising is in the future, or
-        # vice-versa.  So we check its altitude and adjust our guess.
+        # But because of refraction, and the user's own choice of
+        # self.horizon, the object, when at the ideal horizon, might
+        # already have passed the circumstances for which we search.
+        # So we check its actual altitude, and adjust our guess.
 
         distance_from_horizon = body.alt - self.horizon
         up = distance_from_horizon > - twentieth_arcsecond
@@ -204,37 +214,31 @@ class Observer(_libastro.Observer):
         return self.move_to_horizon(body, self.date + ha_move / twopi)
 
     def previous_rising(self, body):
-        "Find the previous time at which the given body rises."
-
+        """Find the previous time at which the given body rises."""
         self._rising_setting(body, rising=True, previous=True)
 
     def previous_setting(self, body):
-        "Find the previous time at which the given body rises."
-
+        """Find the previous time at which the given body rises."""
         self._rising_setting(body, previous=True)
 
     def next_rising(self, body):
-        "Find the next time at which the given body rises."
-
+        """Find the next time at which the given body rises."""
         self._rising_setting(body, rising=True)
 
     def next_setting(self, body):
-        "Find the next time at which the given body rises."
-
+        """Find the next time at which the given body rises."""
         self._rising_setting(body)
 
 
 def localtime(date):
-    "Convert a PyEphem date into the local time, as a Python datetime."
-
+    """Convert a PyEphem date into local time, returning a Python datetime."""
     import calendar, time, datetime
     timetuple = time.localtime(calendar.timegm(date.tuple()))
     return datetime.datetime(*timetuple[:7])
 
 
 def city(name):
-    "Return a city from our world cities database."
-
+    """Return a city from our world cities database."""
     from ephem.cities import create
     return create(name)
 
