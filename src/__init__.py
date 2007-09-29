@@ -160,36 +160,33 @@ class Observer(_libastro.Observer):
             return body.alt - self.horizon
         return newton(f, d, d + minute)
 
-    def next_rising(self, body):
-        "Find the next time at which the given body rises."
-
-        body.compute(self)
-        target_ha = twopi - self.ha_from_meridian_to_horizon(body.dec)
-        current_ha = self.sidereal_time() - body.ra
-        ha_move = (target_ha - current_ha) % twopi
-        if body.alt - self.horizon > - twentieth_arcsecond: # already risen
-            if ha_move < halfpi:
-                ha_move += twopi
-        if body.alt - self.horizon < twentieth_arcsecond: # not yet risen
-            if ha_move > pi + halfpi:
-                ha_move -= twopi
-        return self.move_to_horizon(body, self.date + ha_move / twopi)
-
-    def next_setting(self, body):
-        "Find the next time at which the given body sets."
-
+    def next_rise_or_set(self, body, rising):
         body.compute(self)
         target_ha = self.ha_from_meridian_to_horizon(body.dec)
+        if rising:
+            target_ha = twopi - target_ha
         current_ha = self.sidereal_time() - body.ra
         ha_move = (target_ha - current_ha) % twopi
         distance_from_horizon = body.alt - self.horizon
-        if distance_from_horizon < twentieth_arcsecond: # already set
+        above_horizon = distance_from_horizon > - twentieth_arcsecond
+        below_horizon = distance_from_horizon < twentieth_arcsecond
+        if (rising and above_horizon) or (not rising and below_horizon):
             if ha_move < halfpi:
                 ha_move += twopi
-        elif distance_from_horizon > - twentieth_arcsecond: # not yet set
+        elif (rising and below_horizon) or (not rising and above_horizon):
             if ha_move > pi + halfpi:
                 ha_move -= twopi
         return self.move_to_horizon(body, self.date + ha_move / twopi)
+
+    def next_rising(self, body):
+        "Find the next time at which the given body rises."
+
+        self.next_rise_or_set(body, True)
+
+    def next_setting(self, body):
+        "Find the next time at which the given body rises."
+
+        self.next_rise_or_set(body, False)
 
 
 def localtime(date):
