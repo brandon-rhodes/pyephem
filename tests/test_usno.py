@@ -197,11 +197,19 @@ class Rise_Set_Trial(Trial):
                 o.horizon -= body.size / 2. * ephem.arcsecond
 
             if usno_rise:
+                o.date = start_of_day + 1
+                o.previous_rising(body)
+                two_digit_compare('rise', usno_rise)
+
                 o.date = start_of_day
                 o.next_rising(body)
                 two_digit_compare('rise', usno_rise)
 
             if usno_set:
+                o.date = start_of_day + 1
+                o.previous_setting(body)
+                two_digit_compare('set', usno_set)
+
                 o.date = start_of_day
                 o.next_setting(body)
                 two_digit_compare('set', usno_set)

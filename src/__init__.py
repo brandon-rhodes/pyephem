@@ -160,33 +160,72 @@ class Observer(_libastro.Observer):
             return body.alt - self.horizon
         return newton(f, d, d + minute)
 
-    def next_rise_or_set(self, body, rising):
+    def _rising_setting(self, body, rising=False, previous=False):
+        """Computation for the rising and setting functions."""
+
+        setting = not rising
+        next = not previous
         body.compute(self)
+
+        # If we were dealing with the ideal horizon in the absence of
+        # refraction, how far would we turn the sky to place the
+        # object's current location at zero degrees altitude?
+
         target_ha = self.ha_from_meridian_to_horizon(body.dec)
         if rising:
             target_ha = twopi - target_ha
         current_ha = self.sidereal_time() - body.ra
         ha_move = (target_ha - current_ha) % twopi
+        if previous:
+            ha_move = ha_move - twopi
+
+        # But since we are dealing with refraction, and the user's
+        # choice of their own self.horizon, the object might already
+        # have risen when we think it its rising is in the future, or
+        # vice-versa.  So we check its altitude and adjust our guess.
+
         distance_from_horizon = body.alt - self.horizon
         above_horizon = distance_from_horizon > - twentieth_arcsecond
         below_horizon = distance_from_horizon < twentieth_arcsecond
-        if (rising and above_horizon) or (not rising and below_horizon):
-            if ha_move < halfpi:
-                ha_move += twopi
-        elif (rising and below_horizon) or (not rising and above_horizon):
-            if ha_move > pi + halfpi:
-                ha_move -= twopi
+        if (next and ((rising and above_horizon) or (setting and below_horizon))
+            or previous and ((rising and below_horizon) or (setting and above_horizon))):
+            if abs(ha_move) < halfpi:
+                if ha_move > 0:
+                    ha_move += twopi
+                else:
+                    ha_move -= twopi
+        elif (next and ((rising and below_horizon) or (setting and above_horizon))
+              or previous and ((rising and above_horizon) or (setting and below_horizon))):
+            if abs(ha_move) > pi + halfpi:
+                if ha_move > 0:
+                    ha_move -= twopi
+                else:
+                    ha_move += twopi
+
+        # Finally, we submit our guess to Newton's method, which
+        # determines the real moment of zero altitude.
+
         return self.move_to_horizon(body, self.date + ha_move / twopi)
+
+    def previous_rising(self, body):
+        "Find the previous time at which the given body rises."
+
+        self._rising_setting(body, rising=True, previous=True)
+
+    def previous_setting(self, body):
+        "Find the previous time at which the given body rises."
+
+        self._rising_setting(body, previous=True)
 
     def next_rising(self, body):
         "Find the next time at which the given body rises."
 
-        self.next_rise_or_set(body, True)
+        self._rising_setting(body, rising=True)
 
     def next_setting(self, body):
         "Find the next time at which the given body rises."
 
-        self.next_rise_or_set(body, False)
+        self._rising_setting(body)
 
 
 def localtime(date):
