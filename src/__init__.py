@@ -132,25 +132,36 @@ class Observer(_libastro.Observer):
                    self.long, self.lat, self.elevation,
                    self.horizon, self.temp, self.pressure))
 
-    def next_transit(self, body):
-        """Find the next passage of a body across the meridian."""
+    def _compute_transit(self, body, sign):
+        """Internal function used to compute transits."""
 
         def f(d):
             self.date = d
             body.compute(self)
             return degrees(body.ra - self.sidereal_time()).znorm
         body.compute(self)
-        ha_to_move = (body.ra - self.sidereal_time()) % twopi
-        if ha_to_move < twentieth_arcsecond:
-            ha_to_move = twopi
+        ha_to_move = (body.ra - self.sidereal_time()) % (sign * twopi)
+        if abs(ha_to_move) < twentieth_arcsecond:
+            ha_to_move = sign * twopi
         d = self.date + ha_to_move / twopi
         return newton(f, d, d + minute)
+
+    def previous_transit(self, body):
+        """Find the next passage of a body across the meridian."""
+
+        self._compute_transit(body, -1)
+
+    def next_transit(self, body):
+        """Find the next passage of a body across the meridian."""
+
+        self._compute_transit(body, +1)
 
     def disallow_circumpolar(self, declination):
         """Raise an exception if the given declination is circumpolar.
 
-        Raises NeverUpError if the given declination is always below
-        this Observer's horizon, or AlwaysUpError if it is always up.
+        Raises NeverUpError if an object at the given declination is
+        always below this Observer's horizon, or AlwaysUpError if such
+        an object would always be above the horizon.
 
         """
         if abs(self.lat - declination) >= halfpi:
@@ -189,7 +200,7 @@ class Observer(_libastro.Observer):
         body.compute(self)
 
         # Compute, for the ideal horizon in the absence of refraction,
-        # how far we must turn the sky in order to place the object's
+        # how far we must turn the sky in order to place the body's
         # current RA/dec at zero degrees altitude.
 
         target_ha = self.ha_from_meridian_to_horizon(body.dec)
@@ -197,28 +208,33 @@ class Observer(_libastro.Observer):
             target_ha = twopi - target_ha
         current_ha = self.sidereal_time() - body.ra
         ha_move = (target_ha - current_ha) % twopi
-        if previous:
-            ha_move = ha_move - twopi
 
-        # But because of refraction, and the user's own choice of
-        # self.horizon, the object, when at the ideal horizon, might
+        # But because of refraction and the user's own choice of
+        # self.horizon, the body, when at the ideal horizon, might
         # already have passed the circumstances for which we search.
-        # So we check its actual altitude, and adjust our guess.
+        # So we check for this condition, and adjust our guess.
 
-        distance_from_horizon = body.alt - self.horizon
-        up = distance_from_horizon > - twentieth_arcsecond
-        down = distance_from_horizon < twentieth_arcsecond
-        already = rising and up or setting and down
-        not_yet = rising and down or setting and up
         if previous:
-            already, not_yet = not_yet, already
+            ha_move = twopi - ha_move
 
-        if (already and abs(ha_move) < halfpi or
-            not_yet and abs(ha_move) > pi + halfpi):
-            if ha_move > 0:
-                ha_move -= twopi
+        az = body.az
+        if (rising and 0 < az < pi) or (setting and pi < az < twopi):
+
+            alt_above_horizon = body.alt - self.horizon
+            if bool(previous) == bool(rising): # Python for "not xor"
+                do_big_move = alt_above_horizon < twentieth_arcsecond
             else:
-                ha_move += twopi
+                do_big_move = alt_above_horizon > - twentieth_arcsecond
+
+            if do_big_move:
+                if ha_move < pi:
+                    ha_move += twopi
+            else:
+                if ha_move > pi:
+                    ha_move -= twopi
+
+        if previous:
+            ha_move = - ha_move
 
         # Finally, we submit our guess to Newton's method, which
         # determines the real moment of zero altitude.

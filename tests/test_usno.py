@@ -177,26 +177,55 @@ The file looks something like:
         body, observer = self.body, self.observer
         fields = line.split()
         dt = datetime(*strptime(' '.join(fields[0:3]), "%Y %b %d")[0:3])
-        date = ephem.Date(dt)
+        raw_date = ephem.Date(dt)
+        date = ephem.Date(raw_date - self.tz)
 
         def check_time_and_angle((timestr, anglestr), our_angle):
-            datestr = str(date).split()[0] + ' ' + timestr
+            datestr = str(raw_date).split()[0] + ' ' + timestr
             their_date = ephem.Date(datestr)
-            our_date = ephem.date(observer.date + self.tz)
+            our_date = ephem.Date(observer.date + self.tz)
             is_near(their_date, our_date, ephem.minute)
 
             their_angle = ephem.degrees(anglestr.strip('NS'))
             is_near(their_angle, our_angle, ephem.degree)
 
-        observer.date = date
+        # Try in the forward direction, doing double calls to make
+        # sure none of them are susceptible to getting hung up on the
+        # previous result.
+
+        observer.date = date - 1
+        observer.next_rising(body)
         observer.next_rising(body)
         check_time_and_angle(fields[4:6], body.az)
 
+        observer.date = date - 1
+        observer.next_transit(body)
         observer.next_transit(body)
         check_time_and_angle(fields[6:8], body.alt)
 
+        observer.date = date - 1
+        observer.next_setting(body)
         observer.next_setting(body)
         check_time_and_angle(fields[8:10], body.az)
+
+        # And again, in the reverse direction.
+
+        observer.date = date + 2
+        observer.previous_setting(body)
+        observer.previous_setting(body)
+        check_time_and_angle(fields[8:10], body.az)
+
+        observer.date = date + 2
+        observer.previous_transit(body)
+        observer.previous_transit(body)
+        check_time_and_angle(fields[6:8], body.alt)
+
+        observer.date = date + 2
+        observer.previous_rising(body)
+        observer.previous_rising(body)
+        check_time_and_angle(fields[4:6], body.az)
+
+        # Try doubles of each kind of call.
 
 # Check a whole year of "Rise and Set for the * for *" file.
 
