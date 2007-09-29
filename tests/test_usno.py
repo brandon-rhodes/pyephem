@@ -23,7 +23,7 @@ def interpret_observer(line):
     if fields[3].startswith('S'):
         observer.lat *= -1
     observer.elevation = float(fields[-1][:-1])
-    observer.pressure = 0
+    #observer.pressure = 0
     return observer
 
 def parse(line):
@@ -37,10 +37,10 @@ def parse(line):
     dec = ephem.degrees(sign + mag.replace(' ', ':'))
     return date, ra, dec
 
-def is_near(n, m):
+def is_near(n, m, error = ephem.arcsecond):
     """Raise an exception if two values are not within an arcsecond."""
 
-    if abs(n - m) > ephem.arcsecond:
+    if abs(n - m) > error:
         raise AssertionError('the USNO asserts the value %s'
                              ' but PyEphem instead returns %s'
                              % (n, m))
@@ -53,12 +53,25 @@ class Trial(object):
         elif name == 'Antares':
             return ephem.readdb('Antares,f|D|M1,16:29:24.46|-11.4,'
                                 '-26:25:55.21|-23.2,1.07,2000')
+        elif name == 'Rigel':
+            return ephem.readdb('Rigel,f|D|B8,5:14:32.27|1.95,'
+                                '-8:12:5.91|-0.6,0.28,2000')
         elif hasattr(ephem, name):
             return getattr(ephem, name)()
         else:
             raise ValueError('USNO test: unknown body %r' % name)
 
     def examine_content(self):
+        """Return the object named on the first line of the file.
+
+        Since most USNO files name a heavenly body on their first
+        line, this generic examine_content looks for it and sets
+        "self.body" accordingly.  If when you subclass Trial you are
+        dealing with a file that does not follow this convention, then
+        both override examine_content with one of your own, and
+        neglect to call this one.
+
+        """
         firstline = self.lines[0]
         name = firstline.strip()
         self.body = self.select_body(name)
@@ -69,12 +82,16 @@ class Trial(object):
         self.examine_content()
         for line in self.lines:
             if line.strip() and line[0].isdigit():
-                self.check_line(line)
+                self.check_data_line(line)
 
 # Check an "Astrometric Positions" file.
 
 class Astrometric_Trial(Trial):
-    def check_line(self, line):
+    @classmethod
+    def matches(self, content):
+        return 'Astrometric Positions' in content
+
+    def check_data_line(self, line):
         date, ra, dec = parse(line)
 
         self.body.compute(date)
@@ -84,7 +101,11 @@ class Astrometric_Trial(Trial):
 # Check an "Apparent Geocentric Positions" file.
 
 class Apparent_Geocentric_Trial(Trial):
-    def check_line(self, line):
+    @classmethod
+    def matches(self, content):
+        return 'Apparent Geocentric Positions' in content
+
+    def check_data_line(self, line):
         date, ra, dec = parse(line)
 
         self.body.compute(date)
@@ -108,22 +129,82 @@ class Apparent_Geocentric_Trial(Trial):
 # Check an "Apparent Topocentric Positions" file.
 
 class Apparent_Topocentric_Trial(Trial):
+    @classmethod
+    def matches(self, content):
+        return 'Apparent Topocentric Positions' in content
+
     def examine_content(self):
-        Trial.examine_content(self)
+        Trial.examine_content(self) # process object name on first line
         for line in self.lines:
             if 'Location:' in line:
                 self.observer = interpret_observer(line.strip())
 
-    def check_line(self, line):
+    def check_data_line(self, line):
         date, ra, dec = parse(line)
         self.observer.date = date
         self.body.compute(self.observer)
         is_near(ra, self.body.ra)
         is_near(dec, self.body.dec)
 
-# Check a "Rise and Set for the * for *" file.
+# Check several days of risings, settings, and transits.
+
+class Rise_Transit_Set_Trial(Trial):
+    @classmethod
+    def matches(self, content):
+        return 'Rise  Az.       Transit Alt.       Set  Az.' in content
+
+    def examine_content(self):
+        Trial.examine_content(self) # process object name on first line
+        for line in self.lines:
+            if 'Location:' in line:
+                self.observer = interpret_observer(line.strip())
+            elif 'Time Zone:' in line:
+                if 'west of Greenwich' in line:
+                    self.tz = - int(line.split()[2].strip('h')) * ephem.hour
+
+    def check_data_line(self, line):
+        """Determine if our rise/transit/set data match the USNO's.
+
+The file looks something like:
+      Date               Rise  Az.       Transit Alt.       Set  Az.
+     (Zone)
+                          h  m   °         h  m  °          h  m   °
+2006 Apr 29 (Sat)        10:11 100        15:45 42S        21:19 260
+2006 Apr 30 (Sun)        10:07 100        15:41 42S        21:15 260
+2006 May 01 (Mon)        10:03 100        15:37 42S        21:11 260
+
+        """
+        body, observer = self.body, self.observer
+        fields = line.split()
+        dt = datetime(*strptime(' '.join(fields[0:3]), "%Y %b %d")[0:3])
+        date = ephem.Date(dt)
+
+        def check_time_and_angle((timestr, anglestr), our_angle):
+            datestr = str(date).split()[0] + ' ' + timestr
+            their_date = ephem.Date(datestr)
+            our_date = ephem.date(observer.date + self.tz)
+            is_near(their_date, our_date, ephem.minute)
+
+            their_angle = ephem.degrees(anglestr.strip('NS'))
+            is_near(their_angle, our_angle, ephem.degree)
+
+        observer.date = date
+        observer.next_rising(body)
+        check_time_and_angle(fields[4:6], body.az)
+
+        observer.next_transit(body)
+        check_time_and_angle(fields[6:8], body.alt)
+
+        observer.next_setting(body)
+        check_time_and_angle(fields[8:10], body.az)
+
+# Check a whole year of "Rise and Set for the * for *" file.
 
 class Rise_Set_Trial(Trial):
+    @classmethod
+    def matches(self, content):
+        return 'Rise and Set for' in content
+
     def examine_content(self):
         name, year = re.search(r'Rise and Set for (.*) for (\d+)',
                                self.content).groups()
@@ -151,7 +232,7 @@ class Rise_Set_Trial(Trial):
             o.pressure = 0
             # horizon is set per-day based on moon diameter; see below
 
-    def check_line(self, line):
+    def check_data_line(self, line):
         """Determine whether PyEphem rising times match those of the USNO.
         Lines from this data file look like:
 
@@ -219,17 +300,12 @@ class Rise_Set_Trial(Trial):
 class Mixin(object):
     def test_usno(self):
 
-        titles = {
-            'Astrometric Positions': Astrometric_Trial,
-            'Apparent Geocentric Positions': Apparent_Geocentric_Trial,
-            'Apparent Topocentric Positions': Apparent_Topocentric_Trial,
-            'Rise and Set for': Rise_Set_Trial,
-            }
-
         content = open(self.path).read()
-        for title in titles:
-            if title in content:
-                trial_class = titles[title]
+        g = globals()
+        for obj in g.values():
+            if (isinstance(obj, type) and issubclass(obj, Trial)
+                and hasattr(obj, 'matches') and obj.matches(content)):
+                trial_class = obj
                 trial = trial_class()
                 trial.run(content)
                 return
