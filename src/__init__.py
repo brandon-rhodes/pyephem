@@ -149,12 +149,12 @@ class Observer(_libastro.Observer):
     def previous_transit(self, body):
         """Find the next passage of a body across the meridian."""
 
-        self._compute_transit(body, -1)
+        return self._compute_transit(body, -1)
 
     def next_transit(self, body):
         """Find the next passage of a body across the meridian."""
 
-        self._compute_transit(body, +1)
+        return self._compute_transit(body, +1)
 
     def disallow_circumpolar(self, declination):
         """Raise an exception if the given declination is circumpolar.
@@ -191,7 +191,7 @@ class Observer(_libastro.Observer):
             self.date = d
             body.compute(self)
             return body.alt - self.horizon
-        return newton(f, date, date + minute)
+        return Date(newton(f, date, date + minute))
 
     def _rising_setting(self, body, rising=False, previous=False):
         """Computation for the rising and setting functions."""
@@ -243,19 +243,19 @@ class Observer(_libastro.Observer):
 
     def previous_rising(self, body):
         """Find the previous time at which the given body rises."""
-        self._rising_setting(body, rising=True, previous=True)
+        return self._rising_setting(body, rising=True, previous=True)
 
     def previous_setting(self, body):
         """Find the previous time at which the given body rises."""
-        self._rising_setting(body, previous=True)
+        return self._rising_setting(body, previous=True)
 
     def next_rising(self, body):
         """Find the next time at which the given body rises."""
-        self._rising_setting(body, rising=True)
+        return self._rising_setting(body, rising=True)
 
     def next_setting(self, body):
         """Find the next time at which the given body rises."""
-        self._rising_setting(body)
+        return self._rising_setting(body)
 
 
 def localtime(date):
