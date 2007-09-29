@@ -15,7 +15,7 @@ and to provide doctests to make sure they keep doing it.
 
 They are:
     
-``observer.disallow_circumpolarness(declination)``
+``observer.disallow_circumpolar(declination)``
  Raises an exception if the given declination
  is circumpolar for the given observer.
  The exception raised is either ``NeverUpError`` or ``AlwaysUpError``

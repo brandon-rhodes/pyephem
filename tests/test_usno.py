@@ -142,9 +142,14 @@ class Rise_Set_Trial(Trial):
         o.long = longstr
         o.elevation = 0
 
+        self.error = ephem.minute # error we tolerate in predicted time
+
         if isinstance(self.body, ephem.Sun):
             o.pressure = 0
-            o.horizon = '-0:50' # per USNO instructions for sun
+            o.horizon = '-0:50' # per USNO instructions for Sun
+        elif isinstance(self.body, ephem.Moon):
+            o.pressure = 0
+            # horizon is set per-day based on moon diameter; see below
 
     def check_line(self, line):
         """Determine whether PyEphem rising times match those of the USNO.
@@ -155,33 +160,51 @@ class Rise_Set_Trial(Trial):
              h m  h m   h m  h m   h m  h m   h m  h m   h m  h m ...
         01  0743 1740  0734 1808  0707 1834  0626 1858  0549 1921 ...
         02  0743 1741  0734 1809  0705 1835  0624 1859  0548 1922 ...
+
+        Note that times in this kind of file are in Eastern Standard
+        Time, so we have to variously add and subtract fives hours
+        from our UT times to perform a valid comparison.
         """
+
+        def two_digit_compare(event, usno_digits):
+            usno_hrmin = usno_digits[:2] + ':' + usno_digits[2:]
+            usno_date = ephem.Date('%s %s' % (usno_datestr, usno_hrmin))
+
+            difference = o.date - (usno_date + 5 * ephem.hour)
+            if abs(difference) > self.error:
+                raise ValueError('On %s, the USNO thinks that %s %s'
+                                 ' happens at %r but PyEphem finds %s'
+                                 % (usno_datestr, body.name, event,
+                                    usno_hrmin, o.date))
 
         o = self.observer
         year = self.year
         body = self.body
         day = int(line[0:2])
         for month in [ int(m) for m in range(1,13) ]:
-            offset = month * 11 - 7
-            piece = line[offset : offset + 9]
-            if not piece.strip():
-                continue
-            o.date = ephem.Date((year, month, day))
-            o.next_rising(body)
-            d = ephem.Date(o.date - 5 * ephem.hour)
+            usno_datestr = '%s/%s/%s' % (year, month, day)
 
-            usno_field = piece[:4]
-            hr, min = int(piece[:2]), int(piece[2:4])
-            usno_minutes_into_day = hr * 60 + min
+            offset = month * 11 - 7 # where month is in line
+            usno_rise = line[offset : offset + 4].strip()
+            usno_set = line[offset + 5 : offset + 9].strip()
 
-            hr, min, sec = d.tuple()[3:6]
-            our_minutes_into_day = hr * 60 + min + sec / 60.
+            start_of_day = ephem.Date((year, month, day)) + 5 * ephem.hour
 
-            difference = our_minutes_into_day - usno_minutes_into_day
-            if difference > 1.:
-                raise ValueError('On %s, the USNO and PyEphem'
-                                 ' differ about the time of sunrise'
-                                 ' by more than one minute' % d)
+            o.date = start_of_day
+            body.compute(o)
+            if isinstance(self.body, ephem.Moon):
+                o.horizon = '-00:34' # per USNO instructions for Moon
+                o.horizon -= body.size / 2. * ephem.arcsecond
+
+            if usno_rise:
+                o.date = start_of_day
+                o.next_rising(body)
+                two_digit_compare('rise', usno_rise)
+
+            if usno_set:
+                o.date = start_of_day
+                o.next_setting(body)
+                two_digit_compare('set', usno_set)
 
 # The actual function that drives the test.
 

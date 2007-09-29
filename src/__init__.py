@@ -153,7 +153,7 @@ class Observer(_libastro.Observer):
         self.disallow_circumpolar(declination)
         return halfpi - asin(tan(-declination) / tan(halfpi - self.lat))
 
-    def find_horizon(self, body, d):
+    def move_to_horizon(self, body, d):
         def f(d):
             self.date = d
             body.compute(self)
@@ -167,9 +167,29 @@ class Observer(_libastro.Observer):
         target_ha = twopi - self.ha_from_meridian_to_horizon(body.dec)
         current_ha = self.sidereal_time() - body.ra
         ha_move = (target_ha - current_ha) % twopi
-        if body.alt > - twentieth_arcsecond and ha_move < halfpi:
-            ha_move = twopi
-        return self.find_horizon(body, self.date + ha_move / twopi)
+        if body.alt - self.horizon > - twentieth_arcsecond: # already risen
+            if ha_move < halfpi:
+                ha_move += twopi
+        if body.alt - self.horizon < twentieth_arcsecond: # not yet risen
+            if ha_move > pi + halfpi:
+                ha_move -= twopi
+        return self.move_to_horizon(body, self.date + ha_move / twopi)
+
+    def next_setting(self, body):
+        "Find the next time at which the given body sets."
+
+        body.compute(self)
+        target_ha = self.ha_from_meridian_to_horizon(body.dec)
+        current_ha = self.sidereal_time() - body.ra
+        ha_move = (target_ha - current_ha) % twopi
+        distance_from_horizon = body.alt - self.horizon
+        if distance_from_horizon < twentieth_arcsecond: # already set
+            if ha_move < halfpi:
+                ha_move += twopi
+        elif distance_from_horizon > - twentieth_arcsecond: # not yet set
+            if ha_move > pi + halfpi:
+                ha_move -= twopi
+        return self.move_to_horizon(body, self.date + ha_move / twopi)
 
 
 def localtime(date):
