@@ -164,7 +164,6 @@ class Observer(_libastro.Observer):
         """Computation for the rising and setting functions."""
 
         setting = not rising
-        next = not previous
         body.compute(self)
 
         # If we were dealing with the ideal horizon in the absence of
@@ -185,22 +184,19 @@ class Observer(_libastro.Observer):
         # vice-versa.  So we check its altitude and adjust our guess.
 
         distance_from_horizon = body.alt - self.horizon
-        above_horizon = distance_from_horizon > - twentieth_arcsecond
-        below_horizon = distance_from_horizon < twentieth_arcsecond
-        if (next and ((rising and above_horizon) or (setting and below_horizon))
-            or previous and ((rising and below_horizon) or (setting and above_horizon))):
-            if abs(ha_move) < halfpi:
-                if ha_move > 0:
-                    ha_move += twopi
-                else:
-                    ha_move -= twopi
-        elif (next and ((rising and below_horizon) or (setting and above_horizon))
-              or previous and ((rising and above_horizon) or (setting and below_horizon))):
-            if abs(ha_move) > pi + halfpi:
-                if ha_move > 0:
-                    ha_move -= twopi
-                else:
-                    ha_move += twopi
+        up = distance_from_horizon > - twentieth_arcsecond
+        down = distance_from_horizon < twentieth_arcsecond
+        already = rising and up or setting and down
+        not_yet = rising and down or setting and up
+        if previous:
+            already, not_yet = not_yet, already
+
+        if (already and abs(ha_move) < halfpi or
+            not_yet and abs(ha_move) > pi + halfpi):
+            if ha_move > 0:
+                ha_move -= twopi
+            else:
+                ha_move += twopi
 
         # Finally, we submit our guess to Newton's method, which
         # determines the real moment of zero altitude.
