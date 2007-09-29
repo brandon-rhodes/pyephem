@@ -61,9 +61,10 @@ del index, classname, name
 Saturn = _libastro.Saturn
 Moon = _libastro.Moon
 
-# The "newton" function finds the zero of a function.
+# Newton's method.
 
 def newton(f, x0, x1):
+    """Return an x-value at which the given function reaches zero."""
     f0, f1 = f(x0), f(x1)
     while f1 and x1 != x0 and f1 != f0:
         x0, x1 = x1, x1 + (x1 - x0) / (f0/f1 - 1)
@@ -75,6 +76,8 @@ def newton(f, x0, x1):
 _sun = Sun()                    # used for computing equinoxes
 
 def holiday(d0, motion, offset):
+    """Function that assists the finding of equinoxes and solstices."""
+
     def f(d):
         _sun.compute(d, epoch=d)
         return (_sun.ra + eighthpi) % quarterpi - eighthpi
@@ -85,20 +88,29 @@ def holiday(d0, motion, offset):
     d = d0 + 365.25 * angle_to_cover / twopi
     return date(newton(f, d, d + hour))
 
-def previous_vernal_equinox(date): return holiday(date, -twopi, 0)
-def next_vernal_equinox(date): return holiday(date, twopi, 0)
+def previous_vernal_equinox(date):
+    """Return the date of the previous vernal equinox."""
+    return holiday(date, -twopi, 0)
 
-def previous_equinox(date): return holiday(date, -pi, 0)
-def next_equinox(date): return holiday(date, pi, 0)
+def next_vernal_equinox(date):
+    """Return the date of the next vernal equinox."""
+    return holiday(date, twopi, 0)
 
-def previous_solstice(date): return holiday(date, -pi, halfpi)
-def next_solstice(date): return holiday(date, pi, halfpi)
+def previous_equinox(date):
+    """Return the date of the previous equinox."""
+    return holiday(date, -pi, 0)
 
-#def previous_quarter_day(date): return holiday(date, -halfpi, 0)
-#def next_quarter_day(date): return holiday(date, halfpi, 0)
+def next_equinox(date):
+    """Return the date of the next equinox."""
+    return holiday(date, pi, 0)
 
-#def previous_cross_quarter_day(date): return holiday(date, -halfpi, quarterpi)
-#def next_cross_quarter_day(date): return holiday(date, halfpi, quarterpi)
+def previous_solstice(date):
+    """Return the date of the previous solstice."""
+    return holiday(date, -pi, halfpi)
+
+def next_solstice(date):
+    """Return the date of the next solstice."""
+    return holiday(date, pi, halfpi)
 
 # We provide a Python extension to our C "Observer" class that can
 # find many circumstances.
