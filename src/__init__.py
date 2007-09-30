@@ -14,7 +14,6 @@ degree = twopi / 360.
 arcminute = degree / 60.
 arcsecond = arcminute / 60.
 half_arcsecond = arcsecond / 2.
-twentieth_arcsecond = arcsecond / 20.
 tiny = arcsecond / 360.
 
 # We make available several basic types from _libastro.
@@ -84,7 +83,7 @@ def holiday(d0, motion, offset):
         return (_sun.ra + eighthpi) % quarterpi - eighthpi
     _sun.compute(d0, epoch=d0)
     angle_to_cover = motion - (_sun.ra + offset) % motion
-    if abs(angle_to_cover) < twentieth_arcsecond:
+    if abs(angle_to_cover) < tiny:
         angle_to_cover = motion
     d = d0 + 365.25 * angle_to_cover / twopi
     return date(newton(f, d, d + hour))
@@ -143,7 +142,7 @@ class Observer(_libastro.Observer):
         sidereal_time = self.sidereal_time
         body.compute(self)
         ha_to_move = (body.ra - sidereal_time() - offset) % (sign * twopi)
-        if abs(ha_to_move) < twentieth_arcsecond:
+        if abs(ha_to_move) < tiny:
             ha_to_move = sign * twopi
         d = self.date + ha_to_move / twopi
         return Date(newton(f, d, d + minute))
