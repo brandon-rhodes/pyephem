@@ -184,30 +184,20 @@ class Observer(_libastro.Observer):
                                 ' above the horizon at latitude %s'
                                 % (declination, self.lat))
 
-    def _move_to_horizon(self, body, date):
-        """Run Netwon's method to bring the given body to the horizon."""
-        def f(d):
-            self.date = d
-            body.compute(self)
-            return body.alt + body.radius - self.horizon
-        return Date(newton(f, date, date + minute))
+    def _prev_helper(self, body, rising, previous):
+        """Help the previous and next functions do their job."""
 
-    def prev_helper(self, body, rising, previous):
         def visit_transit():
-            if previous:
-                d = self.previous_transit(body)
-            else:
-                d = self.next_transit(body)
+            d = (previous and self.previous_transit(body)
+                 or self.next_transit(body)) # if-then
             if body.alt + body.radius - self.horizon <= 0:
                 raise NeverUpError('%r transits below the horizon at %s'
                                    % (body.name, d))
             return d
 
         def visit_antitransit():
-            if previous:
-                d = self.previous_antitransit(body)
-            else:
-                d = self.next_antitransit(body)
+            d = (previous and self.previous_antitransit(body)
+                 or self.next_antitransit(body)) # if-then
             if body.alt + body.radius - self.horizon >= 0:
                 raise AlwaysUpError('%r is still above the horizon at %s'
                                     % (body.name, d))
@@ -215,17 +205,16 @@ class Observer(_libastro.Observer):
 
         body.compute(self)
         heading_downward = (rising == previous) # "==" is inverted "xor"
-        height = body.alt + body.radius - self.horizon
         if heading_downward:
-            on_lower_cusp = height > tiny
+            on_lower_cusp = body.alt + body.radius - self.horizon > tiny
         else:
-            on_lower_cusp = height < - tiny
+            on_lower_cusp = body.alt + body.radius - self.horizon < - tiny
 
-        on_right_side_of_sky = ((rising and body.az < pi)
-                                or (not rising and pi < body.az)
-                                or (body.az < tiny
-                                    or pi - tiny < body.az < pi + tiny
-                                    or twopi - tiny < body.az))
+        az = body.az
+        on_right_side_of_sky = ((rising == (az < pi)) # inverted "xor"
+                                or (az < tiny
+                                    or pi - tiny < az < pi + tiny
+                                    or twopi - tiny < az))
 
         if on_lower_cusp and on_right_side_of_sky:
             d0 = self.date
@@ -237,19 +226,30 @@ class Observer(_libastro.Observer):
             d1 = visit_antitransit()
         else:
             d1 = visit_transit()
-        return self._move_to_horizon(body, (d0 + d1) / 2.)
+
+        def f(d):
+            self.date = d
+            body.compute(self)
+            return body.alt + body.radius - self.horizon
+
+        d = (d0 + d1) / 2.
+        return Date(newton(f, d, d + minute))
 
     def previous_rising(self, body):
-        return self.prev_helper(body, True, True)
+        """Move to the given body's previous rising, returning the date."""
+        return self._prev_helper(body, True, True)
 
     def previous_setting(self, body):
-        return self.prev_helper(body, False, True)
+        """Move to the given body's previous setting, returning the date."""
+        return self._prev_helper(body, False, True)
 
     def next_rising(self, body):
-        return self.prev_helper(body, True, False)
+        """Move to the given body's next rising, returning the date."""
+        return self._prev_helper(body, True, False)
 
     def next_setting(self, body):
-        return self.prev_helper(body, False, False)
+        """Move to the given body's next setting, returning the date."""
+        return self._prev_helper(body, False, False)
 
 def localtime(date):
     """Convert a PyEphem date into local time, returning a Python datetime."""
