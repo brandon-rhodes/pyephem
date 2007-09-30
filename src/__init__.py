@@ -15,6 +15,7 @@ arcminute = degree / 60.
 arcsecond = arcminute / 60.
 half_arcsecond = arcsecond / 2.
 twentieth_arcsecond = arcsecond / 20.
+tiny = arcsecond / 360.
 
 # We make available several basic types from _libastro.
 
@@ -132,29 +133,40 @@ class Observer(_libastro.Observer):
                    self.long, self.lat, self.elevation,
                    self.horizon, self.temp, self.pressure))
 
-    def _compute_transit(self, body, sign):
+    def _compute_transit(self, body, sign, offset=0.):
         """Internal function used to compute transits."""
 
         def f(d):
             self.date = d
             body.compute(self)
-            return degrees(body.ra - self.sidereal_time()).znorm
+            return degrees(body.ra - sidereal_time() - offset).znorm
+        sidereal_time = self.sidereal_time
         body.compute(self)
-        ha_to_move = (body.ra - self.sidereal_time()) % (sign * twopi)
+        ha_to_move = (body.ra - sidereal_time() - offset) % (sign * twopi)
         if abs(ha_to_move) < twentieth_arcsecond:
             ha_to_move = sign * twopi
         d = self.date + ha_to_move / twopi
-        return newton(f, d, d + minute)
+        return Date(newton(f, d, d + minute))
 
     def previous_transit(self, body):
-        """Find the next passage of a body across the meridian."""
+        """Find the previous passage of a body across the meridian."""
 
-        return self._compute_transit(body, -1)
+        return self._compute_transit(body, -1., 0.)
 
     def next_transit(self, body):
         """Find the next passage of a body across the meridian."""
 
-        return self._compute_transit(body, +1)
+        return self._compute_transit(body, +1., 0.)
+
+    def previous_antitransit(self, body):
+        """Find the previous passage of a body across the anti-meridian."""
+
+        return self._compute_transit(body, -1., pi)
+
+    def next_antitransit(self, body):
+        """Find the next passage of a body across the anti-meridian."""
+
+        return self._compute_transit(body, +1., pi)
 
     def disallow_circumpolar(self, declination):
         """Raise an exception if the given declination is circumpolar.
@@ -257,6 +269,35 @@ class Observer(_libastro.Observer):
         """Find the next time at which the given body rises."""
         return self._rising_setting(body)
 
+    def previous_rising(self, body):
+        body.compute(self)
+        if body.alt - self.horizon > tiny and 0 < body.az < pi + tiny:
+            d0 = self.date
+        else:
+            d0 = self.previous_transit(body)
+        if body.alt - self.horizon <= 0:
+            raise NeverUpError('%r transits below the horizon at %s'
+                               % (body.name, d0))
+        d1 = self.previous_antitransit(body)
+        if body.alt - self.horizon >= 0:
+            raise AlwaysUpError('%r is still above the horizon at %s'
+                                % (body.name, d0))
+        return self.move_to_horizon(body, (d0 + d1) / 2.)
+
+    def next_setting(self, body):
+        body.compute(self)
+        if body.alt - self.horizon > tiny and pi - tiny < body.az < twopi:
+            d0 = self.date
+        else:
+            d0 = self.next_transit(body)
+        if body.alt - self.horizon <= 0:
+            raise NeverUpError('%r transits below the horizon at %s'
+                               % (body.name, d0))
+        d1 = self.next_antitransit(body)
+        if body.alt - self.horizon >= 0:
+            raise AlwaysUpError('%r is still above the horizon at %s'
+                                % (body.name, d0))
+        return self.move_to_horizon(body, (d0 + d1) / 2.)
 
 def localtime(date):
     """Convert a PyEphem date into local time, returning a Python datetime."""
