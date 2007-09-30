@@ -207,6 +207,7 @@ The file looks something like:
 2006 Apr 30 (Sun)        10:07 100        15:41 42S        21:15 260
 2006 May 01 (Mon)        10:03 100        15:37 42S        21:11 260
 
+        Here we save the data in self.data for examination by finish().
         """
         datum = Datum()
         fields = line.split()
