@@ -781,6 +781,48 @@ static int set_f_pa(PyObject *self, PyObject *value, void *v)
      return 0;
 }
 
+/* Proper motion of fixed object; presented in milli-arcseconds per
+   year, but stored as radians per day in a float. */
+
+#define PROPER (365.24219879 / (2. * PI) * 360. * 60. * 60. * 1000.)
+#define PROPER (1.327e-11)
+
+static PyObject* getf_proper_ra(PyObject *self, void *v)
+{
+     Body *b = (Body*) self;
+     return PyFloat_FromDouble(b->obj.f_pmRA * cos(b->obj.f_dec) / PROPER);
+}
+
+static int setf_proper_ra(PyObject *self, PyObject *value, void *v)
+{
+     Body *b = (Body*) self;
+     if (!PyNumber_Check(value)) {
+	  PyErr_SetString(PyExc_ValueError, "express proper motion"
+                          " as milli-arcseconds per year");
+	  return -1;
+     }
+     b->obj.f_pmRA = PyFloat_AsDouble(value) / cos(b->obj.f_dec) * PROPER;
+     return 0;
+}
+
+static PyObject* getf_proper_dec(PyObject *self, void *v)
+{
+     Body *b = (Body*) self;
+     return PyFloat_FromDouble(b->obj.f_pmdec / PROPER);
+}
+
+static int setf_proper_dec(PyObject *self, PyObject *value, void *v)
+{
+     Body *b = (Body*) self;
+     if (!PyNumber_Check(value)) {
+	  PyErr_SetString(PyExc_ValueError, "express proper motion"
+                          " as milli-arcseconds per year");
+	  return -1;
+     }
+     b->obj.f_pmdec = PyFloat_AsDouble(value) * PROPER;
+     return 0;
+}
+
 /*
  * Observer object.
  */
@@ -1159,11 +1201,7 @@ static PyObject* Body_writedb(PyObject *self)
      Body *body = (Body*) self;
      char line[1024];
      db_write_line(&body->obj, line);
-     if (body->name) {
-	  char *name = PyString_AsString(body->name);
-	  return PyString_FromFormat("%s%s", name, line);
-     } else
-	  return PyString_FromString(line);
+     return PyString_FromString(line);
 }
 
 static PyObject* Body_copy(PyObject *self)
@@ -1459,9 +1497,13 @@ static PyObject *Get_name(PyObject *self, void *v)
 static int Set_name(PyObject *self, PyObject *value, void *v)
 {
      Body *body = (Body*) self;
+     char *name = PyString_AsString(value);
+     if (!name) return -1;
+     strncpy(body->obj.o_name, name, MAXNM);
+     body->obj.o_name[MAXNM - 1] = '\0';
      Py_XDECREF(body->name);
-     body->name = value;
      Py_INCREF(value);
+     body->name = value;
      return 0;
 }
 
@@ -1652,11 +1694,15 @@ static PyGetSetDef FixedBody_getset[] = {
      {"_epoch", getf_mjd, setf_mjd, "epoch for _ra and _dec", VOFF(f_epoch)},
      {"_ra", getf_rh, setf_rh, "fixed right ascension", VOFF(f_RA)},
      {"_dec", getf_rd, setf_rd, "fixed declination", VOFF(f_dec)},
+     {"_pmra", getf_proper_ra, setf_proper_ra,
+      "right ascension proper motion", 0},
+     {"_pmdec", getf_proper_dec, setf_proper_dec,
+      "declination proper motion", 0},
      {NULL}
 };
 
 static PyMemberDef FixedBody_members[] = {
-     {"_class", T_CHAR, OFF(f_class), RO, "object classification"},
+     {"_class", T_CHAR, OFF(f_class), 0, "object classification"},
      {NULL}
 };
 
