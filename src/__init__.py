@@ -287,3 +287,11 @@ def city(name):
 
 date = Date
 angle = Angle
+
+# Catalog boostraps.
+
+def star(name):
+    global star  # this function, which we replace ...
+    import ephem.stars
+    star = ephem.stars.star  # by the function in the "stars" module
+    return star(name)

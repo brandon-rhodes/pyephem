@@ -56,19 +56,11 @@ def is_near(n, m, error = ephem.arcsecond):
 
 class Trial(object):
     def select_body(self, name):
-        if name == 'Deneb':
-            return ephem.readdb('Deneb,f|D|A2,20:41:25.91|2.25,'
-                                '45:16:49.22|1.6,1.33,2000')
-        elif name == 'Antares':
-            return ephem.readdb('Antares,f|D|M1,16:29:24.46|-11.4,'
-                                '-26:25:55.21|-23.2,1.07,2000')
-        elif name == 'Rigel':
-            return ephem.readdb('Rigel,f|D|B8,5:14:32.27|1.95,'
-                                '-8:12:5.91|-0.6,0.28,2000')
-        elif hasattr(ephem, name):
+        """Return solar system bodies and stars for USNO computations."""
+        if hasattr(ephem, name):
             return getattr(ephem, name)()
         else:
-            raise ValueError('USNO test: unknown body %r' % name)
+            return ephem.star(name)
 
     def examine_content(self):
         """Return the object named on the first line of the file.
