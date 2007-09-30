@@ -784,8 +784,7 @@ static int set_f_pa(PyObject *self, PyObject *value, void *v)
 /* Proper motion of fixed object; presented in milli-arcseconds per
    year, but stored as radians per day in a float. */
 
-#define PROPER (365.24219879 / (2. * PI) * 360. * 60. * 60. * 1000.)
-#define PROPER (1.327e-11)
+#define PROPER (1.327e-11)      /* from libastro's dbfmt.c */
 
 static PyObject* getf_proper_ra(PyObject *self, void *v)
 {
@@ -2397,8 +2396,10 @@ static PyObject *build_body_from_obj(PyObject *name, Obj *op)
 	  return 0;
      }
      body->obj = *op;
-     body->name = name;
-     body->obj.o_name[0] = '\0';
+     if (Set_name((PyObject*) body, name, 0) == -1) {
+          Py_DECREF(body);
+          Py_DECREF(name);
+     }
      return (PyObject*) body;
 }
 
