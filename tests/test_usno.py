@@ -118,8 +118,8 @@ class Astrometric_Trial(Trial):
         date, ra, dec = standard_parse(line)
 
         self.body.compute(date)
-        is_near(ra, self.body.astrometric_ra)
-        is_near(dec, self.body.astrometric_dec)
+        is_near(ra, self.body.a_ra)
+        is_near(dec, self.body.a_dec)
 
 # Check an "Apparent Geocentric Positions" file.
 
@@ -132,22 +132,22 @@ class Apparent_Geocentric_Trial(Trial):
         date, ra, dec = standard_parse(line)
 
         self.body.compute(date)
-        is_near(ra, self.body.apparent_ra)
-        is_near(dec, self.body.apparent_dec)
+        is_near(ra, self.body.g_ra)
+        is_near(dec, self.body.g_dec)
 
         # The values we get should not depend on our epoch.
 
         self.body.compute(date, epoch=date)
-        is_near(ra, self.body.apparent_ra)
-        is_near(dec, self.body.apparent_dec)
+        is_near(ra, self.body.g_ra)
+        is_near(dec, self.body.g_dec)
 
         # Since we only provided the body with a date, and not an
         # Observer, the computation should have been geocentric, and
         # thus the "ra" and "dec" fields should have had the apparent
         # positions copied into them as well.
 
-        assert self.body.apparent_ra == self.body.ra
-        assert self.body.apparent_dec == self.body.dec
+        assert self.body.g_ra == self.body.ra
+        assert self.body.g_dec == self.body.dec
 
 # Check an "Apparent Topocentric Positions" file.
 

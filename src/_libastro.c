@@ -1584,16 +1584,16 @@ static PyGetSetDef Body_getset[] = {
 
      {"ra", Get_ra, 0, "right ascension (radians that print as hours of arc)"},
      {"dec", Get_dec, 0, "declination (radians that print as degrees)"},
-     {"apparent_ra", Get_gaera, 0,
+     {"g_ra", Get_gaera, 0,
       "apparent geocentric right ascension"
       " (radians that print as hours of arc)"},
-     {"apparent_dec", Get_gaedec, 0,
+     {"g_dec", Get_gaedec, 0,
       "apparent geocentric declination"
       " (radians that print as degrees)"},
-     {"astrometric_ra", Get_astrora, 0,
+     {"a_ra", Get_astrora, 0,
       "apparent geocentric right ascension"
       " (radians that print as hours of arc)"},
-     {"astrometric_dec", Get_astrodec, 0,
+     {"a_dec", Get_astrodec, 0,
       "apparent geocentric declination"
       " (radians that print as degrees)"},
      {"elong", Get_elong, 0, "elongation (radians that print as degrees)"},
