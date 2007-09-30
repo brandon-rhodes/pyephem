@@ -1,4 +1,7 @@
-# Adapted from the Hipparcos star catalog.
+# Adapted from the version of the Hipparcos star catalog at:
+# ftp://adc.gsfc.nasa.gov/pub/adc/archives/catalogs/1/1239/hip_main.dat.gz
+# Of its brighest thousand stars, those with proper names at
+# http://simbad.u-strasbg.fr/simbad/ were chosen for this list.
 
 db = """\
 Sirrah,f|S|B9,0:08:23.2|135.68,29:05:27|-162.95,2.07,2000,0
