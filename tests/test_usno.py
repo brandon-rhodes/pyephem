@@ -28,8 +28,18 @@ def interpret_observer(line):
     if fields[2].startswith('S'):
         observer.lat *= -1
     observer.elevation = float(fields[-1][:-1])
-    #observer.pressure = 0
     return observer
+
+def setup_horizon(observer, body):
+    if isinstance(body, ephem.Sun):
+        observer.pressure = 0
+        observer.horizon = '-0:50' # per USNO instructions for Sun
+    elif isinstance(body, ephem.Moon):
+        observer.pressure = 0
+        observer.horizon = '-0:50'
+        # horizon is set per-day based on moon diameter; see below
+    else:
+        pass
 
 def standard_parse(line):
     """Read the date, RA, and dec from a USNO data file line."""
@@ -220,7 +230,8 @@ The file looks something like:
     def finish(self):
         """Go back through and verify the data we have saved."""
 
-        body, observer = self.body, self.observer
+        observer, body = self.observer, self.body
+        setup_horizon(observer, body)
         data = self.data
 
         # This helper function, given an attribute name of
@@ -314,12 +325,7 @@ class Rise_Set_Trial(Trial):
 
         self.error = ephem.minute # error we tolerate in predicted time
 
-        if isinstance(self.body, ephem.Sun):
-            o.pressure = 0
-            o.horizon = '-0:50' # per USNO instructions for Sun
-        elif isinstance(self.body, ephem.Moon):
-            o.pressure = 0
-            # horizon is set per-day based on moon diameter; see below
+        setup_horizon(self.observer, self.body)
 
     def check_data_line(self, line):
         """Determine whether PyEphem rising times match those of the USNO.
@@ -364,7 +370,7 @@ class Rise_Set_Trial(Trial):
             body.compute(o)
             if isinstance(self.body, ephem.Moon):
                 o.horizon = '-00:34' # per USNO instructions for Moon
-                o.horizon -= body.size / 2. * ephem.arcsecond
+                o.horizon -= body.size * ephem.arcsecond / 2.
 
             if usno_rise:
                 o.date = start_of_day + 1
