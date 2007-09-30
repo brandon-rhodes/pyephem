@@ -1362,6 +1362,7 @@ GET_FIELD(astrodec, obj.s_astrodec, build_degrees)
 GET_FIELD(elong, obj.s_elong, build_degrees_from_degrees)
 GET_FIELD(mag, obj.s_mag, build_mag)
 GET_FIELD(size, obj.s_size, PyFloat_FromDouble)
+GET_FIELD(radius, obj.s_size * 2*PI / 360. / 60. / 60. / 2., build_degrees)
 
 GET_FIELD(hlong, obj.s_hlong, build_degrees)
 GET_FIELD(hlat, obj.s_hlat, build_degrees)
@@ -1557,6 +1558,7 @@ static PyGetSetDef Body_getset[] = {
      {"elong", Get_elong, 0, "elongation (radians that print as degrees)"},
      {"mag", Get_mag, 0, "magnitude"},
      {"size", Get_size, 0, "visual size (seconds of arc)"},
+     {"radius", Get_radius, 0, "visual radius (radians that print as degrees)"},
 
      {"az", Get_az, 0, "azimuth (radians that print as degrees)"},
      {"alt", Get_alt, 0, "altitude (radians that print as degrees)"},

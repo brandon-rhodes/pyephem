@@ -124,7 +124,7 @@ class Observer(_libastro.Observer):
     elev = _libastro.Observer.elevation
 
     def __repr__(self):
-        """Print a useful representation of this Observer."""
+        """Return a useful textual representation of this Observer."""
 
         return ('<ephem.Observer date=%r epoch=%r'
                 ' long=%s lat=%s elevation=%sm'
@@ -197,107 +197,75 @@ class Observer(_libastro.Observer):
         self.disallow_circumpolar(declination)
         return halfpi - asin(tan(-declination) / tan(halfpi - self.lat))
 
-    def move_to_horizon(self, body, date):
+    def _move_to_horizon(self, body, date):
         """Run Netwon's method to bring the given body to the horizon."""
         def f(d):
             self.date = d
             body.compute(self)
-            return body.alt - self.horizon
+            return body.alt + body.radius - self.horizon
         return Date(newton(f, date, date + minute))
 
-    def _rising_setting(self, body, rising=False, previous=False):
-        """Computation for the rising and setting functions."""
-
-        setting = not rising
-        body.compute(self)
-
-        # Compute, for the ideal horizon in the absence of refraction,
-        # how far we must turn the sky in order to place the body's
-        # current RA/dec at zero degrees altitude.
-
-        target_ha = self.ha_from_meridian_to_horizon(body.dec)
-        if rising:
-            target_ha = twopi - target_ha
-        current_ha = self.sidereal_time() - body.ra
-        ha_move = (target_ha - current_ha) % twopi
-
-        # But because of refraction and the user's own choice of
-        # self.horizon, the body, when at the ideal horizon, might
-        # already have passed the circumstances for which we search.
-        # So we check for this condition, and adjust our guess.
-
-        if previous:
-            ha_move = twopi - ha_move
-
-        az = body.az
-        if (rising and 0 < az < pi) or (setting and pi < az < twopi):
-
-            alt_above_horizon = body.alt - self.horizon
-            if bool(previous) == bool(rising): # Python for "not xor"
-                do_big_move = alt_above_horizon < twentieth_arcsecond
-            else:
-                do_big_move = alt_above_horizon > - twentieth_arcsecond
-
-            if do_big_move:
-                if ha_move < pi:
-                    ha_move += twopi
-            else:
-                if ha_move > pi:
-                    ha_move -= twopi
-
-        if previous:
-            ha_move = - ha_move
-
-        # Finally, we submit our guess to Newton's method, which
-        # determines the real moment of zero altitude.
-
-        return self.move_to_horizon(body, self.date + ha_move / twopi)
-
-    def previous_rising(self, body):
-        """Find the previous time at which the given body rises."""
-        return self._rising_setting(body, rising=True, previous=True)
-
-    def previous_setting(self, body):
-        """Find the previous time at which the given body rises."""
-        return self._rising_setting(body, previous=True)
-
-    def next_rising(self, body):
-        """Find the next time at which the given body rises."""
-        return self._rising_setting(body, rising=True)
-
-    def next_setting(self, body):
-        """Find the next time at which the given body rises."""
-        return self._rising_setting(body)
-
     def previous_rising(self, body):
         body.compute(self)
-        if body.alt - self.horizon > tiny and 0 < body.az < pi + tiny:
+        if body.alt + body.radius - self.horizon > tiny and 0 < body.az < pi + tiny:
             d0 = self.date
         else:
             d0 = self.previous_transit(body)
-        if body.alt - self.horizon <= 0:
+        if body.alt + body.radius - self.horizon <= 0:
             raise NeverUpError('%r transits below the horizon at %s'
                                % (body.name, d0))
         d1 = self.previous_antitransit(body)
-        if body.alt - self.horizon >= 0:
+        if body.alt + body.radius - self.horizon >= 0:
             raise AlwaysUpError('%r is still above the horizon at %s'
                                 % (body.name, d0))
-        return self.move_to_horizon(body, (d0 + d1) / 2.)
+        return self._move_to_horizon(body, (d0 + d1) / 2.)
+
+    def previous_setting(self, body):
+        body.compute(self)
+        if body.alt + body.radius - self.horizon < - tiny and (pi < body.az < twopi
+                                               or body.az < tiny):
+            d0 = self.date
+        else:
+            d0 = self.previous_antitransit(body)
+        if body.alt + body.radius - self.horizon >= 0:
+            raise AlwaysUpError('%r transits below the horizon at %s'
+                               % (body.name, d0))
+        d1 = self.previous_transit(body)
+        if body.alt + body.radius - self.horizon <= 0:
+            raise NeverUpError('%r is still above the horizon at %s'
+                                % (body.name, d0))
+        return self._move_to_horizon(body, (d0 + d1) / 2.)
+
+    def next_rising(self, body):
+        body.compute(self)
+        if body.alt + body.radius - self.horizon < - tiny and (0 <= body.az < pi
+                                                 or twopi - tiny < body.az):
+            d0 = self.date
+        else:
+            d0 = self.next_antitransit(body)
+        if body.alt + body.radius - self.horizon >= 0:
+            raise AlwaysUpError('%r transits below the horizon at %s'
+                               % (body.name, d0))
+        d1 = self.next_transit(body)
+        if body.alt + body.radius - self.horizon <= 0:
+            raise NeverUpError('%r is still above the horizon at %s'
+                               % (body.name, d0))
+        return self._move_to_horizon(body, (d0 + d1) / 2.)
 
     def next_setting(self, body):
         body.compute(self)
-        if body.alt - self.horizon > tiny and pi - tiny < body.az < twopi:
+        if body.alt + body.radius - self.horizon > tiny and pi - tiny < body.az < twopi:
             d0 = self.date
         else:
             d0 = self.next_transit(body)
-        if body.alt - self.horizon <= 0:
+        if body.alt + body.radius - self.horizon <= 0:
             raise NeverUpError('%r transits below the horizon at %s'
                                % (body.name, d0))
         d1 = self.next_antitransit(body)
-        if body.alt - self.horizon >= 0:
+        if body.alt + body.radius - self.horizon >= 0:
             raise AlwaysUpError('%r is still above the horizon at %s'
                                 % (body.name, d0))
-        return self.move_to_horizon(body, (d0 + d1) / 2.)
+        return self._move_to_horizon(body, (d0 + d1) / 2.)
 
 def localtime(date):
     """Convert a PyEphem date into local time, returning a Python datetime."""
