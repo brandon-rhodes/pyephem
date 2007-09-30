@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import glob, math, re, unittest
+import glob, math, re, traceback, unittest
 from datetime import datetime
 from time import strptime
 import ephem
@@ -39,7 +39,8 @@ def setup_horizon(observer, body):
         observer.horizon = '-0:50'
         # horizon is set per-day based on moon diameter; see below
     else:
-        pass
+        observer.pressure = 0
+        observer.horizon = '-0:34'
 
 def standard_parse(line):
     """Read the date, RA, and dec from a USNO data file line."""
@@ -102,13 +103,24 @@ class Trial(object):
         """
 
     def run(self, content):
+        def report_error():
+            return RuntimeError(
+                'USNO Test file %r raised exception:%s\n'
+                % (self.path, traceback.format_exc()))
+
         self.content = content
         self.lines = content.split('\n')
         self.examine_content()
         for line in self.lines:
             if line.strip() and line[0].isdigit():
-                self.check_data_line(line)
-        self.finish()
+                try:
+                    self.check_data_line(line)
+                except:
+                    raise report_error()
+        try:
+            self.finish()
+        except:
+            raise report_error()
 
 # Check an "Astrometric Positions" file.
 
@@ -402,6 +414,7 @@ class Mixin(object):
                 and hasattr(obj, 'matches') and obj.matches(content)):
                 trial_class = obj
                 trial = trial_class()
+                trial.path = self.path
                 trial.run(content)
                 return
         raise ValueError('Cannot find a test trial that recognizes %r'
