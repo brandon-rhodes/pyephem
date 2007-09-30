@@ -214,14 +214,22 @@ class Observer(_libastro.Observer):
             return d
 
         body.compute(self)
-        if rising and previous:
-            choice = body.alt + body.radius - self.horizon > tiny and 0 < body.az < pi + tiny
-        elif not rising and previous:
-            choice = body.alt + body.radius - self.horizon < - tiny and (pi < body.az < twopi or body.az < tiny)
-        elif rising and not previous:
-            choice = body.alt + body.radius - self.horizon < - tiny and (0 <= body.az < pi or twopi - tiny < body.az)
+        if rising == previous: # "not xor"
+            almost_there = body.alt + body.radius - self.horizon > tiny
         else:
-            choice = body.alt + body.radius - self.horizon > tiny and pi - tiny < body.az < twopi
+            almost_there = body.alt + body.radius - self.horizon < - tiny
+
+        if rising and body.az < pi:
+            foo = True
+        elif not rising and pi < body.az:
+            foo = True
+        elif body.az < tiny or pi - tiny < body.az < pi + tiny or twopi - tiny < body.az:
+            foo = True
+        else:
+            foo = False
+
+        choice = almost_there and foo
+
         if choice:
             d0 = self.date
         else:
