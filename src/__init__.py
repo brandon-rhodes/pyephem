@@ -214,30 +214,26 @@ class Observer(_libastro.Observer):
             return d
 
         body.compute(self)
-        if rising == previous: # "not xor"
-            almost_there = body.alt + body.radius - self.horizon > tiny
+        heading_downward = (rising == previous) # "==" is inverted "xor"
+        height = body.alt + body.radius - self.horizon
+        if heading_downward:
+            on_lower_cusp = height > tiny
         else:
-            almost_there = body.alt + body.radius - self.horizon < - tiny
+            on_lower_cusp = height < - tiny
 
-        if rising and body.az < pi:
-            foo = True
-        elif not rising and pi < body.az:
-            foo = True
-        elif body.az < tiny or pi - tiny < body.az < pi + tiny or twopi - tiny < body.az:
-            foo = True
-        else:
-            foo = False
+        on_right_side_of_sky = ((rising and body.az < pi)
+                                or (not rising and pi < body.az)
+                                or (body.az < tiny
+                                    or pi - tiny < body.az < pi + tiny
+                                    or twopi - tiny < body.az))
 
-        choice = almost_there and foo
-
-        if choice:
+        if on_lower_cusp and on_right_side_of_sky:
             d0 = self.date
+        elif heading_downward:
+            d0 = visit_transit()
         else:
-            if rising == previous:
-                d0 = visit_transit()
-            else:
-                d0 = visit_antitransit()
-        if rising == previous:
+            d0 = visit_antitransit()
+        if heading_downward:
             d1 = visit_antitransit()
         else:
             d1 = visit_transit()
