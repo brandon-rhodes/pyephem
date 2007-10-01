@@ -11,7 +11,7 @@ libastro_version = '3.7.2'
 libastro_files = glob('libastro-%s/*.c' % libastro_version)
 
 setup(name = 'pyephem',
-      version = '3.7.2a1',
+      version = '3.7.2b',
       description = 'computational astronomy routines from XEphem',
       author = 'Brandon Craig Rhodes',
       author_email = 'brandon@rhodesmill.org',

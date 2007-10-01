@@ -4,12 +4,12 @@
 WEB = ./www
 
 all: pyephem.html pyephem-manual.html
-all: $(WEB)/pyephem.html $(WEB)/pyephem-manual.html $(WEB)/pyephem-CHANGELOG
+all: $(WEB)/index.html $(WEB)/tutorial.html $(WEB)/pyephem-CHANGELOG
 
-$(WEB)/pyephem.html: pyephem.html
+$(WEB)/index.html: pyephem.html
 	umask 022; tidy -q pyephem.html > $@
 
-$(WEB)/pyephem-manual.html: pyephem-manual.html
+$(WEB)/tutorial.html: pyephem-manual.html
 	umask 022; cp $< $@
 
 pyephem-manual.html: premanual.html format.py

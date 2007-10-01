@@ -7,3 +7,4 @@ PyEphem TODO list
  - Need to add deprecation warnings to old transit attributes.
  - Need to remove old transit attributes from the old Manual.
  - Need to add tuple-dates to Quick Reference.
+ - Look over examples/ directory, or destroy and move to docs.

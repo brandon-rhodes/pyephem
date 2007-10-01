@@ -13,6 +13,18 @@ To use PyEphem, include this at the top of your Python program:
 
 .. _PyEphem home page: http://rhodesmill.org/pyephem
 
+Associated documents:
+
+| `PyEphem Home Page`_
+| Supplementary documentation:
+|   `ephem.angle`_
+|   `ephem.date`_
+| `PyEphem Tutorial`_
+
+.. _ephem.angle: angle
+.. _ephem.date: date
+.. _PyEphem Tutorial: tutorial
+
 .. raw:: html
 
    <table class="main"><tr><td width="50%" valign="top">

@@ -1,6 +1,8 @@
-PyEphem
-Version 3.7.2
-October 2007
+
+                               PyEphem
+                            Version 3.7.2b
+                            2007 October 1
+
 
 PyEphem provides an "ephem" Python module that can perform many
 astronomical computations.  You can find the most recent version at
@@ -31,23 +33,24 @@ or perhaps a
 
 	from ephem import *
 
-to avoid putting "ephem." in front of all the names.  There are small
-scripts in the examples/ directory, and test suites for verifying your
-installation in the test/ directory.
+to avoid putting "ephem." in front of all the names.  There are
+documentation files in the doc/ directory, some small scripts in the
+examples/ directory, and test suites for verifying your installation
+in the test/ directory.
 
 DOCUMENTATION
 
-See the doc/pyephem-manual.html file in this archive or look online at
-http://rhodesmill.org/brandon/projects/pyephem-manual.html for a guide
-to programming with PyEphem.
+See the doc/pyephem-manual.html file in this archive, or look online
+at http://rhodesmill.org/pyephem for information on programming with
+PyEphem.
 
 CONTRIBUTING
 
 If you write useful scripts with PyEphem, please consider submitting
 them to be considered for the 'examples/' directory.  In particular,
 there will probably be interest in algorithms that search for various
-celestial circumstances, like eclipses or conjunctions; not needing
-such routines myself, however, I have not endeavored to produce any.
+celestial circumstances, like conjunctions; not needing such routines
+myself, however, I have not endeavored to produce any.
 
 AUTHOR
 
