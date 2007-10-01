@@ -12,21 +12,24 @@ Version 3.7.2b (2007 October)
      * Apparent geocentric right ascension and declination
      * Apparent topocentric right ascension and declination
 
+  - Bodies can now find their next or previous times of transit,
+    anti-transit, rising, and setting.
+
   - A "localtime()" function can convert PyEphem Dates to local time.
 
-  - Enabled ephem.angle instances to survive unary + and - without
+  - Now ephem.angle instances can survive unary + and - without
     getting changed into plain floats.
 
   - The "elev" Observer attribute has been renamed to "elevation".
 
   - Observers now display useful information when printed.
 
-  - PyEphem has a much more extensive test suite, which, among other
-    things, now compares results with the United States Naval
-    Observatory, insisting upon arcsecond agreement.
+  - Added a much more extensive test suite, which, among other things,
+    now compares results with the United States Naval Observatory,
+    insisting upon arcsecond agreement.
 
   - BUGFIX: When a fixed body is repeatedly precessed to different
-    dates, its original position will no longer wander.
+    dates, its original position will no longer accumulate error.
 
 Version 3.7.2a (2007 June)
 

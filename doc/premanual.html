@@ -1094,9 +1094,13 @@ The units of each attribute are shown in parenthesis.
 
 <dl>
 <dt><b>Position</b>
-<dd><code><i>body</i>.ra</code> --- right ascension
+<dd><code><i>body</i>.a_ra</code> --- astrometric geocentric right ascension
  (radians that print as hours of arc)
-<br><code><i>body</i>.dec</code> --- declination
+<br><code><i>body</i>.a_dec</code> --- astrometric geocentric declination
+ (radians that print as degrees)
+<dd><code><i>body</i>.g_ra</code> --- apparent geocentric right ascension
+ (radians that print as hours of arc)
+<br><code><i>body</i>.g_dec</code> --- apparent geocentric declination
  (radians that print as degrees)
 <br><code><i>body</i>.elong</code> --- angular distance from the sun
  (radians that print as degrees)
@@ -1106,31 +1110,14 @@ The units of each attribute are shown in parenthesis.
 <dt><b>Position Relative to an Observer</b><br>
 These are only available
 when you provided an <tt>Observer</tt> to <tt>compute()</tt>.
-<dd><code><i>body</i>.az</code> --- azimuth, measured east from true north
+<dd><code><i>body</i>.ra</code> --- apparent topocentric right ascension
+ (radians that print as hours of arc)
+<br><code><i>body</i>.dec</code> --- apparent topocentric declination
+ (radians that print as degrees)
+<br><code><i>body</i>.az</code> --- azimuth, measured east from true north
  (radians that print as degrees)
 <br><code><i>body</i>.alt</code> --- altitude above the horizon
  (radians that print as degrees)
-<br>
-<br><code><i>body</i>.circumpolar</code> --- whether the body remains up
- all day (boolean)
-<br><code><i>body</i>.neverup</code> --- whether the body never rises
- above the horizon (boolean)
-<br>
-<br><code><i>body</i>.rise_time</code> --- the time at which the body rises
-<br><code><i>body</i>.rise_az</code> --- the position on the horizon
- where the body rises (radians that print as degrees)
-<br>(these are both <tt>None</tt> on days the body does not rise)
-<br>
-<br><code><i>body</i>.transit_time</code> --- the time at which the body
- transits
-<br><code><i>body</i>.transit_alt</code> --- the altitude at which the
- body transits (radians that print as degrees)
-<br>(these are both <tt>None</tt> on days the body does not transit)
-<br>
-<br><code><i>body</i>.set_time</code> --- the time at which the body sets
-<br><code><i>body</i>.set_az</code> --- the position on the horizon
- where the body sets (radians that print as degrees)
-<br>(these are both <tt>None</tt> on days the body does not set)
 
 <dt><b>Position in the Solar System</b>
 <br>These are available for all bodies that orbit the Sun.

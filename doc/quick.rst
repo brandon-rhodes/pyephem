@@ -567,6 +567,13 @@ Angles
     ephem.hours('0:22:30')
     ephem.hours('0:22:30.0')
 
+ * When doing math on angles,
+   the results will often exceed the normal bounds for an angle.
+   Therefore two attributes are provided for each angle:
+
+   | ``norm`` — returns angle normalized to [0, 2π).
+   | ``znorm`` — returns angle normalized to [-π, π).
+
  * For more details see the Angle_ document.
 
  .. _Angle: angle

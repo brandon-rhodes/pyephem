@@ -1,5 +1,9 @@
 PyEphem TODO list
 
- - Need functions to find phases of moon.
- - Need to add deprecation warnings to old features.
+ - New rising/setting/transit routines need to survive earth satellites.
+ - Need new methods to find phases of moon.
+ - Then, need to add deprecation warnings to old moon phase function.
+ - Then, need to remove old moon phase functions from the old Manual.
+ - Need to add deprecation warnings to old transit attributes.
+ - Need to remove old transit attributes from the old Manual.
  - Need to add tuple-dates to Quick Reference.
