@@ -4,7 +4,7 @@
 WEB = ./www
 
 all: pyephem.html pyephem-manual.html
-all: $(WEB)/index.html $(WEB)/tutorial.html $(WEB)/pyephem-CHANGELOG
+all: $(WEB)/index.html $(WEB)/tutorial.html $(WEB)/CHANGELOG
 
 $(WEB)/index.html: pyephem.html
 	umask 022; tidy -q pyephem.html > $@
@@ -18,7 +18,7 @@ pyephem-manual.html: premanual.html format.py
 #/var/www/manual.html: premanual.html format.py
 #	umask 022; cat $< | python ./format.py > $@
 
-$(WEB)/pyephem-CHANGELOG: ../CHANGELOG
+$(WEB)/CHANGELOG: ../CHANGELOG
 	umask 022; cat $< > $@
 
 $(WEB)/pyephem-$(VERSION).tar.gz: ../dist/pyephem-$(VERSION).tar.gz

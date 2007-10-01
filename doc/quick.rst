@@ -3,27 +3,28 @@
 PyEphem Quick Reference
 #######################
 
+See also the:
+
+ | `PyEphem Home Page`_
+ | `PyEphem Tutorial`_
+ | `ephem.angle`_ supplement
+ | `ephem.date`_ supplement
+
+.. _PyEphem home page: http://rhodesmill.org/pyephem
+.. _ephem.angle: angle
+.. _ephem.date: date
+.. _PyEphem Tutorial: tutorial
+
 Those experienced with both Python and astronomy
 should be able to start using PyEphem
-using only the notes and examples shown below.
-Further documentation is available through the `PyEphem home page`_.
+using only the notes and examples shown below!
 To use PyEphem, include this at the top of your Python program:
 
     >>> import ephem
 
-.. _PyEphem home page: http://rhodesmill.org/pyephem
-
-Associated documents:
-
-| `PyEphem Home Page`_
-| Supplementary documentation:
-|   `ephem.angle`_
-|   `ephem.date`_
-| `PyEphem Tutorial`_
-
-.. _ephem.angle: angle
-.. _ephem.date: date
-.. _PyEphem Tutorial: tutorial
+To understand each the following examples,
+first read the source code snippet carefully,
+and only then dive into the explanations beneath it.
 
 .. raw:: html
 
