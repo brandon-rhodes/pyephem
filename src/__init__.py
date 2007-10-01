@@ -3,7 +3,7 @@
 # convenient Python types.
 
 import ephem._libastro as _libastro
-from math import pi, asin, tan
+from math import pi
 
 twopi = pi * 2.
 halfpi = pi / 2.
@@ -28,6 +28,7 @@ minute = hour / 60.
 second = minute / 60.
 
 delta_t = _libastro.delta_t
+julian_date = _libastro.julian_date
 
 Body = _libastro.Body
 Planet = _libastro.Planet
@@ -43,6 +44,10 @@ readtle = _libastro.readtle
 constellation = _libastro.constellation
 separation = _libastro.separation
 now = _libastro.now
+
+millennium_atlas = _libastro.millennium_atlas
+uranometria = _libastro.uranometria
+uranometria2000 = _libastro.uranometria2000
 
 # We also create a Python class ("Mercury", "Venus", etcetera) for
 # each planet and moon for which _libastro offers specific algorithms.
@@ -81,6 +86,7 @@ def holiday(d0, motion, offset):
     def f(d):
         _sun.compute(d, epoch=d)
         return (_sun.ra + eighthpi) % quarterpi - eighthpi
+    d0 = Date(d0)
     _sun.compute(d0, epoch=d0)
     angle_to_cover = motion - (_sun.ra + offset) % motion
     if abs(angle_to_cover) < tiny:
@@ -185,7 +191,7 @@ class Observer(_libastro.Observer):
                                 % (declination, self.lat))
 
     def _prev_helper(self, body, rising, previous):
-        """Help the previous and next functions do their job."""
+        """Internal function for finding risings and settings."""
 
         def visit_transit():
             d = (previous and self.previous_transit(body)
@@ -251,6 +257,7 @@ class Observer(_libastro.Observer):
         """Move to the given body's next setting, returning the date."""
         return self._prev_helper(body, False, False)
 
+
 def localtime(date):
     """Convert a PyEphem date into local time, returning a Python datetime."""
     import calendar, time, datetime
@@ -263,9 +270,6 @@ def city(name):
     from ephem.cities import create
     return create(name)
 
-# THINGS TO DO:
-# Better docs
-# Use newton to provide risings and settings
 
 # For backwards compatibility, provide lower-case names for our Date
 # and Angle classes.
@@ -275,8 +279,8 @@ angle = Angle
 
 # Catalog boostraps.
 
-def star(name):
+def star(name, *args, **kwargs):
     global star  # this function, which we replace ...
     import ephem.stars
     star = ephem.stars.star  # by the function in the "stars" module
-    return star(name)
+    return star(name, *args, **kwargs)

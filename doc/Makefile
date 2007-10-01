@@ -4,7 +4,7 @@
 WEB = ./www
 
 all: pyephem.html pyephem-manual.html
-web: $(WEB)/pyephem.html $(WEB)/pyephem-manual.html $(WEB)/pyephem-CHANGELOG
+all: $(WEB)/pyephem.html $(WEB)/pyephem-manual.html $(WEB)/pyephem-CHANGELOG
 
 $(WEB)/pyephem.html: pyephem.html
 	umask 022; tidy -q pyephem.html > $@
@@ -24,9 +24,12 @@ $(WEB)/pyephem-CHANGELOG: ../CHANGELOG
 $(WEB)/pyephem-$(VERSION).tar.gz: ../dist/pyephem-$(VERSION).tar.gz
 	umask 022; cat ../dist/pyephem-$(VERSION).tar.gz > $@
 
-RSTS = $(wildcard *.rst)
+RSTS = $(filter-out quick.rst, $(wildcard *.rst))
 PAGES = $(patsubst %.rst, $(WEB)/%.html, $(RSTS))
 
-rst: $(PAGES)
+all: rst
+rst: $(PAGES) $(WEB)/quick.html
 $(PAGES): $(WEB)/%.html: %.rst style.css
 	umask 022; rst2html --stylesheet-path=style.css < $< > $@
+$(WEB)/quick.html: quick.rst quick.css
+	umask 022; rst2html --stylesheet-path=quick.css < $< > $@

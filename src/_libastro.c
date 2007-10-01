@@ -2477,22 +2477,31 @@ static PyObject *hours(PyObject *self, PyObject *args)
 
 static PyObject* uranometria(PyObject *self, PyObject *args)
 {
+     PyObject *rao, *deco;
      double ra, dec;
-     if (!PyArg_ParseTuple(args, "dd:uranometria", &ra, &dec)) return 0;
+     if (!PyArg_ParseTuple(args, "OO:uranometria", &rao, &deco)) return 0;
+     if (parse_angle(rao, radhr(1), &ra) == -1) return 0;
+     if (parse_angle(deco, raddeg(1), &dec) == -1) return 0;
      return PyString_FromString(um_atlas(ra, dec));
 }
 
 static PyObject* uranometria2000(PyObject *self, PyObject *args)
 {
+     PyObject *rao, *deco;
      double ra, dec;
-     if (!PyArg_ParseTuple(args, "dd:uranometria2000", &ra, &dec)) return 0;
+     if (!PyArg_ParseTuple(args, "OO:uranometria2000", &rao, &deco)) return 0;
+     if (parse_angle(rao, radhr(1), &ra) == -1) return 0;
+     if (parse_angle(deco, raddeg(1), &dec) == -1) return 0;
      return PyString_FromString(u2k_atlas(ra, dec));
 }
 
 static PyObject* millennium_atlas(PyObject *self, PyObject *args)
 {
+     PyObject *rao, *deco;
      double ra, dec;
-     if (!PyArg_ParseTuple(args, "dd:millennium_atlas", &ra, &dec)) return 0;
+     if (!PyArg_ParseTuple(args, "OO:millennium_atlas", &rao, &deco)) return 0;
+     if (parse_angle(rao, radhr(1), &ra) == -1) return 0;
+     if (parse_angle(deco, raddeg(1), &dec) == -1) return 0;
      return PyString_FromString(msa_atlas(ra, dec));
 }
 

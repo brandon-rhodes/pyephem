@@ -211,9 +211,11 @@ pre.address {
   font-size: 100% }
 
 pre.literal-block, pre.doctest-block {
-  margin-left: 2em ;
-  margin-right: 2em ;
-  background-color: #eeeeee }
+  margin-left: 0em ;
+  margin-right: 0em ;
+  padding: 0.7em;
+  background-color: #d5bb8a;
+  overflow: auto }
 
 span.classifier {
   font-family: sans-serif ;
@@ -271,9 +273,15 @@ h4 tt.docutils, h5 tt.docutils, h6 tt.docutils {
   font-size: 100% }
 
 tt.docutils {
-  background-color: #eeeeee }
+  background-color: #d5bb8a; padding: 1px }
 
 ul.auto-toc {
   list-style-type: none }
 
-li p { margin: 0 }
+li p { margin: 0; padding: 0 }
+
+table.main { align: center }
+table.main td { padding: 6px }
+table blockquote { background-color: #ebdec7; margin: 0 }
+ul { margin-left: 0em; padding-left: 1.3em; padding-bottom: 1em;
+  padding-right: 0.3em }

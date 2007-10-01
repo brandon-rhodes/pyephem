@@ -1,0 +1,5 @@
+PyEphem TODO list
+
+ - Need functions to find phases of moon.
+ - Need to add deprecation warnings to old features.
+ - Need to add tuple-dates to Quick Reference.

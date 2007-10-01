@@ -222,7 +222,8 @@ obj_fixed (Now *np, Obj *op)
 	 * N.B. only compare and store jd's to lowest precission (f_epoch).
 	 * N.B. maintaining J2k ref (which is arbitrary) helps avoid accum err
 	 */
-	if (0 && epoch != EOD && (float)epoch != (float)op->f_epoch) {
+	if (0 /* disabled in PyEphem */
+            && epoch != EOD && (float)epoch != (float)op->f_epoch) {
 	    double pr = op->f_RA, pd = op->f_dec, fe = (float)epoch;
 	    /* first bring back to 2k */
 	    precess (op->f_epoch, J2000, &pr, &pd);
@@ -244,12 +245,14 @@ obj_fixed (Now *np, Obj *op)
 	/* set ra/dec to astrometric @ equinox of date */
 	ra = rpm;
 	dec = dpm;
-	precess (op->f_epoch, mjed, &ra, &dec);
+	if (op->f_epoch != mjed)
+	    precess (op->f_epoch, mjed, &ra, &dec);
 
 	/* compute astrometric @ requested equinox */
 	op->s_astrora = rpm;
 	op->s_astrodec = dpm;
-	precess (op->f_epoch, epoch, &op->s_astrora, &op->s_astrodec);
+	if (op->f_epoch != epoch)
+	    precess (op->f_epoch, epoch, &op->s_astrora, &op->s_astrodec);
 
 	/* convert equatoreal ra/dec to mean geocentric ecliptic lat/long */
 	eq_ecl (mjed, ra, dec, &bet, &lam);

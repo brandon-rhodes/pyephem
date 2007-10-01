@@ -15,9 +15,11 @@ loader = unittest.defaultTestLoader
 suite.addTest(loader.loadTestsFromModule(tests.test_angles))
 suite.addTest(loader.loadTestsFromModule(tests.test_bodies))
 suite.addTest(loader.loadTestsFromModule(tests.test_dates))
+#suite.addTest(loader.loadTestsFromModule(tests.test_rst))
 suite.addTest(loader.loadTestsFromModule(tests.test_usno))
 suite.addTest(loader.loadTestsFromModule(tests.usno_equinoxes))
 
+# Why does loadTestsFromModule not work on test_rst?
 for test in tests.test_rst.tests:
     suite.addTest(test)
 

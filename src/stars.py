@@ -111,5 +111,8 @@ def build_stars():
 build_stars()
 del build_stars
 
-def star(name):
-    return stars[name].copy()
+def star(name, *args, **kwargs):
+    star = stars[name].copy()
+    if args or kwargs:
+        star.compute(*args, **kwargs)
+    return star
