@@ -7,8 +7,8 @@ See also the:
 
  | `PyEphem Home Page`_
  | `PyEphem Tutorial`_
- | `ephem.angle`_ supplement
- | `ephem.date`_ supplement
+ | `ephem.Angle`_ supplement
+ | `ephem.Date`_ supplement
 
 .. _PyEphem home page: http://rhodesmill.org/pyephem
 .. _ephem.angle: angle

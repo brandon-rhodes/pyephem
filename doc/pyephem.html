@@ -8,10 +8,12 @@
 <p align=center><b>Latest release: 3.7.2b<br>2007 October 1<br>
 <a href="pyephem-3.7.2b.tar.gz">pyephem-3.7.2b.tar.gz</a></b><br>
 <br>
-Recent versions include <b>bug fixes</b><br>
-as well as some small enhancements;<br>
-please consult the <tt><a href="CHANGELOG">CHANGELOG</a></tt>
-for details.
+This new version:<br>
+Computes <b>solstices and equinoxes</b>.<br>
+Improves support for <b>risings, transits, and settings</b>.<br>
+Includes a tiny <b>catalog of bright stars</b>.<br>
+Comes with a new <b>Quick Reference</b>!<br>
+See the <tt><a href="CHANGELOG">CHANGELOG</a></tt> for more details!
 </p>
 <p>
 <b>PyEphem</b> provides scientific-grade astronomical computations
@@ -30,19 +32,31 @@ an object rises, transits, and sets on a particular day.
 <td align=center>
 <b><i>A Quick Example</i></b>
 </td></tr><tr><td bgcolor=#f0d080>
-<pre>>>> <b>from ephem import *</b>
->>> <b>mars = Mars()</b>
+<pre>>>> <b>import ephem</b>
+
+>>> <b>mars = ephem.Mars()</b>
 >>> <b>mars.compute()</b>
 >>> <b>print mars.ra, mars.dec</b>
-14:28:35.52 -14:08:24.77
->>> <b>print constellation(mars)</b>
-('Lib', 'Libra')
->>> <b>boston = Observer()</b>
+6:05:56.34 23:23:40.0
+>>> <b>ephem.constellation(mars)</b>
+('Gem', 'Gemini')
+
+>>> <b>boston = ephem.Observer()</b>
 >>> <b>boston.lat = '42.37'</b>
 >>> <b>boston.long = '-71.03'</b>
 >>> <b>mars.compute(boston)</b>
->>> <b>print mars.ra, mars.dec</b>
-14:28:35.74 -14:08:27.21</pre>
+>>> <b>print mars.az, mars.alt</b>
+37:55:48.9 -14:23:11.8
+
+>>> <b>boston.next_rising(mars)</b>
+2007/10/2 02:31:51
+>>> <b>print mars.az</b>
+56:52:52.1
+
+>>> <b>boston.next_transit(mars)</b>
+2007/10/2 10:07:47
+>>> <b>print mars.alt</b>
+71:02:16.3</pre>
 </td></tr></table>
 
 <hr>
@@ -52,8 +66,8 @@ an object rises, transits, and sets on a particular day.
  <ul>
   <li>The <a href="quick">PyEphem Quick Reference</a>.
   <li>The <a href="tutorial">PyEphem Tutorial</a>.
-  <li>The <a href="angle">ephem.angle</a> supplement.
-  <li>The <a href="date">ephem.date</a> supplement.
+  <li>The <a href="angle">ephem.Angle</a> supplement.
+  <li>The <a href="date">ephem.Date</a> supplement.
   <li>The <a href="CHANGELOG"><tt>CHANGELOG</tt></a>
    from the source distribution.
  </ul>

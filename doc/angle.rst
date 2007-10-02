@@ -2,6 +2,10 @@
 ephem.Angle
 ===========
 
+(Return to the `PyEphem Quick Reference`_.)
+
+.. _PyEphem Quick Reference: quick
+
 PyEphem measures all angles in radians.
 But rather than simply returning angles as bare Python floats,
 it returns each of them as an ``ephem.Angle``
