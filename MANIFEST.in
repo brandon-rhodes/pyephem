@@ -5,3 +5,8 @@ include LICENSE-LGPL
 include doc/pyephem-manual.html
 include examples/*.py
 include libastro-3.7.2/*.h
+exclude TODO
+exclude doc/Makefile
+exclude doc/format.py
+exclude doc/premanual.html
+exclude doc/pyephem.html
