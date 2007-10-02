@@ -144,10 +144,11 @@ class Observer(_libastro.Observer):
         def f(d):
             self.date = d
             body.compute(self)
-            return degrees(body.ra - sidereal_time() - offset).znorm
+            return degrees(offset - sidereal_time() + body.ra).znorm
         sidereal_time = self.sidereal_time
         body.compute(self)
-        ha_to_move = (body.ra - sidereal_time() - offset) % (sign * twopi)
+        ha = sidereal_time() - body.ra
+        ha_to_move = (offset - ha) % (sign * twopi)
         if abs(ha_to_move) < tiny:
             ha_to_move = sign * twopi
         d = self.date + ha_to_move / twopi
