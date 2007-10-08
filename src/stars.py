@@ -1,7 +1,15 @@
-# Adapted from the version of the Hipparcos star catalog at:
-# ftp://adc.gsfc.nasa.gov/pub/adc/archives/catalogs/1/1239/hip_main.dat.gz
-# Of its brighest thousand stars, those with proper names at
-# http://simbad.u-strasbg.fr/simbad/ were chosen for this list.
+"""A Catalog of 94 Bright Stars
+
+The function star() will create and return a PyEphem Body representing
+the star whose name you provide.
+
+>>> star('Aldebaran')
+
+Data is adapted from the version of the Hipparcos star catalog at:
+ftp://adc.gsfc.nasa.gov/pub/adc/archives/catalogs/1/1239/hip_main.dat.gz
+Of the thousand brighest Hipparcos stars, those with proper names
+registered at http://simbad.u-strasbg.fr/simbad/ were chosen.
+"""
 
 db = """\
 Sirrah,f|S|B9,0:08:23.2|135.68,29:05:27|-162.95,2.07,2000,0

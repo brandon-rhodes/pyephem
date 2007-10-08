@@ -364,13 +364,14 @@ Other Functions
 Observers
 =========
 
- >>> boston = ephem.Observer()
- >>> boston.long = '-71:5'
- >>> boston.lat = '42:21'
- >>> boston.date = '1986/3/13'
- >>> j = ephem.Jupiter(boston)
+ >>> lowell = ephem.Observer()
+ >>> lowell.long = '111:32.1'
+ >>> lowell.lat = '35:05.8'
+ >>> lowell.elevation = 2198
+ >>> lowell.date = '1986/3/13'
+ >>> j = ephem.Jupiter(lowell)
  >>> print j.alt, j.az
- -30:42:45.1 284:42:10.2
+ 20:48:43.7 120:21:44.9
 
  * Describes a position on Earth's surface.
  * Pass to the ``compute()`` method of a ``Body``.
@@ -391,6 +392,14 @@ Observers
  * The ``temp`` defaults to 25°C.
  * The ``pressure`` defaults to 1010mBar.
  * Other attributes default to zero.
+
+ >>> boston = ephem.city('Boston')
+ >>> print boston.lat, boston.long
+ 42:21:30.0 -71:03:37.0
+
+ * XEphem includes a small database of world cities.
+ * Each call to ``city()`` returns a new ``Observer``.
+ * Only latitude, longitude, and elevation are set.
 
 transit, rising, setting
 ------------------------
@@ -490,17 +499,19 @@ observer.horizon
 other Observer methods
 ----------------------
 
- >>> print boston.sidereal_time()
- 6:36:59.58
+ >>> madrid = ephem.city('Madrid')
+ >>> madrid.date = '1978/10/3 11:32'
+ >>> print madrid.sidereal_time()
+ 12:04:32.17
 
  * Called without arguments.
  * Returns the sidereal time for the observer's circumstances.
 
 ..
 
- >>> ra, dec = boston.radec_of(0, '90')
+ >>> ra, dec = madrid.radec_of(0, '90')
  >>> print ra, dec
- 6:37:58.69 42:20:00.1
+ 12:05:39.19 40:16:49.7
 
  * Called like ``radec_of(az, alt)``.
  * Returns the apparent topocentric coordinates
