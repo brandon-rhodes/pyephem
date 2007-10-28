@@ -1302,6 +1302,21 @@ static int Body_obj_cir(Body *body, char *fieldname, unsigned topocentric)
 
 static int Body_riset_cir(Body *body, char *fieldname)
 {
+     /* This warning was added in November 2007; to ensure more than
+        six months of warning, the rise/set attributes themselves
+        should therefore not be removed until July of 2008. */
+     static char *warning =
+          "the ephem.Body attributes 'rise_time', 'rise_az',"
+          " 'transit_time', 'transit_alt', 'set_time', 'set_az',"
+          " 'circumpolar', and 'never_up' are deprecated;"
+          " please convert your program to use the ephem.Observer"
+          " functions next_rising(), previous_rising(), next_transit(),"
+          " and so forth\n";
+     static int warned_already = 0;
+     if (!warned_already) {
+          if (PyErr_Warn(PyExc_DeprecationWarning, warning)) return -1;
+          warned_already = 1;
+     }
      if ((body->obj.o_flags & VALID_RISET) == 0) {
 	  if (body->obj.o_flags == 0) {
 	       PyErr_Format(PyExc_RuntimeError, "field %s undefined"

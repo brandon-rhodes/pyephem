@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import sys
+import sys, warnings
 from sets import Set
 from ephem_test import *
 
@@ -59,6 +59,12 @@ class body_suite(MyTestCase):
         self.obs = obs = Observer()
         obs.lat, obs.long, obs.elev = '33:45:10', '-84:23:37', 320.0
         obs.date = '1997/2/15'
+
+        # Avoid seeing the deprecation warning for old attributes.
+        warnings.filterwarnings('ignore', '.', DeprecationWarning)
+
+    def tearDown(self):
+        warnings.resetwarnings()
 
     # Try accessing each attribute in attribute_list from the given
     # body, recording the exceptions we receive in a dictionary, and
