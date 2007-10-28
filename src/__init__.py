@@ -118,8 +118,8 @@ def next_solstice(date):
     """Return the date of the next solstice."""
     return holiday(date, pi, halfpi)
 
-# We provide a Python extension to our C "Observer" class that can
-# find many circumstances.
+# We provide a Python extension to our _libastro "Observer" class that
+# can search for circumstances like transits.
 
 class CircumpolarError(ValueError): pass
 class NeverUpError(CircumpolarError): pass
@@ -144,10 +144,10 @@ class Observer(_libastro.Observer):
         def f(d):
             self.date = d
             body.compute(self)
-            return degrees(offset - sidereal_time() + body.ra).znorm
+            return degrees(offset - sidereal_time() + body.g_ra).znorm
         sidereal_time = self.sidereal_time
         body.compute(self)
-        ha = sidereal_time() - body.ra
+        ha = sidereal_time() - body.g_ra
         ha_to_move = (offset - ha) % (sign * twopi)
         if abs(ha_to_move) < tiny:
             ha_to_move = sign * twopi
@@ -266,22 +266,25 @@ def localtime(date):
     return datetime.datetime(*timetuple[:7])
 
 
-def city(name):
-    """Return a city from our world cities database."""
-    from ephem.cities import create
-    return create(name)
-
-
 # For backwards compatibility, provide lower-case names for our Date
 # and Angle classes.
 
 date = Date
 angle = Angle
 
-# Catalog boostraps.
+# Catalog boostraps.  Each of these functions imports a catalog
+# module, then replaces itself with the function of the same name that
+# lives inside of the catalog.
 
 def star(name, *args, **kwargs):
-    global star  # this function, which we replace ...
+    global star
     import ephem.stars
     star = ephem.stars.star  # by the function in the "stars" module
     return star(name, *args, **kwargs)
+
+def city(name):
+    """Return a city from our world cities database."""
+    global city
+    import ephem.cities
+    city = ephem.cities.city
+    return city(name)

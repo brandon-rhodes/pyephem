@@ -2254,7 +2254,7 @@ static PyTypeObject ParabolicBodyType = {
 static PyTypeObject EarthSatelliteType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_libastro.EarthSatellite",
+     "ephem.EarthSatellite",
      sizeof(EarthSatellite),
      0,
      0,				/* tp_dealloc */
