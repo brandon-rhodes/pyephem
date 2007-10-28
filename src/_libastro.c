@@ -1839,7 +1839,7 @@ static PyMemberDef EarthSatellite_members[] = {
 static PyTypeObject BodyType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_libastro.Body",
+     "ephem.Body",
      sizeof(Body),
      0,
      Body_dealloc,		/* tp_dealloc */
@@ -1882,7 +1882,7 @@ static PyTypeObject BodyType = {
 static PyTypeObject PlanetType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_libastro.Planet",
+     "ephem.Planet",
      sizeof(Planet),
      0,
      0,				/* tp_dealloc */
@@ -1925,7 +1925,7 @@ static PyTypeObject PlanetType = {
 static PyTypeObject PlanetMoonType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_libastro.PlanetMoon",
+     "ephem.PlanetMoon",
      sizeof(PlanetMoon),
      0,
      Body_dealloc,		/* tp_dealloc */
@@ -1968,7 +1968,7 @@ static PyTypeObject PlanetMoonType = {
 static PyTypeObject SaturnType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_libastro.Saturn",
+     "ephem.Saturn",
      sizeof(Saturn),
      0,
      0,				/* tp_dealloc */
@@ -2011,7 +2011,7 @@ static PyTypeObject SaturnType = {
 static PyTypeObject MoonType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_libastro.Moon",
+     "ephem.Moon",
      sizeof(Moon),
      0,
      0,				/* tp_dealloc */
@@ -2054,7 +2054,7 @@ static PyTypeObject MoonType = {
 static PyTypeObject FixedBodyType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_libastro.FixedBody",
+     "ephem.FixedBody",
      sizeof(FixedBody),
      0,
      0,				/* tp_dealloc */
@@ -2097,7 +2097,7 @@ static PyTypeObject FixedBodyType = {
 static PyTypeObject BinaryStarType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_libastro.BinaryStar",
+     "ephem.BinaryStar",
      sizeof(BinaryStar),
      0,
      0,				/* tp_dealloc */
@@ -2140,7 +2140,7 @@ static PyTypeObject BinaryStarType = {
 static PyTypeObject EllipticalBodyType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_libastro.EllipticalBody",
+     "ephem.EllipticalBody",
      sizeof(EllipticalBody),
      0,
      0,				/* tp_dealloc */
@@ -2183,7 +2183,7 @@ static PyTypeObject EllipticalBodyType = {
 static PyTypeObject HyperbolicBodyType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_libastro.HyperbolicBody",
+     "ephem.HyperbolicBody",
      sizeof(HyperbolicBody),
      0,
      0,				/* tp_dealloc */
@@ -2226,7 +2226,7 @@ static PyTypeObject HyperbolicBodyType = {
 static PyTypeObject ParabolicBodyType = {
      PyObject_HEAD_INIT(NULL)
      0,
-     "_libastro.ParabolicBody",
+     "ephem.ParabolicBody",
      sizeof(ParabolicBody),
      0,
      0,				/* tp_dealloc */
