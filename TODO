@@ -7,3 +7,5 @@ PyEphem TODO list
  - Need to remove old transit attributes from the old Manual.
  - Need to add tuple-dates to Quick Reference.
  - Look over examples/ directory, or destroy and move to docs.
+ - Add documentation for the three kinds of ra/dec; vastly rewrite
+   Tutorial to reflect this.
