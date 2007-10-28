@@ -1,45 +1,26 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head><title>The PyEphem Manual</title>
-<style type="text/css">
-code { font-weight: bold }
-em { font-style: normal; font-weight: normal; font-variant: small-caps;
- text-transform: lowercase }
-dl.refx, ul.refx { background-color: khaki }
-li { margin-top: 1ex }
-dt { margin: 1ex }
-dd { margin-left: 2em }
-pre { margin-left: 2em; margin-right: 2em; background-color: d0d0a0 }
-</style>
-</head>
-<body>
-<h1>The PyEphem Manual</h1>
 
-Version 2007.October.1, for PyEphem version 3.7.2.1.
-<p>
-_TABLE_OF_CONTENTS_
-<p>
-The <a href="http://rhodesmill.org/pyephem/">PyEphem
-library</a> provides <a href="http://www.python.org/">Python</a>
-programmers with access to the scientific-grade astronomical routines
-used by the <a href="http://www.clearskyinstitute.com/xephem/">XEphem</a>
-interactive astronomical ephemeris application; its author
-<a href="http://www.clearskyinstitute.com/resumes/ecdowney/resume.html">Elwood
-Charles Downey</a> generously granted permission
-for the PyEphem source package to include his routines.
-After installing the module
-(see the <tt>INSTALL</tt> file in the distribution),
-you should be able to start using it with:
+The PyEphem Tutorial
+====================
+
+Version 2007.November.1, for PyEphem version 3.7.2.2.
+
+The `PyEphem library`_ provides Python programmers
+ith access to the scientific-grade astronomical routines
+used by the `XEphem`_ interactive astronomical ephemeris application;
+its author, `Elwood Charles Downey`_, has generously granted permission
+for PyEphem to be built upon his work.
+
+After installing the module,
+you can use it in Python with the statement:
+
+.. _PyEphem library: http://rhodesmill.org/pyephem/
+.. _XEphem: http://www.clearskyinstitute.com/xephem/
+.. _Elwood Charles Downey: http://www.clearskyinstitute.com/resumes/ecdowney/resume.html
 
 >>> import ephem
 
-and then trying out the examples below.
-<p>
-This documentation begins with a tutorial
-and ends with a comprehensive reference to the objects and variables
-accessible through the <tt>ephem</tt> module.
-The tutorial assumes that you are familiar with astronomy
-but not all of the issues surrounding astronomical calculation;
+This tutorial assumes that you are familiar with astronomy,
+but necessarily all of the issues surrounding astronomical calculation;
 those who find its discussions tedious
 will probably just want to read over its examples
 to quickly familiarize themselves with how PyEphem works.

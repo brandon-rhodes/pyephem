@@ -3,17 +3,10 @@
 
 WEB = ./www
 
-all: pyephem.html pyephem-manual.html
-all: $(WEB)/index.html $(WEB)/tutorial.html $(WEB)/CHANGELOG
+all: pyephem.html $(WEB)/index.html $(WEB)/CHANGELOG
 
 $(WEB)/index.html: pyephem.html
 	umask 022; tidy -q pyephem.html > $@
-
-$(WEB)/tutorial.html: pyephem-manual.html
-	umask 022; cp $< $@
-
-pyephem-manual.html: premanual.html format.py
-	cat premanual.html | python ./format.py > $@
 
 #/var/www/manual.html: premanual.html format.py
 #	umask 022; cat $< | python ./format.py > $@
