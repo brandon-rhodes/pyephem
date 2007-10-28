@@ -25,22 +25,21 @@ those who find its discussions tedious
 will probably just want to read over its examples
 to quickly familiarize themselves with how PyEphem works.
 
-<hr>
-<h2>The PyEphem Tutorial</h2>
+First Steps
+-----------
 
 PyEphem will compute the positions of celestial bodies on particular dates,
 and can determine where in the sky they appear from any location on earth.
-<p>
-When using PyEphem you will usually
-create instances of the bodies that interest you,
+
+When using PyEphem,
+you will usually create instances of the bodies that interest you,
 compute their position for various dates and perhaps geographic locations,
 and finally print or display the result.
 For example,
 to determine the location and brightness of Uranus
 on the night it was discovered
-we simply create a <tt>Uranus</tt> object
-and ask where it was on the 13th of March~1781:
-
+we simply create a ``Uranus`` object
+and ask where it was on the 13th of March, 1781:
 
 >>> u = ephem.Uranus()
 >>> u.compute('1871/3/13')
@@ -49,28 +48,29 @@ and ask where it was on the 13th of March~1781:
 >>> print ephem.constellation(u)
 ('Gem', 'Gemini')
 
-
-Calling <tt>compute()</tt> sets many attributes of a body,
+Calling ``compute()`` sets many attributes of a body,
 beyond the right ascension, declination, and magnitude printed here;
-see <a href="#bodyattrs">Body Attributes</a> in the reference below
-for other attributes that <tt>compute()</tt> sets.
+see the `Quick Reference`_
+for other attributes that ``compute()`` sets.
 You see that measurements are formatted as an astronomer would expect:
-dates are expressed as year, month, and day delimited by slashes;
+dates are expressed as year, month, and day, delimited by slashes;
 right ascension as hours of arc around the celestial equator;
 and declination as degrees north of the equator.
-The colons between the components of an angle are a compromise ---
-the more traditional 21&deg;46&prime;15.66&prime;&prime; is not possible
+The colons between the components of an angle are a compromise —
+the more traditional 21°46′15.66′′ is not possible
 with the symbols on a standard computer keyboard.
-<p>
-This example used one body,
+
+.. _Quick Reference: quick
+
+The code above created and used only one instance of ``Uranus``,
 but you can also have several going at once.
-To determine how close Neptune and Jupiter lay
-as Galileo famously observed them ---
+For example,
+to determine how close Neptune and Jupiter lay
+as Galileo famously observed them —
 he was busy watching the Jovian moons he had discovered two years earlier
 and, though Neptune had moved overnight, he dismissed it as a background star
-and left its discovery to wait another two hundred years ---
+and left its discovery to wait another two hundred years —
 we create one instance of each planet and compare their positions:
-
 
 >>> j = ephem.Jupiter('1612/12/28')
 >>> n = ephem.Neptune('1612/12/28')
@@ -81,23 +81,23 @@ we create one instance of each planet and compare their positions:
 >>> print ephem.separation(j, n)
 0:14:24.72
 
-
-Instead of creating the planets
-and then calling their <tt>compute()</tt> methods,
-we have taken the shortcut of providing dates as we create them;
+Notice that, while in our first example
+we created our ``Uranus`` instance
+and called its ``compute()`` method as two separate steps,
+we have here taken the shortcut of providing dates
+as we created each planet;
 in general, any arguments you provide when creating a planet
-are used to <tt>compute()</tt> its initial position.
-The <tt>separation()</tt> function
+are used to ``compute()`` its initial position.
+The ``separation()`` function
 computes the angle in degrees between two bodies,
 as measured by their right ascension and declination.
 In this case,
-the separation of 0&deg;14&prime;
+the separation of 0°14′
 was small enough to place both planets in Galileo's field of view.
-<p>
-You can even create several instances of the same body.
-By comparing how far Mars moves in one day at perihelion versus aphelion,
-we can observe its greater speed when closer to the Sun:
 
+You can even create several instances of the same body.
+Let's compare how far Mars moves in one day at perihelion versus aphelion,
+and verify that its speed is greater when closer to the Sun:
 
 >>> def hpos(body): return body.hlong, body.hlat
 >>> ma0 = ephem.Mars('1976/05/21')    # ma: mars near aphelion
@@ -109,19 +109,18 @@ we can observe its greater speed when closer to the Sun:
 >>> print ephem.separation(hpos(mp0), hpos(mp1))
 0:38:05.25
 
-
 Here we wanted to measure the motion of Mars around the Sun,
-but <tt>separation()</tt> normally compares
-the right ascension and declination of two bodies ---
+but ``separation()`` normally compares
+the right ascension and declination of two bodies —
 which would measure the motion of Mars across the sky
 of the moving platform of our earth.
-So instead of giving <tt>separation()</tt> the Mars instances themselves,
+So instead of giving ``separation()`` the Mars instances themselves,
 we specifically provided
 the heliocentric longitude and latitude of each instance,
 revealing how far Mars moved around the Sun
 regardless of how this motion appeared from earth.
-<p>
-In general <tt>separation()</tt> can measure the angle
+
+In general ``separation()`` can measure the angle
 between any pair of spherical coordinates,
 so long as the elements of each coordinate are spherical longitude
 (angle around the sphere)
@@ -136,7 +135,7 @@ and even the geographic longitude and latitude of two locations on earth.
 <h3>Computing With Angles</h3>
 
 Sometimes you may want to perform computations with times and angles.
-Strings like <tt>'7:45:45.15'</tt> are attractive when printed,
+Strings like ``'7:45:45.15'`` are attractive when printed,
 but cumbersome to add and multiply;
 so PyEphem also makes times and angles available as floating point numbers
 for more convenient use in mathematical formulae.
@@ -155,10 +154,10 @@ and examine the results in more detail:
 1.37997591496
 
 
-The rule is that angles become strings when printed or given to <tt>str()</tt>,
+The rule is that angles become strings when printed or given to ``str()``,
 but otherwise act like Python floating point numbers.
-Note that the format operator <tt>%</tt> can return either value,
-depending on whether you use <tt>%s</tt> or one of the numeric formats:
+Note that the format operator ``%`` can return either value,
+depending on whether you use ``%s`` or one of the numeric formats:
 
 
 >>> print "as a string: %s, as a float: %f" % (u.dec, u.dec)
@@ -166,12 +165,12 @@ as a string: 21:46:15.66, as a float: 0.379976
 
 
 As an example computation,
-we can verify Kepler's Second Law of planetary motion ---
+we can verify Kepler's Second Law of planetary motion —
 that a line drawn from a planet to the sun
 will sweep out equal areas over equal periods of time.
 We have already computed two positions for Mars near its aphelion
 that are one day apart
-(and defined a helpful <tt>hpos()</tt> function; see above).
+(and defined a helpful ``hpos()`` function; see above).
 We can estimate the actual distance it moved in space that day
 by multiplying its angular motion in radians by its distance from the Sun:
 
@@ -207,7 +206,7 @@ we can try using the two Mars positions from near perihelion:
 
 
 Despite the fact that Mars moves twenty percent faster at perihelion,
-the area swept out --- to quite high precision --- is identical,
+the area swept out — to quite high precision — is identical,
 just as Kepler predicted.
 Some of the tiny difference shown here
 results from our having approximated sectors of its orbit as triangles;
@@ -218,7 +217,7 @@ When you use an angle in mathematical operations,
 Python will return normal floats that lack the special power
 of printing themselves as degrees or hours or arc.
 To turn radian measures back into printable angles,
-PyEphem supplies both a <tt>degrees()</tt> and an <tt>hours()</tt> function.
+PyEphem supplies both a ``degrees()`` and an ``hours()`` function.
 For example:
 
 
@@ -230,7 +229,7 @@ For example:
 
 You may find that your angle arithmetic often returns angles
 that are less than zero or that exceed twice pi.
-You can access the <tt>norm</tt> attribute of an angle
+You can access the ``norm`` attribute of an angle
 to force it into this range:
 
 
@@ -250,9 +249,9 @@ the fact that it is counted in days
 means you can move one day forward or backward
 by adding or subtracting one.
 The rules described above for angles hold for floats as well:
-you can create them with <tt>ephem.Date()</tt>,
+you can create them with ``ephem.Date()``,
 but after doing arithmetic on them
-you must pass them back through <tt>ephem.Date()</tt>
+you must pass them back through ``ephem.Date()``
 to turn them back into dates:
 
 
@@ -263,8 +262,8 @@ to turn them back into dates:
 1950/3/1 00:00:00
 
 
-The <tt>ephem</tt> module provides three constants
-<tt>hour</tt>, <tt>minute</tt>, and <tt>second</tt>,
+The ``ephem`` module provides three constants
+``hour``, ``minute``, and ``second``,
 which can be added or subtracted from dates
 to increment or decrement them by the desired amount.
 <p>
@@ -272,10 +271,10 @@ You can specify dates in several formats;
 not only can the strings that specify them
 use either floating point days or provide hours, minutes, and seconds,
 but you can also provide the components of the date in a tuple.
-Note that PyEphem does not deal with time zones ---
-use the standard <tt>time</tt> module
+Note that PyEphem does not deal with time zones —
+use the standard ``time`` module
 to convert between your local time and the Universal time used by PyEphem,
-which you can generate by calling <tt>gmtime()</tt>
+which you can generate by calling ``gmtime()``
 and give the first six elements it returns to PyEphem.
 The following assignments are all equivalent:
 
@@ -289,8 +288,8 @@ The following assignments are all equivalent:
 
 And to complement the fact that you can specify dates as a tuple,
 two methods are provided for extracting the date as a tuple:
-<tt>triple()</tt> returns a year, month, and floating point day,
-while <tt>tuple()</tt> provides everything down to floating point seconds.
+``triple()`` returns a year, month, and floating point day,
+while ``tuple()`` provides everything down to floating point seconds.
 After any of the above calls,
 the date can be examined as:
 
@@ -308,9 +307,9 @@ Any PyEphem function argument that requires an angle or date
 will accept any of the representations shown above;
 so you could, for instance,
 give a three-element tuple
-directly to <tt>compute()</tt> for the date,
+directly to ``compute()`` for the date,
 rather than having to pass the tuple through the
-<tt>date()</tt> function before using it
+``date()`` function before using it
 (though the latter approach would also work).
 
 <h3>Computations for Particular Observers</h3>
@@ -318,25 +317,25 @@ rather than having to pass the tuple through the
 The examples so far have determined
 the position of bodies against the background of stars,
 and their location in the solar system.
-But to observe a body we need to know more ---
+But to observe a body we need to know more —
 whether it is visible from our latitude,
 when it rises and sets,
 and the height it achieves above our horizon.
 In return for this more detailed information,
 PyEphem quite reasonably demands to know our position on the earth's surface;
-we can provide this through an object called an <tt>Observer</tt>:
+we can provide this through an object called an ``Observer``:
 
 
 >>> gatech = ephem.Observer()
 >>> gatech.long, gatech.lat = '-84.39733', '33.775867'
 
 
-When the <tt>Observer</tt> is provided to <tt>compute()</tt>
+When the ``Observer`` is provided to ``compute()``
 instead of a date and epoch,
 PyEphem has enough information
 to determine where in the sky the body appears.
-Fill in the <tt>date</tt> and <tt>epoch</tt> fields of the <tt>Observer</tt>
-with the values you would otherwise provide to <tt>compute()</tt>;
+Fill in the ``date`` and ``epoch`` fields of the ``Observer``
+with the values you would otherwise provide to ``compute()``;
 the epoch defaults to the year 2000 if you do not set it yourself.
 As an example, we can examine the 1984 eclipse of the sun from Atlanta:
 
@@ -357,8 +356,8 @@ To locate the Sun and Moon in this instance,
 you would begin by facing north and then turn right 122&deg;,
 bringing you almost around to the southeast
 (which lies 125&deg; around the sky from north);
-and by looking 70&deg; above that point on the horizon ---
-fairly high, given that 90&deg; is directly overhead ---
+and by looking 70&deg; above that point on the horizon —
+fairly high, given that 90&deg; is directly overhead —
 you would find the Sun and Moon.
 <p>
 Eclipses are classified as <i>partial</i>
@@ -369,7 +368,7 @@ to leave only a brilliant ring (Latin <i>annulus</i>) visible;
 and <i>total</i> when the moon is large enough to cover the Sun completely.
 To classify this eclipse we must compare the size of the Sun and Moon
 to the distance between them.
-Since each argument to <tt>separation()</tt>
+Since each argument to ``separation()``
 can be an arbitrary measure of spherical longitude and latitude,
 we can provide azimuth and altitude:
 
@@ -386,7 +385,7 @@ would leave an annulus of width
 1.05&prime;&prime;~/~2~= 0.52&prime;&prime;
 visible around the Moon's edge.
 But in fact the center of the Moon lies 0.48~arc seconds
-towards one edge of the sun ---
+towards one edge of the sun —
 not enough to move its edge outside the sun and make a partial eclipse,
 but enough to make a quite lopsided annular eclipse,
 whose annulus is 0.52&prime;&prime;~+~0.48~= 1.00&prime;&prime;
@@ -426,7 +425,7 @@ Since atmospheric refraction varies with temperature and pressure,
 you can improve the accuracy of PyEphem
 by providing these values from a local forecast,
 or at least from average values for your location and season.
-By default an <tt>Observer</tt> uses 15&deg;C and 1010~mB,
+By default an ``Observer`` uses 15&deg;C and 1010~mB,
 the values for these parameters at sea level
 in the standard atmosphere model used in aviation.
 Setting the pressure to zero
@@ -451,16 +450,16 @@ This agrees with the list of altitudes we generated above,
 which placed the sun at nearly zero degrees altitude at 8:40~<em>pm</em>;
 the azimuth tells us exactly where on the horizon the sun set.
 You can similarly determine when and where a body rose
-by checking its <tt>rise_time</tt> and <tt>rise_az</tt> variables,
+by checking its ``rise_time`` and ``rise_az`` variables,
 and for the time and height of its transit across your meridian
-with <tt>transit_time</tt> and <tt>transit_alt</tt>.
+with ``transit_time`` and ``transit_alt``.
 <p>
 Note that these risings and settings
-are those for the date you have specified in the <tt>Observer</tt>
+are those for the date you have specified in the ``Observer``
 for which you asked the body to compute its position.
 If between midnight and midnight on that day
 a body happens not to rise, set, or transit,
-the corresponding events will simply return <tt>None</tt> for their values:
+the corresponding events will simply return ``None`` for their values:
 
 
 >>> print moon.rise_time, moon.transit_time, moon.set_time
@@ -474,15 +473,15 @@ and use the ones that fall around the period when you will be observing.
 
 <h3>Loading Bodies From Catalogues</h3>
 
-So far we have dealt with the planets, the Sun, and the Moon ---
+So far we have dealt with the planets, the Sun, and the Moon —
 major bodies whose orbits PyEphem already knows in great detail.
 But for minor bodies, like comets and asteroids,
 you must aquire and load the orbital parameters yourself.
 <p>
 Understand that because the major planets constantly perturb
 the other bodies in the solar system, including each other,
-it requires great effort ---
-years of observation yielding formulae with dozens or hundreds of terms ---
+it requires great effort —
+years of observation yielding formulae with dozens or hundreds of terms —
 to predict the position of a body accurately over decades or centuries.
 For a comet or asteroid,
 astronomers find it more convenient
@@ -493,7 +492,7 @@ The PyEphem home page provides links to several
 <a href="pyephem.html#catalogues">online catalogues</a>
 of orbital elements.
 Once you have obtained elements for a particular body,
-simply provide them to PyEphem's <tt>readdb()</tt> function
+simply provide them to PyEphem's ``readdb()`` function
 in <i>ephem database format</i> and the resulting object is ready to use:
 
 
@@ -511,9 +510,9 @@ C/2002 Y1 (Juels-Holvorcem)
 
 (Unfortunately the library upon which PyEphem is build
 truncates object names to twenty characters, as you can see.)
-Each call to <tt>readdb()</tt> returns an object appropriate
+Each call to ``readdb()`` returns an object appropriate
 for the orbit specified in the database entry;
-in this case it has returned an <tt>EllipticalBody</tt>:
+in this case it has returned an ``EllipticalBody``:
 
 
 >>> print yh
@@ -524,7 +523,7 @@ For objects for which you cannot find an entry in ephem database format,
 you can always create the appropriate kind of object
 and then fill in its orbital parameters yourself;
 <a href="#orbital-elements">see below</a> for their names and meanings.
-By calling the <tt>writedb()</tt> function of a PyEphem object,
+By calling the ``writedb()`` function of a PyEphem object,
 you can even get it to generate its own database entry
 for archiving or distribution.
 <p>
@@ -542,10 +541,10 @@ Here are some recent elements for the International Space Station.
 2003/3/23 00:00:44 2003/3/23 00:03:22 2003/3/23 00:06:00
 
 
-Note that earth satellites are fast movers ---
+Note that earth satellites are fast movers —
 in this case rising and setting in less than six minutes!
 They can therefore have multiple risings and settings each day,
-and the particular ones you get from <tt>rise_time</tt> and <tt>set_time</tt>
+and the particular ones you get from ``rise_time`` and ``set_time``
 depend on the particular time of day for which you ask.
 Repeating the above query eight hours later gives complete different results:
 
@@ -556,8 +555,8 @@ Repeating the above query eight hours later gives complete different results:
 2003/3/23 08:03:41 2003/3/23 08:08:29 2003/3/23 08:13:16
 
 
-When calling <tt>compute()</tt> for an earth satellite
-you should provide an <tt>Observer</tt>,
+When calling ``compute()`` for an earth satellite
+you should provide an ``Observer``,
 and not simply a date and epoch,
 since its location is entirely dependent
 upon the location from which you are observing.
@@ -577,12 +576,12 @@ which lies at the end of Ursa Minor's tail:
 >>> print polaris.dec
 RuntimeError: field dec undefined until first compute()
 
-We are able to create the object successfully ---
+We are able to create the object successfully —
 why should asking its position raise a runtime error?
 The reason is that fixed objects, like planets,
 have an undefined position and magnitude
-until you call their <tt>compute()</tt> method
-to determine their position for a particular date or <tt>Observer</tt>:
+until you call their ``compute()`` method
+to determine their position for a particular date or ``Observer``:
 
 >>> polaris.compute()    # uses the current time by default
 >>> print polaris.dec
@@ -592,8 +591,8 @@ to determine their position for a particular date or <tt>Observer</tt>:
 
 Much better; we see that the `North Star` lies
 less than forty-five arc minutes from the pole.
-But why should we have to call <tt>compute()</tt>
-for something fixed ---
+But why should we have to call ``compute()``
+for something fixed —
 something whose position is considered permanent,
 and which should not move between one date and another?
 <p>
@@ -602,7 +601,7 @@ are indeed nearly motionless over the span of human civilization,
 the coordinate system by which we designate their positions
 changes more rapidly.
 Right ascension and declination are based
-upon the orientation of the earth's pole ---
+upon the orientation of the earth's pole —
 but it turns out that the pole slowly revolves
 (around the axis of the ecliptic plane)
 like the axis of a whirling top,
@@ -613,13 +612,13 @@ is not sufficient to state that Polaris lies at
 2h31m right ascension and 89:15&deg; declination;
 you have to say in <i>which year</i>.
 <p>
-That is why the Polaris entry above ends with <tt>2000</tt> ---
+That is why the Polaris entry above ends with ``2000`` —
 this gives the year for which the coordinates are correct,
 called the <i>epoch</i> of the coordinates.
 Because the year 2000 is currently a very popular epoch
 for quoting positions and orbital parameters,
-<tt>compute()</tt> uses it by default;
-but we can provide an <tt>epoch=</tt> keyword parameter
+``compute()`` uses it by default;
+but we can provide an ``epoch=`` keyword parameter
 to have the coordinates translated into those for another year:
 
 >>> polaris.compute(epoch='2100')
@@ -628,7 +627,7 @@ to have the coordinates translated into those for another year:
 
 Thus we see that in another hundred years Polaris
 will actually lie closer to the pole that it does today.
-(The <tt>'2100'</tt> is the same year/month/day format you have seen already,
+(The ``'2100'`` is the same year/month/day format you have seen already,
 missing both its month and day
 because we are not bothering to be that specific.)
 If you enter subsequent years you will find
@@ -659,7 +658,7 @@ while Polaris lay further from their pole than Thuban lies from ours today:
 63:33:17.63
 
 Realize that in these examples I have been lazy
-by giving <tt>compute()</tt> an epoch without an actual date,
+by giving ``compute()`` an epoch without an actual date,
 which requests the <i>current</i> position of each star
 in the coordinates of another epoch.
 This makes no difference for these fixed objects,
@@ -668,18 +667,18 @@ but when dealing with moving objects
 one must always keep in mind the difference
 between the date for which you want their position computed,
 and the epoch in which you want those coordinates expressed.
-Here are some example <tt>compute()</tt> calls,
+Here are some example ``compute()`` calls,
 beginning with one like the above but for a moving object:
 <ul>
 <li><code>halley.compute(epoch='1066')</code>
  is probably useless:
- it computes the current position of <tt>halley</tt>,
+ it computes the current position of ``halley``,
  but returns coordinates relative
  to the direction the earth's axis was pointing in the year~1066.
  Unless you use a Conquest-era star atlas, this is not useful.
 <li><code>halley.compute('1066', epoch='1066')</code>
  is slightly more promising:
- it computes the position of <tt>halley</tt> in 1066
+ it computes the position of ``halley`` in 1066
  and returns coordinates for the orientation of the earth in that year.
  This might help you visualize
  how the object was positioned above contemporary observers,
@@ -689,7 +688,7 @@ beginning with one like the above but for a moving object:
  you would first have to recompute each star's position in 1066 coordinates.
 <li><code>halley.compute('1066')</code>
  is what you will probably use most often;
- you get the position of <tt>halley</tt> in the year 1066
+ you get the position of ``halley`` in the year 1066
  but expressed in the 2000 coordinates that your star atlas probably uses.
 </ul>
 When planning to observe with an equatorial telescope,
@@ -732,522 +731,19 @@ and stick with a single epoch the whole way through a computation.
 <p>
 It was for the sake of simplicity
 that all of the examples in this section
-simply provided dates as arguments to the <tt>compute()</tt> function.
-If you are instead using an <tt>Observer</tt> argument,
-then you specify the epoch through the observer's <tt>epoch</tt> variable,
-not through the <tt>epoch=</tt> argument.
+simply provided dates as arguments to the ``compute()`` function.
+If you are instead using an ``Observer`` argument,
+then you specify the epoch through the observer's ``epoch`` variable,
+not through the ``epoch=`` argument.
 Observers use epoch 2000 by default.
 <p>
 Finally,
 make sure you understand
-that your choice of epoch only affects absolute position ---
-the right ascension and declination returned for objects ---
+that your choice of epoch only affects absolute position —
+the right ascension and declination returned for objects —
 <i>not</i> the azimuth and altitude of an object above an observer.
 This is because the sun will hang in the same position over Atlanta
 whether the star atlas with which you plot its position
 has epoch 2000, or 1950, or even~1066 coordinates;
 the epoch only affects how you name locations in the sky,
 not how they are positioned with respect to you.
-
-<hr>
-<h2>The PyEphem Reference</h2>
-
-<h3>1. Module Contents: Astronomical Objects.</h3>
-
-<dl class=ref>
-<dt>
-
-<code>Sun() Moon() Mercury() Venus() Mars() Jupiter() Saturn()
-Uranus() Neptune() Pluto()
-<br>Phobos() Deimos()
-<br>Io() Europa() Ganymede() Callisto()
-<br>Mimas() Enceladus() Tethys() Dione() Rhea() Titan() Hyperion() Iapetus()
-<br>Ariel() Umbriel() Titania() Oberon() Miranda()</code>
-
-<dd>
-These calls each create and return
-an instance of a major solar-system body,
-whose position PyEphem knows how to compute
-using high accuracy formulae and series.
-Any of these functions can be given arguments,
-which will be used to call the <tt>compute()</tt> method of the new object
-before it is returned to you.
-(Only <tt>Saturn</tt> and the <tt>Moon</tt> are actual type objects;
-the others return instances
-of either the <tt>Planet</tt> or <tt>PlanetMoon</tt> types.)
-
-<dt>
-<code>FixedBody() EllipticalBody() ParabolicBody() HyperbolicBody()
- EarthSatellite()</code>
-<dd>
-Calling one of these type objects
-creates a blank and uninitialized body
-whose orbital elements must be filled in before use;
-<a href="#orbital-elements">see below</a>
-for the orbital elements required for each type of body.
-
-<dt>
-<code>readdb(<i>line</i>)</code>
-<dd>
-Parse an entry from an XEphem database file
-and return an instance of the object it describes.
-If an error is encountered parsing the database line,
-<tt>ValueError</tt> is raised.
-The type of the returned object will be one of the five listed above,
-with all of its orbital elements already set.
-
-<dt>
-<code>readtle(<i>name</i>, <i>line1</i>, <i>line2</i>)</code>
-<dd>
-This function parses an earth satellite description
-that is in the Two-Line Element format used by NORAD,
-and returns the result as an <tt>EarthSatellite</tt>.
-
-<dt>
-<code>Observer()</code>
-<dd>
-This returns an <tt>Observer</tt> object
-with which the user can describe a position on the Earth's surface
-together with the atmospheric conditions.
-<a href="#observer">See below</a> for the fields supported
-by these objects,
-which can be passed to the <tt>compute()</tt> method of any body.
-</dl>
-
-<h3>2. Module Contents: Angles and Times</h3>
-
-Every <tt>ephem</tt> object and method that returns an angle
-will return a floating point number
-giving the angle in radians,
-but which if subjected to either <tt>str()</tt> or to printing
-will format itself as traditional degrees or hours of right ascension
-like <tt>'7:45:45.15'</tt>.
-But since any mathematics performed upon an angle
-will return a normal Python float,
-the following functions are useful:
-
-<dl>
-<dt><code>degrees(<i>radians_float</i>)</code>
-<br><code>degrees(<i>degrees_string</i>)</code>
-<dd>
-Returns an angle as a floating point number of radians
-which formats itself as degrees of arc
-when printed or subjected to <tt>str()</tt>.
-It can be initialized directly with a float in radians,
-or with a string expressing degrees
-in sexigesimal format like <tt>'33:44:56'</tt>
-or as a decimal like <tt>'33.7489'</tt>.
-Strings produced by the angle are always sexigesimal.
-<dt><code>hours(<i>radians_float</i>)</code>
-<br><code>hours(<i>hours_string</i>)</code>
-<dd>
-Like the above function except that the string taken as input,
-returned by <tt>str()</tt>, or printed,
-uses hours of arc (of which there are twenty-four in a circle).
-</dl>
-
-Angle arithmetic may result in angles less than zero
-or greater than twice&nbsp;pi;
-if you want your result normalized to within this range,
-access the <tt>norm</tt> attribute:
-
-<dl><dt>
-<code><i>angle</i>.norm</code> ---
-Returns the angle normalized to the interval [0,&nbsp;2&pi;).
-</dl>
-
-Dates are stored as the number of days since noon on 1899 December~31,
-and like angles yield simple floats when used in computations.
-Dates can be created in several ways:
-
-<dl>
-<dt><code>now()</code>
-<br><code>date(<i>raw_float</i>)</code>
-<br><code>date('<i>yyyy.y</i>')</code>
-<!-- <br><code>date('<i>yyyy/mm.m</i>')</code> -->
-<br><code>date('<i>yyyy/mm/dd.d</i>')</code>
-<br><code>date('<i>yyyy/mm/dd hh.h</i>')</code>
-<br><code>date('<i>yyyy/mm/dd hh/mm.m</i>')</code>
-<br><code>date('<i>yyyy/mm/dd hh/mm/ss.s</i>')</code>
-<br><code>date((<i>yyyy</i>,))</code>
-<br><code>date((<i>yyyy</i>, <i>mm</i>))</code>
-<br><code>date((<i>yyyy</i>, <i>mm</i>, <i>dd.d</i>))</code>
-<br><code>date((<i>yyyy</i>, <i>mm</i>, <i>dd</i>, <i>hh.h</i>))</code>
-<br><code>date((<i>yyyy</i>, <i>mm</i>, <i>dd</i>, <i>hh</i>,
- <i>mm.m</i>))</code>
-<br><code>date((<i>yyyy</i>, <i>mm</i>, <i>dd</i>,
- <i>hh</i>, <i>mm</i>, <i>ss.s</i>))</code>
-</dl>
-
-In addition to using dates as floats,
-and as strings through <tt>str()</tt> and <tt>print</tt>,
-they can be extracted in two other forms:
-
-<dl><dt>
-<code><i>date</i>.triple()</code> ---
-Returns the date as <tt>(<i>year</i>, <i>month</i>, <i>day.fraction</i>)</tt>.
-<br><code><i>date</i>.tuple()</code> ---
-Returns the date as <tt>(<i>year</i>, <i>month</i>, <i>day</i>,
- <i>hour</i>, <i>minute</i>, <i>second.fraction</i>)</tt>.
-</dl>
-
-Three constants are provided to help increment and decrement dates:
-
-<dl><dt>
-<code>hour</code> = one twenty-fourth of a day
-<br><code>minute</code> = one sixtieth of an hour
-<br><code>second</code> = one sixtieth of a minute
-</dl>
-
-<h3>3. Module Contents: Functions</h3>
-
-<dl>
-
-<dt><code>constellation(<i>body</i>)</code>
-<br><code>constellation((<i>ra</i>, <i>dec</i>))</code>
-<br><code>constellation((<i>ra</i>, <i>dec</i>), epoch=<i>epoch</i>)</code>
-<dd>
-Determines the constellation in which the given body or coordinates lie.
-If you provide coordinates without an epoch,
-then epoch 2000 is assumed.
-
-<dt><code>delta_t(<i>date</i>)</code>
-<br><code>delta_t(<i>observer</i>)</code>
-<br><code>delta_t()</code>
-<dd>
-Return for the given date
-the offset between Terrestrial Time and Universal Time.
-The former marches forward with equal-length days
-regardless of the behavior of the Earth,
-while the latter is constantly tweaked and adjusted through leap seconds
-to follow the Earth's actual rotation.
-If given an Observer object,
-the function uses <code><i>observer</i>.date</code>,
-and if given no argument it uses <code>now()</code>.
-
-<dt><code>julian_date(<i>date</i>)</code>
-<br><code>julian_date(<i>observer</i>)</code>
-<br><code>julian_date()</code>
-<dd>
-Return the Julian Date for the given PyEphem date object.
-If given an Observer,
-the function uses <code><i>observer</i>.date</code>,
-and if given no argument it uses <code>now()</code>.
-(The Julian Date is the number of days that have elapsed
-since noon Universal Time on Monday, January~1, 4713~BC.)
-
-
-<dt><code>millennium_atlas(<i>ra</i>, <i>dec</i>)</code>
-<br><code>uranometria(<i>ra</i>, <i>dec</i>)</code>
-<br><code>uranometria2000(<i>ra</i>, <i>dec</i>)</code>
-<dd>
-These three functions return the page number
-on which a particular right ascension and declination fall
-in each of three star atlases:
-<p>
-<i><a href="http://www.amazon.com/exec/obidos/tg/detail/-/0933346840/"
->Millennium Star Atlas</a></i> by Roger W. Sinnott and Michael A. C. Perryman
-<br>
-<i><a href="http://www.amazon.com/exec/obidos/tg/detail/-/1852970219/"
->Uranometria</a></i> by Johannes Bayer
-<br>
-<i><a href="http://www.amazon.com/exec/obidos/tg/detail/-/0943396719/"
->Uranometria 2000.0</a></i> edited by Wil Tirion
-</p>
-
-<dt><code>moon_phases(<i>date</i>)</code>
-<br><code>moon_phases(<i>observer</i>)</code>
-<br><code>moon_phases()</code>
-<dd>
-Given a date, returns a dictionary
-<code>{'new': <i>new_date</i>, 'full': <i>full_date</i>}</code>
-giving the dates of a consecutive new and full moon
-that are near the date you specified.
-If given an Observer object it uses <code><i>observer</i>.date</code>,
-and if given no argument, uses <code>now()</code>.
-
-<dt>
-<code>separation(<i>position0</i>, <i>position1</i>)</code>
-<dd>
-Returns the angle in degrees between two positions on a sphere.
-Each position should be a coordinate pair
-whose first element measures angle around the sphere's equator,
-and whose second specifies angle above or below its equator.
-(Common examples of such pairs are right ascension and declination,
-and longitude and latitude.)
-While each coordinate pair can simply be a sequence of two floats,
-you can also submit an <tt>Observer</tt>,
-whose longitude and latitude will be used,
-or a celestial body,
-whose right ascension and declination will be used.
-
-</dl>
-
-<a name="observer"><h3>4. Observer Objects</h3></a>
-
-All of these values can be set by the user;
-default values are shown in parentheses.
-<p>
-<code><i>observer</i>.date</code> --- the date for which the position
- should be computed (current time)
-<br><code><i>observer</i>.epoch</code> --- epoch for which coordinates
- should be generated (year~2000)
-<br><code><i>observer</i>.long,
- <i>observer</i>.lat</code> --- location of the observer on the earth;
- longitude should be positive for east and negative west,
- and latitude should be positive north and negative south
-<br><code><i>observer</i>.elev</code> --- elevation above sea level in meters
- (0~m)
-<br><code><i>observer</i>.temp</code> --- temperature in degrees centigrade
- (15&deg;C)
-<br><code><i>observer</i>.pressure</code> --- atmospheric pressure in milibars
- (1010~mB)
-<br><code><i>observer</i>.horizon</code> --- at what angle you consider
- an object to be rising or setting~(0&deg;)
-<p>
-The <tt>temp</tt> and <tt>pressure</tt> are used
-to estimate how the object's position will be distorted by the atmosphere
-when it is close to the horizon;
-setting <tt>pressure</tt> to zero makes PyEphem ignore atmospheric refraction.
-The <tt>horizon</tt> value sets how far above (for positive angles)
-or below (for negative ones) the horizon an object needs to appear
-for you to consider it at the point of rising or setting;
-normally this is set to zero,
-meaning that rising and setting times tell you
-when an object appears exactly at the horizon.
-<p>
-Observers support two functions:
-
-<dl>
-<dt>
-<code>sidereal_time()</code>
-<dd>
-Returns the sidereal time for the observer's date and location.
-<dt>
-<code>radec_of(az=<i>azimuth</i>, alt=<i>altitude</i>)</code>
-<dd>
-Given a point in the sky above the observer
-specified by its azimuth (angle east of north)
-and altitude (angle above the horizon),
-return the right ascension and declination
-that lie at the point.
-</dl>
-
-<h3>5. Body Methods</h3>
-
-<dl class=ref>
-<dt>
-<code><i>body</i>.compute()
-<br><i>body</i>.compute(<i>date</i>)
-<br><i>body</i>.compute(epoch=<i>epoch</i>)
-<br><i>body</i>.compute(<i>date</i>, epoch=<i>epoch</i>)
-<br><i>body</i>.compute(<i>observer</i>)
-<br></code>
-<dd>Computes the position of the body for a particular date
-and in the equatorial coordinates of a particular epoch,
-and stores the result in the attributes listed above.
-The first four forms are <i>geocentric</i>
-and determine the object's position from the center of the earth;
-if <tt><i>date</i></tt> is not specified, the current time is used,
-while an unspecified <tt><i>epoch</i></tt> defaults to year-2000.
-The last form is <i>topocentric</i> and determines the object's position
-above the particular location on the earth's surface
-specified by the <tt><i>observer</i></tt>,
-and for the time and epoch it specifies.
-<dt>
-<code><i>body</i>.writedb()</code>
-<dd>
-This returns a string representing the object in ephem database format;
-you can recreate the object at any later time
-by submitting this string to the module's <tt>readdb()</tt> function.
-<dt>
-<code><i>body</i>.copy()</code><br>
-<dd>
-Returns a new copy of the body.
-</dl>
-
-<h3>6. Body Attributes</h3>
-
-<a name="bodyattrs">These attributes</a>
-present the results of the most recent <tt>compute()</tt>
-that you have performed on a body.
-The units of each attribute are shown in parenthesis.
-
-<dl>
-<dt><b>Position</b>
-<dd><code><i>body</i>.a_ra</code> --- astrometric geocentric right ascension
- (radians that print as hours of arc)
-<br><code><i>body</i>.a_dec</code> --- astrometric geocentric declination
- (radians that print as degrees)
-<dd><code><i>body</i>.g_ra</code> --- apparent geocentric right ascension
- (radians that print as hours of arc)
-<br><code><i>body</i>.g_dec</code> --- apparent geocentric declination
- (radians that print as degrees)
-<br><code><i>body</i>.elong</code> --- angular distance from the sun
- (radians that print as degrees)
-<br><code><i>body</i>.mag</code> --- visual magnitude
-<br><code><i>body</i>.size</code> --- visual size (arc seconds)
-
-<dt><b>Position Relative to an Observer</b><br>
-These are only available
-when you provided an <tt>Observer</tt> to <tt>compute()</tt>.
-<dd><code><i>body</i>.ra</code> --- apparent topocentric right ascension
- (radians that print as hours of arc)
-<br><code><i>body</i>.dec</code> --- apparent topocentric declination
- (radians that print as degrees)
-<br><code><i>body</i>.az</code> --- azimuth, measured east from true north
- (radians that print as degrees)
-<br><code><i>body</i>.alt</code> --- altitude above the horizon
- (radians that print as degrees)
-
-<dt><b>Position in the Solar System</b>
-<br>These are available for all bodies that orbit the Sun.
-<dd><code><i>body</i>.hlong</code> --- heliocentric longitude
- (radians that print as degrees)
-<dd><code><i>body</i>.hlat</code> --- heliocentric latitude
- (radians that print as degrees)
-<br><code><i>body</i>.sun_distance</code> --- distance from the sun~(AU)
-<br><code><i>body</i>.earth_distance</code> --- distance from earth~(AU)
-<br><code><i>body</i>.phase</code> --- percent of the body illuminated
- when viewed from earth
-
-<dt><b>Saturn Attributes</b>
-<dd><code><i>body</i>.earth_tilt</code> ---
- tilt of rings toward Earth (radians that print as degrees)
-<dd><code><i>body</i>.sun_tilt</code> ---
- tilt of rings toward the Sun (radians that print as degrees)
-<br>(these are positive for a southward tilt and negative for northward)
-<br><code>
-
-<dt><b>Attributes of Earth's Moon</b>
-<dd><code><i>body</i>.moon_phase</code> --- the fraction of the lunar surface
- that appears illuminated from the earth
- (this value will probably be more accurate
-  than the <tt>phase</tt> attribute the Moon shares with other Planet objects)
-<br><code><i>body</i>.colong</code> ---
- the co-longitude of (360&deg; minus) the lunar meridian experiencing sunrise
- (radians that print as degrees)
-<br><code><i>body</i>.subsolar_lat</code> --- the lunar latitude
- at which the Sun is overhead (radians that print as degrees)
-<br><code><i>body</i>.libration_lat, <i>body</i>.libration_long</code> ---
- the latitude and longitude of the point on the lunar surface facing the earth
- (radians that print as degrees)
-
-<dt><b>Attributes of other moons</b>
-
-<dd><code><i>body</i>.x, <i>body</i>.y, <i>body</i>.z</code> ---
- where the moon lies in the sky with respect to its planet,
- measured in planet radii;
- <tt>x</tt> gives the distance east or west (east is positive),
- <tt>y</tt> gives the distance north or south (south is positive),
- and <tt>z</tt> indicates distance toward or away from the Earth
- relative to the distance of its planet (closer to Earth is positive)
-<br><code><i>body</i>.earth_visible</code> ---
- whether the moon is visible from Earth (boolean)
-<br><code><i>body</i>.sun_visible</code> ---
- whether the moon is visible from the Sun (boolean)
-
-<dt><a name="satellite-attributes"><b>Earth Satellite Attributes</b></a>
-<dd><code><i>body</i>.catalog_number</code> ---
- if the satellite was created with&nbsp;<tt>readtle()</tt>,
- this gives the integer catalog number of the source TLE entry
-<dd><code><i>body</i>.sublat, <i>body</i>.sublong</code> ---
- the point on Earth above which the satellite is positioned
- (radians that print as degrees)
-<br><code><i>body</i>.elevation</code> --- height of the satellite
- above sea level (meters)
-<br><code><i>body</i>.range</code> --- distance between the observer
- and the satellite (meters)
-<br><code><i>body</i>.range_velocity</code> --- rate at which
- the distance between the observer and the satellite is changing
- (meters per second)
-<br><code><i>body</i>.eclipsed</code> --- whether the satellite lies
- in the shadow of Earth (boolean)
-</dl>
-
-<a name="orbital-elements"><h3>7. Orbital Elements</h3></a>
-
-Bodies with supplied orbital elements
-can be of any of the following types;
-you can create such bodies
-either by submitting an ephem database entry to <tt>ephem.readdb()</tt>
-or by creating one of these objects directly
-and filling in the properties of its orbit.
-Orbital elements always begin with an underscore
-to prevent their being confused with normal object attributes.
-
-<dl class=ref>
-<dt><b>Fixed Object Elements (<tt>FixedBody</tt>)</b>
-<dd><code><i>body</i>._class</code> --- a character in which to store
- the classification of the fixed object
-<br><code><i>body</i>._spect</code> --- a two-character string
- where you can store the spectral code
-<br><code><i>body</i>._ratio</code> --- the ratio between the major
- and minor diameters
-<br><code><i>body</i>._pa</code> --- the angle at which
- the major axis lies in the sky, in degrees east of north
-<br><code><i>body</i>._epoch</code> --- the epoch of the position
-<br><code><i>body</i>._ra, <i>body</i>._dec</code> --- position
- in hours and degrees respectively
-
-<dt><b>Elliptical Orbital Elements (<tt>EllipticalBody</tt>)</b>
-<dd><code><i>body</i>._inc</code> --- inclination in degrees
-<br><code><i>body</i>._Om</code> --- longitude of ascending node in degrees
-<br><code><i>body</i>._om</code> --- argument of perihelion in degrees
-<br><code><i>body</i>._a</code> --- mean distance from sun in~AU
-<br><code><i>body</i>._M</code> --- mean anomaly in degrees
- from perihelion at~<tt>_epoch_M</tt>
-<br><code><i>body</i>._epoch_M</code> --- epoch date for~<tt>_M</tt>
-<br><code><i>body</i>._size</code> --- angular size in arc seconds at~1~AU
-<br><code><i>body</i>._e</code> --- eccentricity
-<br><code><i>body</i>._epoch</code> --- equinox year for <tt>_inc</tt>,
- <tt>_Om</tt>, and~<tt>_om</tt>
-<br><code><i>body</i>._H, <i>body</i>._G</code> --- parameters for the
- H/G magnitude model
-<br><code><i>body</i>._g, <i>body</i>._k</code> --- parameters for the
- g/k magnitude model
-
-<dt><b>Hyperbolic Orbital Elements (<tt>HyperbolicBody</tt>)</b>
-<dd><code><i>body</i>._epoch</code> --- equinox year for <tt>_inc</tt>,
- <tt>_Om</tt>, and~<tt>_om</tt>
-<br><code><i>body</i>._epoch_p</code> --- epoch of perihelion
-<br><code><i>body</i>._inc</code> --- inclination in degrees
-<br><code><i>body</i>._Om</code> --- longitude of ascending node in degrees
-<br><code><i>body</i>._om</code> --- argument of perihelion in degrees
-<br><code><i>body</i>._e</code> --- eccentricity
-<br><code><i>body</i>._q</code> --- perihelion distance in~AU
-<br><code><i>body</i>._g, <i>body</i>._k</code> --- magnitude model
- coefficients
-<br><code><i>body</i>._size</code> --- angular size in arcseconds at~1~AU
-
-<dt><b>Parabolic Orbital Elements (<tt>ParabolicBody</tt>)</b>
-<dd><code><i>body</i>._epoch</code> --- equinox year for <tt>_inc</tt>,
- <tt>_Om</tt>, and~<tt>_om</tt>
-<br><code><i>body</i>._epoch_p</code> --- epoch of perihelion
-<br><code><i>body</i>._inc</code> --- inclination in degrees
-<br><code><i>body</i>._Om</code> --- longitude of ascending node in degrees
-<br><code><i>body</i>._om</code> --- argument of perihelion in degrees
-<br><code><i>body</i>._q</code> --- perihelion distance in~AU
-<br><code><i>body</i>._g, <i>body</i>._k</code> --- magnitude model
- coefficients
-<br><code><i>body</i>._size</code> --- angular size in arcseconds at~1~AU
-
-<dt><b>Earth Satellite Orbital Elements (<tt>EarthSatellite</tt>)</b>
-<dd><code><i>body</i>._epoch</code> --- reference epoch
-<br><code><i>body</i>._n</code> --- mean motion in revolutions per day
-<br><code><i>body</i>._inc</code> --- inclination in degrees
-<br><code><i>body</i>._raan</code> --- right ascension of ascending node
- in degrees
-<br><code><i>body</i>._e</code> --- eccentricity
-<br><code><i>body</i>._ap</code> --- argument of perigee at epoch in degrees
-<br><code><i>body</i>._M</code> --- mean anomaly in degrees from perigee
- at epoch
-<br><code><i>body</i>._decay</code> --- orbit decay rate in revolutions
- per day, per day
-<br><code><i>body</i>._drag</code> --- object drag coefficient
- in per earth radii
-<br><code><i>body</i>._orbit</code> --- integer orbit number of epoch
-</dl>
-
-</body>
-</html>
