@@ -44,7 +44,7 @@ and ask where it was on the 13th of March, 1781:
 >>> u = ephem.Uranus()
 >>> u.compute('1871/3/13')
 >>> print u.ra, u.dec, u.mag
-7:45:45.15 21:46:15.66 5.46
+7:38:06.27 22:04:47.4 5.46
 >>> print ephem.constellation(u)
 ('Gem', 'Gemini')
 
@@ -75,11 +75,11 @@ we create one instance of each planet and compare their positions:
 >>> j = ephem.Jupiter('1612/12/28')
 >>> n = ephem.Neptune('1612/12/28')
 >>> print j.ra, j.dec, j.mag
-12:08:09.94 0:31:49.61 -1.96
+11:48:20.51 2:41:13.6 -1.96
 >>> print n.ra, n.dec, n.mag
-12:09:05.15 0:27:40.37 7.92
+11:49:15.77 2:37:04.5 7.92
 >>> print ephem.separation(j, n)
-0:14:24.72
+0:14:24.6
 
 Notice that, while in our first example
 we created our ``Uranus`` instance
@@ -103,11 +103,11 @@ and verify that its speed is greater when closer to the Sun:
 >>> ma0 = ephem.Mars('1976/05/21')    # ma: mars near aphelion
 >>> ma1 = ephem.Mars('1976/05/22')
 >>> print ephem.separation(hpos(ma0), hpos(ma1))
-0:26:11.36
+0:26:11.4
 >>> mp0 = ephem.Mars('1975/06/13')    # mp: mars near perihelion
 >>> mp1 = ephem.Mars('1975/06/14')
 >>> print ephem.separation(hpos(mp0), hpos(mp1))
-0:38:05.25
+0:38:05.2
 
 Here we wanted to measure the motion of Mars around the Sun,
 but ``separation()`` normally compares
@@ -147,11 +147,11 @@ and examine the results in more detail:
 
 >>> u = ephem.Uranus('1871/3/13')
 >>> print str(u.dec)
-21:46:15.66
+22:04:47.4
 >>> print float(u.dec)
-0.379975914955
+0.385365877151
 >>> print u.dec + 1
-1.37997591496
+1.38536587715
 
 The rule is that angles become strings when printed or given to ``str()``,
 but otherwise act like Python floating point numbers.
@@ -159,7 +159,7 @@ Note that the format operator ``%`` can return either value,
 depending on whether you use ``%s`` or one of the numeric formats:
 
 >>> print "as a string: %s, as a float: %f" % (u.dec, u.dec)
-as a string: 21:46:15.66, as a float: 0.379976
+as a string: 22:04:47.4, as a float: 0.385366
 
 As an example computation,
 we can verify Kepler's Second Law of planetary motion —
@@ -214,7 +214,7 @@ For example:
 >>> print peri_angle * 2
 0.0221584026149
 >>> print ephem.degrees(peri_angle * 2)
-1:16:10.50
+1:16:10.5
 
 You may find that your angle arithmetic often returns angles
 that are less than zero or that exceed twice pi.
@@ -223,9 +223,9 @@ to force it into this range:
 
 >>> deg = ephem.degrees
 >>> print deg(deg('270') + deg('180'))
-450:00:00.00
+450:00:00.0
 >>> print deg(deg('270') + deg('180')).norm
-90:00:00.00
+90:00:00.0
 
 Computing With Dates
 --------------------
@@ -234,11 +234,14 @@ PyEphem only processes and returns dates that are in Universal Time (UT),
 which is simliar to Standard Time in Greenwich, England,
 on the Earth's Prime Meridian.
 If you need to display a PyEphem time in your own timezone,
-use the ``localtime()`` function:
+use the ``localtime()`` function,
+which returns a Python ``datetime`` object:
 
 >>> d = ephem.Date('1984/12/21 15:00')
 >>> ephem.localtime(d)
-'1984/12/21 10:00'
+datetime.datetime(1984, 12, 21, 10, 0, 0, 4)
+>>> print ephem.localtime(d).ctime()
+Fri Dec 21 10:00:00 1984
 
 As you can see from this result,
 I am writing this *Tutorial* in the Eastern Time zone,
@@ -332,11 +335,12 @@ As an example, we can examine the 1984 eclipse of the sun from Atlanta:
 
 >>> gatech.date = '1984/5/30 16:22:56'   # 12:22:56 EDT
 >>> sun, moon = ephem.Sun(), ephem.Moon()
->>> sun.compute(gatech), moon.compute(gatech)
+>>> sun.compute(gatech)
+>>> moon.compute(gatech)
 >>> print sun.alt, sun.az
-70:08:39.19 122:11:26.44
+70:08:39.2 122:11:26.4
 >>> print moon.alt, moon.az
-70:08:39.46 122:11:26.04
+70:08:39.5 122:11:26.0
 
 For those unfamiliar with azimuth and altitude:
 they describe position in the sky by measuring angle around the horizon,
@@ -362,7 +366,7 @@ can be an arbitrary measure of spherical longitude and latitude,
 we can provide azimuth and altitude:
 
 >>> print ephem.separation((sun.az, sun.alt), (moon.az, moon.alt))
-0:00:00.30
+0:00:00.3
 >>> print sun.size, moon.size, sun.size - moon.size
 1892.91210938 1891.85778809 1.05432128906
 
@@ -393,14 +397,14 @@ because the atmosphere bends its image upwards as it approaches the horizon:
 ...     sun.compute(gatech)
 ...     sep = ephem.separation((old_az, old_alt), (sun.az, sun.alt))
 ...     print gatech.date, sun.alt, sep
-1984/5/31 00:05:00 6:17:36.84 1:08:48.09
-1984/5/31 00:10:00 5:21:15.64 1:08:36.29
-1984/5/31 00:15:00 4:25:31.56 1:08:19.95
-1984/5/31 00:20:00 3:30:34.23 1:07:56.53
-1984/5/31 00:25:00 2:36:37.80 1:07:22.73
-1984/5/31 00:30:00 1:44:04.64 1:06:32.20
-1984/5/31 00:35:00 0:53:28.73 1:05:17.01
-1984/5/31 00:40:00 0:05:37.82 1:03:28.31
+1984/5/31 00:05:00 6:17:36.8 1:08:48.1
+1984/5/31 00:10:00 5:21:15.6 1:08:36.3
+1984/5/31 00:15:00 4:25:31.6 1:08:20.0
+1984/5/31 00:20:00 3:30:34.2 1:07:56.5
+1984/5/31 00:25:00 2:36:37.8 1:07:22.7
+1984/5/31 00:30:00 1:44:04.6 1:06:32.2
+1984/5/31 00:35:00 0:53:28.7 1:05:17.0
+1984/5/31 00:40:00 0:05:37.8 1:03:28.3
 
 We see that the Sun's apparent angular speed
 indeed decreased as it approached the horizon,
@@ -427,7 +431,7 @@ But this is taken care of automatically,
 leaving you to simply ask:
 
 >>> print sun.set_time, sun.set_az
-1984/5/31 00:40:36 297:05:57.36
+1984/5/31 00:40:36 297:05:57.4
 
 This agrees with the list of altitudes we generated above,
 which placed the sun at nearly zero degrees altitude at 8:40 pm;
@@ -483,7 +487,7 @@ in *ephem database format* and the resulting object is ready to use:
 >>> print yh.name
 C/2002 Y1 (Juels-Holvorcem)
 >>> print yh.ra, yh.dec
-0:22:36.80 26:48:57.52
+0:22:44.58 26:49:48.1
 >>> print ephem.constellation(yh), yh.mag
 ('And', 'Andromeda') 5.96
 
@@ -495,8 +499,8 @@ Each call to ``readdb()`` returns an object appropriate
 for the orbit specified in the database entry;
 in this case it has returned an ``EllipticalBody``:
 
->>> print yh
-<ephem.EllipticalBody 'C/2002 Y1 (Juels-Holvorcem)' at 0x81ae358>
+>>> print yh # doctest: +ELLIPSIS
+<ephem.EllipticalBody 'C/2002 Y1 (Juels-Holvorcem)' at 0x...>
 
 For objects for which you cannot find an entry in ephem database format,
 you can always create the appropriate kind of object
@@ -555,6 +559,8 @@ which lies at the end of Ursa Minor's tail:
 
 >>> polaris = ephem.readdb("Polaris,f|M|F7,2:31:48.704,89:15:50.72,2.02,2000")
 >>> print polaris.dec
+Traceback (most recent call last):
+ ...
 RuntimeError: field dec undefined until first compute()
 
 We are able to create the object successfully —
@@ -565,10 +571,10 @@ until you call their ``compute()`` method
 to determine their position for a particular date or ``Observer``:
 
 >>> polaris.compute()    # uses the current time by default
->>> print polaris.dec
-89:15:50.73
->>> print ephem.degrees(ephem.degrees('90') - polaris.dec)
-0:44:09.27
+>>> print polaris.a_dec
+89:15:50.7
+>>> print ephem.degrees(ephem.degrees('90') - polaris.a_dec)
+0:44:09.3
 
 Much better; we see that the `North Star` lies
 less than forty-five arc minutes from the pole.
@@ -603,8 +609,8 @@ but we can provide an ``epoch=`` keyword parameter
 to have the coordinates translated into those for another year:
 
 >>> polaris.compute(epoch='2100')
->>> print polaris.dec
-89:32:26.08
+>>> print polaris.a_dec
+89:32:26.1
 
 Thus we see that in another hundred years Polaris
 will actually lie closer to the pole that it does today.
@@ -624,19 +630,19 @@ lies more than twenty degrees from the pole:
 
 >>> thuban = ephem.readdb("Thuban,f|V|A0,14:4:23.3,64:22:33,3.65,2000")
 >>> thuban.compute()
->>> print thuban.dec
-64:22:32.99
+>>> print thuban.a_dec
+64:22:33.0
 
 But in 2801 BC, as the Egyptians built the pyramids,
 Thuban served as their pole star,
 while Polaris lay further from their pole than Thuban lies from ours today:
 
 >>> thuban.compute(epoch='-2800')
->>> print thuban.dec
-89:54:34.97
+>>> print thuban.a_dec
+89:54:35.0
 >>> polaris.compute(epoch='-2800')
->>> print polaris.dec
-63:33:17.63
+>>> print polaris.a_dec
+63:33:17.6
 
 Realize that in these examples I have been lazy
 by giving ``compute()`` an epoch without an actual date,
@@ -684,11 +690,11 @@ is accomplished by simply providing the same argument for both date and epoch:
 
 >>> j = ephem.Jupiter()
 >>> j.compute(epoch=ephem.now())   # so both date and epoch are now
->>> print j.ra, j.dec
+>>> print j.a_ra, j.a_dec # doctest: +SKIP
 8:44:29.49 19:00:10.23
 >>> j.compute('2003/3/25', epoch='2003/3/25')
->>> print j.ra, j.dec
-8:43:32.82 19:03:32.46
+>>> print j.a_ra, j.a_dec
+8:43:32.82 19:03:32.5
 
 Be careful when computing distances;
 comparing two positions in the coordinates of their own epochs
@@ -698,12 +704,16 @@ than if the two were based on the same epoch:
 >>> j1, j2 = ephem.Jupiter(), ephem.Jupiter()
 >>> j1.compute('2003/3/1')
 >>> j2.compute('2003/4/1')
->>> print ephem.separation(j1, j2)    # coordinates are both epoch 2000
-1:46:35.90
+>>> print ephem.separation(
+...     (j1.a_ra, j1.a_dec),
+...     (j2.a_ra, j2.a_dec))    # coordinates are both epoch 2000
+1:46:35.9
 >>> j1.compute('2003/3/1', '2003/3/1')
 >>> j2.compute('2003/4/1', '2003/4/1')
->>> print ephem.separation(j1, j2)    # coordinates are both epoch-of-date
-1:46:31.56
+>>> print ephem.separation(
+...     (j1.a_ra, j1.a_dec),
+...     (j2.a_ra, j2.a_dec))    # coordinates are both epoch-of-date
+1:46:31.6
 
 Comparing coordinates of the same epoch, as in the first call above,
 measures motion against the background of stars;
