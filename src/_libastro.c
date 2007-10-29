@@ -2660,6 +2660,21 @@ static PyObject *moon_phases(PyObject *self, PyObject *args)
      return o;
 }
 
+static PyObject *my_eq_ecl(PyObject *self, PyObject *args)
+{
+     PyObject *o = 0;
+     double mjd, ra, dec, lg, lt;
+     if (!PyArg_ParseTuple(args, "Odd:eq_ecl", &o, &ra, &dec)) return 0;
+     if (!o)
+	  mjd = mjd_now();
+     else if (PyObject_IsInstance(o, (PyObject*) &ObserverType))
+	  mjd = ((Observer*) o)->now.n_mjd;
+     else if (parse_mjd(o, &mjd) == -1)
+	  return 0;
+     eq_ecl(mjd, ra, dec, &lt, &lg);
+     return Py_BuildValue("(dd)", lg, lt);
+}
+
 /*
  * The global methods table and the module initialization function.
  */
@@ -2696,6 +2711,8 @@ static PyMethodDef libastro_methods[] = {
       " Universal Time."},
      {"moon_phases", (PyCFunction) moon_phases, METH_VARARGS,
       "compute the new and full moons nearest a given date"},
+     {"eq_ecl", (PyCFunction) my_eq_ecl, METH_VARARGS,
+      "compute the ecliptic longitude and latitude of an RA and dec"},
 
      {"builtin_planets", (PyCFunction) builtin_planets, METH_NOARGS,
       "return the list of built-in planet objects"},

@@ -87,19 +87,24 @@ class Trial(object):
 
         """
 
+    def check_line(self, line):
+        if line[0].isdigit():
+            self.check_data_line(line)
+
     def run(self, content):
         def report_error():
             return RuntimeError(
-                'USNO Test file %r raised exception:%s\n'
-                % (self.path, traceback.format_exc()))
+                'USNO Test file %r line %d raised exception:%s\n'
+                % (self.path, self.lineno + 1, traceback.format_exc()))
 
         self.content = content
         self.lines = content.split('\n')
         self.examine_content()
-        for line in self.lines:
-            if line.strip() and line[0].isdigit():
+        for self.lineno in range(len(self.lines)):
+            line = self.lines[self.lineno]
+            if line.strip():
                 try:
-                    self.check_data_line(line)
+                    self.check_line(line)
                 except:
                     raise report_error()
         try:
@@ -383,6 +388,48 @@ class Rise_Set_Trial(Trial):
                 o.date = start_of_day
                 o.next_setting(body)
                 two_digit_compare('set', usno_set)
+
+# Moon phases.
+
+class Moon_Phases(Trial):
+    @classmethod
+    def matches(self, content):
+        return 'Phases of the Moon' in content
+
+    def examine_content(self):
+        self.year = int(self.lines[0].split()[0])
+        self.date = ephem.Date((self.year,)) # Jan 1st
+        self.past_heading = False
+
+    def check_line(self, line):
+        #         d  h  m         d  h  m         d  h  m         d  h  m"
+        #
+        #                                    Jan  2  9 02    Jan 10 11 50
+        #    Jan 17 21 19    Jan 24 13 58    Feb  1  2 21    Feb  9  7 35
+
+        # Skip the heading of the file.
+
+        if not self.past_heading:
+            if 'd  h  m' in line:
+                self.past_heading = True
+            return
+
+        # Read the phases.
+
+        for func, datestr in ((ephem.next_new_moon, line[4:16]),
+                              (ephem.next_first_quarter_moon, line[20:32]),
+                              (ephem.next_full_moon, line[36:48]),
+                              (ephem.next_third_quarter_moon, line[52:64]),
+                              ):
+            if datestr.strip():
+                self.verify(func, datestr)
+
+    def verify(self, func, datestr):
+        dt = datetime(*strptime('%d %s' % (self.year, datestr),
+                                "%Y %b %d %H %M")[0:5])
+        date = ephem.Date(dt)
+        self.date = func(self.date) # advance to next phase
+        is_near(date, self.date, ephem.minute)
 
 # The actual function that drives the test.
 

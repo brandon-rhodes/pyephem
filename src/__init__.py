@@ -43,6 +43,7 @@ readdb = _libastro.readdb
 readtle = _libastro.readtle
 constellation = _libastro.constellation
 separation = _libastro.separation
+eq_ecl = _libastro.eq_ecl
 now = _libastro.now
 
 millennium_atlas = _libastro.millennium_atlas
@@ -117,6 +118,62 @@ def previous_solstice(date):
 def next_solstice(date):
     """Return the date of the next solstice."""
     return holiday(date, pi, halfpi)
+
+# Find phases of the Moon.
+
+_moon = Moon()                  # used for computing Moon phases
+
+def _find_moon_phase(d0, motion, target):
+    """Function that assists the finding of moon phases."""
+
+    def f(d):
+        _sun.compute(d, epoch=d)
+        _moon.compute(d, epoch=d)
+        slong = eq_ecl(d, _sun.g_ra, _sun.g_dec)[0]
+        mlong = eq_ecl(d, _moon.g_ra, _moon.g_dec)[0]
+        longdiff = (mlong - slong - antitarget) % twopi - pi
+        if abs(longdiff) < 1e-10:   # Moon position is not a continuous function
+            return 0
+        return longdiff
+    antitarget = target + pi
+    f0 = f(d0)
+    angle_to_cover = (- f0) % motion
+    if abs(angle_to_cover) < tiny:
+        angle_to_cover = motion
+    d = d0 + 29.53 * angle_to_cover / twopi
+    return date(newton(f, d, d + hour))
+
+def previous_new_moon(date):
+    """Return the date of the previous New Moon."""
+    return _find_moon_phase(date, -twopi, 0)
+
+def next_new_moon(date):
+    """Return the date of the next New Moon."""
+    return _find_moon_phase(date, twopi, 0)
+
+def previous_first_quarter_moon(date):
+    """Return the date of the previous First Quarter Moon."""
+    return _find_moon_phase(date, -twopi, halfpi)
+
+def next_first_quarter_moon(date):
+    """Return the date of the next First Quarter Moon."""
+    return _find_moon_phase(date, twopi, halfpi)
+
+def previous_full_moon(date):
+    """Return the date of the previous Full Moon."""
+    return _find_moon_phase(date, -twopi, pi)
+
+def next_full_moon(date):
+    """Return the date of the next Full Moon."""
+    return _find_moon_phase(date, twopi, pi)
+
+def previous_third_quarter_moon(date):
+    """Return the date of the previous Last Quarter Moon."""
+    return _find_moon_phase(date, -twopi, pi + halfpi)
+
+def next_third_quarter_moon(date):
+    """Return the date of the next Last Quarter Moon."""
+    return _find_moon_phase(date, twopi, pi + halfpi)
 
 # We provide a Python extension to our _libastro "Observer" class that
 # can search for circumstances like transits.

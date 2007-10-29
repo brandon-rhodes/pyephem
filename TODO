@@ -1,7 +1,7 @@
 PyEphem TODO list
 
  - New rising/setting/transit routines need to survive earth satellites.
- - Need new methods to find phases of moon.
+ - Test whether moon-phase methods work backwards as well as forwards.
  - Then, need to add deprecation warnings to old moon phase function.
  - Then, need to remove old moon phase functions from the old Manual.
  - Need to remove old transit attributes from the old Manual.
