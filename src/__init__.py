@@ -85,10 +85,10 @@ def holiday(d0, motion, offset):
     """Function that assists the finding of equinoxes and solstices."""
 
     def f(d):
-        _sun.compute(d, epoch=d)
+        _sun.compute(d)
         return (_sun.ra + eighthpi) % quarterpi - eighthpi
     d0 = Date(d0)
-    _sun.compute(d0, epoch=d0)
+    _sun.compute(d0)
     angle_to_cover = motion - (_sun.ra + offset) % motion
     if abs(angle_to_cover) < tiny:
         angle_to_cover = motion
@@ -127,8 +127,8 @@ def _find_moon_phase(d0, motion, target):
     """Function that assists the finding of moon phases."""
 
     def f(d):
-        _sun.compute(d, epoch=d)
-        _moon.compute(d, epoch=d)
+        _sun.compute(d)
+        _moon.compute(d)
         slong = eq_ecl(d, _sun.g_ra, _sun.g_dec)[0]
         mlong = eq_ecl(d, _moon.g_ra, _moon.g_dec)[0]
         longdiff = (mlong - slong - antitarget) % twopi - pi
