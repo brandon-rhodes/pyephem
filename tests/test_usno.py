@@ -419,7 +419,7 @@ class Moon_Phases(Trial):
         for func, datestr in ((ephem.next_new_moon, line[4:16]),
                               (ephem.next_first_quarter_moon, line[20:32]),
                               (ephem.next_full_moon, line[36:48]),
-                              (ephem.next_third_quarter_moon, line[52:64]),
+                              (ephem.next_last_quarter_moon, line[52:64]),
                               ):
             if datestr.strip():
                 self.verify(func, datestr)

@@ -167,11 +167,11 @@ def next_full_moon(date):
     """Return the date of the next Full Moon."""
     return _find_moon_phase(date, twopi, pi)
 
-def previous_third_quarter_moon(date):
+def previous_last_quarter_moon(date):
     """Return the date of the previous Last Quarter Moon."""
     return _find_moon_phase(date, -twopi, pi + halfpi)
 
-def next_third_quarter_moon(date):
+def next_last_quarter_moon(date):
     """Return the date of the next Last Quarter Moon."""
     return _find_moon_phase(date, twopi, pi + halfpi)
 
