@@ -416,12 +416,16 @@ class Moon_Phases(Trial):
 
         # Read the phases.
 
-        for func, datestr in ((ephem.next_new_moon, line[4:16]),
-                              (ephem.next_first_quarter_moon, line[20:32]),
-                              (ephem.next_full_moon, line[36:48]),
-                              (ephem.next_last_quarter_moon, line[52:64]),
-                              ):
+        for phase, datestr in (('new', line[4:16]),
+                               ('first_quarter', line[20:32]),
+                               ('full', line[36:48]),
+                               ('last_quarter', line[52:64]),
+                               ):
             if datestr.strip():
+                func = getattr(ephem, 'next_%s_moon' % phase)
+                self.verify(func, datestr)
+                self.date += self.date % 29. # jump ahead arbitrary # days
+                func = getattr(ephem, 'previous_%s_moon' % phase)
                 self.verify(func, datestr)
 
     def verify(self, func, datestr):
