@@ -612,6 +612,10 @@ Dates
  1997/3/9 05:13:00
  >>> d
  35496.717361111114
+ >>> d.triple()
+ (1997, 3, 9.2173611111138598)
+ >>> d.tuple()
+ (1997, 3, 9, 5, 13, 2.3748725652694702e-07)
  >>> d + ephem.hour
  35496.759027777778
  >>> print ephem.date(d + ephem.hour)
@@ -624,11 +628,14 @@ Dates
    does a date express itself as a string
    giving the calendar day and time.
  * Dates *always* use Universal Time, *never* your local time zone.
+ * Call ``.triple()`` to split a date into its year, month, and day.
+ * Call ``.tuple()`` to split a date into its year, month, day,
+   hour, minute, and second.
  * You can create ``ephem.Date()`` dates yourself
    in addition to those you will be returned by other objects.
  * When setting a date attribute in a body or observer,
    or creating angles yourself,
-   you can provide either floating-point radians or a string.
+   you can provide either floating-point radians, a string, or a tuple.
    The following dates are equivalent::
 
     ephem.Date(35497.7197916667)
@@ -637,6 +644,8 @@ Dates
     ephem.Date('1997/3/10 05:16.5')
     ephem.Date('1997/3/10 05:16:30')
     ephem.Date('1997/3/10 05:16:30.0')
+    ephem.Date((1997, 3, 10.2197916667))
+    ephem.Date((1997, 3, 10, 5, 16, 30.0))
 
  * Dates store the number of days that have passed
    since noon Universal Time on the last day of 1899.
@@ -664,6 +673,30 @@ local time
 
  * The ``localtime()`` function converts a PyEphem date
    into a Python ``datetime`` object expressed in your local time zone.
+
+----
+
+Stars and Cities
+================
+
+ >>> rigel = ephem.star('Rigel')
+ >>> print rigel._ra, rigel._dec
+ 5:14:32.30 -8:12:06.0
+
+ * PyEphem provides a catalog of bright stars.
+ * Each call to ``star()`` returns a new ``FixedBody``
+   whose coordinates are those of the named star.
+
+..
+
+ >>> stuttgart = ephem.city('Stuttgart')
+ >>> print stuttgart.long, stuttgart.lat
+ 9:11:00.0 48:46:00.0
+
+ * PyEphem knows 122 world cities.
+ * The ``city()`` function returns an ``Observer``
+   whose longitude, latitude, and elevation
+   are those of the given city.
 
 ----
 
