@@ -3,7 +3,7 @@
 
 WEB = ./www
 
-all: pyephem.html $(WEB)/index.html $(WEB)/CHANGELOG
+all: pyephem.html $(WEB)/index.html $(WEB)/CHANGELOG radec.png
 
 $(WEB)/index.html: pyephem.html
 	umask 022; tidy -q pyephem.html > $@
@@ -26,3 +26,6 @@ $(PAGES): $(WEB)/%.html: %.rst style.css
 	umask 022; rst2html --stylesheet-path=style.css < $< > $@
 $(WEB)/quick.html: quick.rst quick.css
 	umask 022; rst2html --stylesheet-path=quick.css < $< > $@
+
+radec.png: radec.dot
+	dot -Tpng < radec.dot > radec.png
