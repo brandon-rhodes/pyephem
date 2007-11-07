@@ -1,9 +1,7 @@
 PyEphem TODO list
 
  - New rising/setting/transit routines need to survive earth satellites.
- - Then, need to add deprecation warnings to old moon phase function.
- - Then, need to remove old moon phase functions from the old Manual.
- - Need to remove old transit attributes from the old Manual.
+ - ... and rewrite the tutorial to use the new routines for the ISS.
  - Look over examples/ directory, or destroy and move to docs.
  - Add documentation for the three kinds of ra/dec; vastly rewrite
    Tutorial to reflect this.

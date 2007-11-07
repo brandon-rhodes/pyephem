@@ -136,6 +136,7 @@ def _find_moon_phase(d0, motion, target):
             return 0
         return longdiff
     antitarget = target + pi
+    d0 = Date(d0)
     f0 = f(d0)
     angle_to_cover = (- f0) % motion
     if abs(angle_to_cover) < tiny:
@@ -248,7 +249,7 @@ class Observer(_libastro.Observer):
                                 ' above the horizon at latitude %s'
                                 % (declination, self.lat))
 
-    def _prev_helper(self, body, rising, previous):
+    def _riset_helper(self, body, rising, previous):
         """Internal function for finding risings and settings."""
 
         def visit_transit():
@@ -301,19 +302,19 @@ class Observer(_libastro.Observer):
 
     def previous_rising(self, body):
         """Move to the given body's previous rising, returning the date."""
-        return self._prev_helper(body, True, True)
+        return self._riset_helper(body, True, True)
 
     def previous_setting(self, body):
         """Move to the given body's previous setting, returning the date."""
-        return self._prev_helper(body, False, True)
+        return self._riset_helper(body, False, True)
 
     def next_rising(self, body):
         """Move to the given body's next rising, returning the date."""
-        return self._prev_helper(body, True, False)
+        return self._riset_helper(body, True, False)
 
     def next_setting(self, body):
         """Move to the given body's next setting, returning the date."""
-        return self._prev_helper(body, False, False)
+        return self._riset_helper(body, False, False)
 
 
 def localtime(date):

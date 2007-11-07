@@ -430,31 +430,19 @@ before it finds the exact circumstances of rising or setting.
 But this is taken care of automatically,
 leaving you to simply ask:
 
->>> print sun.set_time, sun.set_az
-1984/5/31 00:40:36 297:05:57.4
+>>> print gatech.next_setting(sun)
+1984/5/31 00:42:21
+>>> print sun.alt, sun.az
+-0:15:46.4 297:20:44.3
 
-This agrees with the list of altitudes we generated above,
-which placed the sun at nearly zero degrees altitude at 8:40 pm;
-the azimuth tells us exactly where on the horizon the sun set.
-You can similarly determine when and where a body rose
-by checking its ``rise_time`` and ``rise_az`` variables,
-and for the time and height of its transit across your meridian
-with ``transit_time`` and ``transit_alt``.
+Functions also exist for finding risings, transits, and —
+just for completeness —
+the moment of “anti-transit” when the object lies along the meridian
+directly under your feet.
+See the section on `transit, rising, and setting`_
+in the Quick Reference for more details.
 
-Note that these risings and settings
-are those for the date you have specified in the ``Observer``
-for which you asked the body to compute its position.
-If between midnight and midnight on that day
-a body happens not to rise, set, or transit,
-the corresponding events will simply return ``None`` for their values:
-
->>> print moon.rise_time, moon.transit_time, moon.set_time
-1984/5/30 10:23:13 1984/5/30 17:36:40 None
-
-Remember that PyEphem counts days from one midnight UTC to the next.
-If you are in another time zone you will probably want to retrieve
-the risings and settings from two adjacent UTC days
-and use the ones that fall around the period when you will be observing.
+.. _transit, rising, and setting: quick#transit-rising-setting
 
 Loading Bodies From Catalogues
 ------------------------------

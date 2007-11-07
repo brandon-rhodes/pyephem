@@ -547,6 +547,34 @@ Equinoxes & Solstices
 
 -----------
 
+Phases of the Moon
+==================
+
+ >>> d1 = ephem.next_full_moon('1984')
+ >>> print d1
+ 1984/1/18 14:05:10
+ >>> d2 = ephem.next_new_moon(d1)
+ >>> print d2
+ 1984/2/1 23:46:25
+
+ * Functions take a ``Date`` argument.
+ * Return a ``Date``.
+ * Available functions::
+
+    previous_new_moon()
+    next_new_moon()
+
+    previous_first_quarter_moon()
+    next_first_quarter_moon()
+
+    previous_full_moon()
+    next_full_moon()
+
+    previous_last_quarter_moon()
+    next_last_quarter_moon()
+
+-----------
+
 Angles
 ======
 
