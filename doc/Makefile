@@ -3,7 +3,7 @@
 
 WEB = ./www
 
-all: pyephem.html $(WEB)/index.html $(WEB)/CHANGELOG radec.png
+all: pyephem.html $(WEB)/index.html $(WEB)/CHANGELOG
 
 $(WEB)/index.html: pyephem.html
 	umask 022; tidy -q pyephem.html > $@
