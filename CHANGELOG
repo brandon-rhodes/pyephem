@@ -2,6 +2,12 @@
 
 Version 3.7.2.2 (2007 November 1)
 
+  - The phases of the moon can now be determined through the functions
+    next_new_moon(), next_full_moon(), previous_new_moon(), et cetera.
+
+  - Added a modest database of world cities through a city() function,
+    which returns a new Observer when called like city('Boston').
+
   - Using the old "rise", "set", and "transit" attributes on Body
     objects now causes a deprecation warning.
 
