@@ -1,16 +1,3 @@
-/*
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Date: $Date: 2005-12-18 01:56:14 +0100 (Sun, 18 Dec 2005) $
-:Revision: $Revision: 4224 $
-:Copyright: This stylesheet has been placed in the public domain.
-
-Default cascading style sheet for the HTML output of Docutils.
-
-See http://docutils.sf.net/docs/howto/html-stylesheets.html for how to
-customize this style sheet.
-*/
-
 /* used to remove borders from tables and images */
 .borderless, table.borderless td, table.borderless th {
   border: 0 }
@@ -279,6 +266,9 @@ ul.auto-toc {
   list-style-type: none }
 
 li p { margin: 0; padding: 0 }
+
+:link { color: #6c5e46 }
+:visited { color: #4e4533 }
 
 table.main { align: center }
 table.main td { padding: 6px }
