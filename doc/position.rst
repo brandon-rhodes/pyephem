@@ -3,6 +3,9 @@ Positions and Coordinates
 =========================
 
 .. _XEphem: http://www.clearskyinstitute.com/xephem/
+.. _PyEphem Quick Reference: quick
+
+(Return to the `PyEphem Quick Reference`_.)
 
 There are several different ways
 of specifying the position of an object
@@ -22,7 +25,7 @@ Briefly, these are:
 Actually, the third position,
 the“Apparent Topocentric” position,
 is only computed if you provide PyEphem with an ``Observer`` to work with.
-If you provide only a date for the calculation instead,
+If you provide only a date for ``compute()`` instead,
 then ``ra`` and ``dec`` will have the same values as ``g_ra`` and ``g_dec``.
 The Greek prefix *topo-* means *place*,
 and a *topocentric* position reveals where a body will appear in the sky
@@ -32,7 +35,10 @@ The names ``ra`` and ``dec`` are short for *right ascension*
 and *declination*,
 which serve as longitude and latitude for the sky,
 telling us where admist the stars and constellations an object appears.
-See any introduction to astronomy to learn more about them.
+See any introduction to astronomy
+if you need to learn how they are defined;
+the description below describes how the three versions
+of right ascension and declination returned by PyEphem differ.
 
 How the three positions differ
 ==============================
@@ -103,7 +109,7 @@ used in the `XEphem`_ graphical astronomy application.
   which is really not an adjustment to the body's apparent location at all,
   but a correction for the fact that the platform from which we observe —
   the Earth —
-  wobbles over the months and years.
+  wobbles over the span of months and years.
   If you want to point a very accurate telescope at an object,
   then you have to account for this wobble in the Earth's pole.
   (Star atlas coordinates always ignore this,
@@ -116,8 +122,9 @@ used in the `XEphem`_ graphical astronomy application.
   the fact that the motion of the Earth through space
   causes a slight slant to the light reaching us from other objects,
   in the same way that driving through rain or snow
-  will make the precipitation look like it is coming down diagonally
-  from in front of you.
+  will make the precipitation look like it is coming down diagonally,
+  from in front of you,
+  instead of looking like it is coming straight down from overhead.
   (PyEphem skips this step for the Moon,
   since the Moon travels with the Earth through space.)
 
