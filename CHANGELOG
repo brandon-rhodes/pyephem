@@ -12,8 +12,8 @@ Version 3.7.2.2 (2007 December 9)
     objects now causes a deprecation warning.
 
   - BUGFIX: restored the constants "meters_per_au", "earth_radius",
-    "moon_radius", and "sun_radius", which were accidentally omitted
-    during the conversion to a main Python module.
+    "moon_radius", and "sun_radius", which were missing from the last
+    release of PyEphem.
 
 Version 3.7.2.1 (2007 October 1)
 
