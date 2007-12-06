@@ -15,6 +15,13 @@ See also the:
 .. _ephem.date: date
 .. _PyEphem Tutorial: tutorial
 
+.. _Angle: angle
+.. _Date: date
+.. _Astrometric geocentric position: position
+.. _Apparent geocentric position: position
+.. _Apparent topocentric position: position
+.. _Apparent position: position
+
 Those experienced with both Python and astronomy
 should be able to start using PyEphem
 using only the notes and examples shown below!
@@ -69,11 +76,11 @@ body.compute(date)
  * Date and epoch arguments can be anything acceptable to ``Date()``.
  * Sets the following ``body`` attributes:
 
-   | Astrometric geocentric position
+   | `Astrometric geocentric position`_
    |  ``a_ra`` — Right ascension
    |  ``a_dec`` — Declination
 
-   | Apparent geocentric position
+   | `Apparent geocentric position`_
    |  ``g_ra`` and ``ra`` — Right ascension
    |  ``g_dec`` and ``dec`` — Declination
 
@@ -152,11 +159,11 @@ body.compute(observer)
    (or below the horizon) for the observer,
    and sets four more ``Body`` attributes:
 
-   | Apparent topocentric position
+   | `Apparent topocentric position`_
    |  ``ra`` — Right ascension
    |  ``dec`` — Declination
    |
-   | Apparent position relative to horizon
+   | `Apparent position`_ relative to horizon
    |  ``az`` — Azimuth east of north
    |  ``alt`` — Altitude above horizon
 
@@ -369,7 +376,8 @@ Observers
  >>> lowell.lat = '35:05.8'
  >>> lowell.elevation = 2198
  >>> lowell.date = '1986/3/13'
- >>> j = ephem.Jupiter(lowell)
+ >>> j = ephem.Jupiter()
+ >>> j.compute(lowell)
  >>> print j.alt, j.az
  20:48:43.7 120:21:44.9
 
@@ -628,8 +636,6 @@ Angles
 
  * For more details see the Angle_ document.
 
- .. _Angle: angle
-
 -----
 
 Dates
@@ -687,8 +693,6 @@ Dates
     ephem.second
 
  * For more details see the Date_ document.
-
- .. _Date: date
 
 local time
 ----------
