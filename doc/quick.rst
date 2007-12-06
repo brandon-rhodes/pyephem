@@ -667,6 +667,7 @@ Dates
    hour, minute, and second.
  * You can create ``ephem.Date()`` dates yourself
    in addition to those you will be returned by other objects.
+ * Call ``ephem.now()`` for the current date and time.
  * When setting a date attribute in a body or observer,
    or creating angles yourself,
    you can provide either floating-point radians, a string, or a tuple.
@@ -742,6 +743,10 @@ Other Constants
     ephem.earth_radius
     ephem.moon_radius
     ephem.sun_radius
+
+ * PyEphem provides the speed of light in meters-per-second::
+
+    ephem.c
 
 .. raw:: html
 
