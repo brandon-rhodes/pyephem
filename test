@@ -4,6 +4,7 @@ import unittest
 
 import tests.test_angles
 import tests.test_bodies
+import tests.test_constants
 import tests.test_dates
 import tests.test_rst
 import tests.test_usno
@@ -14,8 +15,8 @@ loader = unittest.defaultTestLoader
 
 suite.addTest(loader.loadTestsFromModule(tests.test_angles))
 suite.addTest(loader.loadTestsFromModule(tests.test_bodies))
+suite.addTest(loader.loadTestsFromModule(tests.test_constants))
 suite.addTest(loader.loadTestsFromModule(tests.test_dates))
-#suite.addTest(loader.loadTestsFromModule(tests.test_rst))
 suite.addTest(loader.loadTestsFromModule(tests.test_usno))
 suite.addTest(loader.loadTestsFromModule(tests.usno_equinoxes))
 

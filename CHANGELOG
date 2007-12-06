@@ -1,6 +1,6 @@
 			  PyEphem CHANGELOG
 
-Version 3.7.2.2 (2007 November 1)
+Version 3.7.2.2 (2007 December 9)
 
   - The phases of the moon can now be determined through the functions
     next_new_moon(), next_full_moon(), previous_new_moon(), et cetera.
@@ -10,6 +10,10 @@ Version 3.7.2.2 (2007 November 1)
 
   - Using the old "rise", "set", and "transit" attributes on Body
     objects now causes a deprecation warning.
+
+  - BUGFIX: restored the constants "meters_per_au", "earth_radius",
+    "moon_radius", and "sun_radius", which were accidentally omitted
+    during the conversion to a main Python module.
 
 Version 3.7.2.1 (2007 October 1)
 

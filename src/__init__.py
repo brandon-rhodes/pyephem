@@ -16,6 +16,11 @@ arcsecond = arcminute / 60.
 half_arcsecond = arcsecond / 2.
 tiny = arcsecond / 360.
 
+meters_per_au = _libastro.meters_per_au
+earth_radius = _libastro.earth_radius
+moon_radius = _libastro.moon_radius
+sun_radius = _libastro.sun_radius
+
 # We make available several basic types from _libastro.
 
 Angle = _libastro.Angle
