@@ -7,10 +7,12 @@ See also the:
 
  | `PyEphem Home Page`_
  | `PyEphem Tutorial`_
+ | `Positions and Coordinates`_ supplement
  | `ephem.Angle`_ supplement
  | `ephem.Date`_ supplement
 
 .. _PyEphem home page: http://rhodesmill.org/pyephem
+.. _Positions and Coordinates: position
 .. _ephem.angle: angle
 .. _ephem.date: date
 .. _PyEphem Tutorial: tutorial
