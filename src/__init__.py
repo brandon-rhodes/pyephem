@@ -16,6 +16,7 @@ arcsecond = arcminute / 60.
 half_arcsecond = arcsecond / 2.
 tiny = arcsecond / 360.
 
+c = 299792458.  # exact speed of light in meters/second
 meters_per_au = _libastro.meters_per_au
 earth_radius = _libastro.earth_radius
 moon_radius = _libastro.moon_radius

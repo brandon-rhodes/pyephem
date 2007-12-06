@@ -13,7 +13,7 @@ Version 3.7.2.2 (2007 December 9)
 
   - BUGFIX: restored the constants "meters_per_au", "earth_radius",
     "moon_radius", and "sun_radius", which were missing from the last
-    release of PyEphem.
+    release of PyEphem, and added in "c" for good measure.
 
 Version 3.7.2.1 (2007 October 1)
 
