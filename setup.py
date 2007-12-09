@@ -11,7 +11,7 @@ libastro_version = '3.7.2'
 libastro_files = glob('libastro-%s/*.c' % libastro_version)
 
 setup(name = 'pyephem',
-      version = '3.7.2.1',
+      version = '3.7.2.2',
       description = 'computational astronomy routines for Python',
       license = 'LGPL',
       author = 'Brandon Craig Rhodes',

@@ -746,7 +746,7 @@ Other Constants
     ephem.moon_radius
     ephem.sun_radius
 
- * PyEphem provides the speed of light in meters-per-second::
+ * PyEphem provides the speed of light in meters per second::
 
     ephem.c
 

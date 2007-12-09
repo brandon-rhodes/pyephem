@@ -1,7 +1,7 @@
 
                                PyEphem
-                           Version: 3.7.2.1
-                            2007 October 1
+                           Version 3.7.2.2
+                           2007 December 9
 
 
 PyEphem provides an "ephem" Python module that can perform many
@@ -13,7 +13,7 @@ The computation routines behind PyEphem are from the "XEphem" program
 by Elwood Charles Downey (ecdowney@ClearSkyInstitute.com), available
 from http://iraf.noao.edu/~ecdowney/xephem.html.
 
-See the COPYING file in this directory for copyright information.
+See the COPYING file in this directory for licensing information.
 
 INSTALLING
 

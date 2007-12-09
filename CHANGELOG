@@ -5,15 +5,15 @@ Version 3.7.2.2 (2007 December 9)
   - The phases of the moon can now be determined through the functions
     next_new_moon(), next_full_moon(), previous_new_moon(), et cetera.
 
-  - Added a modest database of world cities through a city() function,
-    which returns a new Observer when called like city('Boston').
+  - Added a modest database of world cities; the city() function
+    returns a new Observer on each call: ephem.city('Boston')
 
   - Using the old "rise", "set", and "transit" attributes on Body
     objects now causes a deprecation warning.
 
-  - BUGFIX: restored the constants "meters_per_au", "earth_radius",
-    "moon_radius", and "sun_radius", which were missing from the last
-    release of PyEphem, and added in "c" for good measure.
+  - BUGFIX: the last release of PyEphem omitted the constants
+    "meters_per_au", "earth_radius", "moon_radius", and "sun_radius";
+    the constant "c" (the speed of light) is also now available.
 
 Version 3.7.2.1 (2007 October 1)
 
