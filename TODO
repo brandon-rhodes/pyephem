@@ -1,5 +1,7 @@
 PyEphem TODO list
 
+ - Ability to create Observer from Google Maps or Google Earth location;
+   or maybe from address?
  - New rising/setting/transit routines need to survive earth satellites.
  - ... and rewrite the tutorial to use the new routines for the ISS.
  - Look over examples/ directory, or destroy and move to docs.
