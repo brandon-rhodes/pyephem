@@ -5,3 +5,9 @@ include LICENSE-LGPL
 include examples/*.py
 include libastro-3.7.2/*.h
 exclude TODO
+exclude generate
+exclude generate/*
+exclude src/ephem/doc/Makefile
+exclude src/ephem/doc/homepage_example.py
+exclude src/ephem/doc/*.html
+exclude src/ephem/doc/*.css
