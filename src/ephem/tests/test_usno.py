@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import glob, math, re, traceback, unittest
+import glob, math, os.path, re, traceback, unittest
 from datetime import datetime
 from time import strptime
 import ephem
@@ -458,7 +458,7 @@ class Mixin(object):
 #
 
 i = 1
-for path in glob.glob('tests/usno/*.txt'):
+for path in glob.glob(os.path.dirname(__file__) + '/usno/*.txt'):
     exec 'class T%d(unittest.TestCase, Mixin): path = %r' % (i, path)
     i += 1
 

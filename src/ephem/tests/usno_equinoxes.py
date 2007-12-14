@@ -130,8 +130,8 @@ def process_usno(data):
             solstice(y, *fields[5:9])
             solstice(y, *fields[9:13])
 
-class angle_suite(MyTestCase):
-    def test_usno(self):
+class usno_equinoxes_suite(MyTestCase):
+    def test_equinoxes(self):
         process_usno(usno_data)
 
 if __name__ == '__main__':
