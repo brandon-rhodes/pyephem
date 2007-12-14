@@ -246,16 +246,5 @@ class function_suite(unittest.TestCase):
         oneb.compute('1999/2/28')
         self.assertEqual(constellation(oneb), ('Ori', 'Orion'))
 
-#
-
-class riset(MyTestCase):
-    def setUp(self):
-        self.obs = obs = Observer()
-        obs.lat, obs.long, obs.elev = '33:45:10', '-84:23:37', 320.0
-        obs.date = '1997/2/15'
-
-        self.polaris = readdb('Polaris,f|M|F7,2:31:48.704,89:15:50.72,2.02,2000')
-        self.rigel = readdb('Rigel,f|M|B8,5:14:32.3,-8:12:6,0.12,2000')
-
 if __name__ == '__main__':
     unittest.main()
