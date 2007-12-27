@@ -1,6 +1,6 @@
-=========================
-Positions and Coordinates
-=========================
+===============================
+Right Ascension and Declination
+===============================
 
 .. _XEphem: http://www.clearskyinstitute.com/xephem/
 .. _PyEphem Quick Reference: quick

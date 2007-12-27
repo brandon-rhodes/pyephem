@@ -1405,6 +1405,7 @@ static int Saturn_satrings(Saturn *saturn, char *fieldname)
 #define CALCULATOR Body_obj_cir
 #define CARGS ,0
 
+GET_FIELD(equinox, now.n_epoch, build_Date)
 GET_FIELD(ra, obj.s_ra, build_hours)
 GET_FIELD(dec, obj.s_dec, build_degrees)
 GET_FIELD(gaera, obj.s_gaera, build_hours)
@@ -1611,6 +1612,8 @@ static PyGetSetDef Body_getset[] = {
      {"a_dec", Get_astrodec, 0,
       "apparent geocentric declination"
       " (radians that print as degrees)"},
+     {"a_equinox", Get_equinox, 0, "equinox of body's astrometric right"
+      " ascension and declination (Date)"},
      {"elong", Get_elong, 0, "elongation (radians that print as degrees)"},
      {"mag", Get_mag, 0, "magnitude"},
      {"size", Get_size, 0, "visual size (seconds of arc)"},
@@ -2662,17 +2665,43 @@ static PyObject *moon_phases(PyObject *self, PyObject *args)
 
 static PyObject *my_eq_ecl(PyObject *self, PyObject *args)
 {
-     PyObject *o = 0;
      double mjd, ra, dec, lg, lt;
-     if (!PyArg_ParseTuple(args, "Odd:eq_ecl", &o, &ra, &dec)) return 0;
-     if (!o)
-	  mjd = mjd_now();
-     else if (PyObject_IsInstance(o, (PyObject*) &ObserverType))
-	  mjd = ((Observer*) o)->now.n_mjd;
-     else if (parse_mjd(o, &mjd) == -1)
-	  return 0;
+     if (!PyArg_ParseTuple(args, "ddd:eq_ecl", &mjd, &ra, &dec)) return 0;
      eq_ecl(mjd, ra, dec, &lt, &lg);
-     return Py_BuildValue("(dd)", lg, lt);
+     return Py_BuildValue("(OO)", build_degrees(lg), build_degrees(lt));
+}
+
+static PyObject *my_ecl_eq(PyObject *self, PyObject *args)
+{
+     double mjd, ra, dec, lg, lt;
+     if (!PyArg_ParseTuple(args, "ddd:eq_ecl", &mjd, &lg, &lt)) return 0;
+     ecl_eq(mjd, lt, lg, &ra, &dec);
+     return Py_BuildValue("(OO)", build_hours(ra), build_degrees(dec));
+}
+
+static PyObject *my_eq_gal(PyObject *self, PyObject *args)
+{
+     double mjd, ra, dec, lg, lt;
+     if (!PyArg_ParseTuple(args, "ddd:eq_ecl", &mjd, &ra, &dec)) return 0;
+     eq_gal(mjd, ra, dec, &lt, &lg);
+     return Py_BuildValue("(OO)", build_degrees(lg), build_degrees(lt));
+}
+
+static PyObject *my_gal_eq(PyObject *self, PyObject *args)
+{
+     double mjd, ra, dec, lg, lt;
+     if (!PyArg_ParseTuple(args, "ddd:eq_ecl", &mjd, &lg, &lt)) return 0;
+     gal_eq(mjd, lt, lg, &ra, &dec);
+     return Py_BuildValue("(OO)", build_hours(ra), build_degrees(dec));
+}
+
+static PyObject *my_precess(PyObject *self, PyObject *args)
+{
+     double mjd1, mjd2, ra, dec;
+     if (!PyArg_ParseTuple(args, "dddd:eq_ecl", &mjd1, &mjd2, &ra, &dec))
+          return 0;
+     precess(mjd1, mjd2, &ra, &dec);
+     return Py_BuildValue("(OO)", build_hours(ra), build_degrees(dec));
 }
 
 /*
@@ -2711,8 +2740,18 @@ static PyMethodDef libastro_methods[] = {
       " Universal Time."},
      {"moon_phases", (PyCFunction) moon_phases, METH_VARARGS,
       "compute the new and full moons nearest a given date"},
+
      {"eq_ecl", (PyCFunction) my_eq_ecl, METH_VARARGS,
       "compute the ecliptic longitude and latitude of an RA and dec"},
+     {"ecl_eq", (PyCFunction) my_ecl_eq, METH_VARARGS,
+      "compute the ecliptic longitude and latitude of an RA and dec"},
+     {"eq_gal", (PyCFunction) my_eq_gal, METH_VARARGS,
+      "compute the ecliptic longitude and latitude of an RA and dec"},
+     {"gal_eq", (PyCFunction) my_gal_eq, METH_VARARGS,
+      "compute the ecliptic longitude and latitude of an RA and dec"},
+
+     {"precess", (PyCFunction) my_precess, METH_VARARGS,
+      "precess a right ascension and declination to another equinox"},
 
      {"builtin_planets", (PyCFunction) builtin_planets, METH_NOARGS,
       "return the list of built-in planet objects"},
@@ -2800,11 +2839,6 @@ init_libastro(void)
 		   == -1)
 		    return;
      }
-
-     /* add:
-	eq_ecl functions
-	eq_gal functions
-     */
 
      /* Set a default preference. */
 

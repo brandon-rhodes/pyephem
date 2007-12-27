@@ -7,22 +7,24 @@ See also the:
 
  | `PyEphem Home Page`_
  | `PyEphem Tutorial`_
- | `Positions and Coordinates`_ supplement
+ | `Right Ascension and Declination`_ supplement
+ | `Ecliptic and Galactic Coordinates`_ supplement
  | `ephem.Angle`_ supplement
  | `ephem.Date`_ supplement
 
 .. _PyEphem home page: http://rhodesmill.org/pyephem
-.. _Positions and Coordinates: position
+.. _Right Ascension and Declination: radec
+.. _Ecliptic and Galactic Coordinates: coordinates
 .. _ephem.angle: angle
 .. _ephem.date: date
 .. _PyEphem Tutorial: tutorial
 
 .. _Angle: angle
 .. _Date: date
-.. _Astrometric geocentric position: position
-.. _Apparent geocentric position: position
-.. _Apparent topocentric position: position
-.. _Apparent position: position
+.. _Astrometric geocentric position: radec
+.. _Apparent geocentric position: radec
+.. _Apparent topocentric position: radec
+.. _Apparent position: radec
 
 Those experienced with both Python and astronomy
 should be able to start using PyEphem
