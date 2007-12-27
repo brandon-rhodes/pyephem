@@ -103,32 +103,69 @@ import ephem
 
 sun = ephem.Sun()
 
-def verify(title, func, year, monthname, day, hour, minute):
+def to_date(year, monthname, day, hour, minute):
     s = '%s/%.3s/%s %s:%s' % (year, monthname, day, hour, minute)
     dt = datetime.datetime(*time.strptime(s, '%Y/%b/%d %H:%M')[0:5])
-    d0 = ephem.date(dt)
-    d1 = func(d0 - 1)
-    if abs(d1 - d0) > ephem.minute:
-        raise AssertionError('The USNO predicts %s at %s'
-                             ' but PyEphem at %s' % (title, d0, d1))
+    return ephem.date(dt)
 
-def equinox(*args):
-    verify('an equinox', ephem.next_equinox, *args)
-
-def solstice(*args):
-    verify('a solstice', ephem.next_solstice, *args)
-
-def process_usno(data):
+def sequence_of_events(data):
+    seq = []
     for line in data.split('\n'):
         fields = line.split()
         if line.startswith('2'):
-            y = int(fields[0])
+            fields = line.split()
+            year = int(fields[0]) # '2001' or whatever
         elif line.startswith('Perihelion'):
-            equinox(y, *fields[5:9])
-            equinox(y, *fields[9:13])
+            seq.append((to_date(year, *fields[5:9]), 'vernal equinox'))
+            seq.append((to_date(year, *fields[9:13]), 'autumnal equinox'))
         elif line.startswith('Aphelion'):
-            solstice(y, *fields[5:9])
-            solstice(y, *fields[9:13])
+            seq.append((to_date(year, *fields[5:9]), 'summer solstice'))
+            seq.append((to_date(year, *fields[9:13]), 'winter solstice'))
+    seq.sort()
+    return seq
+
+def run_test(seq, step, functions):
+    if step > 0:
+        date = seq[0][0] - 1  # one day earlier than first event
+        r = range(0, len(seq))
+    else:
+        date = seq[-1][0] + 1 # one day after last event
+        r = range(len(seq) - 1, -1, -1)
+    for i in r:
+        usno_date = seq[i][0]
+        function = functions[i % len(functions)]
+        date = function(date)
+        if abs(usno_date - date) > ephem.minute:
+            raise AssertionError(
+                'The USNO predicts a %s at %s but PyEphem at %s'
+                % (seq[i][1], usno_date, date))
+
+def process_usno(data):
+    seq = sequence_of_events(data)
+
+    run_test(seq, +1, (ephem.next_equinox,
+                       ephem.next_solstice,
+                       ephem.next_equinox,
+                       ephem.next_solstice,
+                       ))
+
+    run_test(seq, +1, (ephem.next_vernal_equinox,
+                       ephem.next_summer_solstice,
+                       ephem.next_autumnal_equinox,
+                       ephem.next_winter_solstice,
+                       ))
+
+    run_test(seq, -1, (ephem.previous_equinox,
+                       ephem.previous_solstice,
+                       ephem.previous_equinox,
+                       ephem.previous_solstice,
+                       ))
+
+    run_test(seq, -1, (ephem.previous_vernal_equinox,
+                       ephem.previous_summer_solstice,
+                       ephem.previous_autumnal_equinox,
+                       ephem.previous_winter_solstice,
+                       ))
 
 class usno_equinoxes_suite(MyTestCase):
     def test_equinoxes(self):

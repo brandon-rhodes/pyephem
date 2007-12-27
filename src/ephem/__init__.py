@@ -109,6 +109,40 @@ def next_vernal_equinox(date):
     """Return the date of the next vernal equinox."""
     return holiday(date, twopi, 0)
 
+def previous_summer_solstice(date):
+    """Return the date of the previous summer solstice."""
+    return holiday(date, -twopi, pi + halfpi)
+
+def next_summer_solstice(date):
+    """Return the date of the next summer solstice."""
+    return holiday(date, twopi, pi + halfpi)
+
+def previous_autumnal_equinox(date):
+    """Return the date of the previous autumnal equinox."""
+    return holiday(date, -twopi, pi)
+
+def next_autumnal_equinox(date):
+    """Return the date of the next autumnal equinox."""
+    return holiday(date, twopi, pi)
+
+def previous_winter_solstice(date):
+    """Return the date of the previous winter solstice."""
+    return holiday(date, -twopi, halfpi)
+
+def next_winter_solstice(date):
+    """Return the date of the next winter solstice."""
+    return holiday(date, twopi, halfpi)
+
+# Common synonyms.
+
+next_spring_equinox = next_vernal_equinox
+previous_spring_equinox = previous_vernal_equinox
+
+next_fall_equinox = next_autumn_equinox = next_autumnal_equinox
+previous_fall_equinox = previous_autumn_equinox = previous_autumnal_equinox
+
+# More-general functions that find any equinox or solstice.
+
 def previous_equinox(date):
     """Return the date of the previous equinox."""
     return holiday(date, -pi, 0)
@@ -341,13 +375,14 @@ angle = Angle
 # lives inside of the catalog.
 
 def star(name, *args, **kwargs):
+    """Load the stars database and return a star."""
     global star
     import ephem.stars
-    star = ephem.stars.star  # by the function in the "stars" module
+    star = ephem.stars.star
     return star(name, *args, **kwargs)
 
 def city(name):
-    """Return a city from our world cities database."""
+    """Load the cities database and return a city."""
     global city
     import ephem.cities
     city = ephem.cities.city
