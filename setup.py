@@ -4,7 +4,7 @@ except:
     from distutils.core import setup, Extension
 from glob import glob
 
-__version__ = '3.7.2.2'
+__version__ = '3.7.2.3dev'
 
 # The `pyephem' module is built from every .c file in the libastro
 # directory plus ...
