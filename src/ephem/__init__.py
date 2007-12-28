@@ -415,7 +415,7 @@ class Coordinate(object):
                                                     ra, dec)
 
                     if isinstance(self, Equatorial):
-                        a.ra, a.dec = ra, dec
+                        self.ra, self.dec = ra, dec
                     else:
                         self.from_radec(ra, dec)
 
