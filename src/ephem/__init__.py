@@ -22,6 +22,10 @@ earth_radius = _libastro.earth_radius
 moon_radius = _libastro.moon_radius
 sun_radius = _libastro.sun_radius
 
+B1900 = 2433282.4235
+B1950 = 2433282.4235 - _libastro.MJD0
+J2000 = _libastro.J2000
+
 # We make available several basic types from _libastro.
 
 Angle = _libastro.Angle
@@ -368,13 +372,13 @@ def localtime(date):
 class Coordinate(object):
     def __init__(self, *args, **kw):
 
-        # Accept an optional "equinox" keyword argument.
+        # Accept an optional "epoch" keyword argument.
 
-        equinox = kw.pop('equinox', None)
-        if equinox is not None:
-            self.equinox = equinox = Date(equinox)
+        epoch = kw.pop('epoch', None)
+        if epoch is not None:
+            self.epoch = epoch = Date(epoch)
         if kw:
-            raise TypeError('"equinox" is the only keyword argument'
+            raise TypeError('"epoch" is the only keyword argument'
                             ' you can use during %s instantiation'
                             % (type(self).__name__))
 
@@ -384,41 +388,33 @@ class Coordinate(object):
             a = args[0]
 
             if isinstance(a, Body):
-                a = Equatorial(a.a_ra, a.a_dec, equinox = a.a_equinox)
+                a = Equatorial(a.a_ra, a.a_dec, epoch = a.a_epoch)
 
             for cls in (Equatorial, Ecliptic, Galactic):
                 if isinstance(a, cls):
 
-                    # If the user omitted an "equinox" keyword, then
-                    # use the equinox of the other object.
+                    # If the user omitted an "epoch" keyword, then
+                    # use the epoch of the other object.
 
-                    if equinox is None:
-                        self.equinox = equinox = a.equinox
+                    if epoch is None:
+                        self.epoch = epoch = a.epoch
 
                     # If we are initialized from another of the same
-                    # kind of coordinate and equinox, simply copy the
-                    # coordinates and equinox into this new object.
+                    # kind of coordinate and epoch, simply copy the
+                    # coordinates and epoch into this new object.
 
-                    if isinstance(self, cls) and equinox == a.equinox:
+                    if isinstance(self, cls) and epoch == a.epoch:
                         self.set(*a.get())
                         return
 
                     # Otherwise, convert.
 
-                    if isinstance(a, Equatorial):
-                        ra, dec = a.ra, a.dec
-                    else:
-                        ra, dec = a.to_radec()
-
-                    if equinox != a.equinox:
-                        ra, dec = _libastro.precess(a.equinox, equinox,
-                                                    ra, dec)
-
-                    if isinstance(self, Equatorial):
-                        self.ra, self.dec = ra, dec
-                    else:
-                        self.from_radec(ra, dec)
-
+                    ra, dec = a.to_radec()
+                    if epoch != a.epoch:
+                        ra, dec = _libastro.precess(
+                            a.epoch, epoch, ra, dec
+                            )
+                    self.from_radec(ra, dec)
                     return
 
             raise TypeError(
@@ -430,8 +426,8 @@ class Coordinate(object):
 
         elif len(args) == 2:
             self.set(*args)
-            if equinox is None:
-                self.equinox = equinox = Date('2000')
+            if epoch is None:
+                self.epoch = epoch = Date('2000')
 
         else:
             raise TypeError(
@@ -441,11 +437,14 @@ class Coordinate(object):
                 )
 
 class Equatorial(Coordinate):
+    def get(self):
+        return self.ra, self.dec
+
     def set(self, ra, dec):
         self.ra, self.dec = hours(ra), degrees(dec)
 
-    def get(self):
-        return self.ra, self.dec
+    to_radec = get
+    from_radec = set
 
 class LongLatCoordinate(Coordinate):
     def set(self, long, lat):
@@ -456,17 +455,17 @@ class LongLatCoordinate(Coordinate):
 
 class Ecliptic(LongLatCoordinate):
     def to_radec(self):
-        return _libastro.ecl_eq(self.equinox, self.long, self.lat)
+        return _libastro.ecl_eq(self.epoch, self.long, self.lat)
 
     def from_radec(self, ra, dec):
-        self.long, self.lat = _libastro.eq_ecl(self.equinox, ra, dec)
+        self.long, self.lat = _libastro.eq_ecl(self.epoch, ra, dec)
 
 class Galactic(LongLatCoordinate):
     def to_radec(self):
-        return _libastro.gal_eq(self.equinox, self.long, self.lat)
+        return _libastro.gal_eq(self.epoch, self.long, self.lat)
 
     def from_radec(self, ra, dec):
-        self.long, self.lat = _libastro.eq_gal(self.equinox, ra, dec)
+        self.long, self.lat = _libastro.eq_gal(self.epoch, ra, dec)
 
 # For backwards compatibility, provide lower-case names for our Date
 # and Angle classes.

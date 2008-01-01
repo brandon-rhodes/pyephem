@@ -1405,7 +1405,7 @@ static int Saturn_satrings(Saturn *saturn, char *fieldname)
 #define CALCULATOR Body_obj_cir
 #define CARGS ,0
 
-GET_FIELD(equinox, now.n_epoch, build_Date)
+GET_FIELD(epoch, now.n_epoch, build_Date)
 GET_FIELD(ra, obj.s_ra, build_hours)
 GET_FIELD(dec, obj.s_dec, build_degrees)
 GET_FIELD(gaera, obj.s_gaera, build_hours)
@@ -1612,7 +1612,7 @@ static PyGetSetDef Body_getset[] = {
      {"a_dec", Get_astrodec, 0,
       "apparent geocentric declination"
       " (radians that print as degrees)"},
-     {"a_equinox", Get_equinox, 0, "equinox of body's astrometric right"
+     {"a_epoch", Get_epoch, 0, "equinox of body's astrometric right"
       " ascension and declination (Date)"},
      {"elong", Get_elong, 0, "elongation (radians that print as degrees)"},
      {"mag", Get_mag, 0, "magnitude"},
@@ -2830,6 +2830,9 @@ init_libastro(void)
 	       { "earth_radius", PyFloat_FromDouble(ERAD) },
 	       { "moon_radius", PyFloat_FromDouble(MRAD) },
 	       { "sun_radius", PyFloat_FromDouble(SRAD) },
+
+	       { "MJD0", PyFloat_FromDouble(MJD0) },
+	       { "J2000", PyFloat_FromDouble(J2000) },
 
 	       { NULL }
 	  };

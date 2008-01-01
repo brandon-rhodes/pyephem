@@ -10,9 +10,8 @@ This document describes how to use PyEphem
 to convert between equatorial, ecliptic, and galactic coordinates,
 and how to convert coordinates between different epochs.
 
-To begin with,
 Celestial bodies in PyEphem
-can express their coordinates in only two ways;
+can directly express their coordinates in only two ways;
 you can ask for their *equatorial* position,
 which provides a *right ascension* and a *declination*
 relative to the Earth's equator and poles,
@@ -53,40 +52,55 @@ we should summarize the basic rules of coordinate handling.
   instances of which have three attributes:
 
   | ``Equatorial`` coordinates have ``ra`` right ascension,
-    ``dec`` declination, and an ``equinox``.
+    ``dec`` declination, and an ``epoch``.
   | ``Ecliptic`` coordinates have ``long`` longitude,
-    ``lat`` latitude, and an ``equinox``.
+    ``lat`` latitude, and an ``epoch``.
   | ``Galactic`` coordinates have ``long`` longitude,
-    ``lat`` latitude, and an ``equinox``.
+    ``lat`` latitude, and an ``epoch``.
 
 * You can instantiate any kind of coordinate
-  by passing it a body, or a body together with an alternate equinox,
+  by passing it a body, or a body together with an alternate epoch,
   and it will use the body's astrometric right ascension and declination::
 
    Ecliptic(mars)
-   Ecliptic(mars, equinox='1950')
+   Ecliptic(mars, epoch='1950')
 
 * You can instantiate any kind of coordinate
   by passing it any other coordinate,
-  and can optionally provide an alternate equinox::
+  and can optionally provide an alternate epoch::
 
    Galactic(north_pole)
-   Galactic(north_pole, equinox='1900')
+   Galactic(north_pole, epoch='1900')
 
 * Finally, you can instantiate a coordinate
   by simply providing its parts manually
   (in the same order as they are listed in the first point above).
-  If you do not specify an equinox,
+  If you do not specify an epoch,
   then J2000 is assumed::
 
    Equatorial('23:19:01.27', '-17:14:22.1')
-   Equatorial('23:19:01.27', '-17:14:22.1', equinox='1950')
+   Equatorial('23:19:01.27', '-17:14:22.1', epoch='1950')
 
 All of the examples below
 are constructed using some combination of the possibilities above.
 
 Common Cases
 ============
+
+**Convert right ascension and declination to a different epoch**
+  If you have, say, the position of Mars in J2000 coordinates,
+  and now want the same position to be expressed in B1950 coordinates,
+  then you of course could simply call ``compute()`` again
+  but provide the different epoch.
+  But you can also ask PyEphem to translate the coordinates directly:
+
+  >>> import ephem
+  >>> m = ephem.Mars('2003/08/27', epoch=ephem.J2000)
+  >>> print m.a_ra, m.a_dec
+  22:39:06.87 -15:41:53.2
+  >>> p = ephem.Equatorial(m, epoch=ephem.B1950)
+  >>> print p.ra, p.dec
+  22:36:26.49 -15:57:31.6
 
 **Find the position of a body in galactic or ecliptic coordinates**
   Pass the body to the ``Ecliptic`` or ``Galactic`` class:
@@ -100,10 +114,10 @@ Common Cases
   >>> print ecl.long, ecl.lat
   335:26:06.3 -6:39:15.6
 
-  The equinox of the resulting coordinates
+  The epoch of the resulting coordinates
   is the same as that used by the body for its astrometric coordinates:
 
-  >>> print ecl.equinox
+  >>> print ecl.epoch
   2000/1/1 12:00:00
 
 **Asking for other epochs**
@@ -132,7 +146,7 @@ Common Cases
   but ask for J2000 coordinates,
   we get exactly the same values as in the earlier example:
 
-  >>> ecl = ephem.Ecliptic(m, equinox='2000')
+  >>> ecl = ephem.Ecliptic(m, epoch='2000')
   >>> print ecl.long, ecl.lat
   335:26:06.3 -6:39:15.6
 
