@@ -22,7 +22,7 @@ earth_radius = _libastro.earth_radius
 moon_radius = _libastro.moon_radius
 sun_radius = _libastro.sun_radius
 
-B1900 = 2433282.4235
+B1900 = 2415020.3135 - _libastro.MJD0
 B1950 = 2433282.4235 - _libastro.MJD0
 J2000 = _libastro.J2000
 
