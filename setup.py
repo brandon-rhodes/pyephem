@@ -12,9 +12,13 @@ __version__ = '3.7.2.3dev'
 libastro_version = '3.7.2'
 libastro_files = glob('libastro-%s/*.c' % libastro_version)
 
+def read(*filenames):
+    return open(os.path.join(os.path.dirname(__file__), *filenames)).read()
+
 setup(name = 'pyephem',
       version = __version__,
       description = 'Scientific-grade astronomy routines',
+      long_description = read('README'),
       license = 'LGPL',
       author = 'Brandon Craig Rhodes',
       author_email = 'brandon@rhodesmill.org',
