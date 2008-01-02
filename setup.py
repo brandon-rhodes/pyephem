@@ -2,6 +2,8 @@ try:
     from setuptools import setup, Extension
 except:
     from distutils.core import setup, Extension
+
+import os
 from glob import glob
 
 __version__ = '3.7.2.3dev'
