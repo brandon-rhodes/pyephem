@@ -1,6 +1,7 @@
 PyEphem TODO list
 
  - Create J2000 symbol, maybe also 1950 and 1900?
+ - Create central table of contents share by all documents?
  - Ability to create Observer from Google Maps or Google Earth location;
    or maybe from address?
  - New rising/setting/transit routines need to survive earth satellites.
