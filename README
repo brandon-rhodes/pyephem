@@ -11,15 +11,24 @@ astronomical computations.  You can find the most recent version at
 
 The computation routines behind PyEphem are from the "XEphem" program
 by Elwood Charles Downey (ecdowney@ClearSkyInstitute.com), available
-from http://iraf.noao.edu/~ecdowney/xephem.html.
-
-See the COPYING file in this directory for licensing information.
+from http://iraf.noao.edu/~ecdowney/xephem.html.  See the COPYING file
+in this directory for licensing information.
 
 INSTALLING
 
-Building and installing this module requires Python, your C compiler,
-and the standard Python distutils.  You can run the setup.py script in
-this directory to build or install the package.  Typically, entering
+If you have installed the "setuptools" for Python on your system, you
+can ask for PyEphem to be installed simply by typing:
+
+        easy_install pyephem
+
+Alternately, if you are on a Windows machine, look at the PyEphem web
+site and you should find prominent links to an auto-install tool for
+Windows.
+
+If, instead, you want to build and install the module yourself, you
+only need Python, your C compiler, and the standard Python distutils.
+You can run the setup.py script in this directory to build or install
+the package.  Typically, entering
 
 	python setup.py install
 
@@ -40,9 +49,9 @@ in the test/ directory.
 
 DOCUMENTATION
 
-See the doc/pyephem-manual.html file in this archive, or look online
-at http://rhodesmill.org/pyephem for information on programming with
-PyEphem.
+See the "doc" directory inside of the module for documentation, or
+visit the web site at http://rhodesmill.org/pyephem and try starting
+with the "Quick Reference" to learn how PyEphem works.
 
 CONTRIBUTING
 

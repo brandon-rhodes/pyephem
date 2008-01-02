@@ -14,8 +14,7 @@ libastro_files = glob('libastro-%s/*.c' % libastro_version)
 
 setup(name = 'pyephem',
       version = __version__,
-      description = 'Scientific-grade astronomy routines for computing planet positions,'
-      ' rising and setting times, equinoxes, moon phases, and more',
+      description = 'Scientific-grade astronomy routines',
       license = 'LGPL',
       author = 'Brandon Craig Rhodes',
       author_email = 'brandon@rhodesmill.org',
