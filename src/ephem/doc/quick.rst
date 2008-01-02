@@ -740,6 +740,13 @@ Stars and Cities
 Other Constants
 ===============
 
+ * PyEphem provides constants
+   for the dates of a few major star-atlas epochs::
+
+    B1900
+    B1950
+    J2000
+
  * PyEphem provides, for reference,
    the length of four distances, all in meters::
 
