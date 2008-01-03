@@ -82,6 +82,11 @@ we should summarize the basic rules of coordinate handling.
    Equatorial('23:19:01.27', '-17:14:22.1')
    Equatorial('23:19:01.27', '-17:14:22.1', epoch='1950')
 
+* If you call the ``get()`` method of any coordinate,
+  then it will return the value of its two angles in a tuple,
+  with the “big angle” (longitude or right ascension) first
+  and then the “small angle” (latitude or declination) second.
+
 All of the examples below
 are constructed using some combination of the possibilities above.
 

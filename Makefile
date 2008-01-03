@@ -3,6 +3,7 @@
 
 WEB = ./www
 DOC = ./src/ephem/doc
+RST2HTML = rst2html --initial-header-level=2 
 
 all: $(WEB)/index.html $(WEB)/CHANGELOG
 
@@ -18,6 +19,6 @@ PAGES = $(patsubst $(DOC)/%.rst, $(WEB)/%.html, $(RSTS))
 all: rst
 rst: $(PAGES) $(WEB)/quick.html
 $(PAGES): $(WEB)/%.html: $(DOC)/%.rst $(DOC)/style.css
-	umask 022; rst2html --stylesheet-path=$(DOC)/style.css < $< > $@
+	umask 022; $(RST2HTML) --stylesheet-path=$(DOC)/style.css < $< > $@
 $(WEB)/quick.html: $(DOC)/quick.rst $(DOC)/quick.css
-	umask 022; rst2html --stylesheet-path=$(DOC)/quick.css < $< > $@
+	umask 022; $(RST2HTML) --stylesheet-path=$(DOC)/quick.css < $< > $@

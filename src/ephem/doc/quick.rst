@@ -8,13 +8,13 @@ See also the:
  | `PyEphem Home Page`_
  | `PyEphem Tutorial`_
  | `Right Ascension and Declination`_ supplement
- | `Ecliptic and Galactic Coordinates`_ supplement
+ | `Coordinate Transformations`_ supplement
  | `ephem.Angle`_ supplement
  | `ephem.Date`_ supplement
 
 .. _PyEphem home page: http://rhodesmill.org/pyephem
 .. _Right Ascension and Declination: radec
-.. _Ecliptic and Galactic Coordinates: coordinates
+.. _Coordinate Transformations: coordinates
 .. _ephem.angle: angle
 .. _ephem.date: date
 .. _PyEphem Tutorial: tutorial
@@ -29,9 +29,52 @@ See also the:
 Those experienced with both Python and astronomy
 should be able to start using PyEphem
 using only the notes and examples shown below!
-To use PyEphem, include this at the top of your Python program:
+There are two ways to begin using PyEphem in a Python program:
 
-    >>> import ephem
+.. raw:: html
+
+   <table align=center class="main" width="90%">
+   <tr><td width="50%" valign="top">
+
+Import the module
+=================
+
+ >>> import ephem
+
+Then, prefix everything you want to use from the module
+with the qualifier ``ephem``::
+
+ >>> m = ephem.Mars('1970')
+ >>> print ephem.constellation(m)
+ ('Aqr', 'Aquarius')
+
+This is the way the code snippets below are written,
+which hopefully makes it clear
+which variables are coming from PyEphem itself
+and which are being created in the course of each example.
+
+.. raw:: html
+
+   </td><td width="50%" valign="top">
+
+Import everything inside
+========================
+
+ >>> from ephem import *
+
+Then, you can refer to all of the module's symbols
+without having to use the module name::
+
+ >>> m = Mars('1970')
+ >>> print constellation(m)
+ ('Aqr', 'Aquarius')
+
+This would allow you to rewrite the examples below
+without using the name ``ephem`` at all.
+
+.. raw:: html
+
+   </td></tr></table>
 
 To understand each the following examples,
 first read the source code snippet carefully,
@@ -367,6 +410,49 @@ Other Functions
    or a tuple ``(long, lat)`` giving a pair of spherical coordinates
    where ``long`` measures angle around the sphere's equator
    and ``lat`` measures the angle above or below its equator.
+
+------------
+
+Coordinate Conversion
+=====================
+
+ >>> np = Equatorial('0', '90', epoch='2000')
+ >>> g = Galactic(np)
+ >>> print g.long, g.lat
+ 122:55:54.9 27:07:41.7
+
+ * There are three coordinate classes,
+   which each have three properties:
+
+   | ``Equatorial``
+   |  ``ra`` — right ascension
+   |  ``dec`` — declination
+   |  ``epoch`` — epoch of the coordinate
+
+   | ``Ecliptic``
+   |  ``long`` — ecliptic longitude
+   |  ``lat`` — ecliptic latitude
+   |  ``epoch`` — epoch of the coordinate
+
+   | ``Galactic``
+   |  ``long`` — galactic longitude
+   |  ``lat`` — galactic latitude
+   |  ``epoch`` — epoch of the coordinate
+
+ * When creating a new coordinate,
+   you can pass either a body,
+   or another coordinate,
+   or a pair of raw angles
+   (always place the longitude or right ascension first).
+
+ * When creating a coordinate,
+   you can optionally pass an ``epoch=`` keyword
+   specifying the epoch for the coordinate system.
+   Otherwise the epoch is copied
+   from the body or other coordinate being used,
+   or J2000 is used as the default.
+
+ * See the `Coordinate Transformations`_ document for more details.
 
 .. raw:: html
 
