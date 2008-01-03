@@ -1,6 +1,5 @@
 PyEphem TODO list
 
- - Make it impossible to instantiate Angle directly.
  - Show how to "import *" at top of Quick Reference.
  - Create central table of contents share by all documents?
  - Ability to create Observer from Google Maps or Google Earth location;

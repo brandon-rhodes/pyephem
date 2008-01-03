@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from ephem_test import *
+from ephem_test import unittest, MyTestCase, Angle, degrees, hours
 import math
 
 # Determine whether angles work reasonably.
@@ -11,6 +11,9 @@ class angle_suite(MyTestCase):
     def setUp(self):
         self.d = degrees(1.5)
         self.h = hours(1.6)
+
+    def test_Angle_constructor(self):
+        self.assertRaises(TypeError, Angle, 1.1)
 
     def test_degrees_constructor(self):
         self.assertApprox(self.d, degrees('85:56:37'), arcsecond)
