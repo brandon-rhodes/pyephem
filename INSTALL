@@ -1,7 +1,6 @@
 
                                PyEphem
-                           Version 3.7.2.2
-                           2007 December 9
+                          Installation Notes
 
 
 PyEphem provides an "ephem" Python module that can perform many
@@ -52,14 +51,6 @@ DOCUMENTATION
 See the "doc" directory inside of the module for documentation, or
 visit the web site at http://rhodesmill.org/pyephem and try starting
 with the "Quick Reference" to learn how PyEphem works.
-
-CONTRIBUTING
-
-If you write useful scripts with PyEphem, please consider submitting
-them to be considered for the 'examples/' directory.  In particular,
-there will probably be interest in algorithms that search for various
-celestial circumstances, like conjunctions; not needing such routines
-myself, however, I have not endeavored to produce any.
 
 AUTHOR
 
