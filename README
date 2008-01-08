@@ -13,24 +13,25 @@ The underlying numeric routines are coded in C
 and are the same ones that drive the popular `XEphem`_ astronomy application,
 whose author, Elwood Charles Downey,
 generously gave permission for their use in PyEphem.
-The name is short for the word *ephemeris*,
+The name “ephem” is short for the word “ephemeris”,
 which is the traditional term for a table
-giving the position of a planet or comet over a series of dates.
+giving the position of a planet, asteroid, or comet for a series of dates.
 
-The module emphasizes convenience and ease of use.
+The design of PyEphem emphasizes convenience and ease of use.
 Both celestial bodies and the observer's location on Earth
 are represented by Python objects,
 while dates and angles automatically print themselves
 in standard astronomical formats::
 
  >>> import ephem
- >>> mars = ephem.Mars('2008/1/1')
+ >>> mars = ephem.Mars()
+ >>> mars.compute('2008/1/1')
  >>> print mars.ra, mars.dec
  5:59:27.35 26:56:27.4
 
 The documentation includes both a `Quick Reference`_ and a `Tutorial`_,
-which are included with the module itself
-as well as being available for browsing on the `PyEphem web site`_.
+which are included in text files within the module itself
+as well as being available on the `PyEphem web site`_.
 
 The features provided by PyEphem include:
 

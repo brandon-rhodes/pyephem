@@ -1,5 +1,22 @@
 			  PyEphem CHANGELOG
 
+Version 3.7.2.3 (2008 January 8)
+
+  - Three new classes Equatorial, Ecliptic, and Galactic allow
+    coordinates to be transformed between the three systems.
+
+  - Added constants for popular epochs B1900, B1950, and J2000.
+
+  - Added named functions for every solstice and equinox (before, only
+    the vernal equinox could be asked for specifically).
+
+  - Product tests have been moved inside of the "ephem" module itself,
+    and can now be invoked simply by running "python setup.py test".
+
+  - BUGFIX: Angle() can no longer be directly instantiated.
+
+  - BUGFIX: San Francisco had the wrong coordinates in the cities database.
+
 Version 3.7.2.2 (2007 December 9)
 
   - The phases of the moon can now be determined through the functions
