@@ -2,7 +2,9 @@
 The PyEphem Tutorial
 ====================
 
-Version 2007.November.1, for PyEphem version 3.7.2.2.
+.. include:: nav.rst
+
+Version 2007.November.1, for PyEphem version 3.7.2.2 and later.
 
 The `PyEphem library`_ provides Python programmers
 ith access to the scientific-grade astronomical routines

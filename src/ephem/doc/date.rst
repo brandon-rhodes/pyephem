@@ -2,9 +2,7 @@
 ephem.Date
 ==========
 
-(Return to the `PyEphem Quick Reference`_.)
-
-.. _PyEphem Quick Reference: quick
+.. include:: nav.rst
 
 PyEphem uses a simple floating point number
 to represent the date and time inside of its astronomy routines.

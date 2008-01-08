@@ -3,7 +3,7 @@
 
 WEB = ./www
 DOC = ./src/ephem/doc
-RST2HTML = rst2html --initial-header-level=2 
+RST2HTML = rst2html --initial-header-level=2 -g -d --strip-comments
 
 all: $(WEB)/index.html $(WEB)/CHANGELOG
 

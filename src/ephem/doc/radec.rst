@@ -2,10 +2,9 @@
 Right Ascension and Declination
 ===============================
 
-.. _XEphem: http://www.clearskyinstitute.com/xephem/
-.. _PyEphem Quick Reference: quick
+.. include:: nav.rst
 
-(Return to the `PyEphem Quick Reference`_.)
+.. _XEphem: http://www.clearskyinstitute.com/xephem/
 
 There are several different ways
 of specifying the position of an object

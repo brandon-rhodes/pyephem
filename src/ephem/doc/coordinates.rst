@@ -3,8 +3,7 @@
 Coordinate Transformations
 ==========================
 
-.. _PyEphem Quick Reference: quick
-.. _Right Ascension and Declination: radec
+.. include:: nav.rst
 
 This document describes how to use PyEphem
 to convert between equatorial, ecliptic, and galactic coordinates,

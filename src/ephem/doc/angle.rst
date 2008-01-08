@@ -2,9 +2,7 @@
 ephem.Angle
 ===========
 
-(Return to the `PyEphem Quick Reference`_.)
-
-.. _PyEphem Quick Reference: quick
+.. include:: nav.rst
 
 PyEphem measures all angles in radians.
 But rather than simply returning angles as bare Python floats,
@@ -15,7 +13,7 @@ than do raw floating-point numbers.
 The vast majority of angles print as degrees.
 For example,
 the declination of Jupiter will print itself attractively
-as degrees, minutes of arc, and seconds of arc:
+as degrees, minutes of arc, and seconds of arc:
 
     >>> import ephem
     >>> j = ephem.Jupiter('1994/7/16 20:13:16')

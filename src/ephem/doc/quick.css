@@ -275,3 +275,6 @@ table.main td { padding: 6px }
 table blockquote { background-color: #ebdec7; margin: 0 }
 ul { margin-left: 0em; padding-left: 1.3em; padding-bottom: 1em;
   padding-right: 0.3em }
+
+table.nav {
+  background-color: #e0e0e0; margin: 2ex }

@@ -265,3 +265,6 @@ ul.auto-toc {
 
 :link { color: #6c5e46 }
 :visited { color: #4e4533 }
+
+table.nav {
+  background-color: #e0e0e0; margin: 2ex }

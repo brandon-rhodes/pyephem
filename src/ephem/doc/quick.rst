@@ -1,24 +1,10 @@
-
 #######################
 PyEphem Quick Reference
 #######################
 
-See also the:
+.. include:: nav.rst
 
- | `PyEphem Home Page`_
- | `PyEphem Tutorial`_
- | `Right Ascension and Declination`_ supplement
- | `Coordinate Transformations`_ supplement
- | `ephem.Angle`_ supplement
- | `ephem.Date`_ supplement
-
-.. _PyEphem home page: http://rhodesmill.org/pyephem
-.. _Right Ascension and Declination: radec
 .. _Coordinate Transformations: coordinates
-.. _ephem.angle: angle
-.. _ephem.date: date
-.. _PyEphem Tutorial: tutorial
-
 .. _Angle: angle
 .. _Date: date
 .. _Astrometric geocentric position: radec
@@ -29,59 +15,37 @@ See also the:
 Those experienced with both Python and astronomy
 should be able to start using PyEphem
 using only the notes and examples shown below!
-There are two ways to begin using PyEphem in a Python program:
-
-.. raw:: html
-
-   <table align=center class="main" width="90%">
-   <tr><td width="50%" valign="top">
-
-Import the module
-=================
-
- >>> import ephem
-
-Then, prefix everything you want to use from the module
-with the qualifier ``ephem``::
-
- >>> m = ephem.Mars('1970')
- >>> print ephem.constellation(m)
- ('Aqr', 'Aquarius')
-
-This is the way the code snippets below are written,
+There are two ways to begin using PyEphem in a Python program.
+One is to import the module by name,
+and then to prefix everything you want to use from the module
+with the qualifier ``ephem``;
+this is the way the code snippets below are written,
 which hopefully makes it clear
 which variables are coming from PyEphem itself
 and which are being created in the course of each example.
 
-.. raw:: html
+>>> import ephem
+>>> m = ephem.Mars('1970')
+>>> print ephem.constellation(m)
+('Aqr', 'Aquarius')
 
-   </td><td width="50%" valign="top">
+But to avoid typing the module name over and over again,
+you can tell Python to import everything from the module
+right into your namespace,
+where you can then use them without further qualification:
 
-Import everything inside
-========================
+>>> from ephem import *
+>>> m = Mars('1970')
+>>> print constellation(m)
+('Aqr', 'Aquarius')
 
- >>> from ephem import *
-
-Then, you can refer to all of the module's symbols
-without having to use the module name::
-
- >>> m = Mars('1970')
- >>> print constellation(m)
- ('Aqr', 'Aquarius')
-
-This would allow you to rewrite the examples below
-without using the name ``ephem`` at all.
-
-.. raw:: html
-
-   </td></tr></table>
-
-To understand each the following examples,
+To understand each of the following examples,
 first read the source code snippet carefully,
 and only then dive into the explanations beneath it.
 
 .. raw:: html
 
+   <hr clear="right">
    <table class="main"><tr><td width="50%" valign="top">
 
 Bodies
