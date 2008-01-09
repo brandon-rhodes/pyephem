@@ -2,7 +2,7 @@
 PyEphem README
 ==============
 
-.. _XEphem: http://iraf.noao.edu/~ecdowney/xephem.html
+.. _XEphem: http://www.clearskyinstitute.com/xephem/
 .. _Quick Reference: http://rhodesmill.org/pyephem/quick
 .. _Tutorial: http://rhodesmill.org/pyephem/tutorial
 .. _PyEphem web site: http://rhodesmill.org/pyephem/
@@ -13,7 +13,7 @@ The underlying numeric routines are coded in C
 and are the same ones that drive the popular `XEphem`_ astronomy application,
 whose author, Elwood Charles Downey,
 generously gave permission for their use in PyEphem.
-The name “ephem” is short for the word “ephemeris”,
+The name *ephem* is short for the word *ephemeris*,
 which is the traditional term for a table
 giving the position of a planet, asteroid, or comet for a series of dates.
 
