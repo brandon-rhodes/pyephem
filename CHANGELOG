@@ -3,7 +3,8 @@
 Version 3.7.2.3 (2008 January 8)
 
   - Three new classes Equatorial, Ecliptic, and Galactic allow
-    coordinates to be transformed between the three systems.
+    coordinates to be transformed between the three systems (ability
+    to transform coordinates was requested by Aaron Parsons).
 
   - Added constants for popular epochs B1900, B1950, and J2000.
 
@@ -15,7 +16,8 @@ Version 3.7.2.3 (2008 January 8)
 
   - BUGFIX: Angle() can no longer be directly instantiated.
 
-  - BUGFIX: San Francisco had the wrong coordinates in the cities database.
+  - BUGFIX: San Francisco had the wrong coordinates in the cities
+    database (pointed out by Randolph Bentson).
 
 Version 3.7.2.2 (2007 December 9)
 
