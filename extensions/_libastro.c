@@ -1273,7 +1273,7 @@ static PyObject* build_mag(double raw)
    some of the fields of an ephem.Body or one of its subtypes.  When
    called they determine whether the information in the fields for
    which they are responsible is up-to-date, and re-compute them if
-   not.  By checking body->valid they can deteremine how much
+   not.  By checking body->valid they can determine how much
    information the last compute() call supplied. */
 
 static int Body_obj_cir(Body *body, char *fieldname, unsigned topocentric)
