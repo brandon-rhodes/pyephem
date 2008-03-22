@@ -1,5 +1,6 @@
 PyEphem TODO list
 
+ - Users want "nav.rst" included.
  - Create central table of contents share by all documents?
  - Ability to create Observer from Google Maps or Google Earth location;
    or maybe from address?
