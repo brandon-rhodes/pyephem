@@ -100,7 +100,7 @@ MoonData md[S_NMOONS])		/* return info */
 					    eop->s_edist, JD, etiltp, stiltp);
 
 	/* get moon x,y,z from BDL if possible, else Bruton's model */
-	if (dir && use_bdl (JD, dir, md) < 0)
+	if (!dir || use_bdl (JD, dir, md) < 0)
 	    bruton_saturn (sop, JD, md);
 
 	/* set visibilities */

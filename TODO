@@ -1,6 +1,9 @@
 PyEphem TODO list
 
  - Users want "nav.rst" included.
+ - Observer should require user to give "lat" and "long" first values.
+ - Error should be raised if degrees() or hours() ignores end of string.
+ - Fix planet moons, move good data inline.
  - Create central table of contents share by all documents?
  - Ability to create Observer from Google Maps or Google Earth location;
    or maybe from address?
