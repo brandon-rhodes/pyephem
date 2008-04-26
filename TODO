@@ -12,3 +12,4 @@ PyEphem TODO list
  - ... and rewrite the tutorial to use the new routines for the ISS.
  - Look over examples/ directory, or destroy and move to docs.
  - Update Tutorial for the three kinds of ra/dec.
+ - Fix problems with cheap Newton's method.
