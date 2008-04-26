@@ -1,0 +1,134 @@
+*******************************************************************************
+Ephemeris / WWW_USER Sat Apr 26 14:45:23 2008  Pasadena, USA     / Horizons    
+*******************************************************************************
+Target body name: Europa (502)                    {source: JUP230}
+Center body name: Earth (399)                     {source: DE405}
+Center-site name: GEOCENTRIC
+*******************************************************************************
+Start time      : A.D. 2008-Apr-26 00:00:00.0000 UT      
+Stop  time      : A.D. 2008-May-26 00:00:00.0000 UT      
+Step-size       : 1440 minutes
+*******************************************************************************
+Target pole/equ : IAU_EUROPA                      {East-longitude -}
+Target radii    : 1564.1 x 1561.2 x 1560.9 km     {Equator, meridian, pole}    
+Center geodetic : .000000000,.000000000,.00000000 {E-lon(deg),Lat(deg),Alt(km)}
+Center cylindric: .000000000,.000000000,.00000000 {E-lon(deg),Dxy(km),Dz(km)}
+Center pole/equ : High-precision EOP model        {East-longitude +}
+Center radii    : 6378.1 x 6378.1 x 6356.8 km     {Equator, meridian, pole}    
+Target primary  : Jupiter                         {source: DE405}
+Interfering body: MOON (Req= 1737.400) km         {source: DE405}
+Deflecting body : Sun, EARTH                      {source: DE405}
+Deflecting GMs  : 1.3271E+11, 3.9860E+05 km^3/s^2                              
+Atmos refraction: NO (AIRLESS)
+RA format       : HMS
+Time format     : CAL 
+EOP file        : eop.080425.p080717                                           
+EOP coverage    : DATA-BASED 1962-JAN-20 TO 2008-APR-25. PREDICTS-> 2008-JUL-16
+Units conversion: 1 AU= 149597870.691 km, c= 299792.458 km/s, 1 day= 86400.0 s 
+Table cut-offs 1: Elevation (-90.0deg=NO ),Airmass (>38.000=NO), Daylight (NO )
+Table cut-offs 2: Solar Elongation (  0.0,180.0=NO )                           
+**************************************************************************************************************
+ Date__(UT)__HR:MN     R.A._(ICRF/J2000.0)_DEC  APmag  S-brt            delta      deldot    S-O-T /r    S-T-O
+**************************************************************************************************************
+$$SOE
+ 2008-Apr-26 00:00     19 35 04.28 -21 39 31.8   5.70   5.16 4.87174984058652 -36.3752938 104.0191 /L  10.8102
+ 2008-Apr-27 00:00     19 35 13.15 -21 39 10.2   5.68   5.15 4.84928895103438 -34.8750009 104.9569 /L  10.7779
+ 2008-Apr-28 00:00     19 35 02.63 -21 39 49.9   5.68   5.15 4.83567754054080 -14.0642377 105.9710 /L  10.7237
+ 2008-Apr-29 00:00     19 35 21.20 -21 39 21.1   5.67   5.16 4.82640947957961 -23.8287132 106.8705 /L  10.6692
+ 2008-Apr-30 00:00     19 35 45.57 -21 38 22.9   5.66   5.15 4.80677913756107 -40.1833298 107.7461 /L  10.6292
+ 2008-May-01 00:00     19 35 36.76 -21 38 49.0   5.65   5.15 4.78698788753792 -23.8899003 108.7519 /L  10.5759
+ 2008-May-02 00:00     19 35 33.16 -21 39 16.3   5.65   5.16 4.77791426738492 -13.5204835 109.7373 /L  10.5058
+ 2008-May-03 00:00     19 35 59.01 -21 38 22.3   5.64   5.16 4.76486275593286 -33.5010874 110.6062 /L  10.4490
+ 2008-May-04 00:00     19 36 06.18 -21 38 03.7   5.63   5.15 4.74297934988487 -35.8092797 111.5477 /L  10.3957
+ 2008-May-05 00:00     19 35 48.92 -21 38 57.9   5.63   5.15 4.72869027806544 -14.2332621 112.5853 /L  10.3195
+ 2008-May-06 00:00     19 35 58.53 -21 38 51.4   5.62   5.16 4.72051760646858 -20.3683562 113.5170 /L  10.2422
+ 2008-May-07 00:00     19 36 19.79 -21 38 01.0   5.61   5.15 4.70258172553360 -38.7457358 114.4018 /L  10.1806
+ 2008-May-08 00:00     19 36 07.81 -21 38 32.9   5.60   5.15 4.68258706701909 -25.2054935 115.4168 /L  10.1058
+ 2008-May-09 00:00     19 35 55.07 -21 39 21.6   5.60   5.15 4.67352042660000 -11.5118135 116.4350 /L  10.0128
+ 2008-May-10 00:00     19 36 14.27 -21 38 44.9   5.59   5.15 4.66236754519274 -30.0216765 117.3268 /L   9.9335
+ 2008-May-11 00:00     19 36 19.68 -21 38 29.7   5.58   5.15 4.64151286458421 -35.9944923 118.2717 /L   9.8588
+ 2008-May-12 00:00     19 35 56.31 -21 39 36.8   5.57   5.15 4.62677002294237 -14.3752786 119.3298 /L   9.7604
+ 2008-May-13 00:00     19 35 56.58 -21 39 53.5   5.57   5.15 4.61969557450704 -16.7159443 120.2947 /L   9.6600
+ 2008-May-14 00:00     19 36 14.15 -21 39 12.9   5.56   5.15 4.60376663222823 -36.4980069 121.1905 /L   9.5766
+ 2008-May-15 00:00     19 35 59.54 -21 39 49.2   5.55   5.15 4.58397730619705 -26.1050628 122.2122 /L   9.4804
+ 2008-May-16 00:00     19 35 38.03 -21 40 57.9   5.55   5.15 4.57496770794271  -9.5749125 123.2612 /L   9.3646
+ 2008-May-17 00:00     19 35 49.95 -21 40 40.3   5.55   5.15 4.56580809914515 -26.0423514 124.1782 /L   9.2628
+ 2008-May-18 00:00     19 35 53.56 -21 40 29.0   5.53   5.15 4.54639688032801 -35.4317771 125.1267 /L   9.1670
+ 2008-May-19 00:00     19 35 24.86 -21 41 46.4   5.52   5.15 4.53144348960864 -14.4647359 126.2023 /L   9.0468
+ 2008-May-20 00:00     19 35 15.67 -21 42 26.2   5.52   5.15 4.52544618249363 -12.9756835 127.2013 /L   8.9236
+ 2008-May-21 00:00     19 35 29.02 -21 41 57.0   5.52   5.15 4.51177255301306 -33.5228381 128.1106 /L   8.8188
+ 2008-May-22 00:00     19 35 12.30 -21 42 36.2   5.50   5.15 4.49258792888232 -26.5485879 129.1376 /L   8.7016
+ 2008-May-23 00:00     19 34 42.60 -21 44 02.6   5.50   5.15 4.48369999004128  -7.7337987 130.2159 /L   8.5634
+ 2008-May-24 00:00     19 34 46.75 -21 44 05.2   5.50   5.15 4.47658378216820 -21.6660523 131.1609 /L   8.4396
+ 2008-May-25 00:00     19 34 48.46 -21 43 58.3   5.49   5.14 4.45899459545930 -34.1209367 132.1144 /L   8.3233
+ 2008-May-26 00:00     19 34 15.28 -21 45 23.2   5.48   5.14 4.44410117070211 -14.4443378 133.2050 /L   8.1818
+$$EOE
+**************************************************************************************************************
+Column meaning:
+ 
+TIME
+
+  Prior to 1962, times are UT1. Dates thereafter are UTC. Any 'b' symbol in
+the 1st-column denotes a B.C. date. First-column blank (" ") denotes an A.D.
+date. Calendar dates prior to 1582-Oct-15 are in the Julian calendar system.
+Later calendar dates are in the Gregorian system.
+
+  The uniform Coordinate Time scale is used internally. Conversion between
+CT and the selected non-uniform UT output scale has not been determined for
+UTC times after the next July or January 1st.  The last known leap-second
+is used over any future interval.
+
+  NOTE: "n.a." in output means quantity "not available" at the print-time.
+ 
+ R.A._(ICRF/J2000.0)_DEC =
+   J2000.0 astrometric right ascension and declination of target center.
+Corrected for light-time. Units: HMS (HH MM SS.ff) and DMS (DD MM SS.f)
+ 
+ APmag S-brt =
+   Target's approximate apparent visual magnitude & surface brightness. For
+planets and satellites, values are available only for solar phase angles in the
+range generally visible from Earth. This is to avoid extrapolation of models
+beyond their valid (data-based) limits.  Units: NONE & VISUAL MAGNITUDES PER
+SQUARE ARCSECOND
+ 
+ delta  deldot =
+   Range ("delta") and range-rate ("delta-dot") of target center with respect
+to the observer at the instant light seen by the observer at print-time would
+have left the target center (print-time minus down-leg light-time); the
+distance traveled by a light ray emanating from the center of the target and
+recorded by the observer at print-time. "deldot" is a projection of the
+velocity vector along this ray, the light-time-corrected line-of-sight from the
+coordinate center, and indicates relative motion. A positive "deldot" means the
+target center is moving away from the observer (coordinate center). A negative
+"deldot" means the target center is moving toward the observer.
+Units: AU and KM/S
+ 
+ S-O-T /r =
+    Sun-Observer-Target angle; target's apparent solar elongation seen from
+observer location at print-time. If negative, the target center is behind
+the Sun. Angular units: DEGREES.
+
+    The '/r' column is a Sun-relative code, output for observing sites
+with defined rotation models only.
+
+         /T indicates target trails Sun (evening sky)
+         /L indicates target leads Sun  (morning sky)
+
+    NOTE: The S-O-T solar elongation angle is the total separation in any
+direction. It does not indicate the angle of Sun leading or trailing.
+ 
+ S-T-O =
+   Sun-Target-Observer angle; target's apparent PHASE ANGLE as seen at
+observer's location at print time.  Units: DEGREES
+
+
+ Computations by ...
+     Solar System Dynamics Group, Horizons On-Line Ephemeris System
+     4800 Oak Grove Drive, Jet Propulsion Laboratory
+     Pasadena, CA  91109   USA
+     Information: http://ssd.jpl.nasa.gov/
+     Connect    : telnet://ssd.jpl.nasa.gov:6775  (via browser)
+                  telnet ssd.jpl.nasa.gov 6775    (via command-line)
+     Author     : Jon.Giorgini@jpl.nasa.gov
+
+**************************************************************************************************************

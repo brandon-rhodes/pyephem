@@ -23,7 +23,8 @@ attribute_list = (
     (Saturn, False,
      ('earth_tilt', 'sun_tilt')),
     (PlanetMoon, False,
-     ('ra', 'dec', 'x', 'y', 'z', 'earth_visible', 'sun_visible')),
+     ('a_ra', 'a_dec', 'g_ra', 'g_dec', 'ra', 'dec',
+      'x', 'y', 'z', 'earth_visible', 'sun_visible')),
     (PlanetMoon, True,
      ('az', 'alt')),
     )

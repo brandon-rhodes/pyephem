@@ -1607,10 +1607,10 @@ static PyGetSetDef Body_getset[] = {
       "apparent geocentric declination"
       " (radians that print as degrees)"},
      {"a_ra", Get_astrora, 0,
-      "apparent geocentric right ascension"
+      "astrometric geocentric right ascension"
       " (radians that print as hours of arc)"},
      {"a_dec", Get_astrodec, 0,
-      "apparent geocentric declination"
+      "astrometric geocentric declination"
       " (radians that print as degrees)"},
      {"a_epoch", Get_epoch, 0, "equinox of body's astrometric right"
       " ascension and declination (Date)"},
@@ -1657,6 +1657,20 @@ static PyGetSetDef Planet_getset[] = {
 
 static PyGetSetDef PlanetMoon_getset[] = {
      {"name", Get_name, 0, "object name (read-only string)"},
+
+     {"a_ra", Get_astrora, 0,
+      "astrometric geocentric right ascension"
+      " (radians that print as hours of arc)"},
+     {"a_dec", Get_astrodec, 0,
+      "astrometric geocentric declination"
+      " (radians that print as degrees)"},
+
+     {"g_ra", Get_gaera, 0,
+      "apparent geocentric right ascension"
+      " (radians that print as hours of arc)"},
+     {"g_dec", Get_gaedec, 0,
+      "apparent geocentric declination"
+      " (radians that print as degrees)"},
 
      {"ra", Get_ra, 0, "right ascension (radians that print as hours of arc)"},
      {"dec", Get_dec, 0, "declination (radians that print as degrees)"},

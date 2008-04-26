@@ -230,11 +230,9 @@ initPlobj()
 static void
 setMoon (Now *np, Obj *moonop, Obj *planop, MoonData *mdp)
 {
-	double pa, dra, ddec;
+        double plradius, x, y, offra, offdec, pa, dra, ddec;
 
 	/* just copy most fields from planet for now */
-	moonop->s_gaera = planop->s_gaera;	/* TODO */
-	moonop->s_gaedec = planop->s_gaedec;	/* TODO */
 	moonop->s_elong = planop->s_elong;	/* TODO */
 	moonop->s_size = 0;			/* TODO */
 	moonop->s_sdist = planop->s_sdist;	/* TODO */
@@ -248,11 +246,24 @@ setMoon (Now *np, Obj *moonop, Obj *planop, MoonData *mdp)
 	moonop->s_dec = mdp->dec;
 
 	/* geoemtry info */
-	moonop->pl_x = mdp->x;
-	moonop->pl_y = mdp->y;
+        x = mdp->x;
+        y = mdp->y;
+        moonop->pl_x = x;
+        moonop->pl_y = y;
 	moonop->pl_z = mdp->z;
 	moonop->pl_evis = mdp->evis;
 	moonop->pl_svis = mdp->svis;
+
+        /* compute ra and dec of moon */
+        plradius = degrad(planop->s_size/3600.0/2.0);
+        offra = plradius * x;
+        offdec = - plradius * y;
+
+        moonop->s_astrora = planop->s_astrora + offra;
+        moonop->s_astrodec = planop->s_astrodec - offdec;
+
+        moonop->s_gaera = planop->s_gaera + offra;
+        moonop->s_gaedec = planop->s_gaedec - offdec;
 
 	/* tweak alt/az by change in ra/dec rotated by pa */
 	pa = parallacticLDA (lat, planop->s_dec, planop->s_alt);
