@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import glob, math, os.path, re, traceback, unittest
+import glob, os.path, re, traceback, unittest
 from datetime import datetime
 from time import strptime
 import ephem
