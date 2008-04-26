@@ -13,12 +13,12 @@ $(WEB)/index.html: $(DOC)/pyephem.html
 $(WEB)/CHANGELOG: CHANGELOG
 	umask 022; cat $< > $@
 
-RSTS = $(filter-out $(DOC)/quick.rst, $(wildcard $(DOC)/*.rst))
+RSTS = $(filter-out $(DOC)/quick.rst $(DOC)/nav.rst, $(wildcard $(DOC)/*.rst))
 PAGES = $(patsubst $(DOC)/%.rst, $(WEB)/%.html, $(RSTS))
 
 all: rst
 rst: $(PAGES) $(WEB)/quick.html
 $(PAGES): $(WEB)/%.html: $(DOC)/%.rst $(DOC)/style.css
-	umask 022; $(RST2HTML) --stylesheet-path=$(DOC)/style.css < $< > $@
+	umask 022; cd $(DOC); $(RST2HTML) --stylesheet-path=style.css < $*.rst > $@
 $(WEB)/quick.html: $(DOC)/quick.rst $(DOC)/quick.css
-	umask 022; $(RST2HTML) --stylesheet-path=$(DOC)/quick.css < $< > $@
+	umask 022; cd $(DOC); $(RST2HTML) --stylesheet-path=quick.css < quick.rst > $@
