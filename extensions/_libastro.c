@@ -29,7 +29,6 @@
 
 #define VALID_GEO   FUSER0	/* Now has mjd and epoch */
 #define VALID_TOPO  FUSER1	/* Now has entire Observer */
-#define VALID_OBJ   FUSER2	/* object fields have been computed */
 #define VALID_RISET FUSER3	/* riset fields have been computed */
 
 #define VALID_LIBRATION FUSER4	/* moon libration fields computed */
@@ -1188,6 +1187,14 @@ static PyObject* Body_compute(PyObject *self, PyObject *args, PyObject *kwds)
 	  body->obj.o_flags = VALID_GEO;
      }
 
+     /* Have libastro do the actual calculation. */
+
+     pref_set(PREF_EQUATORIAL, body->obj.o_flags & VALID_TOPO ?
+	      PREF_TOPO : PREF_GEO);
+     obj_cir(& body->now, & body->obj);
+
+     /* Finally, return None. */
+
      Py_INCREF(Py_None);
      return Py_None;
 
@@ -1291,12 +1298,6 @@ static int Body_obj_cir(Body *body, char *fieldname, unsigned topocentric)
 		       fieldname);
 	  return -1;
      }
-     if (body->obj.o_flags & VALID_OBJ)
-	  return 0;
-     pref_set(PREF_EQUATORIAL, body->obj.o_flags & VALID_TOPO ?
-	      PREF_TOPO : PREF_GEO);
-     obj_cir(& body->now, & body->obj);
-     body->obj.o_flags |= VALID_OBJ;
      return 0;
 }
 
