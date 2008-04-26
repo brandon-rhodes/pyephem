@@ -5,6 +5,8 @@
 import ephem._libastro as _libastro
 from math import pi
 
+__version__ = '3.7.2.3'
+
 twopi = pi * 2.
 halfpi = pi / 2.
 quarterpi = pi / 4.
