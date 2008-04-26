@@ -229,6 +229,7 @@ class NeverUpError(CircumpolarError): pass
 class AlwaysUpError(CircumpolarError): pass
 
 class Observer(_libastro.Observer):
+    __slots__ = [ 'name' ]
     elev = _libastro.Observer.elevation
 
     def __repr__(self):
