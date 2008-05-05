@@ -1,5 +1,6 @@
-# Just typing "make" will build the web page; typing "make web" will
-# actually copy it into our Rhodes Mill content directory.
+#
+# Building HTML documentation
+#
 
 WEB = ./www
 DOC = ./src/ephem/doc
@@ -22,3 +23,17 @@ $(PAGES): $(WEB)/%.html: $(DOC)/%.rst $(DOC)/style.css
 	umask 022; cd $(DOC); $(RST2HTML) --stylesheet-path=style.css < $*.rst > $@
 $(WEB)/quick.html: $(DOC)/quick.rst $(DOC)/quick.css
 	umask 022; cd $(DOC); $(RST2HTML) --stylesheet-path=quick.css < quick.rst > $@
+
+#
+# Building data sets
+#
+
+D=./extensions/data
+G=./generate
+BDLS=$(patsubst $G/%, %, $(wildcard $G/*.9910 $G/*.1020))
+BDLSRCS=$(patsubst %, $D/%.c, $(BDLS))
+
+all: $(BDLSRCS)
+
+$(BDLSRCS): $D/%.c: $G/% $G/satxyz.py
+	python $G/satxyz.py $G/$* > $@
