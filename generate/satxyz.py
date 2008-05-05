@@ -5,66 +5,7 @@
 
 import os, sys
 
-class Moon(object):
-    def __init__(self, planeti, mooni):
-        self.planeti = planeti
-        self.mooni = mooni
-        self.data = {}
-
-    def store(self, jd, coefficients):
-        self.data[jd] = coefficients
-
-    def pr(self):
-        """Grab our bits out of the first line of a BDL file."""
-        print 'planet', self.planeti
-        print 'moon', self.mooni + 1
-        print 'freq', self.frequency
-        print 'delt', self.delta
-
-moons = {}
-
 path = sys.argv[1]
-f = open(path)
-planeti = None
-
-# The first line of the file tells us which planet's moons are
-# described in this file, as well as meta-information about the data
-# itself.
-
-firstline = f.readline()
-fields = firstline.split()
-planet_id = int(fields[0])  # planet id
-mooncount = int(fields[1])  # number of moons
-
-#moons = [ Moon(planeti, mooni) for mooni in range(mooncount) ]
-
-    #for moon in moons:
-    #    i = moon.mooni
-    #    # ignore fields[2+i], which is the line# of moon's first entry
-    #    moon.frequency = float(fields[2+mooncount+i])
-    #    moon.delta = float(fields[2+2*mooncount+i])
-
-    #ienrf = int(fields[-3])
-    #djj = float(fields[-2])
-    #jan = int(fields[-1])
-    #for moon in moons:
-    #    moon.pr()
-    #print ienrf, djj, jan
-    
-    # Subsequent lines have the actual orbital data itself.
-
-for line in f:
-    fields = line.split()
-    moon_id = int(line[0:1])
-
-    key = (planet_id, moon_id)
-    moon = moons.get(key, None)
-    if moon is None:
-        moons[key] = moon = Moon(planet_id, moon_id)
-
-    jd = float(line[22:31])
-    coefficients = [ float(f.replace('D', 'e')) for f in fields[2:] ]
-    moon.store(jd, coefficients)
 
 # Function to interpret floats from satxyz file.
 
