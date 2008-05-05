@@ -15,7 +15,7 @@ typedef struct {
 typedef struct {
      unsigned nsat; /* number of satellites described in file */
      double djj; /* beginning Julian date of dataset*/
-     double *idn; /* moonrecord index at which this moon's data starts */
+     unsigned *idn; /* moonrecord index at which this moon's data starts */
      double *freq; /* frequency of moon records? */
      double *delt; /* time delta between successive moon records */
      BDL_Record *moonrecords;

@@ -14,6 +14,9 @@
 typedef enum {I, F, NL} ScanType;
 #define	SCANFLD(f,w,vp)	if(readField(fp,f,w,(void *)vp,ynot)<0) return (-1)
 
+int read_bdl (FILE *fp, double jd, double *xp, double *yp, double *zp,
+              char ynot[]) { return 0;}
+
 static int readField (FILE *fp, ScanType f, int w, void *ptr, char ynot[]);
 static int readRec (FILE *fp, double *t0, double cmx[], double cfx[],
     double cmy[], double cfy[], double cmz[], double cfz[], char ynot[]);
@@ -25,65 +28,40 @@ static int readRec (FILE *fp, double *t0, double cmx[], double cfx[],
  * return the number of satellites or -1 and reason in ymot[].
  * files obtained from ftp://ftp.bdl.fr/pub/misc/satxyz.
  */
-int
-read_bdl (FILE *fp, double jd, double *xp, double *yp, double *zp, char ynot[])
+void
+do_bdl (BDL_Dataset *dataset, double jd, double *xp, double *yp, double *zp)
 {
-	int npla;
-	int nsat;
-	int idn[8];
-	double freq[8];
-	double delt[8];
-	double djj;
-	double cmx[6], cfx[4], cmy[6], cfy[4], cmz[6], cfz[4];
-	int ienrf;
-	int jan;
-	int reclen;
-	long os0;
+        int nsat = dataset->nsat;
+        double djj = dataset->djj;
+        unsigned *idn = dataset->idn;
+        double *freq = dataset->freq;
+        double *delt = dataset->delt;
 	double t0;
 	int i;
-
-	/* read header line */
-	SCANFLD (I, 2, &npla);
-	SCANFLD (I, 2, &nsat);
-	for (i = 0; i < nsat; i++)
-	    SCANFLD (I, 5, &idn[i]);
-	for (i = 0; i < nsat; i++)
-	    SCANFLD (F, 8, &freq[i]);
-	for (i = 0; i < nsat; i++)
-	    SCANFLD (F, 5, &delt[i]);
-	SCANFLD (I, 5, &ienrf);
-	SCANFLD (F, 15, &djj);
-	SCANFLD (I, 5, &jan);
-	SCANFLD (NL, 0, NULL);
-
-	/* record position of first record */
-	os0 = ftell (fp);
-
-	/* read first record to get length */
-	reclen = readRec (fp, &t0, cmx, cfx, cmy, cfy, cmz, cfz, ynot);
-	if (reclen < 0)
-	    return (-1);
 
 	/* compute location of each satellite */
 	for (i = 0; i < nsat; i++) {
 	    int id = (int)floor((jd-djj)/delt[i]) + idn[i] - 2;
-	    long os = os0 + id*reclen;
 	    double t1, anu, tau, tau2, at;
 	    double tbx, tby, tbz;
+            double *cmx, *cfx, *cmy, *cfy, *cmz, *cfz;
+            BDL_Record *r = & dataset->moonrecords[id];
 
-	    if (fseek (fp, os, SEEK_SET) < 0) {
-		sprintf (ynot, "Seek error to %ld for rec %d", os, id);
-		return (-1);
-	    }
-
-	    if (readRec (fp, &t0, cmx, cfx, cmy, cfy, cmz, cfz, ynot) < 0)
-		return (-1);
-
+	    /*if (readRec (fp, &t0, cmx, cfx, cmy, cfy, cmz, cfz, ynot) < 0)
+              return (-1);*/
+            t0 = r->t0;
 	    t1 = floor(t0) + 0.5;
 	    anu = freq[i];
 	    tau = jd - t1;
 	    tau2 = tau * tau;
 	    at = tau*anu;
+
+            cmx = & (r->cmx[0]); /* point at data in appropriate record */
+            cfx = & (r->cfx[0]);
+            cmy = & (r->cmy[0]);
+            cfy = & (r->cfy[0]);
+            cmz = & (r->cmz[0]);
+            cfz = & (r->cfz[0]);
 
 	    tbx = cmx[0]+cmx[1]*tau+cmx[2]*sin(at+cfx[0])
 			    +cmx[3]*tau*sin(at+cfx[1])
@@ -102,8 +80,6 @@ read_bdl (FILE *fp, double jd, double *xp, double *yp, double *zp, char ynot[])
 	    yp[i] = tby*1000./149597870.;
 	    zp[i] = tbz*1000./149597870.;
 	}
-
-	return (nsat);
 }
 
 /* read one field.
