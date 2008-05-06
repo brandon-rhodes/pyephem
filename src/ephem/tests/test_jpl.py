@@ -9,6 +9,15 @@ import ephem
 # Read an ephemeris from the JPL, and confirm that PyEphem returns the
 # same measurements to within one arcsecond of accuracy.
 
+angle_fudge = ephem.degrees('0:00:00.5')
+size_fudge = 0.1
+
+def cleanup(s):
+    return s.strip().replace(' ', ':')
+
+class JPLDatum(object):
+    pass
+
 class JPLTest(unittest.TestCase):
 
     def runTest(self):
@@ -17,6 +26,7 @@ class JPLTest(unittest.TestCase):
 
         in_data = False
 
+        c=0
         for line in open(self.path):
 
             if line.startswith('Target body name:'):
@@ -35,14 +45,25 @@ class JPLTest(unittest.TestCase):
             elif in_data:
                 date = datetime.strptime(line[1:18], '%Y-%b-%d %H:%M')
                 body.compute(date)
-                ra = line[23:34]
-                dec = line[35:46]
-                j = ephem.Jupiter()
-                j.compute(date)
-                print
-                print body.name
-                print date, j.a_ra, '|', body.a_ra, ':', ra
-                break
+
+                jpl = JPLDatum()
+                jpl.a_ra = ephem.hours(cleanup(line[23:34]))
+                jpl.a_dec = ephem.degrees(cleanup(line[35:46]))
+                jpl.size = float(line[71:])
+
+                for attr, fudge in (('a_ra', angle_fudge),
+                                    ('a_dec', angle_fudge),
+                                    ('size', size_fudge)):
+                    try:
+                        body_value = getattr(body, attr)
+                    except AttributeError: # moons lack "size"
+                        continue
+                    jpl_value = getattr(jpl, attr)
+                    if abs(body_value - jpl_value) > fudge:
+                        raise ValueError('at %s, %s returns %s=%s'
+                                         ' but JPL insists that %s=%s' %
+                                         (date, body.name, attr, body_value,
+                                          attr, jpl_value))
 
 re, traceback, datetime, strptime, ephem
 
