@@ -9,7 +9,7 @@ import ephem
 # Read an ephemeris from the JPL, and confirm that PyEphem returns the
 # same measurements to within one arcsecond of accuracy.
 
-angle_fudge = ephem.degrees('0:00:00.5')
+angle_fudge = ephem.degrees('0:00:20')
 size_fudge = 0.1
 
 def cleanup(s):
