@@ -100,7 +100,7 @@ MoonData md[S_NMOONS])		/* return info */
 					    eop->s_edist, JD, etiltp, stiltp);
 
 	/* get moon x,y,z from BDL if possible, else Bruton's model */
-	if (!dir || use_bdl (JD, dir, md) < 0)
+	if (use_bdl (JD, dir, md) < 0)
 	    bruton_saturn (sop, JD, md);
 
 	/* set visibilities */
@@ -129,43 +129,23 @@ double JD,		/* julian date */
 char dir[],		/* directory */
 MoonData md[S_NMOONS])	/* fill md[1..NM-1].x/y/z for each moon */
 {
-#define	SATRAU	.0004014253	/* saturn radius, AU */
+#define	SATRAU 60268.0 /* saturn radius, km */
 	double x[S_NMOONS], y[S_NMOONS], z[S_NMOONS];
-	char buf[1024];
-	FILE *fp;
-	char *fn;
+        BDL_Dataset *dataset;
 	int i;
 
 	/* check ranges and appropriate data file */
 	if (JD < 2451179.50000)		/* Jan 1 1999 UTC */
 	    return (-1);
 	if (JD < 2455562.5)		/* Jan 1 2011 UTC */
-	    fn = "saturne.9910";
+            dataset = & saturne_9910;
 	else if (JD < 2459215.5)	/* Jan 1 2021 UTC */
-	    fn = "saturne.1020";
+            dataset = & saturne_1020;
 	else
 	    return (-1);
 
-	/* open */
-	(void) sprintf (buf, "%s/%s", dir, fn);
-	fp = fopen (buf, "r");
-	if (!fp) {
-	    fprintf (stderr, "%s: %s\n", fn, strerror(errno));
-	    return (-1);
-	}
-
 	/* use it */
-	if ((i = read_bdl (fp, JD, x, y, z, buf)) < 0) {
-	    fprintf (stderr, "%s: %s\n", fn, buf);
-	    fclose (fp);
-	    return (-1);
-	}
-	if (i != S_NMOONS-1) {
-	    fprintf (stderr, "%s: BDL says %d moons, code expects %d", fn,
-								i, S_NMOONS-1);
-	    fclose (fp);
-	    return (-1);
-	}
+        do_bdl(dataset, JD, x, y, z);
 
 	/* copy into md[1..NM-1] with our scale and sign conventions */
 	for (i = 1; i < S_NMOONS; i++) {
@@ -175,7 +155,6 @@ MoonData md[S_NMOONS])	/* fill md[1..NM-1].x/y/z for each moon */
 	}
 
 	/* ok */
-	fclose (fp);
 	return (0);
 }
 

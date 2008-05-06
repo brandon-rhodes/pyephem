@@ -89,7 +89,7 @@ MoonData md[U_NMOONS])	/* return info */
 	md[5].mag = 16.3;
 
 	/* get moon x,y,z from BDL if possible */
-	if (!dir || use_bdl (JD, dir, md) < 0) {
+	if (use_bdl (JD, dir, md) < 0) {
 	    int i;
 	    for (i = 1; i < U_NMOONS; i++)
 		md[i].x = md[i].y = md[i].z = 0.0;
@@ -120,43 +120,23 @@ double JD,		/* julian date */
 char dir[],		/* directory */
 MoonData md[U_NMOONS])	/* fill md[1..NM-1].x/y/z for each moon */
 {
-#define URAU    .0001597        /* Uranus radius, AU */
+#define URAU 25559.0 /* Uranus radius, km */
 	double x[U_NMOONS], y[U_NMOONS], z[U_NMOONS];
-	char buf[1024];
-	FILE *fp;
-	char *fn;
+        BDL_Dataset *dataset;
 	int i;
 
 	/* check ranges and appropriate data file */
 	if (JD < 2451179.50000)		/* Jan 1 1999 UTC */
 	    return (-1);
 	if (JD < 2455562.5)		/* Jan 1 2011 UTC */
-	    fn = "uranus.9910";
+            dataset = & uranus_9910;
 	else if (JD < 2459215.5)	/* Jan 1 2021 UTC */
-	    fn = "uranus.1020";
+            dataset = & uranus_1020;
 	else
 	    return (-1);
 
-	/* open */
-	(void) sprintf (buf, "%s/%s", dir, fn);
-	fp = fopen (buf, "r");
-	if (!fp) {
-	    fprintf (stderr, "%s: %s\n", fn, strerror(errno));
-	    return (-1);
-	}
-
 	/* use it */
-	if ((i = read_bdl (fp, JD, x, y, z, buf)) < 0) {
-	    fprintf (stderr, "%s: %s\n", fn, buf);
-	    fclose (fp);
-	    return (-1);
-	}
-	if (i != U_NMOONS-1) {
-	    fprintf (stderr, "%s: BDL says %d moons, code expects %d", fn, 
-								i, U_NMOONS-1);
-	    fclose (fp);
-	    return (-1);
-	}
+        do_bdl(dataset, JD, x, y, z);
 
 	/* copy into md[1..NM-1] with our scale and sign conventions */
 	for (i = 1; i < U_NMOONS; i++) {
@@ -166,7 +146,6 @@ MoonData md[U_NMOONS])	/* fill md[1..NM-1].x/y/z for each moon */
 	}
 
 	/* ok */
-	fclose (fp);
 	return (0);
 }
 
