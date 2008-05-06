@@ -1,31 +1,17 @@
 /* crack natural satellite files from BDL */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <math.h>
-/* #include <unistd.h>
- * breaks compilation under windows, and seems
- * unnecessary for error-free Unix compilation */
 
 #include "astro.h"
 #include "bdl.h"
 
-typedef enum {I, F, NL} ScanType;
-#define	SCANFLD(f,w,vp)	if(readField(fp,f,w,(void *)vp,ynot)<0) return (-1)
-
 int read_bdl (FILE *fp, double jd, double *xp, double *yp, double *zp,
               char ynot[]) { return 0;}
 
-static int readField (FILE *fp, ScanType f, int w, void *ptr, char ynot[]);
-static int readRec (FILE *fp, double *t0, double cmx[], double cfx[],
-    double cmy[], double cfy[], double cmz[], double cfz[], char ynot[]);
-
-/* given a sequencial text file in BDL natural satellite ephemeris format and a
+/* using a BDL planetary moon dataset defined in a struct in RAM and a
  * JD, find the x/y/z positions of each satellite. store in the given arrays,
  * assumed to have one entry per moon. values are planetocentric, +x east, +y
  * north, +z away from earth, all in au. corrected for light time.
- * return the number of satellites or -1 and reason in ymot[].
  * files obtained from ftp://ftp.bdl.fr/pub/misc/satxyz.
  */
 void
@@ -47,8 +33,6 @@ do_bdl (BDL_Dataset *dataset, double jd, double *xp, double *yp, double *zp)
             double *cmx, *cfx, *cmy, *cfy, *cmz, *cfz;
             BDL_Record *r = & dataset->moonrecords[id];
 
-	    /*if (readRec (fp, &t0, cmx, cfx, cmy, cfy, cmz, cfz, ynot) < 0)
-              return (-1);*/
             t0 = r->t0;
 	    t1 = floor(t0) + 0.5;
 	    anu = freq[i];
@@ -81,132 +65,6 @@ do_bdl (BDL_Dataset *dataset, double jd, double *xp, double *yp, double *zp)
 	    zp[i] = tbz*1000.;
 	}
 }
-
-/* read one field.
- * return 0 if ok else -1
- * N.B. this is enforce width, without skipping leading blanks.
- */
-static int
-readField (FILE *fp, ScanType f, int width, void *ptr, char ynot[])
-{
-	char buf[128];
-	char *bp;
-
-	if (buf && width != (int)fread (buf, 1, width, fp)) {
-	    if (ferror(fp)) strcpy (ynot, "IO error");
-	    else if (feof(fp)) strcpy (ynot, "unexpected EOF");
-	    else strcpy (ynot, "short file");
-	    return (-1);
-	}
-
-	buf[width] = '\0';
-	switch (f) {
-	case I:
-	    *(int *)ptr = atoi (buf);
-	    break;
-	case F:
-	    bp = strchr (buf, 'D');
-	    if (bp)
-		*bp = 'e';
-	    *(double *)ptr = atof (buf);
-	    break;
-	case NL:
-	    fgets (buf, sizeof(buf), fp);
-	    break;
-	default:
-	    sprintf (ynot, "Bug! format = %d", f);
-	    return (-1);
-	}
-	return (0);
-}
-
-/* read one satellite record.
- * return number of chars read else -1.
- */
-static int
-readRec (FILE *fp, double *t0, double cmx[], double cfx[], double cmy[],
-double cfy[], double cmz[], double cfz[], char ynot[])
-{
-
-	long pos0, pos1;
-	int isat, idx;
-	int ldat1, ldat2;
-	int i;
-
-	pos0 = ftell (fp);
-
-	SCANFLD (I, 1, &isat);
-	SCANFLD (I, 5, &idx);
-	SCANFLD (I, 8, &ldat1);
-	SCANFLD (I, 8, &ldat2);
-	SCANFLD (F, 9, t0);
-	for (i = 0; i < 6; i++)
-	    SCANFLD (F, 17, &cmx[i]);
-	for (i = 0; i < 4; i++)
-	    SCANFLD (F, 17, &cfx[i]);
-	for (i = 0; i < 6; i++)
-	    SCANFLD (F, 17, &cmy[i]);
-	for (i = 0; i < 4; i++)
-	    SCANFLD (F, 17, &cfy[i]);
-	for (i = 0; i < 6; i++)
-	    SCANFLD (F, 17, &cmz[i]);
-	for (i = 0; i < 4; i++)
-	    SCANFLD (F, 17, &cfz[i]);
-	SCANFLD (NL, 0, NULL);
-
-	pos1 = ftell (fp);
-
-	return (pos1 - pos0);
-}
-
-
-#ifdef TEST_IT
-/* stand-alone test program.
- * for example, compare
- *   a.out jupiter.9910 2451910.50000
- * with
- *   satxyz2
- *     jup.dir.9910
- *     2001 1 1 0 0 0
- *     1 0 0 0
- *     1
- */
-int
-main (int ac, char *av[])
-{
-	double x[10], y[10], z[10];
-	char ynot[1024];
-	double jd;
-	char *fn;
-	FILE *fp;
-	int nm;
-	int i;
-
-	if (ac != 3) {
-	    fprintf (stderr, "Usage: %s <filename> <jd>\n", av[0]);
-	    abort();
-	}
-	fn = av[1];
-	jd = atof (av[2]);
-
-	fp = fopen (fn, "r");
-	if (!fp) {
-	    perror (fn);
-	    abort();
-	}
-
-	nm = read_bdl (fp, jd, x, y, z, ynot);
-	if (nm < 0) {
-	    fprintf (stderr, "%s\n", ynot);
-	    abort();
-	}
-
-	for (i = 0; i < nm; i++)
-	    printf (" X= %19.11E Y= %19.11E Z= %19.11E\n", x[i], y[i], z[i]);
-
-	return (0);
-}
-#endif
 
 /* For RCS Only -- Do Not Edit */
 static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: bdl.c,v $ $Date: 2004/05/05 17:45:49 $ $Revision: 1.4 $ $Name:  $"};
