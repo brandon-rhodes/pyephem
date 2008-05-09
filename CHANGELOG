@@ -1,5 +1,27 @@
 			  PyEphem CHANGELOG
 
+Version 3.7.2.4 (2008 May ?)
+
+  - After feedback from users, changed the Observer methods which find
+    risings, settings, and transits, so that they do not change their
+    Observer's .date attribute.
+
+  - Added an optional start= argument to the rising, setting, and
+    transit Observer functions, that tells them from which date and
+    time to begin their search.
+
+  - Rewrote planetary moon routines so that moons of Mars, Jupiter,
+    Saturn, and Uranus return appropriate data for years 1999-2020.
+
+  - You can no longer create arbitrary attributes on an Observer
+    (unless you subclass it), to prevent users from accidentially
+    saying "here.longitude" or "here.lon" when they mean "here.long".
+
+  - The ephem module now provides a __version__ symbol.
+
+  - Added test suite that tests planet and planet moon positions
+    against JPL ephemeris data (needs more work).
+
 Version 3.7.2.3 (2008 January 8)
 
   - Three new classes Equatorial, Ecliptic, and Galactic allow
