@@ -239,7 +239,7 @@ The file looks something like:
 
         # This helper function, given an attribute name of
         # "rising", "transit", or "setting", verifies that the
-        # observer and body are locate at the time and place that
+        # observer and body are located at the time and place that
         # the named transit attributes say they should be.
 
         def check(attr):
@@ -263,12 +263,12 @@ The file looks something like:
                 datum_date = getattr(datum, attr)
 
                 if datum_date is not None:
-                    observer.date = datum.midnight
-                    getattr(observer, 'next_' + attr)(body)
-                    check(attr)
+                    next_func = getattr(observer, 'next_' + attr)
+                    previous_func = getattr(observer, 'previous_' + attr)
 
-                    observer.date = datum.midnight + 1
-                    getattr(observer, 'previous_' + attr)(body)
+                    observer.date = next_func(body, datum.midnight)
+                    check(attr)
+                    observer.date = previous_func(body, datum.midnight + 1)
                     check(attr)
 
         # Make sure we can also jump along similar events.
@@ -283,7 +283,7 @@ The file looks something like:
                 else:
                     if prev is None:
                         observer.date = datum.midnight
-                    getattr(observer, 'next_' + attr)(body)
+                    observer.date = getattr(observer, 'next_' + attr)(body)
                     check(attr)
                     prev = observer.date
 
@@ -297,7 +297,7 @@ The file looks something like:
                 else:
                     if next is None:
                         observer.date = datum.midnight + 1
-                    getattr(observer, 'previous_' + attr)(body)
+                    observer.date = getattr(observer, 'previous_' + attr)(body)
                     check(attr)
                     next = observer.date
 
@@ -373,20 +373,20 @@ class Rise_Set_Trial(Trial):
 
             if usno_rise:
                 o.date = start_of_day + 1
-                o.previous_rising(body)
+                o.date = o.previous_rising(body)
                 two_digit_compare('rise', usno_rise)
 
                 o.date = start_of_day
-                o.next_rising(body)
+                o.date = o.next_rising(body)
                 two_digit_compare('rise', usno_rise)
 
             if usno_set:
                 o.date = start_of_day + 1
-                o.previous_setting(body)
+                o.date = o.previous_setting(body)
                 two_digit_compare('set', usno_set)
 
                 o.date = start_of_day
-                o.next_setting(body)
+                o.date = o.next_setting(body)
                 two_digit_compare('set', usno_set)
 
 # Moon phases.

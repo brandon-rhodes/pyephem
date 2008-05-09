@@ -242,13 +242,17 @@ class Observer(_libastro.Observer):
                    self.long, self.lat, self.elevation,
                    self.horizon, self.temp, self.pressure))
 
-    def _compute_transit(self, body, sign, offset=0.):
+    def _compute_transit(self, body, start, sign, offset):
         """Internal function used to compute transits."""
 
         def f(d):
             self.date = d
             body.compute(self)
             return degrees(offset - sidereal_time() + body.g_ra).znorm
+
+        #original_date = self.date
+        if start is not None:
+            self.date = start
         sidereal_time = self.sidereal_time
         body.compute(self)
         ha = sidereal_time() - body.g_ra
@@ -256,27 +260,29 @@ class Observer(_libastro.Observer):
         if abs(ha_to_move) < tiny:
             ha_to_move = sign * twopi
         d = self.date + ha_to_move / twopi
-        return Date(newton(f, d, d + minute))
+        result = Date(newton(f, d, d + minute))
+        #self.date = original_date
+        return result
 
-    def previous_transit(self, body):
+    def previous_transit(self, body, start=None):
         """Find the previous passage of a body across the meridian."""
 
-        return self._compute_transit(body, -1., 0.)
+        return self._compute_transit(body, start, -1., 0.)
 
-    def next_transit(self, body):
+    def next_transit(self, body, start=None):
         """Find the next passage of a body across the meridian."""
 
-        return self._compute_transit(body, +1., 0.)
+        return self._compute_transit(body, start, +1., 0.)
 
-    def previous_antitransit(self, body):
+    def previous_antitransit(self, body, start=None):
         """Find the previous passage of a body across the anti-meridian."""
 
-        return self._compute_transit(body, -1., pi)
+        return self._compute_transit(body, start, -1., pi)
 
-    def next_antitransit(self, body):
+    def next_antitransit(self, body, start=None):
         """Find the next passage of a body across the anti-meridian."""
 
-        return self._compute_transit(body, +1., pi)
+        return self._compute_transit(body, start, +1., pi)
 
     def disallow_circumpolar(self, declination):
         """Raise an exception if the given declination is circumpolar.
@@ -295,7 +301,7 @@ class Observer(_libastro.Observer):
                                 ' above the horizon at latitude %s'
                                 % (declination, self.lat))
 
-    def _riset_helper(self, body, rising, previous):
+    def _riset_helper(self, body, start, rising, previous):
         """Internal function for finding risings and settings."""
 
         def visit_transit():
@@ -314,6 +320,9 @@ class Observer(_libastro.Observer):
                                     % (body.name, d))
             return d
 
+        original_date = self.date
+        if start is not None:
+            self.date = start
         body.compute(self)
         heading_downward = (rising == previous) # "==" is inverted "xor"
         if heading_downward:
@@ -344,23 +353,25 @@ class Observer(_libastro.Observer):
             return body.alt + body.radius - self.horizon
 
         d = (d0 + d1) / 2.
-        return Date(newton(f, d, d + minute))
+        result = Date(newton(f, d, d + minute))
+        self.date = original_date
+        return result
 
-    def previous_rising(self, body):
+    def previous_rising(self, body, start=None):
         """Move to the given body's previous rising, returning the date."""
-        return self._riset_helper(body, True, True)
+        return self._riset_helper(body, start, True, True)
 
-    def previous_setting(self, body):
+    def previous_setting(self, body, start=None):
         """Move to the given body's previous setting, returning the date."""
-        return self._riset_helper(body, False, True)
+        return self._riset_helper(body, start, False, True)
 
-    def next_rising(self, body):
+    def next_rising(self, body, start=None):
         """Move to the given body's next rising, returning the date."""
-        return self._riset_helper(body, True, False)
+        return self._riset_helper(body, start, True, False)
 
-    def next_setting(self, body):
+    def next_setting(self, body, start=None):
         """Move to the given body's next setting, returning the date."""
-        return self._riset_helper(body, False, False)
+        return self._riset_helper(body, start, False, False)
 
 # Time conversion.
 
