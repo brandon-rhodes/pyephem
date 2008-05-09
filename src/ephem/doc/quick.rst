@@ -475,6 +475,10 @@ transit, rising, setting
  1999/6/27 04:22:45
  >>> print m.alt, m.az
  21:18:33.6 180:00:00.0
+ >>> print sitka.next_rising(m, start='1999/6/28')
+ 1999/6/28 23:28:25
+ >>> print m.alt, m.az
+ -0:00:05.8 111:10:41.6
 
  * Eight ``Observer`` methods are available
    for finding rising, transit, and setting times::
@@ -493,8 +497,11 @@ transit, rising, setting
 
  * Each takes a ``Body`` argument.
  * Returns a ``Date`` value.
- * Leaves the Observer's ``date`` at that value.
  * Leaves the ``Body`` at its position on that date.
+ * The Observer itself is unchanged.
+ * Takes an optional ``start=`` argument
+   giving the date and time
+   from which the search for a rising, transit, or setting should commence.
  * We define the meridian as the line
    running overhead from the celestial North pole to the South pole,
    and the anti-meridian as the other half of the same great circle;
