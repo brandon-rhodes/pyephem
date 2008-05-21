@@ -1,5 +1,11 @@
 PyEphem TODO list
 
+ Before next release:
+
+ - Make Jupiter's GRS available.
+
+ For future releases:
+
  - Error should be raised if degrees() or hours() ignores end of string.
  - Create central table of contents share by all documents?
  - Ability to create Observer from Google Maps or Google Earth location;
