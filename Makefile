@@ -2,7 +2,7 @@
 # Building HTML documentation
 #
 
-WEB = ./www
+WEB = $(shell pwd)/www
 DOC = ./src/ephem/doc
 RST2HTML = rst2html --initial-header-level=2 -g -d --strip-comments
 
@@ -33,7 +33,7 @@ G=./generate
 BDLS=$(patsubst $G/%, %, $(wildcard $G/*.9910 $G/*.1020))
 BDLSRCS=$(patsubst %, $D/%.c, $(BDLS))
 
-all: $(BDLSRCS)
+data: $(BDLSRCS)
 
 $(BDLSRCS): $D/%.c: $G/% $G/satxyz.py
 	python $G/satxyz.py $G/$* > $@
