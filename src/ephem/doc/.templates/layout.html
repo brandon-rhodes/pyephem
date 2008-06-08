@@ -1,0 +1,35 @@
+{# Filename: .templates/layout.html #}
+{% extends '!layout.html' %}
+
+{%- block doctype -%}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+{%- endblock %}
+
+{%- block sidebar1 %}
+  {%- if current_page_name != "index" %}
+    {{ sidebar() }}
+  {%- endif %}
+{% endblock %}
+
+{%- block sidebar2 %}{% endblock %}
+{%- block sidebarsearch %}{% endblock %}
+
+{%- block sidebartoc %}
+{%- if display_toc %}
+<h3>Page Contents</h3>
+{{ toc }}
+{%- endif %}
+{%- endblock %}
+
+{%- block sidebarrel %}
+{%- if prev %}
+<b>Previous Page</b><br/>
+<a href="{{ prev.link|e }}" title="previous chapter">{{ prev.title }}</a>
+{%- endif %}
+{%- if next %}
+<br/><br/><b>Next Page</b><br/>
+<a href="{{ next.link|e }}" title="next chapter">{{ next.title }}</a>
+{%- endif %}
+{%- endblock %}
+

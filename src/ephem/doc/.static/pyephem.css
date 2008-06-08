@@ -1,0 +1,91 @@
+div.related, div.sidebar, div.footer, table.guide {
+    font-family: Arial, sans-serif;
+}
+
+div.related h3 {
+    display: none;
+}
+
+div.related li {
+    display: inline;
+}
+
+div.related li.right {
+    float: right;
+    margin-right: 5px;
+}
+
+div.related {
+    border-bottom: solid 3px black;
+}
+
+div.sidebar {
+    float: right;
+    background-color: #f0f0f0;
+    margin: 0.72em; padding: 0px 1em 1em 1em; border: solid 2px #c00000;
+}
+
+div.sidebar div > ul {
+    margin-bottom: 2em;
+}
+
+div.highlight {
+    background-color: #e0e0c0;
+}
+
+pre {
+    padding: 0.8ex;
+}
+
+div.footer {
+    text-align: center;
+    font-size: smaller;
+}
+
+a.headerlink {
+    color: #c60f0f;
+    font-size: 0.8em;
+    padding: 0 4px 0 4px;
+    text-decoration: none;
+    visibility: hidden;
+}
+
+h1:hover > a.headerlink,
+h2:hover > a.headerlink,
+h3:hover > a.headerlink,
+h4:hover > a.headerlink,
+h5:hover > a.headerlink,
+h6:hover > a.headerlink,
+dt:hover > a.headerlink {
+    visibility: visible;
+}
+
+a.headerlink:hover {
+    background-color: #c60f0f;
+    color: white;
+}
+
+dt {
+    font-weight: bold;
+}
+
+table.guide td {
+    height: 100%;
+    width: 30%;
+    padding: 12px;
+    border: solid 6px #a0a0a0;
+    vertical-align: top;
+}
+
+table.guide td:first-child {
+    border-left: none;
+    border-bottom: none;
+}
+
+table.guide p {
+    margin-top: 0;
+}
+
+div.threepiece img {
+    display: block;
+}
