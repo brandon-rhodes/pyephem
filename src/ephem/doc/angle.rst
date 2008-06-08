@@ -2,8 +2,6 @@
 ephem.Angle
 ===========
 
-.. include:: nav.rst
-
 PyEphem measures all angles in radians.
 But rather than simply returning angles as bare Python floats,
 it returns each of them as an ``ephem.Angle``
@@ -73,25 +71,37 @@ normalized to the interval (-π, π] centered on zero.
 
     >>> circle = 2 * math.pi
 
+::
+
     >>> a = + fifteen_degrees
     >>> print a, a.norm, a.znorm
     15:00:00.0 15:00:00.0 15:00:00.0
+
+::
 
     >>> a = - fifteen_degrees
     >>> print a, a.norm, a.znorm
     -15:00:00.0 345:00:00.0 -15:00:00.0
 
+::
+
     >>> a = ephem.degrees(circle - fifteen_degrees)
     >>> print a, a.norm, a.znorm
     345:00:00.0 345:00:00.0 -15:00:00.0
     
+::
+
     >>> a = ephem.degrees(circle + fifteen_degrees)
     >>> print a, a.norm, a.znorm
     375:00:00.0 15:00:00.0 15:00:00.0
     
+::
+
     >>> a = ephem.degrees(- circle + fifteen_degrees)
     >>> print a, a.norm, a.znorm
     -345:00:00.0 15:00:00.0 15:00:00.0
+
+::
 
     >>> a = ephem.degrees(- circle - fifteen_degrees)
     >>> print a, a.norm, a.znorm

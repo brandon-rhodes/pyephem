@@ -2,8 +2,6 @@
 PyEphem Quick Reference
 #######################
 
-.. include:: nav.rst
-
 .. _Coordinate Transformations: coordinates
 .. _Angle: angle
 .. _Date: date
@@ -42,11 +40,6 @@ where you can then use them without further qualification:
 To understand each of the following examples,
 first read the source code snippet carefully,
 and only then dive into the explanations beneath it.
-
-.. raw:: html
-
-   <hr clear="right">
-   <table class="main"><tr><td width="50%" valign="top">
 
 Bodies
 ======
@@ -417,10 +410,6 @@ Coordinate Conversion
    or J2000 is used as the default.
 
  * See the `Coordinate Transformations`_ document for more details.
-
-.. raw:: html
-
-   </td><td width="50%" valign="top">
 
 Observers
 =========
@@ -815,7 +804,3 @@ Other Constants
  * PyEphem provides the speed of light in meters per second::
 
     ephem.c
-
-.. raw:: html
-
-   </td></tr></table>

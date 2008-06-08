@@ -2,8 +2,6 @@
 Right Ascension and Declination
 ===============================
 
-.. include:: nav.rst
-
 .. _XEphem: http://www.clearskyinstitute.com/xephem/
 
 There are several different ways

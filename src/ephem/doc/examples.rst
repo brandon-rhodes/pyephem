@@ -1,3 +1,13 @@
+
+Example Scripts
+===============
+
+Here are a few samples scripts
+that show how to use PyEphem to perform simple tasks.
+
+hale_bopp_ephemeris.py
+----------------------
+
 The following script prints out an ephemeris.
 
 ::
@@ -19,7 +29,10 @@ The following script prints out an ephemeris.
      print here.date, hb.ra, hb.dec, hb.mag
      here.date += 5
 
-And this script prints out where the Jovian moons are around Jupiter
+jovian_moon_chart.py
+----------------------
+
+This script prints out where the Jovian moons are around Jupiter
 for the next few days.
 
 ::

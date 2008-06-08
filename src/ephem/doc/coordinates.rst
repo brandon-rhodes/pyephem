@@ -3,8 +3,6 @@
 Coordinate Transformations
 ==========================
 
-.. include:: nav.rst
-
 This document describes how to use PyEphem
 to convert between equatorial, ecliptic, and galactic coordinates,
 and how to convert coordinates between different epochs.

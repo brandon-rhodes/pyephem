@@ -10,6 +10,15 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   quick
+   tutorial
+   radec
+   coordinates
+   date
+   angle
+   examples
+   newton
+
 Indices and tables
 ==================
 

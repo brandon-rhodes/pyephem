@@ -2,8 +2,6 @@
 ephem.Date
 ==========
 
-.. include:: nav.rst
-
 PyEphem uses a simple floating point number
 to represent the date and time inside of its astronomy routines.
 While it would have been possible for PyEphem to conceal this
@@ -34,8 +32,6 @@ each date is really a Python floating point number:
     True
     >>> print 'Behind the date %s is the number %f.' % (d, d)
     Behind the date 1984/5/30 16:23:45 is the number 30831.183161.
-
-year zero, negative one, etc
 
 Time zones
 ----------
