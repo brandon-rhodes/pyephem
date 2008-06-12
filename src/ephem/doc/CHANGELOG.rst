@@ -1,8 +1,8 @@
 PyEphem CHANGELOG
 =================
 
-Version 3.7.2.4 (2008 June ?)
------------------------------
+Version 3.7.2.4 (2008 June 12)
+------------------------------
 
 - **Incompatible Change**: After feedback from users, I have changed
   the ``Observer`` methods which find risings, settings, and transits,
