@@ -1,6 +1,6 @@
 .. raw:: html
 
-   <table class="triad">
+   <table class="triad" cellspacing="0"> <!-- for IE -->
 
    <tr class="cap">
    <td><img class="corner2" src="_static/corner2.png"/></td>
