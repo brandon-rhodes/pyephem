@@ -17,7 +17,9 @@ The name *ephem* is short for the word *ephemeris*,
 which is the traditional term for a table
 giving the position of a planet, asteroid, or comet for a series of dates.
 
-The `PyEphem web site`_ offers documentation and many more details.
+The `PyEphem web site`_ offers documentation
+and also links to the project bug tracker, user support forum,
+and source code repository.
 
 The design of PyEphem emphasizes convenience and ease of use.
 Both celestial bodies and the observer's location on Earth
