@@ -2,230 +2,239 @@ PyEphem CHANGELOG
 =================
 
 Version 3.7.2.4 (2008 June ?)
+-----------------------------
 
-  - **Incompatible Change**: After feedback from users, I have changed
-    the ``Observer`` methods which find risings, settings, and transits,
-    so that they do not change their Observer's ``.date`` attribute.  So
-    the sequence:
+- **Incompatible Change**: After feedback from users, I have changed
+  the ``Observer`` methods which find risings, settings, and transits,
+  so that they do not change their Observer's ``.date`` attribute.  So
+  the sequence:
 
-    >>> r1 = boston.next_rising(mars)
-    >>> r2 = boston.next_rising(mars)
+  >>> r1 = boston.next_rising(mars)
+  >>> r2 = boston.next_rising(mars)
 
-    now computes the same value twice!  If you want a series of calls to
-    each begin when the other left off, you can use the ``start=``
-    parameter described in the next item:
+  now computes the same value twice!  If you want a series of calls to
+  each begin when the other left off, you can use the ``start=``
+  parameter described in the next item:
 
-    >>> r1 = boston.next_rising(mars)
-    >>> r2 = boston.next_rising(mars, start=r1)
+  >>> r1 = boston.next_rising(mars)
+  >>> r2 = boston.next_rising(mars, start=r1)
 
-  - Added an optional ``start=`` argument to the rising, setting, and
-    transit ``Observer`` functions, that tells them from which date and
-    time to begin their search.
+- Added an optional ``start=`` argument to the rising, setting, and
+  transit ``Observer`` functions, that tells them from which date and
+  time to begin their search.
 
-  - **Bugfix**: Rewrote planetary moon routines so that moons of Mars,
-    Jupiter, Saturn, and Uranus now return appropriate data for years
-    1999-2020.  (Each moon had been returning the unmodified position of
-    its planet, because I was unsure whether I could distribute the moon
-    data with PyEphem.)
+- **Bugfix**: Rewrote planetary moon routines so that moons of Mars,
+  Jupiter, Saturn, and Uranus now return appropriate data for years
+  1999-2020.  (Each moon had been returning the unmodified position of
+  its planet, because I was unsure whether I could distribute the moon
+  data with PyEphem.)
 
-  - You can no longer create arbitrary attributes on an ``Observer``, to
-    prevent users from accidentially saying things like
-    ``here.longitude`` or ``here.lon`` when they mean ``here.long``.
-    Create your own subclass of ``Observer`` if you need the power to
-    set your own attributes.
+- You can no longer create arbitrary attributes on an ``Observer``, to
+  prevent users from accidentially saying things like
+  ``here.longitude`` or ``here.lon`` when they mean ``here.long``.
+  Create your own subclass of ``Observer`` if you need the power to
+  set your own attributes.
 
-  - The ephem module now provides a ``__version__`` symbol.
+- The ephem module now provides a ``__version__`` symbol.
 
-  - Added test suite that tests planet and planet moon positions
-    against JPL ephemeris data (needs more work).
+- Added test suite that tests planet and planet moon positions
+  against JPL ephemeris data (needs more work).
 
 Version 3.7.2.3 (2008 January 8)
+--------------------------------
 
-  - Three new classes ``Equatorial``, ``Ecliptic``, and ``Galactic``
-    allow coordinates to be transformed between the three systems
-    (ability to transform coordinates was requested by Aaron Parsons).
+- Three new classes ``Equatorial``, ``Ecliptic``, and ``Galactic``
+  allow coordinates to be transformed between the three systems
+  (ability to transform coordinates was requested by Aaron Parsons).
 
-  - Added constants for popular epochs ``B1900``, ``B1950``, and
-    ``J2000``.
+- Added constants for popular epochs ``B1900``, ``B1950``, and
+  ``J2000``.
 
-  - Added named functions for every solstice and equinox (before, only
-    the vernal equinox could be asked for specifically).
+- Added named functions for every solstice and equinox (before, only
+  the vernal equinox could be asked for specifically).
 
-  - Product tests have been moved inside of the ``ephem`` module itself,
-    and can now be invoked simply by running:
+- Product tests have been moved inside of the ``ephem`` module itself,
+  and can now be invoked simply by running:
 
-    .. code-block:: bash
+  .. code-block:: bash
 
-       $ python setup.py test
+     $ python setup.py test
 
-  - **Bugfix**: ``Angle()`` can no longer be directly instantiated.
+- **Bugfix**: ``Angle()`` can no longer be directly instantiated.
 
-  - **Bugfix**: San Francisco had the wrong coordinates in the cities
-    database (pointed out by Randolph Bentson).
+- **Bugfix**: San Francisco had the wrong coordinates in the cities
+  database (pointed out by Randolph Bentson).
 
 Version 3.7.2.2 (2007 December 9)
+---------------------------------
 
-  - The phases of the moon can now be determined through the functions
-    ``next_new_moon()``, ``next_full_moon()``, ``previous_new_moon()``,
-    et cetera.
+- The phases of the moon can now be determined through the functions
+  ``next_new_moon()``, ``next_full_moon()``, ``previous_new_moon()``,
+  et cetera.
 
-  - Added a modest database of world cities; the ``city()`` function
-    returns a new Observer on each call:
+- Added a modest database of world cities; the ``city()`` function
+  returns a new Observer on each call:
 
-    >>> observer = ephem.city('Boston')
+  >>> observer = ephem.city('Boston')
 
-  - Using the old ``rise``, ``set``, and ``transit`` attributes on
-    ``Body`` objects now causes a deprecation warning.
+- Using the old ``rise``, ``set``, and ``transit`` attributes on
+  ``Body`` objects now causes a deprecation warning.
 
-  - **Bugfix**: the last release of PyEphem omitted the constants
-    ``meters_per_au``, ``earth_radius``, ``moon_radius``, and
-    ``sun_radius``; the constant ``c`` (the speed of light) is also now
-    available.
+- **Bugfix**: the last release of PyEphem omitted the constants
+  ``meters_per_au``, ``earth_radius``, ``moon_radius``, and
+  ``sun_radius``; the constant ``c`` (the speed of light) is also now
+  available.
 
 Version 3.7.2.1 (2007 October 1)
+--------------------------------
 
-  - Functions now exist to find equinoxes and solstices.
+- Functions now exist to find equinoxes and solstices.
 
-  - Bodies now cleanly offer three different versions of their
-    position, rather than making the user remember obscure rules for
-    having each of these three values computed:
+- Bodies now cleanly offer three different versions of their
+  position, rather than making the user remember obscure rules for
+  having each of these three values computed:
 
-    * Astrometric geocetric right ascension and declination
-    * Apparent geocentric right ascension and declination
-    * Apparent topocentric right ascension and declination
+  * Astrometric geocetric right ascension and declination
+  * Apparent geocentric right ascension and declination
+  * Apparent topocentric right ascension and declination
 
-  - Bodies can now find their next or previous times of transit,
-    anti-transit, rising, and setting.
+- Bodies can now find their next or previous times of transit,
+  anti-transit, rising, and setting.
 
-  - A ``localtime()`` function can convert PyEphem ``Date`` objects to
-    local time.
+- A ``localtime()`` function can convert PyEphem ``Date`` objects to
+  local time.
 
-  - Now ``ephem.angle`` instances can survive unary ``+`` and ``-``
-    without getting changed into plain floats.
+- Now ``ephem.angle`` instances can survive unary ``+`` and ``-``
+  without getting changed into plain floats.
 
-  - The ``elev`` Observer attribute has been renamed to ``elevation``.
+- The ``elev`` Observer attribute has been renamed to ``elevation``.
 
-  - Observers now display useful information when printed.
+- Observers now display useful information when printed.
 
-  - Added a much more extensive test suite, which, among other things,
-    now compares results with the United States Naval Observatory,
-    insisting upon arcsecond agreement.
+- Added a much more extensive test suite, which, among other things,
+  now compares results with the United States Naval Observatory,
+  insisting upon arcsecond agreement.
 
-  - **Bugfix**: When a fixed body is repeatedly precessed to different
-    dates, its original position will no longer accumulate error.
+- **Bugfix**: When a fixed body is repeatedly precessed to different
+  dates, its original position will no longer accumulate error.
 
 Version 3.7.2a (2007 June)
+--------------------------
 
-  - Upgraded to the libastro from XEphem 3.7.2.
+- Upgraded to the libastro from XEphem 3.7.2.
 
-  - Should now compile under Windows!
+- Should now compile under Windows!
 
-  - **Bugfix**: rewrote date-and-time parsing to avoid the use of
-    ``sscanf()``, which was breaking under Windows and requiring the
-    insertion of a leading space to succeed.
+- **Bugfix**: rewrote date-and-time parsing to avoid the use of
+  ``sscanf()``, which was breaking under Windows and requiring the
+  insertion of a leading space to succeed.
 
-  - Improved the error returned when a date string cannot be parsed,
-    so that it now quotes the objectionable string (so you can tell
-    which of several date strings on the same line gave an error!).
+- Improved the error returned when a date string cannot be parsed,
+  so that it now quotes the objectionable string (so you can tell
+  which of several date strings on the same line gave an error!).
 
 Version 3.7b  (2005 August 25)
+------------------------------
 
-  - **Bugfix**: in the underlying library, earth satellite objects do
-    not support ``SOLSYS`` attributes like ``sun_distance``; so
-    ``EarthSatellite`` must inherit from ``Body`` rather than ``Planet``
-    (and lose several attributes, which were returning nonsense values).
+- **Bugfix**: in the underlying library, earth satellite objects do
+  not support ``SOLSYS`` attributes like ``sun_distance``; so
+  ``EarthSatellite`` must inherit from ``Body`` rather than ``Planet``
+  (and lose several attributes, which were returning nonsense values).
 
 Version 3.7a  (2005 August 22)
+------------------------------
 
-  - Upgraded to the libastro from XEphem 3.7.
+- Upgraded to the libastro from XEphem 3.7.
 
-  - **Bugfix**: after creating an earth satellite and calling
-    ``compute()``, some attributes (including ``sublat`` and
-    ``sublong``) would always equal zero until you had accessed a more
-    mainstream attribute (like ``ra`` or ``dec``); now, all attributes
-    should return correct values on their first access.
+- **Bugfix**: after creating an earth satellite and calling
+  ``compute()``, some attributes (including ``sublat`` and
+  ``sublong``) would always equal zero until you had accessed a more
+  mainstream attribute (like ``ra`` or ``dec``); now, all attributes
+  should return correct values on their first access.
 
-  - **Bugfix**: the ``sidereal_time()`` function of an ``Observer`` now
-    returns a correct floating-point number that measures in radians,
-    rather than a number in the range [0,1).
+- **Bugfix**: the ``sidereal_time()`` function of an ``Observer`` now
+  returns a correct floating-point number that measures in radians,
+  rather than a number in the range [0,1).
 
-  - The ``Observer`` now has an ``radec_of(az=, alt=)`` function that
-    returns the right ascension and declination of a point in the sky.
+- The ``Observer`` now has an ``radec_of(az=, alt=)`` function that
+  returns the right ascension and declination of a point in the sky.
 
-  - You can normalize an ``Angle`` into the range [0,2pi) by requesting
-    the attribute ``.norm``.
+- You can normalize an ``Angle`` into the range [0,2pi) by requesting
+  the attribute ``.norm``.
 
-  - Earth satellite objects read in from TLE files now retain their
-    TLE catalog number as an attribute ``catalog_number``.
+- Earth satellite objects read in from TLE files now retain their
+  TLE catalog number as an attribute ``catalog_number``.
 
-  - Uninitialized bodies now start off with ``None`` for their name,
-    rather than the string ``"unnamed"``.
+- Uninitialized bodies now start off with ``None`` for their name,
+  rather than the string ``"unnamed"``.
 
 Version 3.6.4a  (2005 July 18)
+------------------------------
 
-  - Upgraded to the libastro from XEphem 3.6.4, which:
+- Upgraded to the libastro from XEphem 3.6.4, which:
 
-    * No longer incorrectly applies relativistic deflection to
-      objects on this side of the Sun, whose light will obviously not
-      go past the sun and be deflected.
+  * No longer incorrectly applies relativistic deflection to
+    objects on this side of the Sun, whose light will obviously not
+    go past the sun and be deflected.
 
-    * Now correctly handles earth satellites with a negative
-      ``es_decay`` parameter.
+  * Now correctly handles earth satellites with a negative
+    ``es_decay`` parameter.
 
-  - Added several functions to the module:
+- Added several functions to the module:
 
-    * ``moon_phases()`` computes a new and full moon following a date.
+  * ``moon_phases()`` computes a new and full moon following a date.
 
-    * ``delta_t()`` computes the difference between Terrestrial Time and
-      Universal Time.
+  * ``delta_t()`` computes the difference between Terrestrial Time and
+    Universal Time.
 
-    * ``julian_date()`` computes the Julian Date for a ``date`` or
-      ``Observer``.
+  * ``julian_date()`` computes the Julian Date for a ``date`` or
+    ``Observer``.
 
-    * ``millennium_atlas()`` and
-      ``uranometria()`` and
-      ``uranometria2000()`` determine the star atlas page on which a
-      given location falls, given as right ascension and declination.
+  * ``millennium_atlas()`` and
+    ``uranometria()`` and
+    ``uranometria2000()`` determine the star atlas page on which a
+    given location falls, given as right ascension and declination.
 
-  - Added a function to the Observer class, which takes no arguments:
+- Added a function to the Observer class, which takes no arguments:
 
-    ``sidereal_time()`` computes the sidereal time for the Observer
+  ``sidereal_time()`` computes the sidereal time for the Observer
 
-  - Each ``Observer`` now has a ``horizon`` attribute, with which you
-    can specify the degrees altitude at which you define an object to be
-    rising or setting.  Normally, all rising and setting times are
-    computed for when the object appears to be exactly at the horizon
-    (at zero degrees altitude).
+- Each ``Observer`` now has a ``horizon`` attribute, with which you
+  can specify the degrees altitude at which you define an object to be
+  rising or setting.  Normally, all rising and setting times are
+  computed for when the object appears to be exactly at the horizon
+  (at zero degrees altitude).
 
 Version 3.6.1a  (2004 November 25)
+----------------------------------
 
-  - All major moons in the solar system are now supported.
+- All major moons in the solar system are now supported.
 
-  - Added ``copy()`` method to bodies, that returns a new instance of
-    the body which should be identical in all properties.
+- Added ``copy()`` method to bodies, that returns a new instance of
+  the body which should be identical in all properties.
 
-  - Improved the definitions of body attributes, both in their
-    docstrings and in the PyEphem Manual.
+- Improved the definitions of body attributes, both in their
+  docstrings and in the PyEphem Manual.
 
-  - Improved access to the orbital parameters by which the user
-    defines bodies in ellipical, parabolic, and hyperbolic orbits, as
-    well as artificial Earth satellites; users can now create such
-    objects entirely through setting their parameters, without having
-    to use the ``readdb()`` function to parse a definition of the object
-    in Ephem database format.
+- Improved access to the orbital parameters by which the user
+  defines bodies in ellipical, parabolic, and hyperbolic orbits, as
+  well as artificial Earth satellites; users can now create such
+  objects entirely through setting their parameters, without having
+  to use the ``readdb()`` function to parse a definition of the object
+  in Ephem database format.
 
-  - Source distribution now includes test suites, one of which
-    actually checks to see whether your version of PyEphem produces
-    the same output as the examples from the PyEphem Manual (two of
-    which will fail).
+- Source distribution now includes test suites, one of which
+  actually checks to see whether your version of PyEphem produces
+  the same output as the examples from the PyEphem Manual (two of
+  which will fail).
 
-  - Following the same adjustment in the XEphem application, PyEphem
-    now uses a default atmospheric pressure of 1010 millibar, rather
-    than the old value of 1013, when computing the altitude of a body
-    near the horizon.
+- Following the same adjustment in the XEphem application, PyEphem
+  now uses a default atmospheric pressure of 1010 millibar, rather
+  than the old value of 1013, when computing the altitude of a body
+  near the horizon.
 
-  - The ``constellation()`` function now correctly forces the
-    computation of a body's ``ra`` and ``dec`` before determining the
-    constellation in which the body lies.
+- The ``constellation()`` function now correctly forces the
+  computation of a body's ``ra`` and ``dec`` before determining the
+  constellation in which the body lies.
 
-  - Code should produce cleaner compiles on many platforms.
+- Code should produce cleaner compiles on many platforms.
