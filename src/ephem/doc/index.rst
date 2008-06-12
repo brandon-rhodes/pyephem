@@ -10,11 +10,11 @@
 
    <tr class="sites"><td>
 
-   <p>This site is the PyEphem <b>home page</b></p>
+   <p>This site is the PyEphem <b>home page</b></p>
    <img src="_static/pyephem-logo-short.png"/>
    <p>Simply <b>scroll down</b> to find:</p>
    <p>
-     Installation Notes<br/>
+     Installation Guide<br/>
      Documentation<br/>
      Data Sources<br/>
    </ul>
@@ -28,9 +28,12 @@
    <p>
      <a href="http://pypi.python.org/pypi/pyephem/"
       >PyPI PyEphem page</a><br/><br/>
-     Python 2.5 Windows installer<br/>
-     Python 2.4 Windows installer<br/>
-     Source code (.tar.gz)<br/>
+     <a href="http://pypi.python.org/packages/2.5/p/pyephem/pyephem-3.7.2.4.win32-py2.5.exe#md5=ba3b7fae6e85a784ce0f51285fb50f03"
+      >Python 2.5 Windows installer<br/>
+     <a href="http://pypi.python.org/packages/2.4/p/pyephem/pyephem-3.7.2.4.win32-py2.4.exe#md5=a56315f8742222da4eb054ea7e05df9f"
+      >Python 2.4 Windows installer<br/>
+     <a href="http://pypi.python.org/packages/source/p/pyephem/pyephem-3.7.2.4.tar.gz#md5=cb2932f8d9074a8a90e2af869940a0ee"
+      >Source code (.tar.gz)<br/>
    </p>
 
    </td>
@@ -40,10 +43,12 @@
    and our source code repository.</p>
    <img src="_static/launchpad.png"/>
    <p>
-     <a href="https://answers.launchpad.net/pyephem">Q&A Forum</a><br/>
-     News Feed<br/>
-     <a href="https://bugs.launchpad.net/pyephem">Bug Tracker</a><br/>
-     <a href="https://code.launchpad.net/pyephem">Code Repository</a><br/>
+     <a href="http://launchpad.net/pyephem"
+      >PyPI LaunchPad page</a><br/><br/>
+     <a href="http://answers.launchpad.net/pyephem">Q&A Forum</a><br/>
+     <a href="http://launchpad.net/pyephem/+announcements">News Feed</a><br/>
+     <a href="http://bugs.launchpad.net/pyephem">Bug Tracker</a><br/>
+     <a href="http://code.launchpad.net/pyephem">Code Repository</a><br/>
    </p>
 
    </td></tr>
@@ -62,9 +67,6 @@
    <td colspan=3>
 
    <div class="sideexample">
-
-A Quick Example
-===============
 
 >>> import ephem
 
