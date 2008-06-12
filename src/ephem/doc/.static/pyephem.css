@@ -1,4 +1,8 @@
-div.related, div.sidebar, div.footer, table.guide {
+body {
+    margin: 0px;
+}
+
+div.related, div.sidebar, div.footer, table.triad {
     font-family: Arial, sans-serif;
 }
 
@@ -69,23 +73,78 @@ dt {
     font-weight: bold;
 }
 
-table.guide td {
-    height: 100%;
-    width: 30%;
-    padding: 12px;
-    border: solid 6px #a0a0a0;
-    vertical-align: top;
+table.triad {
+    padding: 16px;
+    border-collapse: separate;
+    border-spacing: 12px 0px;
+    background-color: #d5dba7;
 }
 
-table.guide td:first-child {
-    border-left: none;
+table.triad td {
+    border-left: solid 6px #a0a0a0;
+    border-right: solid 6px #a0a0a0;
+    background-color: white;
+}
+
+table.triad tr.cap td {
+    border-top: solid 6px #a0a0a0;
+}
+
+table.triad tr.sites td {
+    width: 30%;
+    vertical-align: top;
+    text-align: center;
+}
+
+table.triad tr.toe td {
+    border-bottom: solid 6px #a0a0a0;
+}
+
+table.triad tr.toe td:first-child {
     border-bottom: none;
 }
 
-table.guide p {
-    margin-top: 0;
+table.triad tr.mount td {
+    height: 12px;
 }
 
-div.threepiece img {
-    display: block;
+table.triad tr.base td {
+    height: 12px;
+    border-left: none;
+    border-right: none;
+    border-top: solid 6px #a0a0a0;
+    border-bottom: solid 6px #a0a0a0;
+    border-left: solid 6px #a0a0a0;
+    border-right: solid 6px #a0a0a0;
+    padding: 0px 12px;
+}
+
+table.triad img.corner2 {
+    float: right;
+    position: relative;
+    top: -7px;
+    right: -7px;
+}
+
+table.triad img.corner3 {
+    float: left;
+    position: relative;
+    left: -7px;
+    bottom: -7px;
+}
+
+body div.section {
+    padding: 16px;
+}
+
+body div.section div.section {
+    padding: 0px;
+}
+
+img.alone-logo {
+    margin: 16px 0px 0px 16px;
+}
+
+div.sideexample {
+    float: right;
 }

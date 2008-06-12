@@ -6,6 +6,13 @@
             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 {%- endblock %}
 
+{%- block relbar1 %}
+  {%- if current_page_name != "index" %}
+    <img class="alone-logo" src="_static/pyephem-logo-full.png"/>
+    {{ relbar() }}
+  {%- endif %}
+{% endblock %}
+
 {%- block sidebar1 %}
   {%- if current_page_name != "index" %}
     {{ sidebar() }}
@@ -33,3 +40,8 @@
 {%- endif %}
 {%- endblock %}
 
+{%- block relbar2 %}
+  {%- if current_page_name != "index" %}
+    {{ relbar() }}
+  {%- endif %}
+{% endblock %}

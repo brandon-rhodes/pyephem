@@ -1,64 +1,146 @@
-.. PyEphem documentation master file, created by sphinx-quickstart on Sat Jun  7 14:43:45 2008.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. raw:: html
 
-— PyEphem uses three different web sites —
+   <table class="triad">
+
+   <tr class="cap">
+   <td><img class="corner2" src="_static/corner2.png"/></td>
+   <td><img class="corner2" src="_static/corner2.png"/></td>
+   <td><img class="corner2" src="_static/corner2.png"/></td>
+   </tr>
+
+   <tr class="sites"><td>
+
+   <p>This site is the PyEphem <b>home page</b></p>
+   <img src="_static/pyephem-logo-short.png"/>
+   <p>Simply <b>scroll down</b> to find:</p>
+   <p>
+     Installation Notes<br/>
+     Documentation<br/>
+     Data Sources<br/>
+   </ul>
+
+   </td>
+   <td>
+
+   <p>Download PyEphem for Windows, Linux, or as source code,
+   directly from the <b>Python Package Index</b>.</p>
+   <img src="_static/python.png"/>
+   <p>
+     <a href="http://pypi.python.org/pypi/pyephem/"
+      >PyPI PyEphem page</a><br/><br/>
+     Python 2.5 Windows installer<br/>
+     Python 2.4 Windows installer<br/>
+     Source code (.tar.gz)<br/>
+   </p>
+
+   </td>
+   <td>
+
+   <p>We use <b>Launchpad</b> to host our community support tools
+   and our source code repository.</p>
+   <img src="_static/launchpad.png"/>
+   <p>
+     <a href="https://answers.launchpad.net/pyephem">Q&A Forum</a><br/>
+     News Feed<br/>
+     <a href="https://bugs.launchpad.net/pyephem">Bug Tracker</a><br/>
+     <a href="https://code.launchpad.net/pyephem">Code Repository</a><br/>
+   </p>
+
+   </td></tr>
+
+   <tr class="toe">
+   <td></td>
+   <td><img class="corner3" src="_static/corner3.png"/></td>
+   <td><img class="corner3" src="_static/corner3.png"/></td>
+   </tr>
+
+   <tr class="mount">
+   <td></td>
+   </tr>
+
+   <tr class="base">
+   <td colspan=3>
+
+   <div class="sideexample">
+
+A Quick Example
+===============
+
+>>> import ephem
+
+>>> mars = ephem.Mars()
+>>> mars.compute()
+>>> print mars.ra, mars.dec
+6:05:56.34 23:23:40.0
+>>> ephem.constellation(mars)
+('Gem', 'Gemini')
+
+>>> boston = ephem.Observer()
+>>> boston.lat = '42.37'
+>>> boston.long = '-71.03'
+>>> mars.compute(boston)
+>>> print mars.az, mars.alt
+37:55:48.9 -14:23:11.8
+
+>>> boston.next_rising(mars)
+2007/10/2 02:31:51
+>>> print mars.az
+56:52:52.1
+
+>>> boston.next_transit(mars)
+2007/10/2 10:07:47
+>>> print mars.alt
+71:02:16.3
 
 .. raw:: html
 
-   <table class="guide">
-   <tr>
-   <td>
-   <p>This is the <b>home page</b></p>
-   LOGO
-   <p>Here on the main PyEphem site, simply <b>scroll down</b> to find:</p>
-   <ul>
-     <li>Installation Notes</li>
-     <li>Quick Reference</li>
-     <li>Tutorial</li>
-     <li>And more!</li>
-   </ul>
+   </div>
 
-   </td>
-   <td>
-   <p>Download PyEphem for Windows, Linux, or as source code,
-   directly from the <b>Python Package Index</b>.</p>
-   <img src="_static/python.png">
-   <ul>
-     <li><a href="http://pypi.python.org/pypi/pyephem/">PyPI PyEphem
-      page</a></li>
-     <li>Windows .exe (Python 2.4)</li>
-     <li>Windows .exe (Python 2.5)</li>
-     <li>Source code (.tar.gz)</li>
-   </ul>
+Welcome!
+========
 
-   </td>
-   <td>
-   <p>We use <b>Launchpad</b> to host our community support tools
-   and our development repository.</p>
-   <img src="_static/launchpad.png">
-   <ul>
-     <li><a href="https://answers.launchpad.net/pyephem">Q&A Forum</a></li>
-     <li>News Feed</li>
-     <li><a href="https://bugs.launchpad.net/pyephem">Bug Tracker</a></li>
-     <li><a href="https://code.launchpad.net/pyephem">Code Repository</a></li>
-   </ul>
+**PyEphem** provides scientific-grade astronomical computations
+for the Python_ programming language.
+Given a date and location on the Earth's surface,
+it can compute the positions of the Sun and Moon,
+of the planets and their moons,
+and of any asteroids, comets, or earth satellites
+whose orbital elements the user can provide.
+Additional functions are provided to compute the angular separation
+between two objects in the sky,
+to determine the constellation in which an object lies,
+and to find the times at which
+an object rises, transits, and sets on a particular day.
 
-   </td>
-   </tr>
-   </table>
+.. _Python: http://www.python.org/
+
+Installation
+------------
+
+Version **3.7.2.4** is the most recent release of PyEphem,
+and you should consult the `change log`_
+to see the new features
+
+.. _change log: CHANGELOG
 
 Documentation
-=============
+-------------
 
 .. toctree::
    :maxdepth: 2
 
    quick
    tutorial
+   CHANGELOG
    radec
    coordinates
    date
    angle
    examples
    newton
+
+.. raw:: html
+
+   </td></tr>
+
+   </table>

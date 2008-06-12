@@ -5,7 +5,7 @@ The PyEphem Tutorial
 Version 2007.November.1, for PyEphem version 3.7.2.2 and later.
 
 The `PyEphem library`_ provides Python programmers
-ith access to the scientific-grade astronomical routines
+with access to the scientific-grade astronomical routines
 used by the `XEphem`_ interactive astronomical ephemeris application;
 its author, `Elwood Charles Downey`_, has generously granted permission
 for PyEphem to be built upon his work.
