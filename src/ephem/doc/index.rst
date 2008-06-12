@@ -114,14 +114,46 @@ an object rises, transits, and sets on a particular day.
 
 .. _Python: http://www.python.org/
 
+The numerical routines that lie behind PyEphem
+are those from the wonderful XEphem_ astronomy application,
+whose author, Elwood Downey, generously gave permission
+for us to use them as the basis for PyEphem.
+
+.. _XEphem: http://www.clearskyinstitute.com/xephem/
+
 Installation
 ------------
 
-Version **3.7.2.4** is the most recent release of PyEphem,
-and you should consult the `change log`_
-to see the new features
+Version **3.7.2.4** is the most recent release of PyEphem.
+Consult the `change log`_ to see the new features,
+including an **incompatible** change
+in the way that the rising and settings functions operate!
 
 .. _change log: CHANGELOG
+
+The easiest way to install PyEphem,
+if you have the easy_install_ Python command,
+is to run:
+
+.. _easy_install: http://peak.telecommunity.com/DevCenter/EasyInstall
+.. code-block:: bash
+
+   $ easy_install pyephem
+
+If you choose to create a virtualenv_ environment
+and then run its ``easy_install`` instead of your system-wide one,
+then you will not even have to gain administrator rights to your machine
+before performing the installation.
+
+But if you want to download the Windows installer,
+the raw ``.egg`` archives in which PyEphem is delivered,
+or the source code,
+then you should visit the `PyEphem entry`_
+at the Python Package Index,
+or use the links at the top of this page.
+
+.. _PyEphem entry: http://pypi.python.org/pypi/pyephem/
+.. _virtualenv: http://pypi.python.org/pypi/virtualenv
 
 Documentation
 -------------
@@ -131,6 +163,7 @@ Documentation
 
    quick
    tutorial
+   catalogs
    CHANGELOG
    radec
    coordinates
