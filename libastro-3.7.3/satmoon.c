@@ -486,4 +486,4 @@ moonTrans (MoonData md[S_NMOONS])
 }
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: satmoon.c,v $ $Date: 2006/08/29 03:16:47 $ $Revision: 1.7 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: satmoon.c,v $ $Date: 2007/07/24 18:15:28 $ $Revision: 1.8 $ $Name:  $"};

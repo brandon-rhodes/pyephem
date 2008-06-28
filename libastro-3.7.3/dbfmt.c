@@ -928,19 +928,23 @@ write_p (Obj *op, char lp[])
 static void
 write_E (Obj *op, char lp[])
 {
+	double d;
+	int m, y;
+
 	lp += sprintf (lp, "%s,E", op->o_name);
 	*lp++ = ',';
-	lp += fs_date (lp, PREF_MDY, op->es_epoch);
+	mjd_cal (op->es_epoch, &m, &d, &y); /* need more day prec than fs_date*/
+	lp += sprintf (lp, "%d/%.12g/%d", m, d, y);
 	lp += get_okdates (lp, &op->es_startok, &op->es_endok);
-	lp += sprintf (lp, ",%.7g", op->es_inc);
-	lp += sprintf (lp, ",%.7g", op->es_raan);
-	lp += sprintf (lp, ",%.7g", op->es_e);
-	lp += sprintf (lp, ",%.7g", op->es_ap);
-	lp += sprintf (lp, ",%.7g", op->es_M);
-	lp += sprintf (lp, ",%.7g", op->es_n);
-	lp += sprintf (lp, ",%.7g", op->es_decay);
+	lp += sprintf (lp, ",%.8g", op->es_inc);
+	lp += sprintf (lp, ",%.8g", op->es_raan);
+	lp += sprintf (lp, ",%.8g", op->es_e);
+	lp += sprintf (lp, ",%.8g", op->es_ap);
+	lp += sprintf (lp, ",%.8g", op->es_M);
+	lp += sprintf (lp, ",%.12g", op->es_n);		/* double */
+	lp += sprintf (lp, ",%.8g", op->es_decay);
 	lp += sprintf (lp, ",%d", op->es_orbit);
-	lp += sprintf (lp, ",%.7g", op->es_drag);
+	lp += sprintf (lp, ",%.8g", op->es_drag);
 }
 
 static void
@@ -995,4 +999,4 @@ write_P (Obj *op, char lp[])
 }
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: dbfmt.c,v $ $Date: 2006/04/10 09:00:06 $ $Revision: 1.41 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: dbfmt.c,v $ $Date: 2007/03/19 08:13:39 $ $Revision: 1.42 $ $Name:  $"};

@@ -83,9 +83,13 @@ riset_cir (Now *np, Obj *op, double dis, RiseSet *rp)
 	case -1: /* obj_cir error */
 	    rp->rs_flags |= RS_RISERR;
 	    break;
-	case -2: /* converged but not today */ /* FALLTHRU */
-	case -3: /* probably never up */
+	case -2: /* converged but not today, err but give times anyway */
+	    rp->rs_risetm = n.n_mjd;
+	    rp->rs_riseaz = o.s_az;
 	    rp->rs_flags |= RS_NORISE;
+	    break;
+	case -3: /* probably never up */
+	    rp->rs_flags |= RS_NEVERUP;
 	    break;
 	}
 
@@ -99,9 +103,13 @@ riset_cir (Now *np, Obj *op, double dis, RiseSet *rp)
 	case -1: /* obj_cir error */
 	    rp->rs_flags |= RS_SETERR;
 	    break;
-	case -2: /* converged but not today */ /* FALLTHRU */
-	case -3: /* probably circumpolar */
+	case -2: /* converged but not today, err but give times anyway */
+	    rp->rs_settm = n.n_mjd;
+	    rp->rs_setaz = o.s_az;
 	    rp->rs_flags |= RS_NOSET;
+	    break;
+	case -3: /* probably circumpolar */
+	    rp->rs_flags |= RS_CIRCUMPOLAR;
 	    break;
 	}
 
@@ -219,10 +227,9 @@ e_riset_cir (Now *np, Obj *op, double dis, RiseSet *rp)
 	}
 
 	/* instead of transit, for satellites we find time of maximum
-	 * altitude, if we know both the rise and set times and the former
-	 * occurs before the latter.
+	 * altitude, if we know both the rise and set times.
 	 */
-	if (rise && set && rp->rs_risetm < rp->rs_settm) {
+	if (rise && set) {
 	    double tt, al;
 	    if (find_max (np, op, rp->rs_risetm, rp->rs_settm, &tt, &al) < 0) {
 		rp->rs_flags |= RS_TRANSERR;
@@ -265,6 +272,7 @@ Obj *op)	/* working object -- returns as answer */
 {
 #define	MAXPASSES	20		/* max iterations to try */
 #define	FIRSTSTEP	(1.0/60.0/24.0)	/* first time step, days */
+#define	MAXSTEP		(1.0/24.0)/* max time step,days (to detect flat)*/
 
 	double a0 = 0;
 	double mjdn = mjd;
@@ -294,15 +302,17 @@ Obj *op)	/* working object -- returns as answer */
 	    dt = (npasses == 0) ? FIRSTSTEP : (dis+a1)*dt/(a0-a1);
 	    a0 = a1;
 
-	} while (++npasses < MAXPASSES && fabs(dt) > TMACC);
+	    if (++npasses > MAXPASSES || fabs(dt) >= MAXSTEP)
+		return (-3);
+
+	} while (fabs(dt)>TMACC);
 
 	/* return codes */
-	if (npasses == MAXPASSES)
-	    return (-3);
 	return (fabs(mjdn-mjd) < .5 ? 0 : -2);
 
 #undef	MAXPASSES
 #undef	FIRSTSTEP
+#undef	MAXSTEP
 }
 
 /* find when the given object transits. start the search when LST matches the
@@ -360,6 +370,9 @@ Obj *op,
 double tr, double ts,		/* times of rise and set */
 double *tp, double *alp)	/* time of max altitude, and that altitude */
 {
+	/* want rise before set */
+	while (ts < tr)
+	    tr -= 1.0/op->es_n;
 	mjd = (ts + tr)/2;
 	if (obj_cir (np, op) < 0)
 	    return (-1);
@@ -369,4 +382,4 @@ double *tp, double *alp)	/* time of max altitude, and that altitude */
 }
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: riset_cir.c,v $ $Date: 2003/11/15 04:08:23 $ $Revision: 1.9 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: riset_cir.c,v $ $Date: 2008/01/15 18:38:07 $ $Revision: 1.12 $ $Name:  $"};

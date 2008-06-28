@@ -1,6 +1,18 @@
 PyEphem CHANGELOG
 =================
 
+Version 3.7.3.1 (2008 June)
+---------------------------
+
+- **Bugfix**: the rising and setting functions were attempting to
+  achieve such high precision that users sometimes found circumstances
+  under which they would not complete at all!  They now stop and return
+  an answer once they are withing a half-second of the real time of
+  rising, transit, or setting, which solves the problem without damaging
+  the quality of the results when tested against the Naval Observatory.
+
+- Upgraded to the libastro from XEphem 3.7.3.
+
 Version 3.7.2.4 (2008 June 12)
 ------------------------------
 

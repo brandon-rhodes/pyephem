@@ -6,12 +6,12 @@ except:
 import os
 from glob import glob
 
-__version__ = '3.7.2.4'
+__version__ = '3.7.3.1dev'
 
 # The `pyephem' module is built from every .c file in the libastro
 # directory plus ...
 
-libastro_version = '3.7.2'
+libastro_version = '3.7.3'
 libastro_files = glob('libastro-%s/*.c' % libastro_version)
 libastro_data = glob('extensions/data/*.c')
 

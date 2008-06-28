@@ -18,8 +18,6 @@
 /* ratio of from synodic (solar) to sidereal (stellar) rate */
 #define	SIDRATE		.9972695677
 
-#define	SPD	(24.0*3600.0)	/* seconds per day */
-
 /* manifest names for planets.
  * N.B. must coincide with usage in pelement.c and plans.c.
  * N.B. only the first 8 are valid for use with plans().
@@ -811,5 +809,5 @@ extern int vsop87 (double m, int obj, double prec, double *ret);
 #endif /* _ASTRO_H */
 
 /* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: astro.h,v $ $Date: 2006/04/10 09:00:06 $ $Revision: 1.31 $ $Name:  $
+ * @(#) $RCSfile: astro.h,v $ $Date: 2007/03/19 08:05:47 $ $Revision: 1.32 $ $Name:  $
  */

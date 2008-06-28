@@ -236,7 +236,7 @@ obj_earthsat (Now *np, Obj *op)
 	/* find s_ra/dec, depending on current options. */
 	if (pref_get(PREF_EQUATORIAL) == PREF_TOPO) {
 	    double ha, lst;
-	    aa_hadec (lat, (double)op->s_alt, (double)op->s_az, &ha, &dec);
+	    aa_hadec (lat, Elevation, (double)op->s_az, &ha, &dec);
 	    now_lst (np, &lst);
 	    ra = hrrad(lst) - ha;
 	    range (&ra, 2*PI);
@@ -788,4 +788,4 @@ InitOrbitRoutines(double EpochDay, int AtEod)
 }
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: earthsat.c,v $ $Date: 2004/10/06 21:56:25 $ $Revision: 1.9 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: earthsat.c,v $ $Date: 2007/05/09 03:19:29 $ $Revision: 1.10 $ $Name:  $"};
