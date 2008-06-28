@@ -83,7 +83,8 @@ Moon = _libastro.Moon
 def newton(f, x0, x1):
     """Return an x-value at which the given function reaches zero."""
     f0, f1 = f(x0), f(x1)
-    while f1 and x1 != x0 and f1 != f0:
+    halfsecond = second / 2.
+    while f1 and abs(x1 - x0) > halfsecond and f1 != f0:
         x0, x1 = x1, x1 + (x1 - x0) / (f0/f1 - 1)
         f0, f1 = f1, f(x1)
     return x1
