@@ -79,7 +79,9 @@ Version 3.7.2.2 (2007 December 9)
 - Added a modest database of world cities; the ``city()`` function
   returns a new Observer on each call:
 
-  >>> observer = ephem.city('Boston')
+  .. code-block:: python
+
+     observer = ephem.city('Boston')
 
 - Using the old ``rise``, ``set``, and ``transit`` attributes on
   ``Body`` objects now causes a deprecation warning.
