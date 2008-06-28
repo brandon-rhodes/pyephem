@@ -9,15 +9,19 @@ Version 3.7.2.4 (2008 June 12)
   so that they do not change their Observer's ``.date`` attribute.  So
   the sequence:
 
-  >>> r1 = boston.next_rising(mars)
-  >>> r2 = boston.next_rising(mars)
+  .. code-block:: python
+
+     r1 = boston.next_rising(mars)
+     r2 = boston.next_rising(mars)
 
   now computes the same value twice!  If you want a series of calls to
   each begin when the other left off, you can use the ``start=``
   parameter described in the next item:
 
-  >>> r1 = boston.next_rising(mars)
-  >>> r2 = boston.next_rising(mars, start=r1)
+  .. code-block:: python
+
+     r1 = boston.next_rising(mars)
+     r2 = boston.next_rising(mars, start=r1)
 
 - Added an optional ``start=`` argument to the rising, setting, and
   transit ``Observer`` functions, that tells them from which date and
