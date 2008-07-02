@@ -183,10 +183,7 @@ def _find_moon_phase(d0, motion, target):
         _moon.compute(d)
         slong = _libastro.eq_ecl(d, _sun.g_ra, _sun.g_dec)[0]
         mlong = _libastro.eq_ecl(d, _moon.g_ra, _moon.g_dec)[0]
-        longdiff = (mlong - slong - antitarget) % twopi - pi
-        if abs(longdiff) < 1e-10: # Moon position is not a continuous function
-            return 0
-        return longdiff
+        return (mlong - slong - antitarget) % twopi - pi
     antitarget = target + pi
     d0 = Date(d0)
     f0 = f(d0)
