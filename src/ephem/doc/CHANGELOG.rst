@@ -1,8 +1,16 @@
 PyEphem CHANGELOG
 =================
 
-Version 3.7.3.1 (2008 June)
----------------------------
+Version 3.7.3.2 (2008 July 2)
+-----------------------------
+
+- **Bugfix**: the rising and setting functions, if called repeatedly,
+  would sometimes get hung up on a single answer which they would return
+  over and over again instead of progressing to the next rising or
+  setting.  They should now always progress instead of getting stuck.
+
+Version 3.7.3.1 (2008 July 1)
+-----------------------------
 
 - **Bugfix**: the rising and setting functions were attempting to
   achieve such high precision that users sometimes found circumstances

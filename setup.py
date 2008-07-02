@@ -6,7 +6,12 @@ except:
 import os
 from glob import glob
 
-__version__ = '3.7.3.1'
+# Read the current version from ephem/__init__.py itself.
+
+path = os.path.join(os.path.dirname(__file__), 'src', 'ephem', '__init__.py')
+for line in open(path):
+    if line.startswith('__version__'):
+        __version__ = eval(line.split(None, 2)[2]) # skip '__version__', '='
 
 # The `pyephem' module is built from every .c file in the libastro
 # directory plus ...

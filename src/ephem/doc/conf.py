@@ -42,9 +42,18 @@ copyright = '2008, Brandon Craig Rhodes'
 # other places throughout the built documents.
 #
 # The short X.Y version.
-version = '3.7.3.1'
+#version = '...'
 # The full version, including alpha/beta/rc tags.
-release = '3.7.3.1'
+#release = '...'
+
+# Read version and release from ephem/__init__.py itself.
+
+path = os.path.join(os.path.dirname(__file__), '..', '__init__.py')
+for line in open(path):
+    if line.startswith('__version__'):
+        version = eval(line.split(None, 2)[2]) # skip '__version__', '='
+
+release = version
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
