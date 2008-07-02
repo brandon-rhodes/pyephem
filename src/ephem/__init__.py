@@ -39,6 +39,8 @@ hour = 1. / 24.
 minute = hour / 60.
 second = minute / 60.
 
+default_newton_precision = second / 10.
+
 delta_t = _libastro.delta_t
 julian_date = _libastro.julian_date
 
@@ -80,11 +82,15 @@ Moon = _libastro.Moon
 
 # Newton's method.
 
-def newton(f, x0, x1):
-    """Return an x-value at which the given function reaches zero."""
+def newton(f, x0, x1, precision=default_newton_precision):
+    """Return an x-value at which the given function reaches zero.
+
+    Stops and declares victory once the x-value is within ``precision``
+    of the solution, which defaults to a half-second of clock time.
+
+    """
     f0, f1 = f(x0), f(x1)
-    halfsecond = second / 2.
-    while f1 and abs(x1 - x0) > halfsecond and f1 != f0:
+    while f1 and abs(x1 - x0) > precision and f1 != f0:
         x0, x1 = x1, x1 + (x1 - x0) / (f0/f1 - 1)
         f0, f1 = f1, f(x1)
     return x1
@@ -178,7 +184,7 @@ def _find_moon_phase(d0, motion, target):
         slong = _libastro.eq_ecl(d, _sun.g_ra, _sun.g_dec)[0]
         mlong = _libastro.eq_ecl(d, _moon.g_ra, _moon.g_dec)[0]
         longdiff = (mlong - slong - antitarget) % twopi - pi
-        if abs(longdiff) < 1e-10:   # Moon position is not a continuous function
+        if abs(longdiff) < 1e-10: # Moon position is not a continuous function
             return 0
         return longdiff
     antitarget = target + pi
@@ -321,9 +327,19 @@ class Observer(_libastro.Observer):
                                     % (body.name, d))
             return d
 
+        # Save self.date so that we can restore it before returning.
         original_date = self.date
+
+        # Start slightly to one side of the start date, to prevent
+        # repeated calls from returning the same solution over and over.
         if start is not None:
             self.date = start
+        if previous:
+            self.date -= default_newton_precision
+        else:
+            self.date += default_newton_precision
+
+        # Take a big leap towards the solution, then Newton takes us home.
         body.compute(self)
         heading_downward = (rising == previous) # "==" is inverted "xor"
         if heading_downward:
