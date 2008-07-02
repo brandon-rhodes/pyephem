@@ -8,6 +8,8 @@ def additional_tests():
     return unittest.TestSuite([
             doctest.DocFileSuite('../doc/%s' % os.path.basename(path))
             for path in glob(os.path.dirname(__file__) + '/../doc/*.rst')
+            if os.path.split(path)[-1] != 'index.rst'
+            # skips time-dependent doctest in index.rst
             ])
 
 if __name__ == '__main__':
