@@ -44,7 +44,7 @@
    <img src="_static/launchpad.png"/>
    <p>
      <a href="http://launchpad.net/pyephem"
-      >PyPI LaunchPad page</a><br/><br/>
+      >LaunchPad PyEphem page</a><br/><br/>
      <a href="http://answers.launchpad.net/pyephem">Q&A Forum</a><br/>
      <a href="http://launchpad.net/pyephem/+announcements">News Feed</a><br/>
      <a href="http://bugs.launchpad.net/pyephem">Bug Tracker</a><br/>
