@@ -1383,7 +1383,7 @@ static int Saturn_satrings(Saturn *saturn, char *fieldname)
      if (Body_obj_cir((Body*) saturn, fieldname, 0) == -1) return -1;
      sunpos(saturn->now.n_mjd, &lsn, &rsn, &bsn);
      satrings(saturn->obj.s_hlat, saturn->obj.s_hlong, saturn->obj.s_sdist,
-	      lsn + PI, rsn, saturn->now.n_mjd,
+	      lsn + PI, rsn, MJD0 + saturn->now.n_mjd,
 	      &saturn->etilt, &saturn->stilt);
      saturn->obj.o_flags |= VALID_RINGS;
      return 0;
