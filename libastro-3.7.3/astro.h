@@ -667,6 +667,8 @@ extern void heliocorr (double jd, double ra, double dec, double *hcp);
 extern void jupiter_data (double Mjd, char dir[], Obj *sop, Obj *jop,
     double *jupsize, double *cmlI, double *cmlII, double *polera,
     double *poledec, MoonData md[J_NMOONS]); 
+extern void meeus_jupiter (double d, double *cmlI, double *cmlII,
+    MoonData md[J_NMOONS]);
 
 /* libration.c */
 extern void llibration (double JD, double *llatp, double *llonp);

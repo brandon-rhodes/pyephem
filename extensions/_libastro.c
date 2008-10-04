@@ -35,6 +35,8 @@
 #define VALID_LIBRATION FUSER4	/* moon libration fields computed */
 #define VALID_COLONG  FUSER5	/* moon co-longitude fields computed */
 
+#define VALID_CML   FUSER4	/* jupiter central meridian computed */
+
 #define VALID_RINGS   FUSER4	/* saturn ring fields computed */
 
 typedef struct {
@@ -63,6 +65,15 @@ typedef struct {
      double llat, llon;		/* libration */
      double c, k, s;		/* co-longitude and illumination */
 } Moon;
+
+typedef struct {
+     PyObject_HEAD
+     Now now;			/* cache of last observer */
+     Obj obj;			/* the ephemeris object */
+     RiseSet riset;		/* rising and setting */
+     PyObject *name;		/* object name */
+     double cmlI, cmlII;	/* positions of Central Meridian */
+} Jupiter;
 
 typedef struct {
      PyObject_HEAD
@@ -1007,6 +1018,7 @@ static PyTypeObject ObserverType = {
 
 staticforward PyTypeObject BodyType;
 staticforward PyTypeObject PlanetType;
+staticforward PyTypeObject JupiterType;
 staticforward PyTypeObject SaturnType;
 staticforward PyTypeObject MoonType;
 staticforward PyTypeObject PlanetMoonType;
@@ -1062,7 +1074,13 @@ static int Planet_init(PyObject *self, PyObject *args, PyObject *kw)
      return Planet_setup((Planet*) self, builtin_index, args, kw);
 }
 
-/* But Saturn and Moon, as concrete classes, do allow initialization. */
+/* But Jupiter, Saturn, and the Moon, as concrete classes, do allow
+   initialization. */
+
+static int Jupiter_init(PyObject *self, PyObject *args, PyObject *kw)
+{
+     return Planet_setup((Planet*) self, JUPITER, args, kw);
+}
 
 static int Saturn_init(PyObject *self, PyObject *args, PyObject *kw)
 {
@@ -1370,6 +1388,21 @@ static int Moon_colong(Moon *moon, char *fieldname)
      return 0;
 }
 
+static int Jupiter_cml(Jupiter *jupiter, char *fieldname)
+{
+     if (jupiter->obj.o_flags & VALID_CML)
+          return 0;
+     if (jupiter->obj.o_flags == 0) {
+	  PyErr_Format(PyExc_RuntimeError,
+		       "field %s undefined until first compute()", fieldname);
+	  return -1;
+     }
+     if (Body_obj_cir((Body*) jupiter, fieldname, 0) == -1) return -1;
+     meeus_jupiter(jupiter->now.n_mjd, &jupiter->cmlI, &jupiter->cmlII, 0);
+     jupiter->obj.o_flags |= VALID_CML;
+     return 0;
+}
+
 static int Saturn_satrings(Saturn *saturn, char *fieldname)
 {
      double lsn, rsn, bsn;
@@ -1484,6 +1517,15 @@ GET_FIELD(libration_long, llon, build_degrees)
 GET_FIELD(colong, c, build_degrees)
 GET_FIELD(moon_phase, k, PyFloat_FromDouble)
 GET_FIELD(subsolar_lat, s, build_degrees)
+
+#undef CALCULATOR
+#undef BODY
+
+#define BODY Jupiter
+#define CALCULATOR Jupiter_cml
+
+GET_FIELD(cmlI, cmlI, build_degrees)
+GET_FIELD(cmlII, cmlII, build_degrees)
 
 #undef CALCULATOR
 #undef BODY
@@ -1702,6 +1744,16 @@ static PyGetSetDef Moon_getset[] = {
       "fraction of lunar surface illuminated when viewed from earth"},
      {"subsolar_lat", Get_subsolar_lat, 0,
       "lunar latitude of subsolar point (radians that print as degrees)"},
+     {NULL}
+};
+
+static PyGetSetDef Jupiter_getset[] = {
+     {"cmlI", Get_cmlI, 0,
+      "central meridian longitude, System I (radians that print as degrees)"
+     },
+     {"cmlII", Get_cmlII, 0,
+      "central meridian longitude, System II (radians that print as degrees)"
+     },
      {NULL}
 };
 
@@ -1977,6 +2029,49 @@ static PyTypeObject PlanetMoonType = {
      0,				/* tp_descr_set */
      0,				/* tp_dictoffset */
      Planet_init,               /* tp_init */
+     0,				/* tp_alloc */
+     0,				/* tp_new */
+     0,				/* tp_free */
+};
+
+static PyTypeObject JupiterType = {
+     PyObject_HEAD_INIT(NULL)
+     0,
+     "ephem.Jupiter",
+     sizeof(Jupiter),
+     0,
+     0,				/* tp_dealloc */
+     0,				/* tp_print */
+     0,				/* tp_getattr */
+     0,				/* tp_setattr */
+     0,				/* tp_compare */
+     0,				/* tp_repr */
+     0,				/* tp_as_number */
+     0,				/* tp_as_sequence */
+     0,				/* tp_as_mapping */
+     0,				/* tp_hash */
+     0,				/* tp_call */
+     0,				/* tp_str */
+     0,				/* tp_getattro */
+     0,				/* tp_setattro */
+     0,				/* tp_as_buffer */
+     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
+     0,				/* tp_doc */
+     0,				/* tp_traverse */
+     0,				/* tp_clear */
+     0,				/* tp_richcompare */
+     0,				/* tp_weaklistoffset */
+     0,				/* tp_iter */
+     0,				/* tp_iternext */
+     0,				/* tp_methods */
+     0,				/* tp_members */
+     Jupiter_getset,		/* tp_getset */
+     &PlanetType,		/* tp_base */
+     0,				/* tp_dict */
+     0,				/* tp_descr_get */
+     0,				/* tp_descr_set */
+     0,				/* tp_dictoffset */
+     Jupiter_init,		/* tp_init */
      0,				/* tp_alloc */
      0,				/* tp_new */
      0,				/* tp_free */
@@ -2803,6 +2898,7 @@ init_libastro(void)
      PyType_Ready(&PlanetType);
      PyType_Ready(&PlanetMoonType);
 
+     PyType_Ready(&JupiterType);
      PyType_Ready(&SaturnType);
      PyType_Ready(&MoonType);
 
@@ -2830,6 +2926,7 @@ init_libastro(void)
 	       { "Body", (PyObject*) & BodyType },
 	       { "Planet", (PyObject*) & PlanetType },
 	       { "PlanetMoon", (PyObject*) & PlanetMoonType },
+	       { "Jupiter", (PyObject*) & JupiterType },
 	       { "Saturn", (PyObject*) & SaturnType },
 	       { "Moon", (PyObject*) & MoonType },
 

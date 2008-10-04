@@ -77,6 +77,7 @@ del index, classname, name
 # We now replace two of the classes we have just created, because
 # _libastro actually provides separate types for two of the bodies.
 
+Jupiter = _libastro.Jupiter
 Saturn = _libastro.Saturn
 Moon = _libastro.Moon
 

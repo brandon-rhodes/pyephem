@@ -134,6 +134,14 @@ body.compute(date)
    | ``moon_phase`` — Percent of surface illuminated
    | ``subsolar_lat`` — Lunar latitude that the Sun is standing above
 
+ * On ``Jupiter`` bodies,
+   also determines the longitude of the central meridian facing Earth,
+   both in System I (which measures rotation at the Jovial equator)
+   and System II (which measures rotation at temperate latitudes).
+
+   | ``cmlI`` — Central meridian longitude in System I
+   | ``cmlII`` — Central meridian longitude in System II
+
  * On ``Saturn`` bodies,
    also sets the tilt of the rings,
    with southward tilt being positive, and northward, negative:

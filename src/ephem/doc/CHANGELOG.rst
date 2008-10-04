@@ -4,6 +4,9 @@ PyEphem CHANGELOG
 Version 3.7.3.3 (2008 October ?)
 --------------------------------
 
+- Added ``cmsI`` and ``cmsII`` attributes to ``Jupiter`` to provide the
+  central meridian longitude in both System I and System II.
+
 - **Bugfix**: Saturn was returning the wrong values for its earthward
     and sunward angle tilt.
 

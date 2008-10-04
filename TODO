@@ -7,10 +7,8 @@ PyEphem TODO list
  For future releases:
 
  - Error should be raised if degrees() or hours() ignores end of string.
- - Create central table of contents share by all documents?
  - Ability to create Observer from Google Maps or Google Earth location;
    or maybe from address?
  - New rising/setting/transit routines need to survive earth satellites.
  - ... and rewrite the tutorial to use the new routines for the ISS.
  - Update Tutorial for the three kinds of ra/dec.
- - Fix problems with cheap Newton's method.

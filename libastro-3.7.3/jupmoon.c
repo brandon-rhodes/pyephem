@@ -10,8 +10,6 @@
 #include "bdl.h"
 
 static int use_bdl (double jd, char *dir, MoonData md[J_NMOONS]);
-static void meeus_jupiter (double d, double *cmlI, double *cmlII,
-    MoonData md[J_NMOONS]);
 static void moonradec (double jupsize, MoonData md[J_NMOONS]);
 static void moonSVis (Obj *sop, Obj *jop, MoonData md[J_NMOONS]);
 static void moonEVis (MoonData md[J_NMOONS]);
@@ -161,7 +159,7 @@ MoonData md[J_NMOONS])	/* fill md[1..NM-1].x/y/z for each moon */
  * from "Astronomical Formulae for Calculators", 2nd ed, by Jean Meeus,
  *   Willmann-Bell, Richmond, Va., U.S.A. (c) 1982, chapters 35 and 36.
  */
-static void
+void
 meeus_jupiter(
 double d,
 double *cmlI, double *cmlII,	/* central meridian longitude, rads */

@@ -20,6 +20,8 @@ attribute_list = (
      ('hlong', 'hlat', 'sun_distance', 'earth_distance', 'phase')),
     (Moon, False,
      ('colong', 'subsolar_lat', 'libration_lat', 'libration_long')),
+    (Jupiter, False,
+     ('cmlI', 'cmlII')),
     (Saturn, False,
      ('earth_tilt', 'sun_tilt')),
     (PlanetMoon, False,
@@ -243,6 +245,12 @@ class body_suite(MyTestCase):
 # should assure that reasonable values are returned from now on.
 
 class planet_suite(unittest.TestCase):
+    """See whether Jupiter Central Meridian Longitudes look good."""
+    def test_jupiter(self):
+        j = Jupiter('2008/10/1')
+        self.assertEqual(str(j.cmlI), '146:15:13.8')
+        self.assertEqual(str(j.cmlII), '221:03:27.0')
+
     """Check the tilt of Saturn's rings."""
     def test_saturn(self):
         s = Saturn('2008/10/1')
