@@ -238,6 +238,17 @@ class body_suite(MyTestCase):
                         '_n': 14.99359833, '_orbit': 59452,
                         })
 
+# A user reported that Saturn's ring tilt was misbehaving, and there was
+# indeed a major error occuring in its calculation.  This small test
+# should assure that reasonable values are returned from now on.
+
+class planet_suite(unittest.TestCase):
+    """Check the tilt of Saturn's rings."""
+    def test_saturn(self):
+        s = Saturn('2008/10/1')
+        assert -0.07 < s.earth_tilt < -0.06
+        assert -0.09 < s.sun_tilt < -0.08
+
 # Make sure the constellation function forces objects to determine
 # their position before using their right ascension and declination.
 
