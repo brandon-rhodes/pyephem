@@ -13,4 +13,4 @@ def additional_tests():
             ])
 
 if __name__ == '__main__':
-    unittest.run()
+    unittest.main()
