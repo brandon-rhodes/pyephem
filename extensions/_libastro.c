@@ -111,6 +111,33 @@ static int PyNumber_AsDouble(PyObject *o, double *dp)
      return 0;
 }
 
+/* My own version of the PyString_AsString function that Python used to
+   have, with the main difference from the code's point of view being
+   that it now requires a free() of the memory it returns.  The argument
+   must be a PyUnicode object. */
+
+static char *PyString_AsString(PyObject *o)
+{
+     Py_ssize_t i;
+     Py_ssize_t size = PyUnicode_GET_SIZE(o);
+     Py_UNICODE *u = PyUnicode_AS_UNICODE(o);
+     char *s = malloc(size + 1);
+     if (!s) return 0;
+     for (i=0; i < size; i++) {
+          if (u[i] >= 32 && u[i] < 127) {
+               s[i] = u[i];
+          } else {
+               PyErr_SetString(PyExc_ValueError, "strings passed to this"
+                               " routine must consist only of normal,"
+                               " printable ASCII characters");
+               free(s);
+               return 0;
+          }
+     }
+     s[i] = '\0';
+     return s;
+}
+
 /* The libastro library offers a "getBuiltInObjs()" function that
    initializes the list of planets that XEphem displays by default.
    Rather than duplicate its logic for how to build each objects, we
@@ -327,42 +354,53 @@ static int parse_mjd_from_string(PyObject *so, double *mjdp)
      PyObject *split_func = PyObject_GetAttrString(so, "split");
      PyObject *pieces = PyObject_Call(split_func, emptytuple, 0);
      int len = PyObject_Length(pieces);
-     char *s = (len >= 1) ? PyString_AsString(PyList_GetItem(pieces, 0)) : 0;
-     char *t = (len >= 2) ? PyString_AsString(PyList_GetItem(pieces, 1)) : 0;
      int year, month = 1;
      double day = 1.0;
 
      Py_DECREF(emptytuple);
      Py_DECREF(split_func);
-     Py_DECREF(pieces);
 
      if ((len < 1) || (len > 2))
 	  goto fail;
 
-     if (s) {
+     if (len >= 1) {
+          char *s = PyString_AsString(PyList_GetItem(pieces, 0));
+          if (!s) goto fail;
+
 	  /* Make sure all characters are in set '-/.0123456789' */
 
 	  int i;
-	  for (i=0; s[i]; i++)
+	  for (i=0; s[i]; i++) {
 	       if (s[i] != '-' && s[i] != '/' && s[i] != '.'
-		   && (s[i] < '0' || s[i] > '9'))
+		   && (s[i] < '0' || s[i] > '9')) {
+                    free(s);
 		    goto fail;
+               }
+          }
 
 	  f_sscandate(s, PREF_YMD, &month, &day, &year);
+          free(s);
      }
 
-     if (t) {
+     if (len >= 2) {
+          char *t = PyString_AsString(PyList_GetItem(pieces, 1));
 	  double hours;
-	  if (f_scansexa(t, &hours) == -1)
+          if (!t) goto fail;
+	  if (f_scansexa(t, &hours) == -1) {
+               free(t);
 	       goto fail;
+          }
+          free(t);
 	  day += hours / 24.;
      }
 
      cal_mjd(month, day, year, mjdp);
+
+     Py_DECREF(pieces);
      return 0;
 
 fail:
-     {
+     if (! PyErr_Occurred()) {
 	  PyObject *repr = PyObject_Repr(so);
           PyObject *complaint = PyUnicode_FromFormat(
 	       "your date string %u does not look like a year/month/day"
@@ -371,6 +409,7 @@ fail:
 	  Py_DECREF(repr);
 	  Py_DECREF(complaint);
      }
+     Py_DECREF(pieces);
      return -1;
 }
 
@@ -584,11 +623,13 @@ static int parse_angle(PyObject *value, double factor, double *result)
 	  double scaled;
 	  char *s = PyString_AsString(value);
 	  char *sc;
+          if (!s) return -1;
 	  for (sc=s; *sc && *sc != ':' && *sc != '.'; sc++) ;
 	  if (*sc == ':')
 	       f_scansexa(s, &scaled);
 	  else
 	       scaled = atof(s);
+          free(s);
 	  *result = scaled / factor;
 	  return 0;
      } else {
@@ -614,11 +655,16 @@ static double to_angle(PyObject *value, double efactor, int *status)
      } else if (PyUnicode_Check(value)) {
 	  double scaled;
 	  char *sc, *s = PyString_AsString(value);
+          if (!s) {
+               *status = -1;
+               return 0;
+          }
 	  for (sc=s; *sc && *sc != ':' && *sc != '.'; sc++) ;
 	  if (*sc == ':')
 	       f_scansexa(s, &scaled);
 	  else
 	       scaled = atof(s);
+          free(s);
 	  *status = 0;
 	  return scaled / efactor;
      } else {
@@ -1558,6 +1604,7 @@ static int Set_name(PyObject *self, PyObject *value, void *v)
      char *name = PyString_AsString(value);
      if (!name) return -1;
      strncpy(body->obj.o_name, name, MAXNM);
+     free(name);
      body->obj.o_name[MAXNM - 1] = '\0';
      Py_XDECREF(body->name);
      Py_INCREF(value);
@@ -2543,17 +2590,20 @@ static PyObject* readdb(PyObject *self, PyObject *args)
 
 static PyObject* readtle(PyObject *self, PyObject *args)
 {
-     char *l1, *l2;
+     char *l0, *l1, *l2;
      PyObject *name, *stripped_name, *body, *catalog_number;
      Obj obj;
      if (!PyArg_ParseTuple(args, "O!ss:readtle",
 			   &PyUnicode_Type, &name, &l1, &l2))
 	  return 0;
-     if (db_tle(PyString_AsString(name), l1, l2, &obj)) {
+     l0 = PyString_AsString(name);
+     if (db_tle(l0, l1, l2, &obj)) {
 	  PyErr_SetString(PyExc_ValueError,
 			  "line does not conform to tle format");
+          free(l0);
 	  return 0;
      }
+     free(l0);
      stripped_name = PyObject_CallMethod(name, "strip", 0);
      if (!stripped_name)
 	  return 0;
