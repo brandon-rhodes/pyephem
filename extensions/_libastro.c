@@ -124,12 +124,13 @@ static char *PyString_AsString(PyObject *o)
      char *s = malloc(size + 1);
      if (!s) return 0;
      for (i=0; i < size; i++) {
-          if (u[i] >= 32 && u[i] < 127) {
+          if ((u[i] >= 32 && u[i] < 127)
+               || u[i] == '\n' || u[i] == '\t' || u[i] == '\r') {
                s[i] = u[i];
           } else {
                PyErr_SetString(PyExc_ValueError, "strings passed to this"
-                               " routine must consist only of normal,"
-                               " printable ASCII characters");
+                               " routine must consist of printable ASCII"
+                               " characters only");
                free(s);
                return 0;
           }
@@ -2592,6 +2593,7 @@ static PyObject* readtle(PyObject *self, PyObject *args)
 			   &PyUnicode_Type, &name, &l1, &l2))
 	  return 0;
      l0 = PyString_AsString(name);
+     if (!l0) return 0;
      if (db_tle(l0, l1, l2, &obj)) {
 	  PyErr_SetString(PyExc_ValueError,
 			  "line does not conform to tle format");
