@@ -365,9 +365,8 @@ fail:
      {
 	  PyObject *repr = PyObject_Repr(so);
           PyObject *complaint = PyUnicode_FromFormat(
-	       "your date string %s does not look like a year/month/day"
-	       " optionally followed by hours:minutes:seconds",
-	       PyString_AsString(repr));
+	       "your date string %u does not look like a year/month/day"
+	       " optionally followed by hours:minutes:seconds", repr);
 	  PyErr_SetObject(PyExc_ValueError, complaint);
 	  Py_DECREF(repr);
 	  Py_DECREF(complaint);
@@ -738,9 +737,10 @@ static PyObject* get_f_spect(PyObject *self, void *v)
 static int set_f_spect(PyObject *self, PyObject *value, void *v)
 {
      Body *b = (Body*) self;
-     char *s;
+     Py_UNICODE *u;
      if (!PyUnicode_Check(value)) {
-	  PyErr_SetString(PyExc_ValueError, "spectral code must be a string");
+	  PyErr_SetString(PyExc_ValueError,
+                          "spectral code must be a string");
 	  return -1;
      }
      if (PyUnicode_GET_SIZE(value) != 2) {
@@ -748,9 +748,14 @@ static int set_f_spect(PyObject *self, PyObject *value, void *v)
 			  "spectral code must be two characters long");
 	  return -1;
      }
-     s = PyString_AsString(value);
-     b->obj.f_spect[0] = s[0];
-     b->obj.f_spect[1] = s[1];
+     u = PyUnicode_AS_UNICODE(value);
+     if (u[0] < 32 || u[1] < 32 || u[0] > 126 || u[1] > 126) {
+	  PyErr_SetString(PyExc_ValueError,
+			  "spectral code must contain only ASCII characters");
+	  return -1;
+     }
+     b->obj.f_spect[0] = u[0];
+     b->obj.f_spect[1] = u[1];
      return 0;
 }
 
