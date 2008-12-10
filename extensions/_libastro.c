@@ -2915,7 +2915,7 @@ static struct PyModuleDef libastro_module = {
 };
 
 PyMODINIT_FUNC
-init_libastro(void)
+PyInit__libastro(void)
 {
      PyObject *module;
 
