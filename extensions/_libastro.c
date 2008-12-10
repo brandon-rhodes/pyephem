@@ -1095,7 +1095,7 @@ static void Body_dealloc(PyObject *self)
 {
      Body *body = (Body*) self;
      Py_XDECREF(body->name);
-     self->ob_base.ob_type->tp_free(self);
+     self->ob_type->tp_free(self);
 }
 
 /* The user-configurable body types also share symmetric
@@ -1220,9 +1220,9 @@ static PyObject* Body_writedb(PyObject *self)
 
 static PyObject* Body_copy(PyObject *self)
 {
-     PyObject *newbody = _PyObject_New(self->ob_base.ob_type);
+     PyObject *newbody = _PyObject_New(self->ob_type);
      if (!newbody) return 0;
-     memcpy(newbody, self, self->ob_base.ob_type->tp_basicsize);
+     memcpy(newbody, self, self->ob_type->tp_basicsize);
      Py_XINCREF(((Body*) self)->name);
      return newbody;
 }
