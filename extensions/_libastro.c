@@ -278,7 +278,7 @@ static PyObject *Angle_get_znorm(PyObject *self, void *v)
 }
 
 static PyNumberMethods Angle_NumberMethods = {
-     NULL, NULL, NULL, NULL, NULL, NULL, NULL, /* skip seven fields */
+     NULL, NULL, NULL, NULL, NULL, NULL, /* skip seven fields */
      Angle_neg, /* nb_negative */
      Angle_pos, /* nb_positive */
      NULL
