@@ -266,8 +266,7 @@ static PyGetSetDef Angle_getset[] = {
 };
 
 static PyTypeObject AngleType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.Angle",
      sizeof(AngleObject),
      0,
@@ -516,8 +515,7 @@ static PyMethodDef Date_methods[] = {
 };
 
 static PyTypeObject DateType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.Date",
      sizeof(PyFloatObject),
      0,
@@ -968,8 +966,7 @@ static PyMemberDef Observer_members[] = {
 #undef OFF
 
 static PyTypeObject ObserverType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "_libastro.Observer",
      sizeof(Observer),
      0,
@@ -1906,8 +1903,7 @@ static PyMemberDef EarthSatellite_members[] = {
  */
 
 static PyTypeObject BodyType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.Body",
      sizeof(Body),
      0,
@@ -1949,8 +1945,7 @@ static PyTypeObject BodyType = {
 };
 
 static PyTypeObject PlanetType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.Planet",
      sizeof(Planet),
      0,
@@ -1992,8 +1987,7 @@ static PyTypeObject PlanetType = {
 };
 
 static PyTypeObject PlanetMoonType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.PlanetMoon",
      sizeof(PlanetMoon),
      0,
@@ -2035,8 +2029,7 @@ static PyTypeObject PlanetMoonType = {
 };
 
 static PyTypeObject JupiterType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.Jupiter",
      sizeof(Jupiter),
      0,
@@ -2078,8 +2071,7 @@ static PyTypeObject JupiterType = {
 };
 
 static PyTypeObject SaturnType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.Saturn",
      sizeof(Saturn),
      0,
@@ -2121,8 +2113,7 @@ static PyTypeObject SaturnType = {
 };
 
 static PyTypeObject MoonType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.Moon",
      sizeof(Moon),
      0,
@@ -2164,8 +2155,7 @@ static PyTypeObject MoonType = {
 };
 
 static PyTypeObject FixedBodyType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.FixedBody",
      sizeof(FixedBody),
      0,
@@ -2207,8 +2197,7 @@ static PyTypeObject FixedBodyType = {
 };
 
 static PyTypeObject BinaryStarType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.BinaryStar",
      sizeof(BinaryStar),
      0,
@@ -2250,8 +2239,7 @@ static PyTypeObject BinaryStarType = {
 };
 
 static PyTypeObject EllipticalBodyType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.EllipticalBody",
      sizeof(EllipticalBody),
      0,
@@ -2293,8 +2281,7 @@ static PyTypeObject EllipticalBodyType = {
 };
 
 static PyTypeObject HyperbolicBodyType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.HyperbolicBody",
      sizeof(HyperbolicBody),
      0,
@@ -2336,8 +2323,7 @@ static PyTypeObject HyperbolicBodyType = {
 };
 
 static PyTypeObject ParabolicBodyType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.ParabolicBody",
      sizeof(ParabolicBody),
      0,
@@ -2379,8 +2365,7 @@ static PyTypeObject ParabolicBodyType = {
 };
 
 static PyTypeObject EarthSatelliteType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.EarthSatellite",
      sizeof(EarthSatellite),
      0,
