@@ -2852,11 +2852,15 @@ static PyMethodDef libastro_methods[] = {
      {NULL}
 };
 
-#ifdef PyMODINIT_FUNC
+static struct PyModuleDef libastro_module = {
+     PyModuleDef_HEAD_INIT,
+     "_libastro",
+     "Astronomical calculations for Python",
+     -1,
+     libastro_methods
+};
+
 PyMODINIT_FUNC
-#else
-DL_EXPORT(void)
-#endif
 init_libastro(void)
 {
      PyObject *module;
@@ -2894,9 +2898,8 @@ init_libastro(void)
      PyType_Ready(&ParabolicBodyType);
      PyType_Ready(&EarthSatelliteType);
 
-     module = Py_InitModule3("_libastro", libastro_methods,
-                             "Astronomical calculations for Python");
-     if (!module) return;
+     module = PyModule_Create(&libastro_module);
+     if (!module) return 0;
 
      {
 	  struct {
@@ -2936,7 +2939,7 @@ init_libastro(void)
 	  for (i=0; objects[i].name; i++)
 	       if (PyModule_AddObject(module, objects[i].name, objects[i].obj)
 		   == -1)
-		    return;
+		    return 0;
      }
 
      /* Set a default preference. */
@@ -2946,4 +2949,5 @@ init_libastro(void)
      /* Tell libastro that we do not have data files anywhere. */
 
      setMoonDir(NULL);
+     return module;
 }
