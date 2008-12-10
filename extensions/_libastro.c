@@ -204,7 +204,7 @@ static char *Angle_format(PyObject *self)
 
 static PyObject* Angle_str(PyObject *self)
 {
-     return PyString_FromString(Angle_format(self));
+     return PyUnicode_FromString(Angle_format(self));
 }
 
 static int Angle_print(PyObject *self, FILE *fp, int flags)
@@ -364,7 +364,7 @@ static int parse_mjd_from_string(PyObject *so, double *mjdp)
 fail:
      {
 	  PyObject *repr = PyObject_Repr(so);
-          PyObject *complaint = PyString_FromFormat(
+          PyObject *complaint = PyUnicode_FromFormat(
 	       "your date string %s does not look like a year/month/day"
 	       " optionally followed by hours:minutes:seconds",
 	       PyString_AsString(repr));
@@ -406,7 +406,7 @@ static int parse_mjd(PyObject *value, double *mjdp)
 {
      if (PyNumber_Check(value))
 	  return parse_mjd_from_number(value, mjdp);
-     else if (PyString_Check(value))
+     else if (PyUnicode_Check(value))
 	  return parse_mjd_from_string(value, mjdp);
      else if (PyTuple_Check(value))
 	  return parse_mjd_from_tuple(value, mjdp);
@@ -465,7 +465,7 @@ static char *Date_format(PyObject *self)
 
 static PyObject* Date_str(PyObject *self)
 {
-     return PyString_FromString(Date_format(self));
+     return PyUnicode_FromString(Date_format(self));
 }
 
 static int Date_print(PyObject *self, FILE *fp, int flags)
@@ -581,7 +581,7 @@ static int parse_angle(PyObject *value, double factor, double *result)
 {
      if (PyNumber_Check(value)) {
 	  return PyNumber_AsDouble(value, result);
-     } else if (PyString_Check(value)) {
+     } else if (PyUnicode_Check(value)) {
 	  double scaled;
 	  char *s = PyString_AsString(value);
 	  char *sc;
@@ -612,7 +612,7 @@ static double to_angle(PyObject *value, double efactor, int *status)
 	  Py_DECREF(value);
 	  *status = 0;
 	  return r;
-     } else if (PyString_Check(value)) {
+     } else if (PyUnicode_Check(value)) {
 	  double scaled;
 	  char *sc, *s = PyString_AsString(value);
 	  for (sc=s; *sc && *sc != ':' && *sc != '.'; sc++) ;
@@ -732,18 +732,18 @@ static int setd_mjd(PyObject *self, PyObject *value, void *v)
 static PyObject* get_f_spect(PyObject *self, void *v)
 {
      Body *b = (Body*) self;
-     return PyString_FromStringAndSize(b->obj.f_spect, 2);
+     return PyUnicode_FromStringAndSize(b->obj.f_spect, 2);
 }
 
 static int set_f_spect(PyObject *self, PyObject *value, void *v)
 {
      Body *b = (Body*) self;
      char *s;
-     if (!PyString_Check(value)) {
+     if (!PyUnicode_Check(value)) {
 	  PyErr_SetString(PyExc_ValueError, "spectral code must be a string");
 	  return -1;
      }
-     if (PyString_Size(value) != 2) {
+     if (PyUnicode_GET_SIZE(value) != 2) {
 	  PyErr_SetString(PyExc_ValueError,
 			  "spectral code must be two characters long");
 	  return -1;
@@ -1215,7 +1215,7 @@ static PyObject* Body_writedb(PyObject *self)
      Body *body = (Body*) self;
      char line[1024];
      db_write_line(&body->obj, line);
-     return PyString_FromString(line);
+     return PyUnicode_FromString(line);
 }
 
 static PyObject* Body_copy(PyObject *self)
@@ -1238,18 +1238,18 @@ static PyObject* Body_repr(PyObject *body_object)
 	  name = PyString_AsString(repr);
 	  Py_DECREF(repr);
 	  if (!name) return 0;
-	  result = PyString_FromFormat("<%s %s at %p>",
-				       body->ob_base.ob_type->tp_name,
-                                       name, body);
+	  result = PyUnicode_FromFormat("<%s %s at %p>",
+                                        body->ob_base.ob_type->tp_name,
+                                        name, body);
 	  return result;
      } else if (body->obj.o_name[0])
-	  return PyString_FromFormat("<%s \"%s\" at %p>",
-				     body->ob_base.ob_type->tp_name,
-				     body->obj.o_name, body);
+	  return PyUnicode_FromFormat("<%s \"%s\" at %p>",
+                                      body->ob_base.ob_type->tp_name,
+                                      body->obj.o_name, body);
      else
-	  return PyString_FromFormat("<%s at %p>",
-				     body->ob_base.ob_type->tp_name,
-                                     body);
+	  return PyUnicode_FromFormat("<%s at %p>",
+                                      body->ob_base.ob_type->tp_name,
+                                      body);
 }
 
 static PyMethodDef Body_methods[] = {
@@ -1547,7 +1547,7 @@ static PyObject *Get_name(PyObject *self, void *v)
 	  Py_INCREF(body->name);
 	  return body->name;
      } else
-	  return PyString_FromString(body->obj.o_name);
+	  return PyUnicode_FromString(body->obj.o_name);
 }
 
 static int Set_name(PyObject *self, PyObject *value, void *v)
@@ -2531,9 +2531,9 @@ static PyObject* readdb(PyObject *self, PyObject *args)
      }
      comma = strchr(line, ',');
      if (comma)
-	  name = PyString_FromStringAndSize(line, comma - line);
+	  name = PyUnicode_FromStringAndSize(line, comma - line);
      else
-	  name = PyString_FromString(line);
+	  name = PyUnicode_FromString(line);
      if (!name)
 	  return 0;
      return build_body_from_obj(name, &obj);
@@ -2545,7 +2545,7 @@ static PyObject* readtle(PyObject *self, PyObject *args)
      PyObject *name, *stripped_name, *body, *catalog_number;
      Obj obj;
      if (!PyArg_ParseTuple(args, "O!ss:readtle",
-			   &PyString_Type, &name, &l1, &l2))
+			   &PyUnicode_Type, &name, &l1, &l2))
 	  return 0;
      if (db_tle(PyString_AsString(name), l1, l2, &obj)) {
 	  PyErr_SetString(PyExc_ValueError,
@@ -2596,7 +2596,7 @@ static PyObject* uranometria(PyObject *self, PyObject *args)
      if (!PyArg_ParseTuple(args, "OO:uranometria", &rao, &deco)) return 0;
      if (parse_angle(rao, radhr(1), &ra) == -1) return 0;
      if (parse_angle(deco, raddeg(1), &dec) == -1) return 0;
-     return PyString_FromString(um_atlas(ra, dec));
+     return PyUnicode_FromString(um_atlas(ra, dec));
 }
 
 static PyObject* uranometria2000(PyObject *self, PyObject *args)
@@ -2606,7 +2606,7 @@ static PyObject* uranometria2000(PyObject *self, PyObject *args)
      if (!PyArg_ParseTuple(args, "OO:uranometria2000", &rao, &deco)) return 0;
      if (parse_angle(rao, radhr(1), &ra) == -1) return 0;
      if (parse_angle(deco, raddeg(1), &dec) == -1) return 0;
-     return PyString_FromString(u2k_atlas(ra, dec));
+     return PyUnicode_FromString(u2k_atlas(ra, dec));
 }
 
 static PyObject* millennium_atlas(PyObject *self, PyObject *args)
@@ -2616,7 +2616,7 @@ static PyObject* millennium_atlas(PyObject *self, PyObject *args)
      if (!PyArg_ParseTuple(args, "OO:millennium_atlas", &rao, &deco)) return 0;
      if (parse_angle(rao, radhr(1), &ra) == -1) return 0;
      if (parse_angle(deco, raddeg(1), &dec) == -1) return 0;
-     return PyString_FromString(msa_atlas(ra, dec));
+     return PyUnicode_FromString(msa_atlas(ra, dec));
 }
 
 /* Return in which constellation a particular coordinate lies. */
