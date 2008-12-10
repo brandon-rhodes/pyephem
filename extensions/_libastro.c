@@ -1095,7 +1095,7 @@ static void Body_dealloc(PyObject *self)
 {
      Body *body = (Body*) self;
      Py_XDECREF(body->name);
-     self->ob_type->tp_free(self);
+     self->ob_base.ob_type->tp_free(self);
 }
 
 /* The user-configurable body types also share symmetric
@@ -1220,9 +1220,9 @@ static PyObject* Body_writedb(PyObject *self)
 
 static PyObject* Body_copy(PyObject *self)
 {
-     PyObject *newbody = _PyObject_New(self->ob_type);
+     PyObject *newbody = _PyObject_New(self->ob_base.ob_type);
      if (!newbody) return 0;
-     memcpy(newbody, self, self->ob_type->tp_basicsize);
+     memcpy(newbody, self, self->ob_base.ob_type->tp_basicsize);
      Py_XINCREF(((Body*) self)->name);
      return newbody;
 }
@@ -1239,15 +1239,17 @@ static PyObject* Body_repr(PyObject *body_object)
 	  Py_DECREF(repr);
 	  if (!name) return 0;
 	  result = PyString_FromFormat("<%s %s at %p>",
-				       body->ob_type->tp_name, name, body);
+				       body->ob_base.ob_type->tp_name,
+                                       name, body);
 	  return result;
      } else if (body->obj.o_name[0])
 	  return PyString_FromFormat("<%s \"%s\" at %p>",
-				     body->ob_type->tp_name,
+				     body->ob_base.ob_type->tp_name,
 				     body->obj.o_name, body);
      else
 	  return PyString_FromFormat("<%s at %p>",
-				     body->ob_type->tp_name, body);
+				     body->ob_base.ob_type->tp_name,
+                                     body);
 }
 
 static PyMethodDef Body_methods[] = {
