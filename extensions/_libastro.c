@@ -1061,7 +1061,7 @@ static int Planet_init(PyObject *self, PyObject *args, PyObject *kw)
                            " init Planet without a __planet__ code");
           return -1;
      }
-     int builtin_index = PyInt_AsLong(o);
+     int builtin_index = PyLong_AsLong(o);
      Py_DECREF(o);
      if ((builtin_index == -1) && PyErr_Occurred()) {
           PyErr_SetString(PyExc_TypeError, "internal error: __planet__"
@@ -2558,7 +2558,7 @@ static PyObject* readtle(PyObject *self, PyObject *args)
      body = build_body_from_obj(stripped_name, &obj);
      if (!body)
 	  return 0;
-     catalog_number = PyInt_FromLong(strtod(l1+2, 0));
+     catalog_number = PyLong_FromLong(strtod(l1+2, 0));
      if (!catalog_number)
 	  return 0;
      ((EarthSatellite*) body)->catalog_number = catalog_number;
