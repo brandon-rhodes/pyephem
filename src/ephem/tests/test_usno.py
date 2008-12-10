@@ -459,7 +459,7 @@ class Mixin(object):
 
 i = 1
 for path in glob.glob(os.path.dirname(__file__) + '/usno/*.txt'):
-    exec 'class T%d(unittest.TestCase, Mixin): path = %r' % (i, path)
+    exec('class T%d(unittest.TestCase, Mixin): path = %r' % (i, path))
     i += 1
 
 if __name__ == '__main__':

@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import sys, warnings
-from sets import Set
 from ephem_test import *
 
 # The attributes which each class of object should support (these
@@ -92,7 +91,7 @@ class body_suite(MyTestCase):
     def compare_attributes(self, body, was_computed, was_given_observer):
         p = predict_attributes(body, was_computed, was_given_observer)
         t = self.measure_attributes(body)
-        for a in Set(p).union(t):
+        for a in set(p).union(t):
             if p[a] is None and t[a] is None:
                 continue
             if p[a] and isinstance(t[a], p[a]):
@@ -148,15 +147,15 @@ class body_suite(MyTestCase):
         # Build another body by setting the attributes on a body.
 
         ba = bodytype()
-        for attribute, value in attributes.iteritems():
+        for attribute, value in attributes.items():
             try:
                 setattr(ba, attribute, value)
             except TypeError:
-                raise TestError, ('cannot modify attribute %s of %r: %s'
-                                  % (attribute, ba, sys.exc_info()[1]))
+                raise TestError('cannot modify attribute %s of %r: %s'
+                                % (attribute, ba, sys.exc_info()[1]))
         if not isinstance(bl, bodytype):
-            raise TestError, ('ephem database entry returned type %s'
-                              ' rather than type %s' % (type(bl), bodytype))
+            raise TestError('ephem database entry returned type %s'
+                            ' rather than type %s' % (type(bl), bodytype))
 
         # Now, compare the bodies to see if they are equivalent.
         # First test whether they present the right attributes.
@@ -176,9 +175,9 @@ class body_suite(MyTestCase):
                 if isinstance(vl, float):
                     vl, va = str(float(vl)), str(float(va))
                 if vl != va:
-                    raise TestError, ("%s item from line returns %s for %s"
-                                      " but constructed object returns %s"
-                                      % (type(bl), vl, attr, va))
+                    raise TestError("%s item from line returns %s for %s"
+                                    " but constructed object returns %s"
+                                    % (type(bl), vl, attr, va))
 
     def test_FixedBody(self):
         self.build(
