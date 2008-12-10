@@ -34,10 +34,10 @@ As with PyEphem dates,
 doing math with a PyEphem angle results in an unadorned float being returned.
 
     >>> type(j.dec)
-    <type 'ephem.Angle'>
+    <class 'ephem.Angle'>
     >>> a = j.dec + 3.14
     >>> type(a)
-    <type 'float'>
+    <class 'float'>
     >>> a
     2.9278059709285387
 

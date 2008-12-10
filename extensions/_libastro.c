@@ -1282,14 +1282,9 @@ static PyObject* Body_repr(PyObject *body_object)
 {
      Body *body = (Body*) body_object;
      if (body->name) {
-	  PyObject *repr, *result;
-	  repr = PyObject_Repr(body->name);
-	  if (!repr) return 0;
-	  result = PyUnicode_FromFormat("<%s %u at %p>",
-                                        body->ob_base.ob_type->tp_name,
-                                        repr, body);
-	  Py_DECREF(repr);
-	  return result;
+	  return PyUnicode_FromFormat("<%s %R at %p>",
+                                      body->ob_base.ob_type->tp_name,
+                                      body->name, body);
      } else if (body->obj.o_name[0])
 	  return PyUnicode_FromFormat("<%s \"%s\" at %p>",
                                       body->ob_base.ob_type->tp_name,
