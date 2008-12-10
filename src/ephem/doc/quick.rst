@@ -24,7 +24,7 @@ and which are being created in the course of each example.
 
 >>> import ephem
 >>> m = ephem.Mars('1970')
->>> print ephem.constellation(m)
+>>> print(ephem.constellation(m))
 ('Aqr', 'Aquarius')
 
 But to avoid typing the module name over and over again,
@@ -34,7 +34,7 @@ where you can then use them without further qualification:
 
 >>> from ephem import *
 >>> m = Mars('1970')
->>> print constellation(m)
+>>> print(constellation(m))
 ('Aqr', 'Aquarius')
 
 To understand each of the following examples,
@@ -59,7 +59,7 @@ Bodies
 ..
 
  >>> m = ephem.Mars('2003/8/27')
- >>> print m.name, m.elong, m.size
+ >>> print(m.name, m.elong, m.size)
  Mars -173:00:34.2 25.1121063232
 
  * Extra arguments when you create a Body
@@ -71,7 +71,7 @@ body.compute(date)
 
  >>> j = ephem.Jupiter()
  >>> j.compute('1986/2/9', epoch='1950')
- >>> print j.ra, j.dec
+ >>> print(j.ra, j.dec)
  21:58:45.94 -13:12:44.5
 
  * Computes the position of the ``body``.
@@ -158,7 +158,7 @@ body.compute(observer)
  >>> gatech.elevation = 320
  >>> gatech.date = '1984/5/30 16:22:56'
  >>> v = ephem.Venus(gatech)
- >>> print v.alt, v.az
+ >>> print(v.alt, v.az)
  72:19:44.8 134:14:25.3
 
  * Computes the position of the ``Body``.
@@ -190,9 +190,9 @@ catalog format
  >>> line = "C/2002 Y1 (Juels-Holvorcem),e,103.7816,166.2194,128.8232,242.5695,0.0002609,0.99705756,0.0000,04/13.2508/2003,2000,g  6.5,4.0"
  >>> yh = ephem.readdb(line)
  >>> yh.compute('2007/10/1')
- >>> print yh.earth_distance
+ >>> print(yh.earth_distance)
  14.8046741486
- >>> print yh.mag
+ >>> print(yh.mag)
  23.96
 
  * Bodies can be imported and exported
@@ -209,7 +209,7 @@ catalog format
  * To export a body in XEphem format,
    call the ``writedb()`` method of the body itself::
 
-    print halley.writedb()
+    print(halley.writedb())
 
 ..
 
@@ -218,7 +218,7 @@ catalog format
  >>> line3 = "2 25544  51.6361  13.7980 0004256  35.6671  59.2566 15.58778559250029"
  >>> iss = ephem.readtle(line1, line2, line3)
  >>> iss.compute('2003/3/23')
- >>> print iss.sublong, iss.sublat
+ >>> print(iss.sublong, iss.sublat)
  -76:24:18.3 13:05:31.1
 
  * Satellite elements often come packaged in a format called TLE,
@@ -309,7 +309,7 @@ Other Functions
 ===============
 
  >>> m = ephem.Moon('1980/6/1')
- >>> print ephem.constellation(m)
+ >>> print(ephem.constellation(m))
  ('Sgr', 'Sagittarius')
 
  * The ``constellation()`` function returns a tuple
@@ -323,7 +323,7 @@ Other Functions
 
 ..
 
- >>> print ephem.delta_t('1980')
+ >>> print(ephem.delta_t('1980'))
  50.5387872486
 
  * The ``delta_t()`` function
@@ -345,11 +345,11 @@ Other Functions
 ..
 
  >>> ra, dec = '7:16:00', '-6:17:00'
- >>> print ephem.uranometria(ra, dec)
+ >>> print(ephem.uranometria(ra, dec))
  V2 - P274
- >>> print ephem.uranometria2000(ra, dec)
+ >>> print(ephem.uranometria2000(ra, dec))
  V2 - P135
- >>> print ephem.millennium_atlas(ra, dec)
+ >>> print(ephem.millennium_atlas(ra, dec))
  V1 - P273
 
  * Take an ``ra`` and ``dec`` as arguments.
@@ -365,7 +365,7 @@ Other Functions
  >>> m1 = ephem.Moon('1970/1/16')
  >>> m2 = ephem.Moon('1970/1/17')
  >>> s = ephem.separation(m1, m2)
- >>> print "In one day the Moon moved", s
+ >>> print("In one day the Moon moved", s)
  In one day the Moon moved 12:33:28.5
 
  * The ``separation()`` function
@@ -383,7 +383,7 @@ Coordinate Conversion
 
  >>> np = Equatorial('0', '90', epoch='2000')
  >>> g = Galactic(np)
- >>> print g.long, g.lat
+ >>> print(g.long, g.lat)
  122:55:54.9 27:07:41.7
 
  * There are three coordinate classes,
@@ -429,7 +429,7 @@ Observers
  >>> lowell.date = '1986/3/13'
  >>> j = ephem.Jupiter()
  >>> j.compute(lowell)
- >>> print j.alt, j.az
+ >>> print(j.alt, j.az)
  20:48:43.7 120:21:44.9
 
  * Describes a position on Earth's surface.
@@ -453,7 +453,7 @@ Observers
  * Other attributes default to zero.
 
  >>> boston = ephem.city('Boston')
- >>> print boston.lat, boston.long
+ >>> print(boston.lat, boston.long)
  42:21:30.0 -71:03:37.0
 
  * XEphem includes a small database of world cities.
@@ -468,13 +468,13 @@ transit, rising, setting
  >>> sitka.lat = '57:10'
  >>> sitka.long = '-135:15'
  >>> m = ephem.Mars()
- >>> print sitka.next_transit(m)
+ >>> print(sitka.next_transit(m))
  1999/6/27 04:22:45
- >>> print m.alt, m.az
+ >>> print(m.alt, m.az)
  21:18:33.6 180:00:00.0
- >>> print sitka.next_rising(m, start='1999/6/28')
+ >>> print(sitka.next_rising(m, start='1999/6/28'))
  1999/6/28 23:28:25
- >>> print m.alt, m.az
+ >>> print(m.alt, m.az)
  -0:00:05.8 111:10:41.6
 
  * Eight ``Observer`` methods are available
@@ -530,7 +530,7 @@ observer.horizon
  >>> sun = ephem.Sun()
  >>> greenwich = ephem.Observer()
  >>> greenwich.lat = '51:28:38'
- >>> print greenwich.horizon
+ >>> print(greenwich.horizon)
  0:00:00.0
  >>> greenwich.date = '2007/10/1'
  >>> r1 = greenwich.next_rising(sun)
@@ -538,9 +538,9 @@ observer.horizon
  >>> greenwich.horizon = '-0:34'
  >>> greenwich.date = '2007/10/1'
  >>> r2 = greenwich.next_rising(sun)
- >>> print 'Visual sunrise:', r1
+ >>> print('Visual sunrise:', r1)
  Visual sunrise: 2007/10/1 05:59:29
- >>> print 'Naval Observatory sunrise:', r2
+ >>> print('Naval Observatory sunrise:', r2)
  Naval Observatory sunrise: 2007/10/1 05:59:50
 
  * The ``horizon`` attribute defines your *horizon*,
@@ -567,7 +567,7 @@ other Observer methods
 
  >>> madrid = ephem.city('Madrid')
  >>> madrid.date = '1978/10/3 11:32'
- >>> print madrid.sidereal_time()
+ >>> print(madrid.sidereal_time())
  12:04:32.17
 
  * Called without arguments.
@@ -576,7 +576,7 @@ other Observer methods
 ..
 
  >>> ra, dec = madrid.radec_of(0, '90')
- >>> print ra, dec
+ >>> print(ra, dec)
  12:05:39.19 40:16:49.7
 
  * Called like ``radec_of(az, alt)``.
@@ -589,13 +589,13 @@ Equinoxes & Solstices
 =====================
 
  >>> d1 = ephem.next_equinox('2000')
- >>> print d1
+ >>> print(d1)
  2000/3/20 07:35:17
  >>> d2 = ephem.next_solstice(d1)
- >>> print d2
+ >>> print(d2)
  2000/6/21 01:47:51
  >>> t = d2 - d1
- >>> print "Spring lasted %.1f days" % t
+ >>> print("Spring lasted %.1f days" % t)
  Spring lasted 92.8 days
 
  * Functions take a ``Date`` argument.
@@ -617,10 +617,10 @@ Phases of the Moon
 ==================
 
  >>> d1 = ephem.next_full_moon('1984')
- >>> print d1
+ >>> print(d1)
  1984/1/18 14:05:10
  >>> d2 = ephem.next_new_moon(d1)
- >>> print d2
+ >>> print(d2)
  1984/2/1 23:46:25
 
  * Functions take a ``Date`` argument.
@@ -645,15 +645,15 @@ Angles
 ======
 
  >>> a = ephem.degrees('180:00:00')
- >>> print a
+ >>> print(a)
  180:00:00.0
  >>> a
  3.1415926535897931
- >>> print "180° is %f radians" % a
+ >>> print("180° is %f radians" % a)
  180° is 3.141593 radians
  >>> h = ephem.hours('1:00:00')
  >>> deg = ephem.degrees(h)
- >>> print "1h right ascension = %s°" % deg
+ >>> print("1h right ascension = %s°" % deg)
  1h right ascension = 15:00:00.0°
 
  * Many ``Body`` and ``Observer`` attributes
@@ -700,7 +700,7 @@ Dates
 =====
 
  >>> d = ephem.Date('1997/3/9 5:13')
- >>> print d
+ >>> print(d)
  1997/3/9 05:13:00
  >>> d
  35496.717361111114
@@ -710,9 +710,9 @@ Dates
  (1997, 3, 9, 5, 13, 2.3748725652694702e-07)
  >>> d + ephem.hour
  35496.759027777778
- >>> print ephem.date(d + ephem.hour)
+ >>> print(ephem.date(d + ephem.hour))
  1997/3/9 06:13:00
- >>> print ephem.date(d + 1)
+ >>> print(ephem.date(d + 1))
  1997/3/10 05:13:00
 
  * Dates are stored and returned as floats.
@@ -759,7 +759,7 @@ local time
  >>> d = ephem.Date('1997/3/9 5:13')
  >>> ephem.localtime(d)
  datetime.datetime(1997, 3, 9, 0, 13, 0, 6)
- >>> print ephem.localtime(d)
+ >>> print(ephem.localtime(d))
  1997-03-09 00:13:00.000006
 
  * The ``localtime()`` function converts a PyEphem date
@@ -771,7 +771,7 @@ Stars and Cities
 ================
 
  >>> rigel = ephem.star('Rigel')
- >>> print rigel._ra, rigel._dec
+ >>> print(rigel._ra, rigel._dec)
  5:14:32.30 -8:12:06.0
 
  * PyEphem provides a catalog of bright stars.
@@ -781,7 +781,7 @@ Stars and Cities
 ..
 
  >>> stuttgart = ephem.city('Stuttgart')
- >>> print stuttgart.long, stuttgart.lat
+ >>> print(stuttgart.long, stuttgart.lat)
  9:11:00.0 48:46:00.0
 
  * PyEphem knows 122 world cities.

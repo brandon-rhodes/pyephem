@@ -72,7 +72,7 @@
 
 >>> mars = ephem.Mars()
 >>> mars.compute()
->>> print mars.ra, mars.dec
+>>> print(mars.ra, mars.dec)
 6:05:56.34 23:23:40.0
 >>> ephem.constellation(mars)
 ('Gem', 'Gemini')
@@ -81,17 +81,17 @@
 >>> boston.lat = '42.37'
 >>> boston.long = '-71.03'
 >>> mars.compute(boston)
->>> print mars.az, mars.alt
+>>> print(mars.az, mars.alt)
 37:55:48.9 -14:23:11.8
 
 >>> boston.next_rising(mars)
 2007/10/2 02:31:51
->>> print mars.az
+>>> print(mars.az)
 56:52:52.1
 
 >>> boston.next_transit(mars)
 2007/10/2 10:07:47
->>> print mars.alt
+>>> print(mars.alt)
 71:02:16.3
 
 .. raw:: html

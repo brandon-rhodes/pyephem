@@ -1,6 +1,8 @@
 PyEphem CHANGELOG
 =================
 
+- Converted PyEphem to work under Python 3.0.
+
 Version 3.7.3.3 (2008 October ?)
 --------------------------------
 

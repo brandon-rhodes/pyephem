@@ -99,10 +99,10 @@ Common Operations
 
   >>> import ephem
   >>> m = ephem.Mars('2003/08/27', epoch=ephem.J2000)
-  >>> print m.a_ra, m.a_dec
+  >>> print(m.a_ra, m.a_dec)
   22:39:06.87 -15:41:53.2
   >>> p = ephem.Equatorial(m, epoch=ephem.B1950)
-  >>> print p.ra, p.dec
+  >>> print(p.ra, p.dec)
   22:36:26.49 -15:57:31.6
 
   You can also convert raw coordinates to another epoch
@@ -114,7 +114,7 @@ Common Operations
 
   >>> north_pole = ephem.Equatorial('0', '90', epoch=ephem.J2000)
   >>> ancient_pole = ephem.Equatorial(north_pole, epoch='-2500')
-  >>> print ancient_pole.ra, ancient_pole.dec
+  >>> print(ancient_pole.ra, ancient_pole.dec)
   22:05:17.60 65:45:47.5
 
 **Find the position of a body in galactic or ecliptic coordinates**
@@ -122,21 +122,21 @@ Common Operations
 
   >>> import ephem
   >>> m = ephem.Mars('1990/12/13')
-  >>> print m.a_ra, m.a_dec
+  >>> print(m.a_ra, m.a_dec)
   3:51:20.54 22:12:49.4
 
   >>> ecl = ephem.Ecliptic(m)
-  >>> print ecl.long, ecl.lat
+  >>> print(ecl.long, ecl.lat)
   60:27:09.2 2:00:47.5
 
   >>> gal = ephem.Galactic(m)
-  >>> print gal.long, gal.lat
+  >>> print(gal.long, gal.lat)
   168:47:15.2 -24:14:01.8
 
   The epoch of the resulting coordinates
   is the same as that used by the body for its astrometric coordinates:
 
-  >>> print ecl.epoch
+  >>> print(ecl.epoch)
   2000/1/1 12:00:00
 
 **Using Another Right Ascension and Declination**
@@ -153,5 +153,5 @@ Common Operations
   >>> m = ephem.Mars('1980/2/25')
   >>> ma = ephem.Equatorial(m.ra, m.dec, epoch='1980/2/25')
   >>> me = ephem.Ecliptic(ma)
-  >>> print me.long, me.lat
+  >>> print(me.long, me.lat)
   155:52:22.4 4:22:08.7

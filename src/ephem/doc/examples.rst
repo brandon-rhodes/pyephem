@@ -20,13 +20,13 @@ The following script prints out an ephemeris.
  here = Observer()
  here.lat, here.long, here.elev = '33:45:10', '-84:23:37', 320.0
 
- print "Hale-Bopp: date, right ascension, declination, and magnitude:"
+ print("Hale-Bopp: date, right ascension, declination, and magnitude:")
 
  here.date = date('1997/2/15')
  end = date('1997/5/15')
  while here.date < end:
      hb.compute(me)
-     print here.date, hb.ra, hb.dec, hb.mag
+     print(here.date, hb.ra, hb.dec, hb.mag)
      here.date += 5
 
 jovian_moon_chart.py
@@ -68,8 +68,8 @@ for the next few days.
      for moon, character in moons:
          moon.compute(t)
          put(line, character, moon.x)
-     print str(ephem.date(t))[5:], ''.join(line)
+     print(str(ephem.date(t))[5:], ''.join(line))
      t += interval
 
- print 'East is to the right;',
- print ', '.join([ '%s = %s' % (c, m.name) for m, c in moons ])
+ print('East is to the right;',)
+ print(', '.join([ '%s = %s' % (c, m.name) for m, c in moons ]))
