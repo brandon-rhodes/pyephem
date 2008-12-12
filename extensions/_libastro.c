@@ -122,7 +122,11 @@ static char *PyString_AsString(PyObject *o)
      Py_ssize_t size = PyUnicode_GET_SIZE(o);
      Py_UNICODE *u = PyUnicode_AS_UNICODE(o);
      char *s = malloc(size + 1);
-     if (!s) return 0;
+     if (!s) {
+          PyErr_SetString(PyExc_RuntimeError, "cannot malloc() storage"
+                          " for the ASCII version of your string");
+          return 0;
+     }
      for (i=0; i < size; i++) {
           if ((u[i] >= 32 && u[i] < 127)
                || u[i] == '\n' || u[i] == '\t' || u[i] == '\r') {
