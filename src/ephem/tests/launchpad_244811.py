@@ -14,13 +14,13 @@ class next_rising_suite(MyTestCase):
         cur_date = ephem.Date("2009/6/29 07:00:00")
 
         cur_date = boston.next_rising(mars, start=cur_date)
-        assert str(cur_date) == '2009/6/30 06:17:37'
+        self.assertEquals(str(cur_date), '2009/6/30 06:17:37')
 
         cur_date = boston.next_rising(mars, start=cur_date)
-        assert str(cur_date) == '2009/7/1 06:15:44'
+        self.assertEquals(str(cur_date), '2009/7/1 06:15:44')
 
         cur_date = boston.next_rising(mars, start=cur_date)
-        assert str(cur_date) == '2009/7/2 06:13:53'
+        self.assertEquals(str(cur_date), '2009/7/2 06:13:53')
 
 if __name__ == '__main__':
     unittest.main()
