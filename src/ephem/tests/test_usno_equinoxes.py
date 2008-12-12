@@ -101,11 +101,19 @@ Aphelion    July  4 12    Solstices  June  20 21 43    Dec   21 10 02
 import datetime, time
 import ephem
 
+# Since users might be in another locale, we have to translate the
+# month into an integer on our own.
+month_ints = {
+    'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6,
+    'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12,
+    }
+
 sun = ephem.Sun()
 
 def to_date(year, monthname, day, hour, minute):
-    s = '%s/%.3s/%s %s:%s' % (year, monthname, day, hour, minute)
-    dt = datetime.datetime(*time.strptime(s, '%Y/%b/%d %H:%M')[0:5])
+    mi = month_ints[monthname[:3]]
+    s = '%s/%s/%s %s:%s' % (year, mi, day, hour, minute)
+    dt = datetime.datetime(*time.strptime(s, '%Y/%m/%d %H:%M')[0:5])
     return ephem.date(dt)
 
 def sequence_of_events(data):
