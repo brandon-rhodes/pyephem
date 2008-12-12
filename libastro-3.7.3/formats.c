@@ -3,7 +3,8 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
-#include <python3.0/Python.h>
+
+#include "Python.h"
 
 #include "astro.h"
 #include "preferences.h"
