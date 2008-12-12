@@ -41,9 +41,9 @@ def standard_parse(line):
     fields = re.split(r'   +', line)
     dt = datetime(*strptime(fields[0][:-2], "%Y %b %d %H:%M:%S")[0:6])
     date = ephem.Date(dt)
-    ra = ephem.hours(fields[1].replace(' ', ':'))
+    ra = ephem.hours(':'.join(fields[1].split()))
     sign, mag = fields[2].split(None, 1)
-    dec = ephem.degrees(sign + mag.replace(' ', ':'))
+    dec = ephem.degrees(sign + ':'.join(mag.split()))
     return date, ra, dec
 
 def is_near(n, m, error = ephem.arcsecond):
