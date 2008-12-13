@@ -37,6 +37,8 @@ setup(name = 'ephem',
         'License :: OSI Approved ::'
         ' GNU Library or Lesser General Public License (LGPL)',
         'Topic :: Scientific/Engineering :: Astronomy',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.0',
         ],
       packages = [ 'ephem', 'ephem.tests' ],
       package_dir = { '': 'src' },
