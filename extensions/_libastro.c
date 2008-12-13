@@ -630,13 +630,8 @@ static int parse_angle(PyObject *value, double factor, double *result)
      } else if (PyUnicode_Check(value)) {
 	  double scaled;
 	  char *s = PyString_AsString(value);
-	  char *sc;
           if (!s) return -1;
-	  for (sc=s; *sc && *sc != ':' && *sc != '.'; sc++) ;
-	  if (*sc == ':')
-	       f_scansexa(s, &scaled);
-	  else
-	       scaled = atod(s);
+          f_scansexa(s, &scaled);
           free(s);
 	  *result = scaled / factor;
 	  return 0;
@@ -662,16 +657,12 @@ static double to_angle(PyObject *value, double efactor, int *status)
 	  return r;
      } else if (PyUnicode_Check(value)) {
 	  double scaled;
-	  char *sc, *s = PyString_AsString(value);
+	  char *s = PyString_AsString(value);
           if (!s) {
                *status = -1;
                return 0;
           }
-	  for (sc=s; *sc && *sc != ':' && *sc != '.'; sc++) ;
-	  if (*sc == ':')
-	       f_scansexa(s, &scaled);
-	  else
-	       scaled = atod(s);
+          f_scansexa(s, &scaled);
           free(s);
 	  *status = 0;
 	  return scaled / efactor;
