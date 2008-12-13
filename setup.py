@@ -13,7 +13,7 @@ for line in open(path):
     if line.startswith('__version__'):
         __version__ = eval(line.split(None, 2)[2]) # skip '__version__', '='
 
-# The `pyephem' module is built from every .c file in the libastro
+# The 'ephem' module is built from every .c file in the libastro
 # directory plus ...
 
 libastro_version = '3.7.3'
@@ -23,7 +23,7 @@ libastro_data = glob('extensions/data/*.c')
 def read(*filenames):
     return open(os.path.join(os.path.dirname(__file__), *filenames)).read()
 
-setup(name = 'pyephem',
+setup(name = 'ephem',
       version = __version__,
       description = 'Scientific-grade astronomy routines',
       long_description = read('README'),

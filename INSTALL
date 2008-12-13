@@ -18,7 +18,7 @@ INSTALLING
 If you have installed the "setuptools" for Python on your system, you
 can ask for PyEphem to be installed simply by typing:
 
-        easy_install pyephem
+        easy_install ephem
 
 Alternately, if you are on a Windows machine, look at the PyEphem web
 site and you should find prominent links to an auto-install tool for
