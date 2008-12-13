@@ -6,6 +6,13 @@ from datetime import datetime
 from time import strptime
 import ephem
 
+# Since users might be in another locale, we have to translate the
+# month into an integer on our own.
+month_ints = {
+    'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6,
+    'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12,
+    }
+
 # Read an ephemeris from the United States Naval Observatory, and
 # confirm that PyEphem returns the same measurements to within one
 # arcsecond of accuracy.
@@ -39,7 +46,10 @@ def standard_parse(line):
     """Read the date, RA, and dec from a USNO data file line."""
 
     fields = re.split(r'   +', line)
-    dt = datetime(*strptime(fields[0][:-2], "%Y %b %d %H:%M:%S")[0:6])
+    datestrfields = fields[0][:-2].split()
+    datestrfields[1] = str(month_ints[datestrfields[1]])
+    datestr = ' '.join(datestrfields)
+    dt = datetime(*strptime(datestr, "%Y %m %d %H:%M:%S")[0:6])
     date = ephem.Date(dt)
     ra = ephem.hours(':'.join(fields[1].split()))
     sign, mag = fields[2].split(None, 1)
