@@ -636,7 +636,7 @@ static int parse_angle(PyObject *value, double factor, double *result)
 	  if (*sc == ':')
 	       f_scansexa(s, &scaled);
 	  else
-	       scaled = atof(s);
+	       scaled = atod(s);
           free(s);
 	  *result = scaled / factor;
 	  return 0;
@@ -671,7 +671,7 @@ static double to_angle(PyObject *value, double efactor, int *status)
 	  if (*sc == ':')
 	       f_scansexa(s, &scaled);
 	  else
-	       scaled = atof(s);
+	       scaled = atod(s);
           free(s);
 	  *status = 0;
 	  return scaled / efactor;
