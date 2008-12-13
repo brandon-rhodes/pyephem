@@ -119,7 +119,7 @@ static int PyNumber_AsDouble(PyObject *o, double *dp)
    that it now requires a free() of the memory it returns.  The argument
    must be a PyUnicode object. */
 
-static char *PyString_AsString(PyObject *o)
+static char *MyString_AsString(PyObject *o)
 {
      Py_ssize_t i;
      Py_ssize_t size = PyUnicode_GET_SIZE(o);
@@ -372,7 +372,7 @@ static int parse_mjd_from_string(PyObject *so, double *mjdp)
 	  goto fail;
 
      if (len >= 1) {
-          char *s = PyString_AsString(PyList_GetItem(pieces, 0));
+          char *s = MyString_AsString(PyList_GetItem(pieces, 0));
           if (!s) goto fail;
 
 	  /* Make sure all characters are in set '-/.0123456789' */
@@ -391,7 +391,7 @@ static int parse_mjd_from_string(PyObject *so, double *mjdp)
      }
 
      if (len >= 2) {
-          char *t = PyString_AsString(PyList_GetItem(pieces, 1));
+          char *t = MyString_AsString(PyList_GetItem(pieces, 1));
 	  double hours;
           if (!t) goto fail;
 	  if (f_scansexa(t, &hours) == -1) {
@@ -629,7 +629,7 @@ static int parse_angle(PyObject *value, double factor, double *result)
 	  return PyNumber_AsDouble(value, result);
      } else if (PyUnicode_Check(value)) {
 	  double scaled;
-	  char *s = PyString_AsString(value);
+	  char *s = MyString_AsString(value);
           if (!s) return -1;
           f_scansexa(s, &scaled);
           free(s);
@@ -657,7 +657,7 @@ static double to_angle(PyObject *value, double efactor, int *status)
 	  return r;
      } else if (PyUnicode_Check(value)) {
 	  double scaled;
-	  char *s = PyString_AsString(value);
+	  char *s = MyString_AsString(value);
           if (!s) {
                *status = -1;
                return 0;
@@ -1595,7 +1595,7 @@ static PyObject *Get_name(PyObject *self, void *v)
 static int Set_name(PyObject *self, PyObject *value, void *v)
 {
      Body *body = (Body*) self;
-     char *name = PyString_AsString(value);
+     char *name = MyString_AsString(value);
      if (!name) return -1;
      strncpy(body->obj.o_name, name, MAXNM);
      free(name);
@@ -2590,7 +2590,7 @@ static PyObject* readtle(PyObject *self, PyObject *args)
      if (!PyArg_ParseTuple(args, "O!ss:readtle",
 			   &PyUnicode_Type, &name, &l1, &l2))
 	  return 0;
-     l0 = PyString_AsString(name);
+     l0 = MyString_AsString(name);
      if (!l0) return 0;
      if (db_tle(l0, l1, l2, &obj)) {
 	  PyErr_SetString(PyExc_ValueError,
