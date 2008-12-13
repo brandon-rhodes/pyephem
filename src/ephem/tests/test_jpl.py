@@ -6,6 +6,13 @@ from datetime import datetime
 from time import strptime
 import ephem
 
+# Since users might be in another locale, we have to translate the
+# month into an integer on our own.
+month_ints = {
+    'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6,
+    'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12,
+    }
+
 # Read an ephemeris from the JPL, and confirm that PyEphem returns the
 # same measurements to within one arcsecond of accuracy.
 
@@ -43,7 +50,8 @@ class JPLTest(unittest.TestCase):
                 in_data = False
 
             elif in_data:
-                date = datetime.strptime(line[1:18], '%Y-%b-%d %H:%M')
+                datestr = line[1:6] + str(month_ints[line[6:9]]) + line[9:18]
+                date = datetime.strptime(datestr, '%Y-%m-%d %H:%M')
                 body.compute(date)
 
                 jpl = JPLDatum()
