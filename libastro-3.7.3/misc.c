@@ -3,14 +3,14 @@
  *  4/20/98 now_lst() always just returns apparent time
  */
 
+#include "Python.h"
+
+#include "astro.h"
+
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "Python.h"
-
-#include "astro.h"
 
 /* zero from loc for len bytes */
 void
