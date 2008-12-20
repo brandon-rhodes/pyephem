@@ -2,10 +2,19 @@
 PyEphem README
 ==============
 
+.. _ephem: http://pypi.python.org/pypi/ephem/
+.. _pyephem: http://pypi.python.org/pypi/pyephem/
 .. _XEphem: http://www.clearskyinstitute.com/xephem/
 .. _Quick Reference: http://rhodesmill.org/pyephem/quick
 .. _Tutorial: http://rhodesmill.org/pyephem/tutorial
 .. _PyEphem web site: http://rhodesmill.org/pyephem/
+
+**This version of PyEphem,
+named** `pyephem`_ **in the Python Package Index,
+is the version for the Python 2.x series.
+If you have gone ahead and transitioned to Python 3.0,
+then look for the package named** `ephem`_
+**instead.**
 
 PyEphem provides an ``ephem`` Python package
 for performing high-precision astronomy computations.
