@@ -26,13 +26,9 @@ double *ra, double *dec)	/* ra/dec for mjd1 in, for mjd2 out */
 /*
  * Copyright (c) 1990 by Craig Counterman. All rights reserved.
  *
- * This software may be redistributed freely, not sold.
- * This copyright notice and disclaimer of warranty must remain
- *    unchanged. 
- *
- * No representation is made about the suitability of this
- * software for any purpose.  It is provided "as is" without express or
- * implied warranty, to the extent permitted by applicable law.
+ * This copy of the precess_hiprec() routine is, by permission of the
+ * author, licensed under the same license as the PyEphem package in
+ * which it is here included.
  *
  * Rigorous precession. From Astronomical Ephemeris 1989, p. B18
  *
