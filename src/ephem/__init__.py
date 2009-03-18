@@ -247,6 +247,12 @@ class Observer(_libastro.Observer):
                    self.long, self.lat, self.elevation,
                    self.horizon, self.temp, self.pressure))
 
+    def compute_pressure(self):
+        """Set the atmospheric pressure for the current elevation."""
+        # Formula from the ISA Standard Atmosphere
+        self.pressure = (1013.25 * (1 - 0.0065 * self.elevation / 288.15)
+                         ** 5.2558761132785179)
+
     def _compute_transit(self, body, start, sign, offset):
         """Internal function used to compute transits."""
 

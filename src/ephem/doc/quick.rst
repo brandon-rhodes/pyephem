@@ -452,6 +452,13 @@ Observers
  * The ``pressure`` defaults to 1010mBar.
  * Other attributes default to zero.
 
+ >>> lowell.compute_pressure()
+ >>> lowell.pressure
+ 775.60251386404991
+ 
+ * Computes the pressure at the observer's current elevation,
+   using the International Standard Atmosphere.
+
  >>> boston = ephem.city('Boston')
  >>> print boston.lat, boston.long
  42:21:30.0 -71:03:37.0

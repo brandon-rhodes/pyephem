@@ -1,7 +1,17 @@
 PyEphem CHANGELOG
 =================
 
-Version 3.7.3.3 (2008 October ?)
+Version 3.7.3.4 (2009 March 18)
+-------------------------------
+
+- Added ``compute_pressure()`` method to the ``Observer`` which computes
+  the standard atmospheric pressure at the observer's current elevation.
+
+- Corrected the altitude of San Francisco as returned by ``city()``.
+
+- Improved the copyright message so that two more authors are credited.
+
+Version 3.7.3.3 (2008 October 3)
 --------------------------------
 
 - Added ``cmsI`` and ``cmsII`` attributes to ``Jupiter`` to provide the
