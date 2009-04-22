@@ -1,0 +1,5 @@
+#!/bin/bash
+
+python3.0 setup.py build
+export PYTHONPATH=$(echo $PWD/build/lib.*):$PYTHONPATH
+python3.0 -m ephem.tests.all

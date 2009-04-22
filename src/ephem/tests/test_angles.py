@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from ephem_test import unittest, MyTestCase, Angle, degrees, hours
+from .ephem_test import unittest, MyTestCase, Angle, degrees, hours
 import math
 
 # Determine whether angles work reasonably.

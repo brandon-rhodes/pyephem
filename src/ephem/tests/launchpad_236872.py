@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from ephem_test import unittest, MyTestCase
+from .ephem_test import unittest, MyTestCase
 import ephem
 
 # See whether asking for the rising-time of Mars hangs indefinitely.

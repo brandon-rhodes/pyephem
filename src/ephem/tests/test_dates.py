@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from ephem_test import *
+from .ephem_test import *
 
 # Determine whether dates behave reasonably.
 

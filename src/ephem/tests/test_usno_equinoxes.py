@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from ephem_test import *
+from .ephem_test import *
 import math
 
 # Determine whether the equinoxes and solstices which PyEphem predicts

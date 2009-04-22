@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from ephem_test import unittest, MyTestCase
+from .ephem_test import unittest, MyTestCase
 import ephem
 import locale
 

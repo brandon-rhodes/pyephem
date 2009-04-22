@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import ephem, unittest
-from ephem_test import MyTestCase
+from .ephem_test import MyTestCase
 
 # Determine whether angles work reasonably.
 

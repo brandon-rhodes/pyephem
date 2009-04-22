@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys, warnings
-from ephem_test import *
+from .ephem_test import *
 
 # The attributes which each class of object should support (these
 # lists are used by several of the functions below).
