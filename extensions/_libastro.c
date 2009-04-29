@@ -165,7 +165,7 @@ static int copy_planet_from_builtin(Planet *planet, int builtin_index)
    like 'hours:minutes:seconds' or 'degrees:minutes:seconds',
    depending on the factor given it. */
 
-staticforward PyTypeObject AngleType;
+static PyTypeObject AngleType;
 
 typedef struct {
      PyFloatObject f;
@@ -312,7 +312,7 @@ static PyTypeObject AngleType = {
    supports triple() and tuple() methods for extracting its date and
    time components. */
 
-staticforward PyTypeObject DateType;
+static PyTypeObject DateType;
 
 typedef PyFloatObject DateObject;
 
@@ -1016,12 +1016,12 @@ static PyTypeObject ObserverType = {
  *
  */
 
-staticforward PyTypeObject BodyType;
-staticforward PyTypeObject PlanetType;
-staticforward PyTypeObject JupiterType;
-staticforward PyTypeObject SaturnType;
-staticforward PyTypeObject MoonType;
-staticforward PyTypeObject PlanetMoonType;
+static PyTypeObject BodyType;
+static PyTypeObject PlanetType;
+static PyTypeObject JupiterType;
+static PyTypeObject SaturnType;
+static PyTypeObject MoonType;
+static PyTypeObject PlanetMoonType;
 
 static PyObject* Body_compute(PyObject *self, PyObject *args, PyObject *kwds);
 
