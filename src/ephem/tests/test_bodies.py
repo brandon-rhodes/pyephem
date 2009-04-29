@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import sys, warnings
 from sets import Set
@@ -239,6 +240,15 @@ class body_suite(MyTestCase):
                         '_e': 4117e-7, '_ap': 265.2946, '_M': 94.7172,
                         '_n': 14.99359833, '_orbit': 59452,
                         })
+
+    def test_newlineTLE(self):
+        """Make sure TLE strings with newlines are accepted."""
+        # based on bug report from Reto Schüttel, 2008 Dec 10
+        readtle('HST                     \n',
+                '1 20580U 90037B   04296.45910607  .00000912 '
+                ' 00000-0  59688-4 0  1902\n',
+                '2 20580  28.4694  17.3953 0004117 265.2946  '
+                '94.7172 14.99359833594524\n')
 
 # A user reported that Saturn's ring tilt was misbehaving, and there was
 # indeed a major error occuring in its calculation.  This small test

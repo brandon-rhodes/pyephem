@@ -2554,12 +2554,14 @@ static PyObject* readdb(PyObject *self, PyObject *args)
 
 static PyObject* readtle(PyObject *self, PyObject *args)
 {
-     char *l1, *l2;
+     char *l0, *l1, *l2;
      PyObject *name, *stripped_name, *body, *catalog_number;
      Obj obj;
      if (!PyArg_ParseTuple(args, "O!ss:readtle",
 			   &PyString_Type, &name, &l1, &l2))
 	  return 0;
+     l0 = PyString_AsString(name);
+     if (!l0) return 0;
      if (db_tle(PyString_AsString(name), l1, l2, &obj)) {
 	  PyErr_SetString(PyExc_ValueError,
 			  "line does not conform to tle format");
