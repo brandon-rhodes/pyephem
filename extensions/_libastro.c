@@ -5,6 +5,8 @@
 #include "datetime.h"
 #include "structmember.h"
 
+/* The libastro header files. */
+
 #include "astro.h"
 #include "preferences.h"
 
