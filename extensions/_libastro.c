@@ -589,12 +589,8 @@ static int parse_angle(PyObject *value, double factor, double *result)
      } else if (PyString_Check(value)) {
 	  double scaled;
 	  char *s = PyString_AsString(value);
-	  char *sc;
-	  for (sc=s; *sc && *sc != ':' && *sc != '.'; sc++) ;
-	  if (*sc == ':')
-	       f_scansexa(s, &scaled);
-	  else
-	       scaled = atof(s);
+          if (!s) return -1;
+          f_scansexa(s, &scaled);
 	  *result = scaled / factor;
 	  return 0;
      } else {
@@ -619,12 +615,12 @@ static double to_angle(PyObject *value, double efactor, int *status)
 	  return r;
      } else if (PyString_Check(value)) {
 	  double scaled;
-	  char *sc, *s = PyString_AsString(value);
-	  for (sc=s; *sc && *sc != ':' && *sc != '.'; sc++) ;
-	  if (*sc == ':')
-	       f_scansexa(s, &scaled);
-	  else
-	       scaled = atof(s);
+          char *s = PyString_AsString(value);
+          if (!s) {
+               *status = -1;
+               return 0;
+          }
+          f_scansexa(s, &scaled);
 	  *status = 0;
 	  return scaled / efactor;
      } else {
