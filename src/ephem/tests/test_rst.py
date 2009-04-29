@@ -13,4 +13,5 @@ def additional_tests():
             ])
 
 if __name__ == '__main__':
-    unittest.main()
+    suite = additional_tests()
+    unittest.TextTestRunner().run(suite)
