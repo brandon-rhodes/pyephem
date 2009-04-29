@@ -19,4 +19,34 @@ from ephem.tests import test_rst
 rst_suite = test_rst.additional_tests()
 
 if __name__ == '__main__':
-    unittest.main()
+    dtl = unittest.defaultTestLoader
+    suite = unittest.TestSuite([
+            dtl.loadTestsFromTestCase(angle_suite),
+            dtl.loadTestsFromTestCase(body_suite),
+            dtl.loadTestsFromTestCase(convergence_suite),
+            dtl.loadTestsFromTestCase(constant_suite),
+            dtl.loadTestsFromTestCase(date_suite),
+            dtl.loadTestsFromTestCase(function_suite),
+            dtl.loadTestsFromTestCase(locales_suite),
+            dtl.loadTestsFromTestCase(planet_suite),
+            dtl.loadTestsFromTestCase(next_rising_suite),
+            dtl.loadTestsFromTestCase(T1),
+            dtl.loadTestsFromTestCase(T2),
+            dtl.loadTestsFromTestCase(T3),
+            dtl.loadTestsFromTestCase(T4),
+            dtl.loadTestsFromTestCase(T5),
+            dtl.loadTestsFromTestCase(T6),
+            dtl.loadTestsFromTestCase(T7),
+            dtl.loadTestsFromTestCase(T8),
+            dtl.loadTestsFromTestCase(T9),
+            dtl.loadTestsFromTestCase(T10),
+            dtl.loadTestsFromTestCase(T11),
+            dtl.loadTestsFromTestCase(T12),
+            dtl.loadTestsFromTestCase(T13),
+            dtl.loadTestsFromTestCase(T14),
+            dtl.loadTestsFromTestCase(T15),
+            jpl_suite,
+            rst_suite,
+            dtl.loadTestsFromTestCase(usno_equinoxes_suite),
+            ])
+    unittest.TextTestRunner(verbosity=2).run(suite)

@@ -1,7 +1,5 @@
-try:
-    from setuptools import setup, Extension
-except:
-    from distutils.core import setup, Extension
+#from setuptools import setup, Extension
+from distutils.core import setup, Extension
 
 import os
 from glob import glob
@@ -42,8 +40,11 @@ setup(name = 'ephem',
         ],
       packages = [ 'ephem', 'ephem.tests' ],
       package_dir = { '': 'src' },
-      package_data = { 'ephem': ['doc/*.rst', 'tests/usno/*.txt'],},
-      test_suite = 'ephem.tests',
+      package_data = { 'ephem': ['doc/*.rst',
+                                 'tests/jpl/*.txt',
+                                 'tests/usno/*.txt',
+                                 ],},
+      #test_suite = 'ephem.tests',
       ext_modules = [
     Extension('ephem._libastro',
               ['extensions/_libastro.c'] + libastro_files + libastro_data,
