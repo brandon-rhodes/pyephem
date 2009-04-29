@@ -7,8 +7,9 @@
  *   See http://www.celestrak.com/NORAD/documentation/spacetrk.pdf.
  *
  * A few topocentric routines are also used from the 'orbit' program which is
- *   Copyright (c) 1986,1987,1988,1989,1990 Robert W. Berger N3EMO
- *
+ *   Copyright (c) 1986,1987,1988,1989,1990 Robert W. Berger N3EMO, who has
+ *   granted permission for it to be licensed under the same terms as those
+ *   of the PyEphem package in which this source file is included.
  */
 
 /* define this to use orbit's propagator
