@@ -3,7 +3,7 @@
 from ephem import Observer
 from unittest import TestCase
 
-class body_suite(TestCase):
+class observer_suite(TestCase):
     def test_pressure_at_sea_level(self):
         o = Observer()
         o.elevation = 0
