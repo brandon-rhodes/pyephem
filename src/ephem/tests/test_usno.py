@@ -218,8 +218,9 @@ The file looks something like:
         """
         datum = Datum()
         fields = line.split()
+        fields[1] = str(month_ints[fields[1]])
 
-        dt = datetime(*strptime(' '.join(fields[0:3]), "%Y %b %d")[0:3])
+        dt = datetime(*strptime(' '.join(fields[0:3]), "%Y %m %d")[0:3])
         midnight = ephem.Date(ephem.Date(dt) - self.tz)
         datum.midnight = midnight
 
@@ -439,8 +440,11 @@ class Moon_Phases(Trial):
                 self.verify(func, datestr)
 
     def verify(self, func, datestr):
+        datestrfields = datestr.split()
+        datestrfields[0] = str(month_ints[datestrfields[0]])
+        datestr = ' '.join(datestrfields)
         dt = datetime(*strptime('%d %s' % (self.year, datestr),
-                                "%Y %b %d %H %M")[0:5])
+                                "%Y %m %d %H %M")[0:5])
         date = ephem.Date(dt)
         self.date = func(self.date) # advance to next phase
         is_near(date, self.date, ephem.minute)
