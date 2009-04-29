@@ -1,8 +1,9 @@
 /* Python header files. */
 
-#include <Python.h>
-#include <datetime.h>
-#include <structmember.h>
+#include "Python.h"
+
+#include "datetime.h"
+#include "structmember.h"
 
 #include "astro.h"
 #include "preferences.h"
