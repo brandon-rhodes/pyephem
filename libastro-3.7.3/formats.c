@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
+#include <Python.h>
 
 #include "astro.h"
 #include "preferences.h"
@@ -125,8 +126,8 @@ double *dp)		/* cracked value, if return 0 */
 {
 	double a, b, c;
 	char str[256];
-	char *neg;
-	int isneg, r;
+	char *neg, *s, *end;
+	int isneg;
 
 	/* copy str0 so we can play with it */
 	strncpy (str, str0, sizeof(str)-1);
@@ -140,14 +141,30 @@ double *dp)		/* cracked value, if return 0 */
 	    isneg = 1;
 	}
 
-	/* crack up to three components */
-	a = b = c = 0.0;
-	r = sscanf (str, "%lf%*[^0-9]%lf%*[^0-9]%lf", &a, &b, &c);
-	if (r < 1)
-	    return (-1);
+        /* These three calls replace an old, locale-sensitive sscanf.
+           Note that, per the semantics of the strtod call, if we run
+           out of valid numbers to parse, then the last few values will
+           just get zero. */
+        a = PyOS_ascii_strtod(str, &end);
+        if (str == end) { /* since a will be -1 */
+             a = b = c = 0.0;
+        } else {
+             s = end;
+             if (*s == ':') s++;
+             b = PyOS_ascii_strtod(s, &end);
+             if (s == end) { /* since b will be -1 */
+                  b = c = 0.0;
+             } else {
+                  s = end;
+                  if (*s == ':') s++;
+                  c = PyOS_ascii_strtod(s, &end);
+                  if (s == end) /* since c will be -1 */
+                       c = 0.0;
+             }
+        }
 
 	/* back to one value, restoring neg */
-	*dp = (c/60.0 + b)/60.0 + a;
+	*dp = a + b/60.0 + c/3600.0;
 	if (isneg)
 	    *dp *= -1;
 	return (0);
@@ -168,10 +185,37 @@ double *d,
 int *y)
 {
         double X,Y,Z; /* the three components */
+        char *s, *end;
 	int n;
 
 	X = Y = Z = 0.0;
-	n = sscanf (bp, "%lf%*[/: ]%lf%*[/: ]%lf", &X, &Y, &Z);
+
+        /* This replaces an old, locale-sensitive sscanf(). */
+        X = PyOS_ascii_strtod(bp, &end);
+        if (bp == end) {
+             n = 0;
+             X = 0.0; /* X will be -1 */
+        } else {
+             s = end;
+             if (*s == '/' || *s == ':') s++;
+             Y = PyOS_ascii_strtod(s, &end);
+             if (s == end) {
+                  n = 1;
+                  Y = 0.0; /* Y will be -1 */
+             } else {
+                  s = end;
+                  if (*s == '/' || *s == ':') s++;
+                  Z = PyOS_ascii_strtod(s, &end);
+                  if (s == end) {
+                       n = 2;
+                       Z = 0.0; /* Z will be -1 */
+                  } else {
+                       n = 3;
+                  }
+             }
+        }
+        
+
 	if (n == 1 && (strchr(bp, '.')
 			|| (pref == PREF_MDY && (X < 1 || X > 12))
 			|| (pref == PREF_DMY && (X < 1 || X > 31)))) {

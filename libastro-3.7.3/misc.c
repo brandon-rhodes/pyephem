@@ -7,6 +7,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+#include <Python.h>
 
 #include "astro.h"
 
@@ -356,7 +357,7 @@ double *mp)
 double
 atod (char *buf)
 {
-	return (strtod (buf, NULL));
+	return (PyOS_ascii_strtod(buf, NULL));
 }
 
 /* solve a spherical triangle:
