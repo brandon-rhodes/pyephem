@@ -1,13 +1,13 @@
+#include "Python.h"
+
+#include "astro.h"
+#include "preferences.h"
+
 #include <stdio.h>
 #include <math.h>
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "Python.h"
-
-#include "astro.h"
-#include "preferences.h"
 
 /* sprint the variable a in sexagesimal format into out[].
  * w is the number of spaces for the whole part.
