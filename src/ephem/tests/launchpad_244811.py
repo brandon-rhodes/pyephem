@@ -10,6 +10,7 @@ import ephem
 class next_rising_suite(MyTestCase):
     def runTest(self):
         boston = ephem.city("Boston")
+        boston.pressure = 1010.0 # undo pressure auto-adjustment
         mars = ephem.Mars()
         cur_date = ephem.Date("2009/6/29 07:00:00")
 
