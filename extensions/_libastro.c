@@ -2847,6 +2847,69 @@ static PyObject *my_precess(PyObject *self, PyObject *args)
      return Py_BuildValue("(OO)", build_hours(ra), build_degrees(dec));
 }
 
+static PyObject *_next_pass(PyObject *self, PyObject *args)
+{
+     Observer *observer;
+     Body *body;
+     RiseSet rs;
+     if (!PyArg_ParseTuple(args, "O!O!", &ObserverType, &observer,
+                           &BodyType, &body))
+          return 0;
+     riset_cir(& observer->now, & body->obj, - body->now.n_dip, & rs);
+     if (rs.rs_flags & RS_CIRCUMPOLAR) {
+          PyErr_SetString(PyExc_ValueError, "that satellite appears to be"
+                          " circumpolar and so will never cross the horizon");
+          return 0;
+     }
+     if (rs.rs_flags & RS_NEVERUP) {
+          PyErr_SetString(PyExc_ValueError, "that satellite seems to stay"
+                          " always below your horizon");
+          return 0;
+     }
+     if (rs.rs_flags & RS_ERROR) {
+          PyErr_SetString(PyExc_ValueError, "cannot find when that"
+                          " satellite next crosses the horizon");
+          return 0;
+     }
+     {
+          PyObject *risetm, *riseaz, *trantm, *tranalt, *settm, *setaz;
+
+          if (rs.rs_flags & RS_NORISE) {
+               Py_INCREF(Py_None);
+               risetm = Py_None;
+               Py_INCREF(Py_None);
+               riseaz = Py_None;
+          } else {
+               risetm = build_Date(rs.rs_risetm);
+               riseaz = build_degrees(rs.rs_riseaz);
+          }
+
+          if (rs.rs_flags & RS_NOTRANS) {
+               Py_INCREF(Py_None);
+               trantm = Py_None;
+               Py_INCREF(Py_None);
+               tranalt = Py_None;
+          } else {
+               trantm = build_Date(rs.rs_trantm);
+               tranalt = build_degrees(rs.rs_tranalt);
+          }
+
+          if (rs.rs_flags & RS_NOSET) {
+               Py_INCREF(Py_None);
+               settm = Py_None;
+               Py_INCREF(Py_None);
+               setaz = Py_None;
+          } else {
+               settm = build_Date(rs.rs_settm);
+               setaz = build_degrees(rs.rs_setaz);
+          }
+
+          return Py_BuildValue(
+               "(OOOOOO)", risetm, riseaz, trantm, tranalt, settm, setaz
+               );
+     }
+}
+
 /*
  * The global methods table and the module initialization function.
  */
@@ -2898,6 +2961,11 @@ static PyMethodDef libastro_methods[] = {
 
      {"builtin_planets", (PyCFunction) builtin_planets, METH_NOARGS,
       "return the list of built-in planet objects"},
+
+     {"_next_pass", (PyCFunction) _next_pass, METH_VARARGS,
+      "Return as a tuple the next rising, culmination, and setting"
+      " of an EarthSatellite"},
+
      {NULL}
 };
 

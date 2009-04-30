@@ -1,6 +1,7 @@
 # Test everything.  Until nose gets ported to Python 3.0.
 
 import unittest
+from ephem.tests import test_satellite
 from ephem.tests.launchpad_236872 import convergence_suite
 from ephem.tests.launchpad_244811 import next_rising_suite
 from ephem.tests.test_angles import angle_suite
@@ -50,5 +51,6 @@ if __name__ == '__main__':
             jpl_suite,
             rst_suite,
             dtl.loadTestsFromTestCase(usno_equinoxes_suite),
+            dtl.loadTestsFromTestCase(test_satellite.Case),
             ])
     unittest.TextTestRunner(verbosity=2).run(suite)

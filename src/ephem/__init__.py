@@ -256,6 +256,13 @@ class Observer(_libastro.Observer):
     def _compute_transit(self, body, start, sign, offset):
         """Internal function used to compute transits."""
 
+        if isinstance(body, EarthSatellite):
+            raise TypeError(
+                'the next and previous transit methods do not'
+                ' support earth satellites because of their speed;'
+                ' please use the higher-resolution next_pass() method'
+                )
+
         def f(d):
             self.date = d
             body.compute(self)
@@ -314,6 +321,13 @@ class Observer(_libastro.Observer):
 
     def _riset_helper(self, body, start, rising, previous):
         """Internal function for finding risings and settings."""
+
+        if isinstance(body, EarthSatellite):
+            raise TypeError(
+                'the rising and settings methods do not'
+                ' support earth satellites because of their speed;'
+                ' please use the higher-resolution next_pass() method'
+                )
 
         def visit_transit():
             d = (previous and self.previous_transit(body)
@@ -393,6 +407,17 @@ class Observer(_libastro.Observer):
     def next_setting(self, body, start=None):
         """Move to the given body's next setting, returning the date."""
         return self._riset_helper(body, start, False, False)
+
+    def next_pass(self, body):
+        """Return the next rising, culmination, and setting of a satellite."""
+
+        if not isinstance(body, EarthSatellite):
+            raise TypeError(
+                'the next_pass() method is only for use with'
+                ' EarthSatellite objects because of their high speed'
+                )
+
+        return _libastro._next_pass(self, body)
 
 # Time conversion.
 

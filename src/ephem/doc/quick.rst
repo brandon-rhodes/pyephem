@@ -499,7 +499,9 @@ transit, rising, setting
     previous_setting()
     next_setting()
 
- * Each takes a ``Body`` argument.
+ * Each takes a ``Body`` argument,
+   which can be any body except an ``EarthSatellite``
+   (for which the ``next_pass()`` method below should be used).
  * Returns a ``Date`` value.
  * Leaves the ``Body`` at its position on that date.
  * The Observer itself is unchanged.
@@ -530,6 +532,28 @@ transit, rising, setting
  * Rising and setting pay attention
    to the observer's ``horizon`` attribute;
    see the next section.
+
+ >>> line1 = "IRIDIUM 80 [+]"
+ >>> line2 = "1 25469U 98051C   09119.61415140 -.00000218  00000-0 -84793-4 0  4781"
+ >>> line3 = "2 25469  86.4029 183.4052 0002522  86.7221 273.4294 14.34215064557061"
+ >>> iridium_80 = ephem.readtle(line1, line2, line3)
+ >>> boston.date = '2009/5/1'
+ >>> info = boston.next_pass(iridium_80)
+ >>> print("Rise time: %s azimuth: %s" % (info[0], info[1]))
+ Rise time: 2009/5/1 00:22:15 azimuth: 104:36:27.6
+
+ * The ``next_pass()`` method takes an ``EarthSatellite`` body
+   and determines when it will next cross above the horizon.
+ * It returns a six-element tuple giving::
+
+    0  Rise time
+    1  Rise azimuth
+    2  Transit time
+    3  Transit altitude
+    4  Set time
+    5  Set azimuth
+
+ * Any of the tuple values can be ``None`` if that event was not found.
 
 observer.horizon
 ----------------
