@@ -6,6 +6,8 @@ Version 3.7.3.4 (2009 March 18)
 
 - Added ``compute_pressure()`` method to the ``Observer`` which computes
   the standard atmospheric pressure at the observer's current elevation.
+  This function gets called automatically on new ``city()`` objects
+  before they are returned to the user.
 
 - Corrected the altitude of San Francisco as returned by ``city()``.
 
