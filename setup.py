@@ -1,3 +1,9 @@
+import sys
+if sys.version_info[0] != 3:
+    print('Error: this project, "ephem", is for Python 3;'
+          ' try "pyephem" for Python 2.x')
+    sys.exit(1)
+
 #from setuptools import setup, Extension
 from distutils.core import setup, Extension
 
