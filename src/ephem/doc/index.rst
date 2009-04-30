@@ -28,11 +28,11 @@
    <p>
      <a href="http://pypi.python.org/pypi/pyephem/"
       >PyPI PyEphem page</a><br/><br/>
-     <a href="http://pypi.python.org/packages/2.5/p/pyephem/pyephem-3.7.3.3.win32-py2.5.exe"
+     <a href="http://pypi.python.org/packages/2.5/p/pyephem/pyephem-3.7.3.4.win32-py2.5.exe"
       >Python 2.5 Windows installer<br/>
-     <a href="http://pypi.python.org/packages/2.4/p/pyephem/pyephem-3.7.3.3.win32-py2.4.exe"
+     <a href="http://pypi.python.org/packages/2.4/p/pyephem/pyephem-3.7.3.4.win32-py2.4.exe"
       >Python 2.4 Windows installer<br/>
-     <a href="http://pypi.python.org/packages/source/p/pyephem/pyephem-3.7.3.3.tar.gz"
+     <a href="http://pypi.python.org/packages/source/p/pyephem/pyephem-3.7.3.4.tar.gz"
       >Source code (.tar.gz)<br/>
    </p>
 
@@ -126,7 +126,7 @@ for us to use them as the basis for PyEphem.
 Installation
 ------------
 
-Version **3.7.3.3** is the most recent release of PyEphem.
+Version **3.7.3.4** is the most recent release of PyEphem.
 Consult the `change log`_ to see the new features,
 including an **incompatible** change
 in the way that the rising and settings functions operate!
