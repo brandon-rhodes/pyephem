@@ -19,3 +19,21 @@ class Case(unittest.TestCase):
                 method_name = which + '_' + event
                 method = getattr(self.atlanta, method_name)
                 self.assertRaises(TypeError, method, self.iss)
+
+    def test_next_pass(self):
+        iss = self.iss
+        self.atlanta.date = '2009/4/30'
+        rt, raz, tt, talt, st, saz = self.atlanta.next_pass(iss)
+
+        # Calsky says (using EST, and probably a different horizon):
+        #  Rise(invis.)  1h02m17s  --.-mag  az:192.0° SSW
+        #  Culmination   1h06m39s  --.-mag  az:128.2° SE   h:16.0°
+        #  Set (invis.)  1h11m04s  --.-m  az: 64.9° ENE
+
+        self.assertAlmostEqual(ephem.Date('2009/4/30 5:02:17'), rt, 3)
+        self.assertAlmostEqual(ephem.Date('2009/4/30 5:06:39'), tt, 3)
+        self.assertAlmostEqual(ephem.Date('2009/4/30 5:11:04'), st, 3)
+
+        self.assertAlmostEqual(ephem.degrees('192.0'), raz, 1)
+        self.assertAlmostEqual(ephem.degrees('16.0'), talt, 1)
+        self.assertAlmostEqual(ephem.degrees('64.9'), saz, 1)

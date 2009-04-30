@@ -1,12 +1,15 @@
 PyEphem CHANGELOG
 =================
 
-Version 3.7.3.4 (2009 March 18)
+Version 3.7.3.4 (2009 April 30)
 -------------------------------
 
-- Added ``compute_pressure()`` method to the ``Observer`` which computes
+- Added a new ``next_pass()`` method to ``Observer`` that searches for
+  when a satellite next rises, culminates, and sets.
+
+- Added a ``compute_pressure()`` method to ``Observer`` which computes
   the standard atmospheric pressure at the observer's current elevation.
-  This function gets called automatically on new ``city()`` objects
+  This function now gets called automatically on new ``city()`` objects
   before they are returned to the user.
 
 - Corrected the altitude of San Francisco as returned by ``city()``.

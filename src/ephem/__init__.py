@@ -408,6 +408,17 @@ class Observer(_libastro.Observer):
         """Move to the given body's next setting, returning the date."""
         return self._riset_helper(body, start, False, False)
 
+    def next_pass(self, body):
+        """Return the next rising, culmination, and setting of a satellite."""
+
+        if not isinstance(body, EarthSatellite):
+            raise TypeError(
+                'the next_pass() method is only for use with'
+                ' EarthSatellite objects because of their high speed'
+                )
+
+        return _libastro._next_pass(self, body)
+
 # Time conversion.
 
 def localtime(date):
