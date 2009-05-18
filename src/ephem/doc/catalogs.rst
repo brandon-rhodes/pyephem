@@ -8,7 +8,7 @@ of comets or asteroids that interest you,
 or perhaps coordinates for stars and other fixed objects.
 Here are a few sources from which such data may be obtained:
 
-http://cfa-www.harvard.edu/iau/Ephemerides/Soft03.html
+http://www.cfa.harvard.edu/iau/Ephemerides/Soft03.html
 
  The International Astronomical Union's
  *Central Bureau for Astronomical Telegrams and Minor Planet Center*
