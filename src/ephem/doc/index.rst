@@ -28,6 +28,8 @@
    <p>
      <a href="http://pypi.python.org/pypi/pyephem/"
       >PyPI PyEphem page</a><br/><br/>
+     <a href="http://pypi.python.org/packages/2.6/p/pyephem/pyephem-3.7.3.4.win32-py2.6.exe"
+      >Python 2.6 Windows installer<br/>
      <a href="http://pypi.python.org/packages/2.5/p/pyephem/pyephem-3.7.3.4.win32-py2.5.exe"
       >Python 2.5 Windows installer<br/>
      <a href="http://pypi.python.org/packages/2.4/p/pyephem/pyephem-3.7.3.4.win32-py2.4.exe"
