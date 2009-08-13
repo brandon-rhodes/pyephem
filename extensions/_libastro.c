@@ -2859,7 +2859,7 @@ static PyObject *_next_pass(PyObject *self, PyObject *args)
                riseaz = build_degrees(rs.rs_riseaz);
           }
 
-          if (rs.rs_flags & RS_NOTRANS) {
+          if (rs.rs_flags & (RS_NORISE | RS_NOSET | RS_NOTRANS)) {
                Py_INCREF(Py_None);
                trantm = Py_None;
                Py_INCREF(Py_None);
@@ -2869,7 +2869,7 @@ static PyObject *_next_pass(PyObject *self, PyObject *args)
                tranalt = build_degrees(rs.rs_tranalt);
           }
 
-          if (rs.rs_flags & RS_NOSET) {
+          if (rs.rs_flags & (RS_NORISE | RS_NOSET)) {
                Py_INCREF(Py_None);
                settm = Py_None;
                Py_INCREF(Py_None);
