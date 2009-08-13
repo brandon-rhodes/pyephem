@@ -1,0 +1,5 @@
+syntax: glob
+build
+dist
+*.egg-info
+src/ephem/_libastro.so
