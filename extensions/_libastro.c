@@ -341,12 +341,12 @@ static int parse_mjd_from_string(PyObject *so, double *mjdp)
 	  goto fail;
 
      if (len >= 1) {
+	  int i;
           char *s = PyString_AsString(PyList_GetItem(pieces, 0));
           if (!s) goto fail;
 
 	  /* Make sure all characters are in set '-/.0123456789' */
 
-	  int i;
 	  for (i=0; s[i]; i++) {
 	       if (s[i] != '-' && s[i] != '/' && s[i] != '.'
 		   && (s[i] < '0' || s[i] > '9')) {
@@ -1065,13 +1065,14 @@ static int Planet_setup(Planet *planet, int builtin_index,
 
 static int Planet_init(PyObject *self, PyObject *args, PyObject *kw)
 {
+     int builtin_index;
      PyObject *o = PyObject_GetAttrString(self, "__planet__");
      if (!o) {
           PyErr_SetString(PyExc_TypeError, "internal error: cannot"
                            " init Planet without a __planet__ code");
           return -1;
      }
-     int builtin_index = PyInt_AsLong(o);
+     builtin_index = PyInt_AsLong(o);
      Py_DECREF(o);
      if ((builtin_index == -1) && PyErr_Occurred()) {
           PyErr_SetString(PyExc_TypeError, "internal error: __planet__"
