@@ -3,3 +3,4 @@ build
 dist
 *.egg-info
 src/ephem/_libastro.so
+src/ephem/doc/_build
