@@ -319,7 +319,7 @@ class Observer(_libastro.Observer):
                                 ' above the horizon at latitude %s'
                                 % (declination, self.lat))
 
-    def _riset_helper(self, body, start, rising, previous):
+    def _riset_helper(self, body, start, use_center, rising, previous):
         """Internal function for finding risings and settings."""
 
         if isinstance(body, EarthSatellite):
@@ -332,7 +332,7 @@ class Observer(_libastro.Observer):
         def visit_transit():
             d = (previous and self.previous_transit(body)
                  or self.next_transit(body)) # if-then
-            if body.alt + body.radius - self.horizon <= 0:
+            if body.alt + body.radius * use_radius - self.horizon <= 0:
                 raise NeverUpError('%r transits below the horizon at %s'
                                    % (body.name, d))
             return d
@@ -340,10 +340,18 @@ class Observer(_libastro.Observer):
         def visit_antitransit():
             d = (previous and self.previous_antitransit(body)
                  or self.next_antitransit(body)) # if-then
-            if body.alt + body.radius - self.horizon >= 0:
+            if body.alt + body.radius * use_radius - self.horizon >= 0:
                 raise AlwaysUpError('%r is still above the horizon at %s'
                                     % (body.name, d))
             return d
+
+        # Determine whether we should offset the result for the radius
+        # of the object being measured, or instead pretend that rising
+        # and setting happens when its center crosses the horizon.
+        if use_center:
+            use_radius = 0.0
+        else:
+            use_radius = 1.0
 
         # Save self.date so that we can restore it before returning.
         original_date = self.date
@@ -361,9 +369,11 @@ class Observer(_libastro.Observer):
         body.compute(self)
         heading_downward = (rising == previous) # "==" is inverted "xor"
         if heading_downward:
-            on_lower_cusp = body.alt + body.radius - self.horizon > tiny
+            on_lower_cusp = (body.alt + body.radius * use_radius
+                             - self.horizon > tiny)
         else:
-            on_lower_cusp = body.alt + body.radius - self.horizon < - tiny
+            on_lower_cusp = (body.alt + body.radius * use_radius
+                             - self.horizon < - tiny)
 
         az = body.az
         on_right_side_of_sky = ((rising == (az < pi)) # inverted "xor"
@@ -385,28 +395,28 @@ class Observer(_libastro.Observer):
         def f(d):
             self.date = d
             body.compute(self)
-            return body.alt + body.radius - self.horizon
+            return body.alt + body.radius * use_radius - self.horizon
 
         d = (d0 + d1) / 2.
         result = Date(newton(f, d, d + minute))
         self.date = original_date
         return result
 
-    def previous_rising(self, body, start=None):
+    def previous_rising(self, body, start=None, use_center=False):
         """Move to the given body's previous rising, returning the date."""
-        return self._riset_helper(body, start, True, True)
+        return self._riset_helper(body, start, use_center, True, True)
 
-    def previous_setting(self, body, start=None):
+    def previous_setting(self, body, start=None, use_center=False):
         """Move to the given body's previous setting, returning the date."""
-        return self._riset_helper(body, start, False, True)
+        return self._riset_helper(body, start, use_center, False, True)
 
-    def next_rising(self, body, start=None):
+    def next_rising(self, body, start=None, use_center=False):
         """Move to the given body's next rising, returning the date."""
-        return self._riset_helper(body, start, True, False)
+        return self._riset_helper(body, start, use_center, True, False)
 
-    def next_setting(self, body, start=None):
+    def next_setting(self, body, start=None, use_center=False):
         """Move to the given body's next setting, returning the date."""
-        return self._riset_helper(body, start, False, False)
+        return self._riset_helper(body, start, use_center, False, False)
 
     def next_pass(self, body):
         """Return the next rising, culmination, and setting of a satellite."""
