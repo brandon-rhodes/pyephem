@@ -169,12 +169,14 @@ Documentation
    tutorial
    catalogs
    CHANGELOG
+   rise-set
    radec
    coordinates
    date
    angle
    examples
    newton
+   reference
 
 .. raw:: html
 
