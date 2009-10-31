@@ -2,7 +2,7 @@ include COPYING
 include LICENSE-GPL
 include LICENSE-LGPL
 include INSTALL
-include libastro-3.7.3/*.h
+include libastro-3.7.4/*.h
 include src/ephem/doc/*
 include src/ephem/tests/jpl/*
 include src/ephem/tests/usno/*
