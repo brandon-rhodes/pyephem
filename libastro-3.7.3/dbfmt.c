@@ -17,6 +17,7 @@ int get_fields (char *s, int delim, char *fields[]);
 #define FLDSEP          ','     /* major field separator */
 #define SUBFLD          '|'     /* subfield separator */
 #define MAXFLDS 20              /* must be more than on any expected line */
+#define	MAXESGOOD	100	/* max earth satellite good, days */
 
 static char *enm (char *flds[MAXFLDS]);
 static int crack_f (Obj *op, char *flds[MAXFLDS], int nf, char whynot[]);
@@ -182,6 +183,7 @@ db_write_line (Obj *op, char lp[])
  *   each as far as 69 chars.
  * we detect nonconformance as efficiently as possible.
  * name ends at first '\0', '\r' or '\n'.
+ * set startok/endok.
  * if ok return 0 else return -1
  */
 int
@@ -243,6 +245,18 @@ db_tle (char *name, char *l1, char *l2, Obj *op)
 	op->es_ap = (float)tle_fld (l2, 35, 42);
 	op->es_M = (float)tle_fld (l2, 44, 51);
 	op->es_orbit = (int)tle_fld (l2, 64, 68);
+
+	/* limit date range to decay period that changes period by 1% but
+	 * never more than MAXESGOOD.
+	 * es_n is rev/day, es_decay is (rev/day)/day
+	 */
+	if (fabs(op->es_decay) > 0) {
+	    double dt = 0.01*op->es_n/fabs(op->es_decay);
+	    if (dt > MAXESGOOD)
+		dt = MAXESGOOD;
+	    op->es_startok = op->es_epoch - dt;
+	    op->es_endok = op->es_epoch + dt;
+	}
 
 	/* yes! */
 	return (0);
@@ -575,6 +589,18 @@ crack_E (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 	op->es_orbit = atoi (flds[10]);
 	if (nf == 12)
 	    op->es_drag = (float) atod (flds[11]);
+
+	/* if not already specified, limit date range to decay period that
+	 * changes period by 1% but never longer than MAXESGOOD.
+	 * es_n is rev/day, es_decay is (rev/day)/day
+	 */
+	if (op->es_startok == 0 && op->es_endok == 0 && fabs(op->es_decay) > 0){
+	    double dt = 0.01*op->es_n/fabs(op->es_decay);
+	    if (dt > MAXESGOOD)
+		dt = MAXESGOOD;
+	    op->es_startok = op->es_epoch - dt;
+	    op->es_endok = op->es_epoch + dt;
+	}
 
 	return (0);
 }
@@ -999,4 +1025,4 @@ write_P (Obj *op, char lp[])
 }
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: dbfmt.c,v $ $Date: 2007/03/19 08:13:39 $ $Revision: 1.42 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: dbfmt.c,v $ $Date: 2009/07/03 23:12:50 $ $Revision: 1.43 $ $Name:  $"};

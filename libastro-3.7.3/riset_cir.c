@@ -272,7 +272,7 @@ Obj *op)	/* working object -- returns as answer */
 {
 #define	MAXPASSES	20		/* max iterations to try */
 #define	FIRSTSTEP	(1.0/60.0/24.0)	/* first time step, days */
-#define	MAXSTEP		(1.0/24.0)/* max time step,days (to detect flat)*/
+#define	MAXSTEP		(12.0/24.0)/* max time step,days (to detect flat)*/
 
 	double a0 = 0;
 	double mjdn = mjd;
@@ -382,4 +382,4 @@ double *tp, double *alp)	/* time of max altitude, and that altitude */
 }
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: riset_cir.c,v $ $Date: 2008/01/15 18:38:07 $ $Revision: 1.12 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: riset_cir.c,v $ $Date: 2009/04/06 00:17:41 $ $Revision: 1.13 $ $Name:  $"};
