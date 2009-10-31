@@ -191,7 +191,7 @@ catalog format
  >>> yh = ephem.readdb(line)
  >>> yh.compute('2007/10/1')
  >>> print yh.earth_distance
- 14.8046741486
+ 14.8046731949
  >>> print yh.mag
  23.96
 

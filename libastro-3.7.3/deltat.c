@@ -82,8 +82,8 @@
 #include "astro.h"
 
 #define TABSTART 1620.0
-#define TABEND 2006.0
-#define TABSIZ 387
+#define TABEND 2017.0
+#define TABSIZ 398
 
 /* Note, Stephenson and Morrison's table starts at the year 1630.
  * The Chapronts' table does not agree with the Almanac prior to 1630.
@@ -143,18 +143,21 @@ static short dt[TABSIZ] = {
      6163, 6230,
     /* 1999 USNO data 1998.0 thru 2000.0 (McBurnett) */
      6297, 6347, 6383, 
-    /* 1999 extrapolation (McBurnett), 2001.0 thru 2006.0 */
-     /* 6440, 6510, 6600, 6750, 6900, 7060 */
-     6409, 6430, 6447, 6507, 6578, 6610	/* ECD */
 
-    /* original 1997 USNO extrapolation (stern), 1998.0 thru 2004.0
-     6296, 6420,
-     6510, 6600, 6700, 6800, 6900   */ /* 7000, 7100, 7200, 7300, 7400, */
+     6409, 6430, 6447, 6507, 6546, 6546, 6546,
 
-    /* Extrapolated values (USNO) (original Moshier) [1996.0 thru 2005.0]
-     6183, 6280, 6377, 6475,
-     6572, 6667, 6765, 6861, 6957
-     */
+    /* 2008+ added 5/19/2009 from http://maia.usno.navy.mil/ser7/deltat.preds */
+
+    6546,
+    6570,
+    6650,
+    6710,
+    6800,
+    6800,
+    6900,
+    6900,
+    7000,
+    7000,
 };
 
 /* calculate  DeltaT = ET - UT1 in seconds.  Describes the irregularities
@@ -302,4 +305,4 @@ main()
 #endif
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: deltat.c,v $ $Date: 2006/02/25 03:24:09 $ $Revision: 1.9 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: deltat.c,v $ $Date: 2009/05/20 04:35:40 $ $Revision: 1.10 $ $Name:  $"};

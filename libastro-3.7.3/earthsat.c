@@ -402,8 +402,8 @@ double *SatVX, double *SatVY, double *SatVZ)
 static int
 crazyOp (Now *np, Obj *op)
 {
-	/* figure its daft if long enough to decay 1 rev/day */
-	return (fabs(op->es_epoch - mjd) > 1/fabs(op->es_decay));
+	/* toss if more than a year old */
+	return (fabs(op->es_epoch - mjd) > 365);
 }
 
 /* grab the xephem stuff from op and copy into orbit's globals.
@@ -789,4 +789,4 @@ InitOrbitRoutines(double EpochDay, int AtEod)
 }
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: earthsat.c,v $ $Date: 2007/05/09 03:19:29 $ $Revision: 1.10 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: earthsat.c,v $ $Date: 2009/07/03 23:14:02 $ $Revision: 1.12 $ $Name:  $"};
