@@ -27,7 +27,7 @@
    <img src="_static/python.png"/>
    <p>
      <a href="http://pypi.python.org/pypi/pyephem/"
-      >PyPI PyEphem page</a><br/><br/>
+      >PyPI PyEphem page</a><br/>
      <a href="http://pypi.python.org/packages/2.6/p/pyephem/pyephem-3.7.3.4.win32-py2.6.exe"
       >Python 2.6 Windows installer<br/>
      <a href="http://pypi.python.org/packages/2.5/p/pyephem/pyephem-3.7.3.4.win32-py2.5.exe"
@@ -41,16 +41,18 @@
    </td>
    <td>
 
-   <p>We use <b>Launchpad</b> to host our community support tools
-   and our source code repository.</p>
+   <p>We use <b>Launchpad</b> to host our community support tools.</p>
    <img src="_static/launchpad.png"/>
    <p>
-     <a href="http://launchpad.net/pyephem"
-      >LaunchPad PyEphem page</a><br/><br/>
      <a href="http://answers.launchpad.net/pyephem">Q&A Forum</a><br/>
      <a href="http://launchpad.net/pyephem/+announcements">News Feed</a><br/>
      <a href="http://bugs.launchpad.net/pyephem">Bug Tracker</a><br/>
-     <a href="http://code.launchpad.net/pyephem">Code Repository</a><br/>
+   </p>
+   <p><b>BitBucket</b> hosts our code.</p>
+   <img src="_static/bitbucket.png"/>
+   <p>
+     <a href="http://bitbucket.org/brandon/pyephem/src/"
+     >Code Repository</a><br/>
    </p>
 
    </td></tr>
