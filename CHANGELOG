@@ -1,5 +1,9 @@
 			  PyEphem CHANGELOG
 
+Version ? (?)
+
+  - Fixed the location and altitude of Berlin in the city() function.
+
 Version 3.7.2.4 (2008 May ?)
 
   - After feedback from users, changed the Observer methods which find
