@@ -108,9 +108,10 @@ Scheat,f|S|M2,23:03:46.3|187.76,28:04:57|137.61,2.44,2000,0
 Markab,f|S|B9,23:04:45.6|61.1,15:12:19|-42.56,2.49,2000,0
 """
 
+stars = {}
+
 def build_stars():
     global stars
-    stars = {}
     import ephem
     for line in db.strip().split('\n'):
         star = ephem.readdb(line)
