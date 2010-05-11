@@ -9,4 +9,4 @@ class CityTests(unittest.TestCase):
         self.assertEqual(b.name, 'Boston')
 
     def test_unknown_city(self):
-        self.assertRaises(KeyError, city, ('Marietta',))
+        self.assertRaises(KeyError, city, 'Marietta')
