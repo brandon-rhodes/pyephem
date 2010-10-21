@@ -2455,25 +2455,33 @@ static int separation_arg(PyObject *arg, double *lngi, double *lati)
 	  *lati = b->obj.s_dec;
 	  return 0;
      } else if (PySequence_Check(arg) && PySequence_Size(arg) == 2) {
-	  PyObject *lngo, *lato, *lngf, *latf;
+          int rval = -1;
+	  PyObject *lngo = 0, *lato = 0, *lngf = 0, *latf = 0;
 	  lngo = PySequence_GetItem(arg, 0);
-	  if (!lngo) return -1;
+	  if (!lngo) goto fail;
 	  lato = PySequence_GetItem(arg, 1);
-	  if (!lato) return -1;
-	  if (!PyNumber_Check(lngo) || !PyNumber_Check(lato)) goto fail;
+	  if (!lato) goto fail;
+	  if (!PyNumber_Check(lngo) || !PyNumber_Check(lato)) {
+               PyErr_SetString(PyExc_TypeError, err_message);
+               goto fail;
+          }
 	  lngf = PyNumber_Float(lngo);
-	  if (!lngf) return -1;
+	  if (!lngf) goto fail;
 	  latf = PyNumber_Float(lato);
-	  if (!latf) return -1;
+	  if (!latf) goto fail;
 	  *lngi = PyFloat_AsDouble(lngf);
 	  *lati = PyFloat_AsDouble(latf);
-	  Py_DECREF(lngf);
-	  Py_DECREF(latf);
-	  return 0;
+          rval = 0;
+     fail:
+          Py_XDECREF(lngo);
+          Py_XDECREF(lato);
+	  Py_XDECREF(lngf);
+	  Py_XDECREF(latf);
+          return rval;
+     } else {
+          PyErr_SetString(PyExc_TypeError, err_message);
+          return -1;
      }
-fail:
-     PyErr_SetString(PyExc_TypeError, err_message);
-     return -1;
 }
 
 static PyObject* separation(PyObject *self, PyObject *args)
