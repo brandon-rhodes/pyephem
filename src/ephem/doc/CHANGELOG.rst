@@ -4,10 +4,11 @@ PyEphem CHANGELOG
 Version 3.7.4.1 (2010 December ?)
 ---------------------------------
 
-- **Bugfix:** the ``separation()`` function was leaking memory; thanks
-  to Enno Middelburg for the bug report!
+- **Bugfix:** repaired the ``separation()`` function so that it no
+  longer leaks memory; thanks to Enno Middelburg for the bug report!
 
-- Fixed the location and altitude of Berlin in the ``city()`` function.
+- **Bugfix:** completely rebuilt the geographic data used by ``city()``
+  after Giacomo Boffi pointed out several errors.
 
 Version 3.7.3.4 (2009 April 30)
 -------------------------------
