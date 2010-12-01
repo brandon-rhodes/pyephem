@@ -454,14 +454,14 @@ Observers
 
  >>> lowell.compute_pressure()
  >>> lowell.pressure
- 775.60251386404991
+ 775.6025138640499
  
  * Computes the pressure at the observer's current elevation,
    using the International Standard Atmosphere.
 
  >>> boston = ephem.city('Boston')
  >>> print(boston.lat, boston.long)
- 42:21:30.0 -71:03:37.0
+ 42:21:30.4 -71:03:35.2
 
  * XEphem includes a small database of world cities.
  * Each call to ``city()`` returns a new ``Observer``.
@@ -540,7 +540,7 @@ transit, rising, setting
  >>> boston.date = '2009/5/1'
  >>> info = boston.next_pass(iridium_80)
  >>> print("Rise time: %s azimuth: %s" % (info[0], info[1]))
- Rise time: 2009/5/1 00:22:15 azimuth: 104:36:27.6
+ Rise time: 2009/5/1 00:22:15 azimuth: 104:36:21.5
 
  * The ``next_pass()`` method takes an ``EarthSatellite`` body
    and determines when it will next cross above the horizon.
@@ -599,7 +599,7 @@ other Observer methods
  >>> madrid = ephem.city('Madrid')
  >>> madrid.date = '1978/10/3 11:32'
  >>> print(madrid.sidereal_time())
- 12:04:32.17
+ 12:04:28.09
 
  * Called without arguments.
  * Returns the sidereal time for the observer's circumstances.
@@ -608,7 +608,7 @@ other Observer methods
 
  >>> ra, dec = madrid.radec_of(0, '90')
  >>> print(ra, dec)
- 12:05:39.19 40:16:49.7
+ 12:05:35.12 40:17:49.8
 
  * Called like ``radec_of(az, alt)``.
  * Returns the apparent topocentric coordinates
@@ -679,7 +679,7 @@ Angles
  >>> print(a)
  180:00:00.0
  >>> a
- 3.1415926535897931
+ 3.141592653589793
  >>> print("180° is %f radians" % a)
  180° is 3.141593 radians
  >>> h = ephem.hours('1:00:00')
@@ -736,11 +736,11 @@ Dates
  >>> d
  35496.717361111114
  >>> d.triple()
- (1997, 3, 9.2173611111138598)
+ (1997, 3, 9.21736111111386)
  >>> d.tuple()
  (1997, 3, 9, 5, 13, 2.3748725652694702e-07)
  >>> d + ephem.hour
- 35496.759027777778
+ 35496.75902777778
  >>> print(ephem.date(d + ephem.hour))
  1997/3/9 06:13:00
  >>> print(ephem.date(d + 1))
@@ -813,7 +813,7 @@ Stars and Cities
 
  >>> stuttgart = ephem.city('Stuttgart')
  >>> print(stuttgart.long, stuttgart.lat)
- 9:11:00.0 48:46:00.0
+ 9:10:50.8 48:46:37.6
 
  * PyEphem knows 122 world cities.
  * The ``city()`` function returns an ``Observer``

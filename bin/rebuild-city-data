@@ -1,7 +1,12 @@
 #!/usr/bin/env python
 
+import json
+import os
+import re
+import sys
+import urllib
+import urllib2
 from urllib2 import urlopen, HTTPError
-import re, os, sys
 
 # Look up each city in "cities.in" on the http://www.fallingrain.com/
 # web site, and append their geographic data into "cities.out".
@@ -11,83 +16,30 @@ projdir = os.path.join(os.path.dirname(sys.argv[0]), '..')
 cin = open(os.path.join(projdir, 'data', 'cities.in'), 'r')
 cout = open(os.path.join(projdir, 'extensions', 'data', 'cities.out'), 'a')
 
-def transchar(c):
-    if c == ' ':
-        return '32'
-    elif c == '-':
-        return '45'
-    elif c == '.':
-        return '46'
-    return c
-
-def get_page(name, n):
-    url = 'http://www.fallingrain.com/world/a/' + '/'.join(
-        [ transchar(c) for c in name[:n] ]
-        )
-    try:
-        return urlopen(url).read()
-    except HTTPError:
-        return None
-
-def rename(name):
-    bettername = {
-        'Hong Kong historical': 'Hong Kong',
-        'Mexico': 'Mexico City',
-        'Sankt-Peterburg': 'St. Petersburg',
-        }.get(name, None)
-    return bettername or name
-
-class Entry(object):
-    pass
-
-def get_entries(content):
-    entries = []
-    for line in content.split('\n'):
-        if line.startswith('<tr><td>'):
-            fields = re.split(r'<[^>]*>', line)
-            e = Entry()
-            e.name = fields[3]
-            e.type = fields[5]
-            e.lat = fields[8]
-            e.long = fields[9]
-            e.elev = fields[10]
-            e.pop = int(fields[11])
-
-            entries.append(e)
-
-    return entries
-
 for line in cin:
     line = line.strip()
     if not line or line.startswith('#'):
         continue
+    if not line.startswith('Birmin'):
+        continue
 
     name = line
-    i = 4                      # first guess for how deep the URL goes
-    content = get_page(name, i)
-    if not content:             # we went too deep
-        while not content:
-            i -= 1
-            content = get_page(name, i)
-    else:
-        while content and i <= len(name):
-            old_content = content
-            i += 1
-            content = get_page(name, i)
-        content = old_content
+    url = ('http://maps.googleapis.com/maps/api/geocode/json?'
+           + urllib.urlencode({'address': name, 'sensor': 'false'}))
+    data = json.loads(urllib2.urlopen(url).read())
+    location = data['results'][0]['geometry']['location']
 
-    entries = get_entries(content)
-    entries = [ e for e in entries if e.type == 'city' ]
-    entries = [ e for e in entries if e.name == name ]
+    latlng = '%s,%s' % (location['lat'], location['lng'])
+    url2 = ('http://maps.googleapis.com/maps/api/elevation/json?'
+            + urllib.urlencode({'locations': latlng, 'sensor': 'false'}))
+    data2 = json.loads(urllib2.urlopen(url2).read())
 
-    if entries:
-        esort = [ (e.pop, e) for e in entries ]
-        esort.sort()
-        e = esort[-1][1]
-        s = "    '%s': ('%s', '%s', %f)," % (rename(e.name), e.lat, e.long,
-                                             float(e.elev) * 0.3048)
-        print s
-        print >>cout, s
-    else:
-        print '-------- cannot find:', name
-        print >>cout, '-------- cannot find:', name
+    s = "    '%s': ('%s', '%s', %f),  # %s" % (
+        name,
+        location['lat'],
+        location['lng'],
+        data2['results'][0]['elevation'],
+        data['results'][0]['address_components'][-1]['long_name']
+        )
+    print s
+    #print >>cout, s
