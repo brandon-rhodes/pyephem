@@ -116,8 +116,8 @@ body.compute(date)
  * On artificial satellites, also sets:
 
    | Geographic point beneath satellite:
-   |  ``sublat`` — Latitude
-   |  ``sublong`` — Longitude
+   |  ``sublat`` — Latitude (+N)
+   |  ``sublong`` — Longitude (+E)
    |
    | ``elevation`` — Height above sea level (m)
    | ``range`` — Distance from observer to satellite (m)
@@ -395,13 +395,13 @@ Coordinate Conversion
    |  ``epoch`` — epoch of the coordinate
 
    | ``Ecliptic``
-   |  ``long`` — ecliptic longitude
-   |  ``lat`` — ecliptic latitude
+   |  ``long`` — ecliptic longitude (+E)
+   |  ``lat`` — ecliptic latitude (+N)
    |  ``epoch`` — epoch of the coordinate
 
    | ``Galactic``
-   |  ``long`` — galactic longitude
-   |  ``lat`` — galactic latitude
+   |  ``long`` — galactic longitude (+E)
+   |  ``lat`` — galactic latitude (+N)
    |  ``epoch`` — epoch of the coordinate
 
  * When creating a new coordinate,
@@ -439,8 +439,8 @@ Observers
    | ``date`` — Date and time
    | ``epoch`` — Epoch for astrometric RA/dec
 
-   | ``lat`` — Latitude
-   | ``long`` — Longitude
+   | ``lat`` — Latitude (+N)
+   | ``long`` — Longitude (+E)
    | ``elevation`` — Elevation (m)
 
    | ``temp`` — Temperature (°C)
