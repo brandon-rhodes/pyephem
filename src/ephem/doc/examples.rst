@@ -18,7 +18,7 @@ The following script prints out an ephemeris.
              "0.0003959,0.995026,0.1825,07/06.0/1998,2000,g -2.0,4.0")
 
  here = Observer()
- here.lat, here.long, here.elev = '33:45:10', '-84:23:37', 320.0
+ here.lat, here.lon, here.elev = '33:45:10', '-84:23:37', 320.0
 
  print("Hale-Bopp: date, right ascension, declination, and magnitude:")
 

@@ -4,6 +4,13 @@ from ephem import Observer
 from unittest import TestCase
 
 class observer_suite(TestCase):
+    def test_lon_can_also_be_called_long(self):
+        o = Observer()
+        o.lon = 3.0
+        self.assertEqual(o.long, 3.0)
+        o.long = 6.0
+        self.assertEqual(o.lon, 6.0)
+
     def test_pressure_at_sea_level(self):
         o = Observer()
         o.elevation = 0

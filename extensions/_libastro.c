@@ -995,7 +995,7 @@ static PyMethodDef Observer_methods[] = {
 static PyGetSetDef Observer_getset[] = {
      {"date", getd_mjd, setd_mjd, "Date", VOFF(n_mjd)},
      {"lat", getd_rd, setd_rd, "Latitude (degrees north)", VOFF(n_lat)},
-     {"long", getd_rd, setd_rd, "Longitude (degrees east)", VOFF(n_lng)},
+     {"lon", getd_rd, setd_rd, "Longitude (degrees east)", VOFF(n_lng)},
      {"elevation", get_elev, set_elev,
       "Elevation above sea level (meters)", NULL},
      {"horizon", getd_rd, setd_rd,
@@ -1003,6 +1003,10 @@ static PyGetSetDef Observer_getset[] = {
       " should be considered at the moment of rising or setting (degrees)",
       VOFF(n_dip)},
      {"epoch", getd_mjd, setd_mjd, "Precession epoch", VOFF(n_epoch)},
+
+     /* For compatibility with older scripts: */
+     {"long", getd_rd, setd_rd, "Longitude (degrees east)", VOFF(n_lng)},
+
      {NULL}
 };
 
@@ -1724,13 +1728,18 @@ static PyGetSetDef Body_getset[] = {
 };
 
 static PyGetSetDef Planet_getset[] = {
-     {"hlong", Get_hlong, 0, "heliocentric longitude"
+     {"hlon", Get_hlong, 0, "heliocentric longitude"
       " (radians that print as degrees)"},
      {"hlat", Get_hlat, 0, "heliocentric latitude"
       " (radians that print as degrees)"},
      {"sun_distance", Get_sun_distance, 0, "distance from sun (AU)"},
      {"earth_distance", Get_earth_distance, 0, "distance from earth (AU)"},
      {"phase", Get_phase, 0, "phase (percent illuminated)"},
+
+     /* For compatibility with older scripts: */
+     {"hlong", Get_hlong, 0, "heliocentric longitude"
+      " (radians that print as degrees)"},
+
      {NULL}
 };
 

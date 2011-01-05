@@ -134,6 +134,6 @@ def city(name):
         raise KeyError('Unknown city: %r' % (name,))
     o = ephem.Observer()
     o.name = name
-    o.lat, o.long, o.elevation = data
+    o.lat, o.lon, o.elevation = data
     o.compute_pressure()
     return o

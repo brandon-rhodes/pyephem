@@ -79,7 +79,7 @@
 
 >>> boston = ephem.Observer()
 >>> boston.lat = '42.37'
->>> boston.long = '-71.03'
+>>> boston.lon = '-71.03'
 >>> mars.compute(boston)
 >>> print(mars.az, mars.alt)
 37:55:48.9 -14:23:11.8

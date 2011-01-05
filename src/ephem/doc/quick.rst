@@ -95,7 +95,7 @@ body.compute(date)
 
  * On Solar System bodies, also sets:
 
-   | ``hlong`` — Heliocentric longitude
+   | ``hlon`` — Heliocentric longitude
    | ``hlat`` — Heliocentric latitude
    | ``sun_distance`` — Distance to Sun (AU)
    | ``earth_distance`` — Distance to Earth (AU)
@@ -153,7 +153,7 @@ body.compute(observer)
 ----------------------
 
  >>> gatech = ephem.Observer()
- >>> gatech.long = '-84.39733'
+ >>> gatech.lon = '-84.39733'
  >>> gatech.lat = '33.775867'
  >>> gatech.elevation = 320
  >>> gatech.date = '1984/5/30 16:22:56'
@@ -372,8 +372,8 @@ Other Functions
    returns the angle that separates two positions on a sphere.
  * Each argument can be either a ``Body``,
    in which case its ``ra`` and ``dec`` are used,
-   or a tuple ``(long, lat)`` giving a pair of spherical coordinates
-   where ``long`` measures angle around the sphere's equator
+   or a tuple ``(lon, lat)`` giving a pair of spherical coordinates
+   where ``lon`` measures angle around the sphere's equator
    and ``lat`` measures the angle above or below its equator.
 
 ------------
@@ -383,7 +383,7 @@ Coordinate Conversion
 
  >>> np = Equatorial('0', '90', epoch='2000')
  >>> g = Galactic(np)
- >>> print(g.long, g.lat)
+ >>> print(g.lon, g.lat)
  122:55:54.9 27:07:41.7
 
  * There are three coordinate classes,
@@ -395,12 +395,12 @@ Coordinate Conversion
    |  ``epoch`` — epoch of the coordinate
 
    | ``Ecliptic``
-   |  ``long`` — ecliptic longitude (+E)
+   |  ``lon`` — ecliptic longitude (+E)
    |  ``lat`` — ecliptic latitude (+N)
    |  ``epoch`` — epoch of the coordinate
 
    | ``Galactic``
-   |  ``long`` — galactic longitude (+E)
+   |  ``lon`` — galactic longitude (+E)
    |  ``lat`` — galactic latitude (+N)
    |  ``epoch`` — epoch of the coordinate
 
@@ -423,7 +423,7 @@ Observers
 =========
 
  >>> lowell = ephem.Observer()
- >>> lowell.long = '111:32.1'
+ >>> lowell.lon = '111:32.1'
  >>> lowell.lat = '35:05.8'
  >>> lowell.elevation = 2198
  >>> lowell.date = '1986/3/13'
@@ -440,7 +440,7 @@ Observers
    | ``epoch`` — Epoch for astrometric RA/dec
 
    | ``lat`` — Latitude (+N)
-   | ``long`` — Longitude (+E)
+   | ``lon`` — Longitude (+E)
    | ``elevation`` — Elevation (m)
 
    | ``temp`` — Temperature (°C)
@@ -460,7 +460,7 @@ Observers
    using the International Standard Atmosphere.
 
  >>> boston = ephem.city('Boston')
- >>> print(boston.lat, boston.long)
+ >>> print(boston.lat, boston.lon)
  42:21:30.4 -71:03:35.2
 
  * XEphem includes a small database of world cities.
@@ -473,7 +473,7 @@ transit, rising, setting
  >>> sitka = ephem.Observer()
  >>> sitka.date = '1999/6/27'
  >>> sitka.lat = '57:10'
- >>> sitka.long = '-135:15'
+ >>> sitka.lon = '-135:15'
  >>> m = ephem.Mars()
  >>> print(sitka.next_transit(m))
  1999/6/27 04:22:45
@@ -812,7 +812,7 @@ Stars and Cities
 ..
 
  >>> stuttgart = ephem.city('Stuttgart')
- >>> print(stuttgart.long, stuttgart.lat)
+ >>> print(stuttgart.lon, stuttgart.lat)
  9:10:50.8 48:46:37.6
 
  * PyEphem knows 122 world cities.

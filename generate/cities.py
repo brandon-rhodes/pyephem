@@ -47,7 +47,7 @@ def get_entries(content):
             e.name = fields[3]
             e.type = fields[5]
             e.lat = fields[8]
-            e.long = fields[9]
+            e.lon = fields[9]
             e.elev = fields[10]
             e.pop = int(fields[11])
 
