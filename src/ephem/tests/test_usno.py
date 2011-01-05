@@ -28,10 +28,10 @@ def interpret_observer(line):
     line = line.replace('N ', 'N').replace('S ', 'S')
     fields = line.split()
     observer = ephem.Observer()
-    observer.long = ':'.join(re.findall(r'[0-9.]+', fields[1]))
+    observer.lon = ':'.join(re.findall(r'[0-9.]+', fields[1]))
     observer.lat = ':'.join(re.findall(r'[0-9.]+', fields[2]))
     if fields[1].startswith('W'):
-        observer.long *= -1
+        observer.lon *= -1
     if fields[2].startswith('S'):
         observer.lat *= -1
     observer.elevation = float(fields[-1][:-1])
@@ -334,7 +334,7 @@ class Rise_Set_Trial(Trial):
 
         self.observer = o = ephem.Observer()
         o.lat = latstr
-        o.long = longstr
+        o.lon = longstr
         o.elevation = 0
         setup_horizon(o)
 

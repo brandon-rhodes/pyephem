@@ -18,7 +18,7 @@ attribute_list = (
      ('az', 'alt', 'circumpolar', 'neverup', 'rise_time', 'rise_az',
       'transit_time', 'transit_alt', 'set_time', 'set_az')),
     (Planet, False,
-     ('hlong', 'hlat', 'sun_distance', 'earth_distance', 'phase')),
+     ('hlon', 'hlong', 'hlat', 'sun_distance', 'earth_distance', 'phase')),
     (Moon, False,
      ('colong', 'subsolar_lat', 'libration_lat', 'libration_long')),
     (Jupiter, False,
@@ -61,7 +61,7 @@ class body_suite(MyTestCase):
         self.date = date('1955/05/21')
 
         self.obs = obs = Observer()
-        obs.lat, obs.long, obs.elev = '33:45:10', '-84:23:37', 320.0
+        obs.lat, obs.lon, obs.elev = '33:45:10', '-84:23:37', 320.0
         obs.date = '1997/2/15'
 
         # Avoid seeing the deprecation warning for old attributes.

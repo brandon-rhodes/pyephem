@@ -99,7 +99,7 @@ You can even create several instances of the same body.
 Let's compare how far Mars moves in one day at perihelion versus aphelion,
 and verify that its speed is greater when closer to the Sun:
 
->>> def hpos(body): return body.hlong, body.hlat
+>>> def hpos(body): return body.hlon, body.hlat
 >>> ma0 = ephem.Mars('1976/05/21')    # ma: mars near aphelion
 >>> ma1 = ephem.Mars('1976/05/22')
 >>> print ephem.separation(hpos(ma0), hpos(ma1))
@@ -322,7 +322,7 @@ PyEphem quite reasonably demands to know our position on the earth's surface;
 we can provide this through an object called an ``Observer``:
 
 >>> gatech = ephem.Observer()
->>> gatech.long, gatech.lat = '-84.39733', '33.775867'
+>>> gatech.lon, gatech.lat = '-84.39733', '33.775867'
 
 When the ``Observer`` is provided to ``compute()``
 instead of a simple date and epoch,

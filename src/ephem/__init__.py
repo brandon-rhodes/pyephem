@@ -182,9 +182,9 @@ def _find_moon_phase(d0, motion, target):
     def f(d):
         _sun.compute(d)
         _moon.compute(d)
-        slong = _libastro.eq_ecl(d, _sun.g_ra, _sun.g_dec)[0]
-        mlong = _libastro.eq_ecl(d, _moon.g_ra, _moon.g_dec)[0]
-        return (mlong - slong - antitarget) % twopi - pi
+        slon = _libastro.eq_ecl(d, _sun.g_ra, _sun.g_dec)[0]
+        mlon = _libastro.eq_ecl(d, _moon.g_ra, _moon.g_dec)[0]
+        return (mlon - slon - antitarget) % twopi - pi
     antitarget = target + pi
     d0 = Date(d0)
     f0 = f(d0)
@@ -241,10 +241,10 @@ class Observer(_libastro.Observer):
         """Return a useful textual representation of this Observer."""
 
         return ('<ephem.Observer date=%r epoch=%r'
-                ' long=%s lat=%s elevation=%sm'
+                ' lon=%s lat=%s elevation=%sm'
                 ' horizon=%s temp=%sC pressure=%smBar>'
                 % (str(self.date), str(self.epoch),
-                   self.long, self.lat, self.elevation,
+                   self.lon, self.lat, self.elevation,
                    self.horizon, self.temp, self.pressure))
 
     def compute_pressure(self):
@@ -492,7 +492,7 @@ class Coordinate(object):
                 ' a coordinate or a Body, not an %r' % (type(a).__name__,)
                 )
 
-        # Two arguments are interpreted as (ra, dec) or (long, lat).
+        # Two arguments are interpreted as (ra, dec) or (lon, lat).
 
         elif len(args) == 2:
             self.set(*args)
@@ -516,32 +516,33 @@ class Equatorial(Coordinate):
     to_radec = get
     from_radec = set
 
-class LongLatCoordinate(Coordinate):
-    def set(self, long, lat):
-        self.long, self.lat = degrees(long), degrees(lat)
+class LonLatCoordinate(Coordinate):
+    def set(self, lon, lat):
+        self.lon, self.lat = degrees(lon), degrees(lat)
 
     def get(self):
-        return self.long, self.lat
+        return self.lon, self.lat
 
-class Ecliptic(LongLatCoordinate):
+class Ecliptic(LonLatCoordinate):
     def to_radec(self):
-        return _libastro.ecl_eq(self.epoch, self.long, self.lat)
+        return _libastro.ecl_eq(self.epoch, self.lon, self.lat)
 
     def from_radec(self, ra, dec):
-        self.long, self.lat = _libastro.eq_ecl(self.epoch, ra, dec)
+        self.lon, self.lat = _libastro.eq_ecl(self.epoch, ra, dec)
 
-class Galactic(LongLatCoordinate):
+class Galactic(LonLatCoordinate):
     def to_radec(self):
-        return _libastro.gal_eq(self.epoch, self.long, self.lat)
+        return _libastro.gal_eq(self.epoch, self.lon, self.lat)
 
     def from_radec(self, ra, dec):
-        self.long, self.lat = _libastro.eq_gal(self.epoch, ra, dec)
+        self.lon, self.lat = _libastro.eq_gal(self.epoch, ra, dec)
 
 # For backwards compatibility, provide lower-case names for our Date
-# and Angle classes.
+# and Angle classes, and also allow "Lon" to be spelled "Long".
 
 date = Date
 angle = Angle
+LongLatCoordinate = LonLatCoordinate
 
 # Catalog boostraps.  Each of these functions imports a catalog
 # module, then replaces itself with the function of the same name that

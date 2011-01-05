@@ -1,8 +1,14 @@
 PyEphem CHANGELOG
 =================
 
-Version 3.7.4.1 (2010 December ?)
+Version 3.7.4.1 (2011 January 5)
 ---------------------------------
+
+- Renamed the ``Observer.long`` attribute to ``lon`` after realizing
+  that the official syllabification of “longitude” is “lon·gi·tude.”
+  Also changed ``Body`` objects so that ``hlong`` is ``hlon`` instead.
+  The old names will always be supported for compatibility with older
+  programs.
 
 - **Bugfix:** repaired the ``separation()`` function so that it no
   longer leaks memory; thanks to Enno Middelburg for the bug report!

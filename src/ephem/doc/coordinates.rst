@@ -51,9 +51,9 @@ we should summarize the basic rules of coordinate handling.
 
   | ``Equatorial`` coordinates have ``ra`` right ascension,
     ``dec`` declination, and an ``epoch``.
-  | ``Ecliptic`` coordinates have ``long`` longitude,
+  | ``Ecliptic`` coordinates have ``lon`` longitude,
     ``lat`` latitude, and an ``epoch``.
-  | ``Galactic`` coordinates have ``long`` longitude,
+  | ``Galactic`` coordinates have ``lon`` longitude,
     ``lat`` latitude, and an ``epoch``.
 
 * You can instantiate any kind of coordinate
@@ -126,11 +126,11 @@ Common Operations
   3:51:20.54 22:12:49.4
 
   >>> ecl = ephem.Ecliptic(m)
-  >>> print ecl.long, ecl.lat
+  >>> print ecl.lon, ecl.lat
   60:27:09.2 2:00:47.5
 
   >>> gal = ephem.Galactic(m)
-  >>> print gal.long, gal.lat
+  >>> print gal.lon, gal.lat
   168:47:15.2 -24:14:01.8
 
   The epoch of the resulting coordinates
@@ -153,5 +153,5 @@ Common Operations
   >>> m = ephem.Mars('1980/2/25')
   >>> ma = ephem.Equatorial(m.ra, m.dec, epoch='1980/2/25')
   >>> me = ephem.Ecliptic(ma)
-  >>> print me.long, me.lat
+  >>> print me.lon, me.lat
   155:52:22.4 4:22:08.7
