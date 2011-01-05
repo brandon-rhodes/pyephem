@@ -133,24 +133,23 @@ in the way that the rising and settings functions operate!
 
 .. _change log: CHANGELOG
 
-The easiest way to install PyEphem,
-if you have the easy_install_ Python command,
-is to run:
+The easiest way to install PyEphem
+is to use the pip_ command, like this:
 
-.. _easy_install: http://peak.telecommunity.com/DevCenter/EasyInstall
+.. _pip: http://pypi.python.org/pypi/pip
 .. code-block:: bash
 
-   $ easy_install pyephem
+   $ pip install pyephem
 
-If you choose to create a virtualenv_ environment
-and then run its ``easy_install`` instead of your system-wide one,
-then you will not even have to gain administrator rights to your machine
+Better yet,
+you can use virtualenv_ to create a virtual environment,
+and then run its ``pip`` instead of your system-wide one.
+Then you will avoid having to gain administrator rights on your machine
 before performing the installation.
 
-But if you want to download the Windows installer,
-the raw ``.egg`` archives in which PyEphem is delivered,
-or the source code,
-then you should visit the `PyEphem entry`_
+If instead you want to download the Windows installer
+or even the raw PyEphem source code,
+you should visit the `PyEphem entry`_
 at the Python Package Index,
 or use the links at the top of this page.
 
