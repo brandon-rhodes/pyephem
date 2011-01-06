@@ -10,6 +10,8 @@ Version 3.7.4.1 (2011 January 5)
   The old names will always be supported for compatibility with older
   programs.
 
+- Upgraded the underlying astronomy library to 3.7.4.
+
 - **Bugfix:** repaired the ``separation()`` function so that it no
   longer leaks memory; thanks to Enno Middelburg for the bug report!
 
