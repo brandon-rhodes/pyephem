@@ -130,7 +130,7 @@ for us to use them as the basis for PyEphem.
 Installation
 ------------
 
-Version **3.7.3.4** is the most recent release of PyEphem.
+Version **3.7.4.1** is the most recent release of PyEphem.
 Consult the `change log`_ to see the new features,
 including an **incompatible** change
 in the way that the rising and settings functions operate!

@@ -71,4 +71,4 @@ linkcheck:
 
 sync:
 	chmod -R a+rX _build/html
-	rsync -a _build/html/ ten22:sites/rhodesmill/html/pyephem
+	rsync -a _build/html/ wf-rhodesmill:sites/rhodesmill/html/pyephem
