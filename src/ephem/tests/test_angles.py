@@ -7,7 +7,7 @@ import math
 
 arcsecond = 2. * math.pi / 360. / 60. / 60.
 
-class angle_suite(MyTestCase):
+class AngleTests(MyTestCase):
     def setUp(self):
         self.d = degrees(1.5)
         self.h = hours(1.6)
@@ -33,6 +33,3 @@ class angle_suite(MyTestCase):
         self.assertApprox(degrees('30') + degrees('90'), degrees('120'))
     def test_angle_subtraction(self):
         self.assertApprox(degrees('180') - hours('9'), degrees('45'))
-
-if __name__ == '__main__':
-    unittest.main()

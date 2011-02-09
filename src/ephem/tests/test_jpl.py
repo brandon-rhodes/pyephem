@@ -28,12 +28,8 @@ class JPLDatum(object):
 class JPLTest(unittest.TestCase):
 
     def runTest(self):
-        if not hasattr(self, 'path'):
-            return
-
         in_data = False
 
-        c=0
         for line in open(self.path):
 
             if line.startswith('Target body name:'):
@@ -78,14 +74,10 @@ class JPLTest(unittest.TestCase):
 
 re, traceback, datetime, strptime, ephem
 
-def additional_tests():
+def load_tests(loader, tests, pattern):
     suite = unittest.TestSuite()
     for path in glob.glob(os.path.dirname(__file__) + '/jpl/*.txt'):
         case = JPLTest()
         case.path = path
         suite.addTest(case)
     return suite
-
-if __name__ == '__main__':
-    suite = additional_tests()
-    unittest.TextTestRunner().run(suite)

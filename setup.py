@@ -50,7 +50,6 @@ setup(name = 'ephem',
                                  'tests/jpl/*.txt',
                                  'tests/usno/*.txt',
                                  ],},
-      #test_suite = 'ephem.tests',
       ext_modules = [
     Extension('ephem._libastro',
               ['extensions/_libastro.c'] + libastro_files + libastro_data,

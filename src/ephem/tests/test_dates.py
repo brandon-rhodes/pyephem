@@ -4,7 +4,7 @@ from .ephem_test import *
 
 # Determine whether dates behave reasonably.
 
-class date_suite(unittest.TestCase):
+class DateTests(unittest.TestCase):
     def setUp(self):
         self.date = date('2004/09/04 00:17:15.8')
 
@@ -51,6 +51,3 @@ class date_suite(unittest.TestCase):
     def test_date_tuple_value(self):
         self.assertEqual(self.date.tuple(),
                          (2004, 9, 4, 0, 17, 15.799999977461994))
-
-if __name__ == '__main__':
-    unittest.main()

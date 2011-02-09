@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from .ephem_test import unittest, MyTestCase
+from ephem_test import unittest, MyTestCase
 import ephem
 
 # Make sure that a series of next-risings does not keep returning the
 # same time over and over again.
 
-class next_rising_suite(MyTestCase):
+class Launchpad244811Tests(MyTestCase):
     def runTest(self):
         boston = ephem.city("Boston")
         boston.pressure = 1010.0 # undo pressure auto-adjustment
@@ -22,6 +22,3 @@ class next_rising_suite(MyTestCase):
 
         cur_date = boston.next_rising(mars, start=cur_date)
         self.assertEquals(str(cur_date), '2009/7/2 06:13:53')
-
-if __name__ == '__main__':
-    unittest.main()
