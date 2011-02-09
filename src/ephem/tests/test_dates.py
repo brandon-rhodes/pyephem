@@ -7,7 +7,7 @@ from ephem import Date, localtime
 
 # Determine whether dates behave reasonably.
 
-class date_suite(unittest.TestCase):
+class DateTests(unittest.TestCase):
     def setUp(self):
         self.date = Date('2004/09/04 00:17:15.8')
 
@@ -69,6 +69,3 @@ class date_suite(unittest.TestCase):
         if time.timezone == 18000: # test only works in Eastern time zone
             self.assertEqual(localtime(Date('1531/8/24 2:49')),
                              datetime(1957, 10, 4, 15, 28, 34, 4))
-
-if __name__ == '__main__':
-    unittest.main()

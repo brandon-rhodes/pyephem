@@ -126,7 +126,7 @@ class Trial(object):
 
 class Astrometric_Trial(Trial):
     @classmethod
-    def matches(self, content):
+    def matches(cls, content):
         return 'Astrometric Positions' in content
 
     def check_data_line(self, line):
@@ -140,7 +140,7 @@ class Astrometric_Trial(Trial):
 
 class Apparent_Geocentric_Trial(Trial):
     @classmethod
-    def matches(self, content):
+    def matches(cls, content):
         return 'Apparent Geocentric Positions' in content
 
     def check_data_line(self, line):
@@ -168,7 +168,7 @@ class Apparent_Geocentric_Trial(Trial):
 
 class Apparent_Topocentric_Trial(Trial):
     @classmethod
-    def matches(self, content):
+    def matches(cls, content):
         return 'Apparent Topocentric Positions' in content
 
     def examine_content(self):
@@ -191,7 +191,7 @@ class Rise_Transit_Set_Trial(Trial):
         self.data = []
 
     @classmethod
-    def matches(self, content):
+    def matches(cls, content):
         return 'Rise  Az.       Transit Alt.       Set  Az.' in content
 
     def examine_content(self):
@@ -316,7 +316,7 @@ The file looks something like:
 
 class Rise_Set_Trial(Trial):
     @classmethod
-    def matches(self, content):
+    def matches(cls, content):
         return 'Rise and Set for' in content
 
     def examine_content(self):
@@ -404,7 +404,7 @@ class Rise_Set_Trial(Trial):
 
 class Moon_Phases(Trial):
     @classmethod
-    def matches(self, content):
+    def matches(cls, content):
         return 'Phases of the Moon' in content
 
     def examine_content(self):
@@ -475,6 +475,3 @@ i = 1
 for path in glob.glob(os.path.dirname(__file__) + '/usno/*.txt'):
     exec 'class T%d(unittest.TestCase, Mixin): path = %r' % (i, path)
     i += 1
-
-if __name__ == '__main__':
-    unittest.main()

@@ -8,7 +8,7 @@ tle_lines = (
     '2 25544  51.6397 195.1243 0008906 304.8273 151.9344 15.72498628598335',
     )
 
-class Case(unittest.TestCase):
+class SatelliteTests(unittest.TestCase):
     def setUp(self):
         self.iss = ephem.readtle(*tle_lines)
         self.atlanta = ephem.city('Atlanta')

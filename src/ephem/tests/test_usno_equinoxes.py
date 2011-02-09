@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 from ephem_test import *
-import math
 
 # Determine whether the equinoxes and solstices which PyEphem predicts
 # fall within one minute (by the clock) of those predicted by the
@@ -175,9 +174,6 @@ def process_usno(data):
                        ephem.previous_winter_solstice,
                        ))
 
-class usno_equinoxes_suite(MyTestCase):
+class UsnoEquinoxesTests(MyTestCase):
     def test_equinoxes(self):
         process_usno(usno_data)
-
-if __name__ == '__main__':
-    unittest.main()

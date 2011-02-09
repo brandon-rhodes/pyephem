@@ -3,7 +3,7 @@
 from ephem import Observer
 from unittest import TestCase
 
-class observer_suite(TestCase):
+class ObserverTests(TestCase):
     def test_lon_can_also_be_called_long(self):
         o = Observer()
         o.lon = 3.0

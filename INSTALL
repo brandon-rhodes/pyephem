@@ -15,8 +15,14 @@ in this directory for licensing information.
 
 INSTALLING
 
-If you have installed the "setuptools" for Python on your system, you
-can ask for PyEphem to be installed simply by typing:
+If you have installed the Python "distribute" package (or the ancient
+and outdated "setuptools") and "pip" on your system, then you can
+install PyEphem simply by typing:
+
+        pip install pyephem
+
+If for some reason you cannot install "pip", then "distribute" by itself
+offers an installer that you can use this way:
 
         easy_install pyephem
 
@@ -33,18 +39,30 @@ the package.  Typically, entering
 
 (which you will probably need to do as root, unless you have Python
 installed in your home directory) will both build and install the
-module, which you can use in your Python programs with either an
+module.
+
+You can use PyEphem in your Python programs by calling:
 
 	import ephem
 
-or perhaps a
+or perhaps something more like:
 
-	from ephem import *
+	from ephem import Mars, Jupiter, Date
 
-to avoid putting "ephem." in front of all the names.  There are
-documentation files in the doc/ directory, some small scripts in the
-examples/ directory, and test suites for verifying your installation
-in the test/ directory.
+if you know what parts of "ephem" you want to use and you are tired of
+putting "ephem." in front of all the names.
+
+TESTING
+
+Using the new "unittest" module in Python 2.7, you can run the PyEphem
+test suite this way:
+
+    $ python -m unittest discover
+
+On older versions of Python you can separately install the backported
+"unittest2" module and use its "unit2" command line to run the tests:
+
+    $ unit2 discover ephem
 
 DOCUMENTATION
 

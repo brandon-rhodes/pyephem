@@ -4,12 +4,8 @@ if sys.version_info[0] != 2:
           ' try "ephem" for Python 3')
     sys.exit(1)
 
-try:
-    from setuptools import setup, Extension
-except:
-    from distutils.core import setup, Extension
-
 import os
+from distutils.core import setup, Extension
 from glob import glob
 
 # Read the current version from ephem/__init__.py itself.
@@ -50,7 +46,6 @@ setup(name = 'pyephem',
                                  'tests/jpl/*.txt',
                                  'tests/usno/*.txt',
                                  ],},
-      test_suite = 'ephem.tests',
       ext_modules = [
     Extension('ephem._libastro',
               ['extensions/_libastro.c'] + libastro_files + libastro_data,
