@@ -1,6 +1,7 @@
 syntax: glob
 build
 dist
+htmlcov
 *.egg-info
 src/ephem/_libastro.so
 src/ephem/doc/_build

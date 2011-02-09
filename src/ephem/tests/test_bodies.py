@@ -1,9 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import sys, warnings
+import unittest
+import sys
+import warnings
 from sets import Set
-from ephem_test import *
+
+import ephem
+from ephem import (Body, Planet, Moon, Jupiter, Saturn, PlanetMoon,
+                   Date, Observer, readtle, readdb,
+                   FixedBody, EllipticalBody, HyperbolicBody,
+                   ParabolicBody, EarthSatellite,
+                   constellation)
+
+class TestError(Exception):
+    pass
 
 # The attributes which each class of object should support (these
 # lists are used by several of the functions below).
@@ -56,9 +67,9 @@ def predict_attributes(body, was_computed, was_given_observer):
 # Determine whether each kind of body supports the set of attributes
 # we believe it should.
 
-class BodyTests(MyTestCase):
+class BodyTests(unittest.TestCase):
     def setUp(self):
-        self.date = date('1955/05/21')
+        self.date = Date('1955/05/21')
 
         self.obs = obs = Observer()
         obs.lat, obs.lon, obs.elev = '33:45:10', '-84:23:37', 320.0
@@ -106,7 +117,7 @@ class BodyTests(MyTestCase):
                 adjective += 'centrically computed'
             else:
                 adjective = 'uncomputed'
-            raise TestError('accessing %s of %s %s '
+            raise ValueError('accessing %s of %s %s '
                             'raised %r "%s" instead of %r'
                             % (a, adjective, body,
                                t[a], t[a].args[0], p[a]))
@@ -126,13 +137,14 @@ class BodyTests(MyTestCase):
         self.compare_attributes(body, True, False)
 
     def test_Named(self):
-        for named_object in (Mercury, Venus, Mars, Jupiter, Saturn,
-                             Uranus, Neptune, Pluto, Sun, Moon,
-                             Phobos, Deimos,
-                             Io, Europa, Ganymede, Callisto,
-                             Mimas, Enceladus, Tethys, Dione, Rhea,
-                             Titan, Hyperion, Iapetus, Ariel, Umbriel,
-                             Titania, Oberon, Miranda):
+        for name in ('Mercury Venus Mars Jupiter Saturn '
+                     'Uranus Neptune Pluto Sun Moon '
+                     'Phobos Deimos '
+                     'Io Europa Ganymede Callisto '
+                     'Mimas Enceladus Tethys Dione Rhea '
+                     'Titan Hyperion Iapetus Ariel Umbriel '
+                     'Titania Oberon Miranda').split():
+            named_object = getattr(ephem, name)
             self.run_body(named_object())
 
     # For each flavor of user-definable body, 
@@ -153,10 +165,10 @@ class BodyTests(MyTestCase):
             try:
                 setattr(ba, attribute, value)
             except TypeError:
-                raise TestError, ('cannot modify attribute %s of %r: %s'
+                raise TestError('cannot modify attribute %s of %r: %s'
                                   % (attribute, ba, sys.exc_info()[1]))
         if not isinstance(bl, bodytype):
-            raise TestError, ('ephem database entry returned type %s'
+            raise TestError('ephem database entry returned type %s'
                               ' rather than type %s' % (type(bl), bodytype))
 
         # Now, compare the bodies to see if they are equivalent.
@@ -234,7 +246,7 @@ class BodyTests(MyTestCase):
                      '2 20580  28.4694  17.3953 0004117 265.2946  '
                      '94.7172 14.99359833594524'),
             attributes={'name': 'Hubble Telescope',
-                        '_epoch': date('2004') + 296.45910607 - 1,
+                        '_epoch': Date('2004') + 296.45910607 - 1,
                         '_decay': .00000912, '_drag': .59688e-4,
                         '_inc': 28.4694, '_raan': 17.3953,
                         '_e': 4117e-7, '_ap': 265.2946, '_M': 94.7172,
