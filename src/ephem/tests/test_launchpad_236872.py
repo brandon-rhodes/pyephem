@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from .ephem_test import unittest, MyTestCase
+import unittest
 import ephem
 
 # See whether asking for the rising-time of Mars hangs indefinitely.
 
-class Launchpad236872Tests(MyTestCase):
+class Launchpad236872Tests(unittest.TestCase):
     def runTest(self):
         mars = ephem.Mars()
         boston = ephem.city('Boston')

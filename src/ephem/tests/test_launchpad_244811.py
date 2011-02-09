@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from .ephem_test import unittest, MyTestCase
+import unittest
 import ephem
 
 # Make sure that a series of next-risings does not keep returning the
 # same time over and over again.
 
-class Launchpad244811Tests(MyTestCase):
+class Launchpad244811Tests(unittest.TestCase):
     def runTest(self):
         boston = ephem.city("Boston")
         boston.pressure = 1010.0 # undo pressure auto-adjustment

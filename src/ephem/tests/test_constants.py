@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
+import unittest
 import ephem
-from .ephem_test import MyTestCase
 
 # Determine whether angles work reasonably.
 
-class ConstantTests(MyTestCase):
+class ConstantTests(unittest.TestCase):
     def test_constants(self):
         self.assertEqual(ephem.c, 299792458)
         self.assertEqual(ephem.meters_per_au, 1.4959787e11)
