@@ -788,9 +788,9 @@ local time
 ----------
 
  >>> d = ephem.Date('1997/3/9 5:13')
- >>> ephem.localtime(d)
+ >>> ephem.localtime(d)        #doctest: +SKIP
  datetime.datetime(1997, 3, 9, 0, 13, 0, 6)
- >>> print ephem.localtime(d)
+ >>> print ephem.localtime(d)  #doctest: +SKIP
  1997-03-09 00:13:00.000006
 
  * The ``localtime()`` function converts a PyEphem date

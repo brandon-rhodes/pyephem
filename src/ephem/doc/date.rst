@@ -45,9 +45,9 @@ which takes a PyEphem date
 and returns a Python ``datetime`` giving your local time.
 
     >>> lt = ephem.localtime(d)
-    >>> print lt
+    >>> print lt        #doctest: +SKIP
     1984-05-30 12:23:45.000002
-    >>> print repr(lt)
+    >>> print repr(lt)  #doctest: +SKIP
     datetime.datetime(1984, 5, 30, 12, 23, 45, 2)
 
 The output of this code will differ
