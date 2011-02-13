@@ -40,7 +40,7 @@ Version 3.7.3.3 (2008 October 3)
   central meridian longitude in both System I and System II.
 
 - **Bugfix**: Saturn was returning the wrong values for its earthward
-    and sunward angle tilt.
+  and sunward angle tilt.
 
 Version 3.7.3.2 (2008 July 2)
 -----------------------------
