@@ -943,7 +943,7 @@ static PyObject *Observer_radec_of(PyObject *self, PyObject *args,
      if (!rao) return 0;
      deco = new_Angle(dec, raddeg(1));
      if (!deco) return 0;
-     return Py_BuildValue("OO", rao, deco);
+     return Py_BuildValue("NN", rao, deco);
 }
 
 /*
@@ -2829,40 +2829,40 @@ static PyObject *my_eq_ecl(PyObject *self, PyObject *args)
      double mjd, ra, dec, lg, lt;
      if (!PyArg_ParseTuple(args, "ddd:eq_ecl", &mjd, &ra, &dec)) return 0;
      eq_ecl(mjd, ra, dec, &lt, &lg);
-     return Py_BuildValue("(OO)", build_degrees(lg), build_degrees(lt));
+     return Py_BuildValue("NN", build_degrees(lg), build_degrees(lt));
 }
 
 static PyObject *my_ecl_eq(PyObject *self, PyObject *args)
 {
      double mjd, ra, dec, lg, lt;
-     if (!PyArg_ParseTuple(args, "ddd:eq_ecl", &mjd, &lg, &lt)) return 0;
+     if (!PyArg_ParseTuple(args, "ddd:ecl_eq", &mjd, &lg, &lt)) return 0;
      ecl_eq(mjd, lt, lg, &ra, &dec);
-     return Py_BuildValue("(OO)", build_hours(ra), build_degrees(dec));
+     return Py_BuildValue("NN", build_hours(ra), build_degrees(dec));
 }
 
 static PyObject *my_eq_gal(PyObject *self, PyObject *args)
 {
      double mjd, ra, dec, lg, lt;
-     if (!PyArg_ParseTuple(args, "ddd:eq_ecl", &mjd, &ra, &dec)) return 0;
+     if (!PyArg_ParseTuple(args, "ddd:eq_gal", &mjd, &ra, &dec)) return 0;
      eq_gal(mjd, ra, dec, &lt, &lg);
-     return Py_BuildValue("(OO)", build_degrees(lg), build_degrees(lt));
+     return Py_BuildValue("NN", build_degrees(lg), build_degrees(lt));
 }
 
 static PyObject *my_gal_eq(PyObject *self, PyObject *args)
 {
      double mjd, ra, dec, lg, lt;
-     if (!PyArg_ParseTuple(args, "ddd:eq_ecl", &mjd, &lg, &lt)) return 0;
+     if (!PyArg_ParseTuple(args, "ddd:gal_eq", &mjd, &lg, &lt)) return 0;
      gal_eq(mjd, lt, lg, &ra, &dec);
-     return Py_BuildValue("(OO)", build_hours(ra), build_degrees(dec));
+     return Py_BuildValue("NN", build_hours(ra), build_degrees(dec));
 }
 
 static PyObject *my_precess(PyObject *self, PyObject *args)
 {
      double mjd1, mjd2, ra, dec;
-     if (!PyArg_ParseTuple(args, "dddd:eq_ecl", &mjd1, &mjd2, &ra, &dec))
+     if (!PyArg_ParseTuple(args, "dddd:precess", &mjd1, &mjd2, &ra, &dec))
           return 0;
      precess(mjd1, mjd2, &ra, &dec);
-     return Py_BuildValue("(OO)", build_hours(ra), build_degrees(dec));
+     return Py_BuildValue("NN", build_hours(ra), build_degrees(dec));
 }
 
 static PyObject *_next_pass(PyObject *self, PyObject *args)
