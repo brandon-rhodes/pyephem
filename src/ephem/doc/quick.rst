@@ -9,6 +9,7 @@ PyEphem Quick Reference
 .. _Apparent geocentric position: radec
 .. _Apparent topocentric position: radec
 .. _Apparent position: radec
+.. _XEphem format: http://www.clearskyinstitute.com/xephem/help/xephem.html#mozTocId468501
 
 Those experienced with both Python and astronomy
 should be able to start using PyEphem
@@ -196,7 +197,7 @@ catalog format
  23.96
 
  * Bodies can be imported and exported
-   in the popular XEphem format.
+   in the popular `XEphem format`_.
  * When you deal with asteroids and comets,
    whose orbital parameters are subject to frequent revision,
    you will usually find yourself downloading an XEphem file
