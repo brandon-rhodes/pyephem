@@ -466,7 +466,7 @@ The PyEphem home page provides links to several
 `online catalogs`_ of orbital elements.
 Once you have obtained elements for a particular body,
 simply provide them to PyEphem's ``readdb()`` function
-in *ephem database format* and the resulting object is ready to use:
+in `ephem database format`_ and the resulting object is ready to use:
 
 >>> yh = ephem.readdb("C/2002 Y1 (Juels-Holvorcem),e,103.7816," +
 ...    "166.2194,128.8232,242.5695,0.0002609,0.99705756,0.0000," +
@@ -479,7 +479,8 @@ C/2002 Y1 (Juels-Holvorcem)
 >>> print ephem.constellation(yh), yh.mag
 ('And', 'Andromeda') 5.96
 
-.. _online catalogs: http://rhodesmill.org/pyephem#catalogs
+.. _online catalogs: http://rhodesmill.org/pyephem/catalogs
+.. _ephem database format: http://www.clearskyinstitute.com/xephem/help/xephem.html#mozTocId468501
 
 (Unfortunately, the library upon which PyEphem is build
 truncates object names to twenty characters, as you can see.)

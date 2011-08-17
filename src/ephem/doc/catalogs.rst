@@ -35,3 +35,9 @@ http://toyvax.glendale.ca.us/
 
  This page has elements in ephem format
  for several of our longer-lived space probes.
+
+http://www.clearskyinstitute.com/xephem/help/xephem.html#mozTocId468501
+
+ If you need more information about the XEphem database format itself,
+ here is the link where the format is defined
+ in XEphem's own documentation.
