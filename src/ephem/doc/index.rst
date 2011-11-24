@@ -28,18 +28,12 @@
    <p>
      <a href="http://pypi.python.org/pypi/pyephem/"
       >PyPI PyEphem page</a><br/>
-     <a href="http://pypi.python.org/packages/2.7/p/pyephem/pyephem-3.7.4.1.win32-py2.7.exe#md5=7352116bfc28491ff048dbf94f47ffb6"
+     <a href="http://pypi.python.org/packages/2.7/p/pyephem/pyephem-3.7.5.1.win32-py2.7.exe"
       >Python 2.7 Windows installer</a><br/>
-     <a href="http://pypi.python.org/packages/2.6/p/pyephem/pyephem-3.7.4.1.win32-py2.6.exe#md5=d81269417efb45c18308fe4aaa79d0c6"
+     <a href="http://pypi.python.org/packages/2.6/p/pyephem/pyephem-3.7.5.1.win32-py2.6.exe"
       >Python 2.6 Windows installer</a><br/>
-     <a href="http://pypi.python.org/packages/source/p/pyephem/pyephem-3.7.4.1.tar.gz#md5=c621c51e09fee452c6e397e9dc2bf499"
+     <a href="http://pypi.python.org/packages/source/p/pyephem/pyephem-3.7.5.1.tar.gz"
       >Source code (.tar.gz)</a><br/>
-     <br/>
-     <i>For older version 3.7.3.4:</i><br/>
-     <a href="http://pypi.python.org/packages/2.5/p/pyephem/pyephem-3.7.3.4.win32-py2.5.exe"
-      >Python 2.5 Windows installer<br/>
-     <a href="http://pypi.python.org/packages/2.4/p/pyephem/pyephem-3.7.3.4.win32-py2.4.exe"
-      >Python 2.4 Windows installer<br/>
    </p>
 
    </td>
