@@ -4,6 +4,12 @@ PyEphem CHANGELOG
 Version 3.7.5.1 (2011 November 24)
 ----------------------------------
 
+- **Incompatible Change**: the transit functions are now symmetric with
+  the rising and setting functions: while they still return the date and
+  time of the event, they do *not* alter the `.date` attribute of the
+  Observer which gets passed to them.  This brings their behavior into
+  line with the documentation.
+
 - Upgraded the underlying astronomy library to 3.7.5.
 
 - Date('1986-2-9') now means February 9th instead of meaning “the
