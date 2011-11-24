@@ -139,14 +139,14 @@ for us to use them as the basis for PyEphem.
 Installation
 ------------
 
-Version **3.7.4.1** is the most recent release of PyEphem.
-Consult the `change log`_ to see the new features,
-including an **incompatible** change
-in the way that the rising and settings functions operate!
+Version **3.7.5.1** is the most recent release of PyEphem.
+Consult the `change log`_ to see the new features!
 
 .. _change log: CHANGELOG
 
-The easiest way to install PyEphem
+The easiest way to install PyEphem on a Linux or Mac OS machine,
+after making sure that “Python.h” and the other Python header files
+are installed (which on Ubuntu requires the “python-dev” package),
 is to use the pip_ command, like this:
 
 .. _pip: http://pypi.python.org/pypi/pip
