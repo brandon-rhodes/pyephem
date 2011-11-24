@@ -129,7 +129,7 @@ double JD,		/* julian date */
 char dir[],		/* directory */
 MoonData md[S_NMOONS])	/* fill md[1..NM-1].x/y/z for each moon */
 {
-#define	SATRAU 60268.0 /* saturn radius, km */
+#define	SATRAU	.0004014253	/* saturn radius, AU */
 	double x[S_NMOONS], y[S_NMOONS], z[S_NMOONS];
         BDL_Dataset *dataset;
 	int i;

@@ -125,7 +125,7 @@ double JD,		/* julian date */
 char dir[],		/* directory */
 MoonData md[J_NMOONS])	/* fill md[1..NM-1].x/y/z for each moon */
 {
-#define JUPRAU 71492.0 /* jupiter radius, km */ 
+#define	JUPRAU	.0004769108	/* jupiter radius, AU */
 	double x[J_NMOONS], y[J_NMOONS], z[J_NMOONS];
 	BDL_Dataset *dataset;
 	int i;
