@@ -120,7 +120,7 @@ double JD,		/* julian date */
 char dir[],		/* directory */
 MoonData md[U_NMOONS])	/* fill md[1..NM-1].x/y/z for each moon */
 {
-#define URAU 25559.0 /* Uranus radius, km */
+#define URAU    .0001597        /* Uranus radius, AU */
 	double x[U_NMOONS], y[U_NMOONS], z[U_NMOONS];
         BDL_Dataset *dataset;
 	int i;

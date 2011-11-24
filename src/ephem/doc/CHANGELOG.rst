@@ -1,6 +1,13 @@
 PyEphem CHANGELOG
 =================
 
+Version 3.7.5.1 (2011 November 24)
+----------------------------------
+
+- Upgraded the underlying astronomy library to 3.7.5.
+
+- **Bugfix:** coordinate pairs no longer leak memory.
+
 Version 3.7.4.1 (2011 January 5)
 ---------------------------------
 

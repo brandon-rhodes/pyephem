@@ -325,7 +325,7 @@ Other Functions
 ..
 
  >>> print ephem.delta_t('1980')
- 50.5387872486
+ 50.54
 
  * The ``delta_t()`` function
    returns the difference, in seconds, on the given date
