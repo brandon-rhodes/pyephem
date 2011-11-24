@@ -6,6 +6,10 @@ Version 3.7.5.1 (2011 November 24)
 
 - Upgraded the underlying astronomy library to 3.7.5.
 
+- Date('1986-2-9') now means February 9th instead of meaning “the
+  beginning of 1986, minus two months, minus nine days.”
+  `Launchpad #792321 <http://www.python.org/>`_
+
 - **Bugfix:** coordinate pairs no longer leak memory.
 
 Version 3.7.4.1 (2011 January 5)
