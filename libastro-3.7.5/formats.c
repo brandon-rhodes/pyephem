@@ -176,6 +176,7 @@ double *dp)		/* cracked value, if return 0 */
  *   floating point number,
  * the slashes may also be spaces or colons.
  * a lone component with a decimal point is considered a year.
+ * Brandon Rhodes: 2011-11-24 supplemented this to allow dash separators.
  */
 void
 f_sscandate (
@@ -198,14 +199,14 @@ int *y)
              X = 0.0; /* X will be -1 */
         } else {
              s = end;
-             if (*s == '/' || *s == ':') s++;
+             if (*s == '-' || *s == '/' || *s == ':') s++;
              Y = PyOS_ascii_strtod(s, &end);
              if (s == end) {
                   n = 1;
                   Y = 0.0; /* Y will be -1 */
              } else {
                   s = end;
-                  if (*s == '/' || *s == ':') s++;
+                  if (*s == '-' || *s == '/' || *s == ':') s++;
                   Z = PyOS_ascii_strtod(s, &end);
                   if (s == end) {
                        n = 2;
