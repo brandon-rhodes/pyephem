@@ -1690,8 +1690,10 @@ static PyGetSetDef Body_getset[] = {
 };
 
 static PyGetSetDef Planet_getset[] = {
-     {"hlon", Get_hlong, 0, "heliocentric longitude" D},
-     {"hlat", Get_hlat, 0, "heliocentric latitude" D},
+     {"hlon", Get_hlong, 0,
+      "heliocentric longitude (but Sun().hlon means the hlon of Earth)" D},
+     {"hlat", Get_hlat, 0,
+      "heliocentric latitude (but Sun().hlat means the hlat of Earth)" D},
      {"sun_distance", Get_sun_distance, 0, "distance from sun in AU"},
      {"earth_distance", Get_earth_distance, 0, "distance from earth in AU"},
      {"phase", Get_phase, 0, "phase as percent of the surface illuminated"},
