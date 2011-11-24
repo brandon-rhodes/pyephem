@@ -4,19 +4,26 @@ PyEphem CHANGELOG
 Version 3.7.5.1 (2011 November 24)
 ----------------------------------
 
-- **Incompatible Change**: the transit functions are now symmetric with
-  the rising and setting functions: while they still return the date and
-  time of the event, they do *not* alter the `.date` attribute of the
-  Observer which gets passed to them.  This brings their behavior into
-  line with the documentation.
-
 - Upgraded the underlying astronomy library to 3.7.5.
 
-- Date('1986-2-9') now means February 9th instead of meaning “the
-  beginning of 1986, minus two months, minus nine days.”
-  `Launchpad #792321 <http://www.python.org/>`_
+- **Incompatible Change**: the transit functions are now symmetric with
+  the rising and setting functions: while they still return the date and
+  time of the event, they do *not* alter the ``.date`` attribute of the
+  Observer which gets passed to them.  This brings their behavior into
+  line with the documentation.
+  `(Launchpad #861526) <https://bugs.launchpad.net/pyephem/+bug/861526>`_
 
-- **Bugfix:** coordinate pairs no longer leak memory.
+- ``Date('1986-2-9')`` now means February 9th instead of meaning “the
+  beginning of 1986, minus two months, minus nine days.”
+  `(Launchpad #792321) <https://bugs.launchpad.net/pyephem/+bug/792321>`_
+
+- Earth satellite positions are now computed to six additional digits,
+  in an attempt to eliminate small jumps in position that some users
+  were observing in their figures.
+  `(Launchpad #812906) <https://bugs.launchpad.net/pyephem/+bug/812906>`_
+
+- Coordinate pair creation no longer leaks memory.
+  `(Launchpad #798155) <https://bugs.launchpad.net/pyephem/+bug/798155>`_
 
 Version 3.7.4.1 (2011 January 5)
 ---------------------------------
