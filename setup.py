@@ -18,7 +18,7 @@ for line in open(path):
 # The `pyephem' module is built from every .c file in the libastro
 # directory plus ...
 
-libastro_version = '3.7.4'
+libastro_version = '3.7.5'
 libastro_files = glob('libastro-%s/*.c' % libastro_version)
 libastro_data = glob('extensions/data/*.c')
 
