@@ -59,7 +59,7 @@
 
 #define AE (1.0)
 #define DE2RA (.174532925E-1)
-#define E6A (1.E-6)
+#define E6A (1.E-12)
 #define PI (3.14159265)
 #define PIO2 (1.57079633)
 #define QO (120.0)
