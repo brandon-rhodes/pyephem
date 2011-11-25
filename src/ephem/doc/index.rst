@@ -27,11 +27,16 @@
    <img src="_static/python.png"/>
    <p>
      <a href="http://pypi.python.org/pypi/pyephem/"
-      >PyPI PyEphem page</a><br/>
+      >PyPI PyEphem page</a>
+     <br/>
+     <br/>
      <a href="http://pypi.python.org/packages/2.7/p/pyephem/pyephem-3.7.5.1.win32-py2.7.exe"
-      >Python 2.7 Windows installer</a><br/>
+      >Python 2.7 Windows installer</a>
+     <br/>
      <a href="http://pypi.python.org/packages/2.6/p/pyephem/pyephem-3.7.5.1.win32-py2.6.exe"
-      >Python 2.6 Windows installer</a><br/>
+      >Python 2.6 Windows installer</a>
+     <br/>
+     <br/>
      <a href="http://pypi.python.org/packages/source/p/pyephem/pyephem-3.7.5.1.tar.gz"
       >Source code (.tar.gz)</a><br/>
    </p>
