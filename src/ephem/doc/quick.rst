@@ -5,8 +5,8 @@ PyEphem Quick Reference
 .. _Coordinate Transformations: coordinates
 .. _Angle: angle
 .. _Date: date
-.. _Astrometric geocentric position: radec
-.. _Apparent geocentric position: radec
+.. _Astrometric geocentric: radec
+.. _Apparent geocentric: radec
 .. _Apparent topocentric position: radec
 .. _Apparent position: radec
 .. _XEphem format: http://www.clearskyinstitute.com/xephem/help/xephem.html#mozTocId468501
@@ -81,13 +81,11 @@ body.compute(date)
  * Date and epoch arguments can be anything acceptable to ``Date()``.
  * Sets the following ``body`` attributes:
 
-   | `Astrometric geocentric position`_
-   |  ``a_ra`` — Right ascension
-   |  ``a_dec`` — Declination
+   |  ``a_ra`` — `Astrometric geocentric`_ right ascension for the ``epoch`` specified
+   |  ``a_dec`` — `Astrometric geocentric`_ declination for the ``epoch`` specified
 
-   | `Apparent geocentric position`_
-   |  ``g_ra`` and ``ra`` — Right ascension
-   |  ``g_dec`` and ``dec`` — Declination
+   |  ``g_ra`` and ``ra`` — `Apparent geocentric`_ right ascension for the epoch-of-date
+   |  ``g_dec`` and ``dec`` — `Apparent geocentric`_ declination for the epoch-of-date
 
    | ``elong`` — Elongation (angle to sun)
    | ``mag`` — Magnitude
