@@ -15,7 +15,7 @@ relative to the Earth's equator and poles,
 or you can ask where they stand in the sky above a particular observer,
 which yields an azimuth and an altitude.
 (There are actually several versions of the equatorial position available;
-see the `Right Ascension and Declination`_ document for details.)
+see the :doc:`radec` document for details.)
 
 But PyEphem does support two other coordinate systems,
 which differ by which great circle they use as the equator of the sky:
