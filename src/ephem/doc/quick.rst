@@ -71,9 +71,12 @@ body.compute(date)
 ------------------
 
  >>> j = ephem.Jupiter()
- >>> j.compute('1986/2/9', epoch='1950')
+ >>> j.compute('1986/2/8')
  >>> print j.ra, j.dec
- 21:58:45.94 -13:12:44.5
+ 21:57:50.46 -13:17:37.2
+ >>> j.compute('1986/2/9', epoch='1950')
+ >>> print j.a_ra, j.a_dec
+ 21:56:50.83 -13:22:54.3
 
  * Computes the position of the ``body``.
  * The date if omitted defaults to ``now()``.
