@@ -45,12 +45,11 @@
    </td>
    <td>
 
-   <p>We use <b>Launchpad</b> to host our community support tools.</p>
-   <img src="_static/launchpad.png"/>
+   <p>Use the PyEphem tag on <b>Stack Overflow</b>
+   to ask questions about the library.</p>
+   <img src="_static/stackoverflow.png"/>
    <p>
-     <a href="http://answers.launchpad.net/pyephem">Q&A Forum</a><br/>
-     <a href="http://launchpad.net/pyephem/+announcements">News Feed</a><br/>
-     <a href="http://bugs.launchpad.net/pyephem">Bug Tracker</a><br/>
+     <a href="http://stackoverflow.com/tags/pyephem/">Q&A Forum</a><br/>
    </p>
    <p><b>BitBucket</b> hosts our code.</p>
    <img src="_static/bitbucket.png"/>
