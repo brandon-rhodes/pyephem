@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from ephem_test import unittest, MyTestCase
+from .ephem_test import unittest, MyTestCase
 import ephem
 
 # Make sure that a series of next-risings does not keep returning the
