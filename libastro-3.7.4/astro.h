@@ -159,9 +159,9 @@ typedef unsigned char byte;
 /* fields common to all fixed objects in the Obj union */
 #define	OBJ_FIXED_FLDS 							\
     char  fo_spect[2];	/* spectral codes, if appropriate */		\
-    float fo_epoch;	/* eq of ra/dec and time when pm=0; mjd */ 	\
-    float fo_ra;	/* ra, rads, in epoch frame */ 			\
-    float fo_dec;	/* dec, rads, in epoch frame */ 		\
+    double fo_epoch;	/* eq of ra/dec and time when pm=0; mjd */ 	\
+    double fo_ra;	/* ra, rads, in epoch frame */ 			\
+    double fo_dec;	/* dec, rads, in epoch frame */ 		\
     float fo_pmra;	/* ra proper motion, rads/day/cos(dec) */ 	\
     float fo_pmdec;	/* dec proper motion, rads/day */ 		\
     char  fo_class	/* object class */

@@ -427,13 +427,13 @@ crack_f (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 
 	nsf = get_fields(flds[2], SUBFLD, sflds);
 	f_scansexa (sflds[0], &tmp);
-	op->f_RA = (float) hrrad(tmp);
+	op->f_RA = hrrad(tmp);
 	if (nsf > 1)
 	    op->f_pmRA = (float) 1.327e-11*atod(sflds[1]);/*mas/yr->rad/dy*/
 
 	nsf = get_fields(flds[3], SUBFLD, sflds);
 	f_scansexa (sflds[0], &tmp);
-	op->f_dec = (float) degrad(tmp);
+	op->f_dec = degrad(tmp);
 	if (nsf > 1)
 	    op->f_pmdec = (float)1.327e-11*atod(sflds[1]);/*mas/yr->rad/dy*/
 	if (fabs(op->f_dec) < PI/2)
@@ -675,13 +675,13 @@ crack_B (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 
 	nsf = get_fields(flds[2], SUBFLD, sflds);
 	f_scansexa (sflds[0], &tmp);
-	op->f_RA = (float) hrrad(tmp);
+	op->f_RA = hrrad(tmp);
 	if (nsf > 1)
 	    op->f_pmRA = (float) 1.327e-11*atod(sflds[1]);/*mas/yr->rad/dy*/
 
 	nsf = get_fields(flds[3], SUBFLD, sflds);
 	f_scansexa (sflds[0], &tmp);
-	op->f_dec = (float) degrad(tmp);
+	op->f_dec = degrad(tmp);
 	if (nsf > 1)
 	    op->f_pmdec = (float)1.327e-11*atod(sflds[1]);/*mas/yr->rad/dy*/
 	if (fabs(op->f_dec) < PI/2)
