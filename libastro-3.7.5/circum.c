@@ -223,8 +223,8 @@ obj_fixed (Now *np, Obj *op)
 	 * N.B. maintaining J2k ref (which is arbitrary) helps avoid accum err
 	 */
 	if (0 /* disabled in PyEphem */
-            && epoch != EOD && (float)epoch != (float)op->f_epoch) {
-	    double pr = op->f_RA, pd = op->f_dec, fe = (float)epoch;
+            && epoch != EOD && epoch != op->f_epoch) {
+	    double pr = op->f_RA, pd = op->f_dec, fe = epoch;
 	    /* first bring back to 2k */
 	    precess (op->f_epoch, J2000, &pr, &pd);
 	    pr += op->f_pmRA*(J2000-op->f_epoch);
@@ -233,9 +233,9 @@ obj_fixed (Now *np, Obj *op)
 	    pr += op->f_pmRA*(fe-J2000);
 	    pd += op->f_pmdec*(fe-J2000);
 	    precess (J2000, fe, &pr, &pd);
-	    op->f_RA = (float)pr;
-	    op->f_dec = (float)pd;
-	    op->f_epoch = (float)fe;
+	    op->f_RA = pr;
+	    op->f_dec = pd;
+	    op->f_epoch = fe;
 	}
 
 	/* apply proper motion .. assume pm epoch reference equals equinox */
