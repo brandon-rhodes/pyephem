@@ -321,7 +321,9 @@ static PyTypeObject AngleType = {
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
      Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
-     0,				/* tp_doc */
+     "Represent an angle between two points in the sky.\n"
+     "Instances are not created directly, call ephem.degrees()\n"
+     "or ephem.radians() instead.",/* tp_doc */
      0,				/* tp_traverse */
      0,				/* tp_clear */
      0,				/* tp_richcompare */
@@ -581,7 +583,10 @@ static PyTypeObject DateType = {
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
      Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
-     0,				/* tp_doc */
+     "Ephem Datetime class.\n"
+     "Construct with a datetime instance, timetuple, triples, or another float.\n"
+     "Subclass of builtin float.\n"
+     "Convert to a string to see representation in UTC.", /* tp_doc */
      0,				/* tp_traverse */
      0,				/* tp_clear */
      0,				/* tp_richcompare */
@@ -993,7 +998,7 @@ static PyMethodDef Observer_methods[] = {
 };
 
 static PyGetSetDef Observer_getset[] = {
-     {"date", getd_mjd, setd_mjd, "Date", VOFF(n_mjd)},
+     {"date", getd_mjd, setd_mjd, "Date (ephem.date() instance)", VOFF(n_mjd)},
      {"lat", getd_rd, setd_rd, "Latitude (degrees north)", VOFF(n_lat)},
      {"lon", getd_rd, setd_rd, "Longitude (degrees east)", VOFF(n_lng)},
      {"elevation", get_elev, set_elev,
@@ -1040,7 +1045,8 @@ static PyTypeObject ObserverType = {
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
      Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,	/* tp_flags */
-     0,				/* tp_doc */
+     "Describes a position on the Earth's surface, and optionally a time and pressure\n"
+     "Needed by the compute() method of Body instances", /* tp_doc */
      0,				/* tp_traverse */
      0,				/* tp_clear */
      0,				/* tp_richcompare */
@@ -1956,6 +1962,8 @@ static PyMemberDef EarthSatellite_members[] = {
  * rather unusual but reflects the fact that all of these are just
  * various wrappers around the same X Obj structure.
  */
+static char body_doc[] = \
+"A celestial body, that can compute() it's sky position given an Observer instance.";
 
 static PyTypeObject BodyType = {
      PyVarObject_HEAD_INIT(NULL, 0)
@@ -1978,7 +1986,7 @@ static PyTypeObject BodyType = {
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
      Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
-     0,				/* tp_doc */
+     body_doc,			/* tp_doc */
      0,				/* tp_traverse */
      0,				/* tp_clear */
      0,				/* tp_richcompare */
@@ -2020,7 +2028,7 @@ static PyTypeObject PlanetType = {
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
      Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
-     0,				/* tp_doc */
+     body_doc,			/* tp_doc */
      0,				/* tp_traverse */
      0,				/* tp_clear */
      0,				/* tp_richcompare */
@@ -2062,7 +2070,7 @@ static PyTypeObject PlanetMoonType = {
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
      Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
-     0,				/* tp_doc */
+     body_doc,			/* tp_doc */
      0,				/* tp_traverse */
      0,				/* tp_clear */
      0,				/* tp_richcompare */
@@ -2104,7 +2112,7 @@ static PyTypeObject JupiterType = {
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
      Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
-     0,				/* tp_doc */
+     "Create a Body instance representing Jupiter.",			/* tp_doc */
      0,				/* tp_traverse */
      0,				/* tp_clear */
      0,				/* tp_richcompare */
@@ -2146,7 +2154,7 @@ static PyTypeObject SaturnType = {
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
      Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
-     0,				/* tp_doc */
+     "Create a Body instance representing Saturn.",			/* tp_doc */
      0,				/* tp_traverse */
      0,				/* tp_clear */
      0,				/* tp_richcompare */
@@ -2188,7 +2196,7 @@ static PyTypeObject MoonType = {
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
      Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
-     0,				/* tp_doc */
+     "Create a Body Instance representing the Moon.",			/* tp_doc */
      0,				/* tp_traverse */
      0,				/* tp_clear */
      0,				/* tp_richcompare */
@@ -2230,7 +2238,7 @@ static PyTypeObject FixedBodyType = {
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
      Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
-     0,				/* tp_doc */
+     body_doc,			/* tp_doc */
      0,				/* tp_traverse */
      0,				/* tp_clear */
      0,				/* tp_richcompare */
@@ -2272,7 +2280,7 @@ static PyTypeObject BinaryStarType = {
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
      Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
-     0,				/* tp_doc */
+     body_doc,			/* tp_doc */
      0,				/* tp_traverse */
      0,				/* tp_clear */
      0,				/* tp_richcompare */
@@ -2314,7 +2322,7 @@ static PyTypeObject EllipticalBodyType = {
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
      Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
-     0,				/* tp_doc */
+     body_doc,			/* tp_doc */
      0,				/* tp_traverse */
      0,				/* tp_clear */
      0,				/* tp_richcompare */
@@ -2356,7 +2364,7 @@ static PyTypeObject HyperbolicBodyType = {
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
      Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
-     0,				/* tp_doc */
+     body_doc,			/* tp_doc */
      0,				/* tp_traverse */
      0,				/* tp_clear */
      0,				/* tp_richcompare */
@@ -2398,7 +2406,7 @@ static PyTypeObject ParabolicBodyType = {
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
      Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
-     0,				/* tp_doc */
+     body_doc,			/* tp_doc */
      0,				/* tp_traverse */
      0,				/* tp_clear */
      0,				/* tp_richcompare */
@@ -2440,7 +2448,7 @@ static PyTypeObject EarthSatelliteType = {
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
      Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,	/* tp_flags */
-     0,				/* tp_doc */
+     body_doc,			/* tp_doc */
      0,				/* tp_traverse */
      0,				/* tp_clear */
      0,				/* tp_richcompare */
