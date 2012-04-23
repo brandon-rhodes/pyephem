@@ -68,9 +68,10 @@ uranometria2000 = _libastro.uranometria2000
 
 for index, classname, name in _libastro.builtin_planets():
     exec '''
-class %s(_libastro.%s):
-    __planet__ = %r
-''' % (name, classname, index)
+class %(name)s(_libastro.%(classname)s):
+    "Create a Body instance representing %(name)s"
+    __planet__ = %(index)r
+''' % dict(name=name, classname=classname, index=index)
 
 del index, classname, name
 
@@ -234,12 +235,23 @@ class NeverUpError(CircumpolarError): pass
 class AlwaysUpError(CircumpolarError): pass
 
 class Observer(_libastro.Observer):
+    """
+    Observers instances allow you to compute positions of celestial bodies.
+    No parameters to init are taken.
+    Includes a position on the Earth's surface, a time, a temperature, and a pressure.
+    Needed by the compute() method of Body instances.
+    Defaults:
+     time: now
+     temperature: 15 degrees Celsius
+     pressure: 1010 mBar
+     elevation, lat, long: 0
+     epoch: 2000
+    """
     __slots__ = [ 'name' ]
     elev = _libastro.Observer.elevation
 
     def __repr__(self):
         """Return a useful textual representation of this Observer."""
-
         return ('<ephem.Observer date=%r epoch=%r'
                 ' lon=%s lat=%s elevation=%sm'
                 ' horizon=%s temp=%sC pressure=%smBar>'
