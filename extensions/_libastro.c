@@ -321,9 +321,8 @@ static PyTypeObject AngleType = {
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
      Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
-     "Represent an angle between two points in the sky.\n"
-     "Instances are not created directly, call ephem.degrees()\n"
-     "or ephem.radians() instead.",/* tp_doc */
+     "An angle in radians that can print itself in an astronomical format.\n"
+     "Use ephem.degrees() and ephem.radians() to create one.", /* tp_doc */
      0,				/* tp_traverse */
      0,				/* tp_clear */
      0,				/* tp_richcompare */
@@ -583,10 +582,11 @@ static PyTypeObject DateType = {
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
      Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
-     "Ephem Datetime class.\n"
-     "Construct with a datetime instance, timetuple, triples, or another float.\n"
-     "Subclass of builtin float.\n"
-     "Convert to a string to see representation in UTC.", /* tp_doc */
+     "Floating point value used by ephem to represent a date.\n"
+     "The value is the number of days since 1899 December 31 12:00 UT. When\n"
+     "creating an instance you can pass in a Python datetime instance,"
+     " timetuple,\nyear-month-day triple, or a plain float. Run str() on"
+     "this object to see\nthe UTC date it represents.", /* tp_doc */
      0,				/* tp_traverse */
      0,				/* tp_clear */
      0,				/* tp_richcompare */
@@ -998,7 +998,7 @@ static PyMethodDef Observer_methods[] = {
 };
 
 static PyGetSetDef Observer_getset[] = {
-     {"date", getd_mjd, setd_mjd, "Date (ephem.date() instance)", VOFF(n_mjd)},
+     {"date", getd_mjd, setd_mjd, "Date; see ephem.date()", VOFF(n_mjd)},
      {"lat", getd_rd, setd_rd, "Latitude (degrees north)", VOFF(n_lat)},
      {"lon", getd_rd, setd_rd, "Longitude (degrees east)", VOFF(n_lng)},
      {"elevation", get_elev, set_elev,
@@ -1045,8 +1045,11 @@ static PyTypeObject ObserverType = {
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
      Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,	/* tp_flags */
-     "Describes a position on the Earth's surface, and optionally a time and pressure\n"
-     "Needed by the compute() method of Body instances", /* tp_doc */
+     "Describes an observer standing on the Earth's surface.\n"
+     "This object can also store the time at which the observer is watching;\n"
+     "the epoch in which they want astrometric coordinates returned; and the\n"
+     "temperature and barometric pressure, which affect horizon refraction.\n"
+     "See Body.compute() for how to use instances of this class.", /* tp_doc */
      0,				/* tp_traverse */
      0,				/* tp_clear */
      0,				/* tp_richcompare */
@@ -1962,8 +1965,8 @@ static PyMemberDef EarthSatellite_members[] = {
  * rather unusual but reflects the fact that all of these are just
  * various wrappers around the same X Obj structure.
  */
-static char body_doc[] = \
-"A celestial body, that can compute() it's sky position given an Observer instance.";
+static char body_doc[] =
+     "A celestial body, that can compute() its sky position";
 
 static PyTypeObject BodyType = {
      PyVarObject_HEAD_INIT(NULL, 0)
