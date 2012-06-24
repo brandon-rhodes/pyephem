@@ -646,15 +646,15 @@ static double to_angle(PyObject *value, double efactor, int *status)
 
 /* Hours stored as radian double. */
 
-static PyObject* getf_rh(PyObject *self, void *v)
+static PyObject* getd_rh(PyObject *self, void *v)
 {
-     return new_Angle(THE_FLOAT, radhr(1));
+     return new_Angle(THE_DOUBLE, radhr(1));
 }
 
-static int setf_rh(PyObject *self, PyObject *value, void *v)
+static int setd_rh(PyObject *self, PyObject *value, void *v)
 {
      int status;
-     THE_FLOAT = (float) to_angle(value, radhr(1), &status);
+     THE_DOUBLE = to_angle(value, radhr(1), &status);
      return status;
 }
 
@@ -1800,9 +1800,9 @@ static PyGetSetDef FixedBody_getset[] = {
      {"_ratio", get_f_ratio, set_f_ratio,
       "ratio of minor to major diameter", VOFF(f_ratio)},
      {"_pa", get_f_pa, set_f_pa, "position angle E of N", VOFF(f_pa)},
-     {"_epoch", getf_mjd, setf_mjd, "epoch for _ra and _dec", VOFF(f_epoch)},
-     {"_ra", getf_rh, setf_rh, "fixed right ascension", VOFF(f_RA)},
-     {"_dec", getf_rd, setf_rd, "fixed declination", VOFF(f_dec)},
+     {"_epoch", getd_mjd, setd_mjd, "epoch for _ra and _dec", VOFF(f_epoch)},
+     {"_ra", getd_rh, setd_rh, "fixed right ascension", VOFF(f_RA)},
+     {"_dec", getd_rd, setd_rd, "fixed declination", VOFF(f_dec)},
      {"_pmra", getf_proper_ra, setf_proper_ra,
       "right ascension proper motion", 0},
      {"_pmdec", getf_proper_dec, setf_proper_dec,
