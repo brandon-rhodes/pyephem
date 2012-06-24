@@ -445,7 +445,7 @@ crack_f (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 	if (nf > 5 && flds[5][0]) {
 	    tmp = op->f_epoch;
 	    crack_year (flds[5], &tmp);
-	    op->f_epoch = (float) tmp;
+	    op->f_epoch = tmp;
 	} else
 	    op->f_epoch = J2000;	/* default */
 
@@ -697,7 +697,7 @@ crack_B (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 	if (flds[5][0]) {
 	    tmp = op->f_epoch;
 	    crack_year (flds[5], &tmp);
-	    op->f_epoch = (float) tmp;
+	    op->f_epoch = tmp;
 	} else
 	    op->f_epoch = J2000;	/* default */
 

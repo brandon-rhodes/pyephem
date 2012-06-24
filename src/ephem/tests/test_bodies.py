@@ -145,7 +145,9 @@ class BodyTests(unittest.TestCase):
             named_object = getattr(ephem, name)
             self.run_body(named_object())
 
-    # For each flavor of user-definable body, 
+    # For each flavor of user-definable body, try building an instance
+    # from both a database entry and from direct-setting its writable
+    # orbital parameter attributes.
 
     def build(self, bodytype, dbentry, attributes):
 
