@@ -115,7 +115,7 @@ double JD,		/* julian date */
 char dir[],		/* directory */
 MoonData md[M_NMOONS])	/* fill md[1..NM-1].x/y/z for each moon */
 {
-#define MRAU 3389.9 /* Mars radius, km */
+#define MRAU    .00002269       /* Mars radius, AU */
 	double x[M_NMOONS], y[M_NMOONS], z[M_NMOONS];
 	BDL_Dataset *dataset;
 	int i;

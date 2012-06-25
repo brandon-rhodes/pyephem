@@ -75,7 +75,7 @@ we create one instance of each planet and compare their positions:
 >>> j = ephem.Jupiter('1612/12/28')
 >>> n = ephem.Neptune('1612/12/28')
 >>> print j.ra, j.dec, j.mag
-11:48:20.51 2:41:13.6 -1.96
+11:48:20.52 2:41:13.6 -1.96
 >>> print n.ra, n.dec, n.mag
 11:49:15.77 2:37:04.5 7.92
 >>> print ephem.separation(j, n)
@@ -149,9 +149,9 @@ and examine the results in more detail:
 >>> print str(u.dec)
 22:04:47.4
 >>> print float(u.dec)
-0.385365877151
+0.385365877213
 >>> print u.dec + 1
-1.38536587715
+1.38536587721
 
 The rule is that angles become strings when printed or given to ``str()``,
 but otherwise act like Python floating point numbers.

@@ -12,7 +12,7 @@
 
 int get_fields (char *s, int delim, char *fields[]);
 
-#define MAXDBLINE       256     /* longest allowed db line */
+#define MAXDBLINE       512     /* longest allowed db line */
 
 #define FLDSEP          ','     /* major field separator */
 #define SUBFLD          '|'     /* subfield separator */
@@ -73,7 +73,8 @@ db_crack_line (char s[], Obj *op, char nm[][MAXNM], int nnm, char whynot[])
 	    return (-1);
 
 	/* do all the parsing on a copy */
-	(void) strcpy (copy, s);
+	(void) strncpy (copy, s, MAXDBLINE-1);
+	copy[MAXDBLINE-1] = '\0';
 	i = strlen(copy);
 	if (copy[i-1] == '\n')
 	    copy[i-1] = '\0';
@@ -1025,4 +1026,4 @@ write_P (Obj *op, char lp[])
 }
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: dbfmt.c,v $ $Date: 2009/07/03 23:12:50 $ $Revision: 1.43 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: dbfmt.c,v $ $Date: 2009/10/09 21:28:11 $ $Revision: 1.45 $ $Name:  $"};

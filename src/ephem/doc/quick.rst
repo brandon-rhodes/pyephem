@@ -97,11 +97,16 @@ body.compute(date)
 
  * On Solar System bodies, also sets:
 
-   | ``hlon`` — Heliocentric longitude
-   | ``hlat`` — Heliocentric latitude
+   | ``hlon`` — Heliocentric longitude (see next paragraph)
+   | ``hlat`` — Heliocentric latitude (see next paragraph)
    | ``sun_distance`` — Distance to Sun (AU)
    | ``earth_distance`` — Distance to Earth (AU)
    | ``phase`` — Percent of surface illuminated
+
+   Note that ``hlon`` and ``hlat`` on the ``Sun`` object,
+   which would normally have no meaning
+   since those angles are measured from the Sun's point of view,
+   instead give the heliocentric longitude and latitude of Earth.
 
  * On planetary moons, also sets:
 
@@ -326,7 +331,7 @@ Other Functions
 ..
 
  >>> print ephem.delta_t('1980')
- 50.5387872486
+ 50.54
 
  * The ``delta_t()`` function
    returns the difference, in seconds, on the given date

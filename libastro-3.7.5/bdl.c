@@ -60,9 +60,9 @@ do_bdl (BDL_Dataset *dataset, double jd, double *xp, double *yp, double *zp)
 			    +cmz[4]*tau2*sin(at+cfz[2])
 			    +cmz[5]*sin(2*at+cfz[3]);
 
-	    xp[i] = tbx*1000.;
-	    yp[i] = tby*1000.;
-	    zp[i] = tbz*1000.;
+	    xp[i] = tbx*1000./149597870.;
+	    yp[i] = tby*1000./149597870.;
+	    zp[i] = tbz*1000./149597870.;
 	}
 }
 

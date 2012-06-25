@@ -358,7 +358,7 @@ double *mp)
 double
 atod (char *buf)
 {
-	return (PyOS_ascii_strtod(buf, NULL));
+     return (PyOS_ascii_strtod(buf, NULL));
 }
 
 /* solve a spherical triangle:

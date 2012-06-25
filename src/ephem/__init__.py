@@ -5,7 +5,7 @@
 import ephem._libastro as _libastro
 from math import pi
 
-__version__ = '3.7.4.1'
+__version__ = '3.7.5.1'
 
 twopi = pi * 2.
 halfpi = pi / 2.
@@ -280,7 +280,6 @@ class Observer(_libastro.Observer):
             body.compute(self)
             return degrees(offset - sidereal_time() + body.g_ra).znorm
 
-        #original_date = self.date
         if start is not None:
             self.date = start
         sidereal_time = self.sidereal_time
@@ -291,28 +290,59 @@ class Observer(_libastro.Observer):
             ha_to_move = sign * twopi
         d = self.date + ha_to_move / twopi
         result = Date(newton(f, d, d + minute))
-        #self.date = original_date
         return result
 
-    def previous_transit(self, body, start=None):
+    def _previous_transit(self, body, start=None):
         """Find the previous passage of a body across the meridian."""
 
         return self._compute_transit(body, start, -1., 0.)
 
-    def next_transit(self, body, start=None):
+    def _next_transit(self, body, start=None):
         """Find the next passage of a body across the meridian."""
 
         return self._compute_transit(body, start, +1., 0.)
 
-    def previous_antitransit(self, body, start=None):
+    def _previous_antitransit(self, body, start=None):
         """Find the previous passage of a body across the anti-meridian."""
 
         return self._compute_transit(body, start, -1., pi)
 
-    def next_antitransit(self, body, start=None):
+    def _next_antitransit(self, body, start=None):
         """Find the next passage of a body across the anti-meridian."""
 
         return self._compute_transit(body, start, +1., pi)
+
+    def previous_transit(self, body, start=None):
+        """Find the previous passage of a body across the meridian."""
+
+        original_date = self.date
+        d = self._previous_transit(body, start)
+        self.date = original_date
+        return d
+
+    def next_transit(self, body, start=None):
+        """Find the next passage of a body across the meridian."""
+
+        original_date = self.date
+        d = self._next_transit(body, start)
+        self.date = original_date
+        return d
+
+    def previous_antitransit(self, body, start=None):
+        """Find the previous passage of a body across the anti-meridian."""
+
+        original_date = self.date
+        d = self._previous_antitransit(body, start)
+        self.date = original_date
+        return d
+
+    def next_antitransit(self, body, start=None):
+        """Find the next passage of a body across the anti-meridian."""
+
+        original_date = self.date
+        d = self._next_antitransit(body, start)
+        self.date = original_date
+        return d
 
     def disallow_circumpolar(self, declination):
         """Raise an exception if the given declination is circumpolar.
@@ -342,16 +372,16 @@ class Observer(_libastro.Observer):
                 )
 
         def visit_transit():
-            d = (previous and self.previous_transit(body)
-                 or self.next_transit(body)) # if-then
+            d = (previous and self._previous_transit(body)
+                 or self._next_transit(body)) # if-then
             if body.alt + body.radius * use_radius - self.horizon <= 0:
                 raise NeverUpError('%r transits below the horizon at %s'
                                    % (body.name, d))
             return d
 
         def visit_antitransit():
-            d = (previous and self.previous_antitransit(body)
-                 or self.next_antitransit(body)) # if-then
+            d = (previous and self._previous_antitransit(body)
+                 or self._next_antitransit(body)) # if-then
             if body.alt + body.radius * use_radius - self.horizon >= 0:
                 raise AlwaysUpError('%r is still above the horizon at %s'
                                     % (body.name, d))
