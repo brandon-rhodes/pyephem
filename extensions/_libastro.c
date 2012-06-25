@@ -24,6 +24,11 @@
 #undef tznm
 #undef mjed
 
+/* Various phrases that need to be repeated frequently in docstrings. */
+
+#define D " as a float giving radians, or a string giving degrees:minutes:seconds"
+#define H " as a float giving radians, or a string giving hours:minutes:seconds"
+
 /* Since different Body attributes are calculated with different
    routines, the compute() function itself just writes the time into
    the Body's `now' cache, and the VALID bits - stored in the user
@@ -998,27 +1003,28 @@ static PyMethodDef Observer_methods[] = {
 };
 
 static PyGetSetDef Observer_getset[] = {
-     {"date", getd_mjd, setd_mjd, "Date; see ephem.date()", VOFF(n_mjd)},
-     {"lat", getd_rd, setd_rd, "Latitude (degrees north)", VOFF(n_lat)},
-     {"lon", getd_rd, setd_rd, "Longitude (degrees east)", VOFF(n_lng)},
+     {"date", getd_mjd, setd_mjd, "Date", VOFF(n_mjd)},
+     {"lat", getd_rd, setd_rd, "Latitude north of the Equator" D, VOFF(n_lat)},
+     {"lon", getd_rd, setd_rd, "Longitude east of Greenwich" D, VOFF(n_lng)},
      {"elevation", get_elev, set_elev,
-      "Elevation above sea level (meters)", NULL},
+      "Elevation above sea level in meters", NULL},
      {"horizon", getd_rd, setd_rd,
       "The angle above (+) or below (-) the horizon at which an object"
-      " should be considered at the moment of rising or setting (degrees)",
+      " should be considered at the moment of rising or setting" D,
       VOFF(n_dip)},
      {"epoch", getd_mjd, setd_mjd, "Precession epoch", VOFF(n_epoch)},
 
      /* For compatibility with older scripts: */
-     {"long", getd_rd, setd_rd, "Longitude (degrees east)", VOFF(n_lng)},
+     {"long", getd_rd, setd_rd, "Longitude east of Greenwich" D, VOFF(n_lng)},
 
      {NULL}
 };
 
 static PyMemberDef Observer_members[] = {
-     {"temp", T_DOUBLE, OFF(n_temp), 0, "atmospheric temperature (C)"},
+     {"temp", T_DOUBLE, OFF(n_temp), 0,
+      "atmospheric temperature in degrees Celsius"},
      {"pressure", T_DOUBLE, OFF(n_pressure), 0,
-      "atmospheric pressure (mBar)"},
+      "atmospheric pressure in millibar"},
      {NULL}
 };
 
@@ -1310,8 +1316,8 @@ static PyObject* Body_repr(PyObject *body_object)
 
 static PyMethodDef Body_methods[] = {
      {"compute", (PyCFunction) Body_compute, METH_VARARGS | METH_KEYWORDS,
-      "compute the location of the body for the given date or Observer "
-      "(or for the current time if no date is supplied)"},
+      "compute the location of the body for the given date or Observer,"
+      " or for the current time if no date is supplied"},
      {"writedb", (PyCFunction) Body_writedb, METH_NOARGS,
       "return a string representation of the body "
       "appropriate for inclusion in an ephem database file"},
@@ -1696,39 +1702,30 @@ static int Set_gk(PyObject *self, PyObject *value, void *v)
 static PyGetSetDef Body_getset[] = {
      {"name", Get_name, 0, "object name (read-only string)"},
 
-     {"ra", Get_ra, 0, "right ascension (radians that print as hours of arc)"},
-     {"dec", Get_dec, 0, "declination (radians that print as degrees)"},
-     {"g_ra", Get_gaera, 0,
-      "apparent geocentric right ascension"
-      " (radians that print as hours of arc)"},
-     {"g_dec", Get_gaedec, 0,
-      "apparent geocentric declination"
-      " (radians that print as degrees)"},
-     {"a_ra", Get_astrora, 0,
-      "astrometric geocentric right ascension"
-      " (radians that print as hours of arc)"},
-     {"a_dec", Get_astrodec, 0,
-      "astrometric geocentric declination"
-      " (radians that print as degrees)"},
-     {"a_epoch", Get_epoch, 0, "equinox of body's astrometric right"
-      " ascension and declination (Date)"},
-     {"elong", Get_elong, 0, "elongation (radians that print as degrees)"},
+     {"ra", Get_ra, 0, "right ascension" H},
+     {"dec", Get_dec, 0, "declination" D},
+     {"g_ra", Get_gaera, 0, "apparent geocentric right ascension" H},
+     {"g_dec", Get_gaedec, 0, "apparent geocentric declination" D},
+     {"a_ra", Get_astrora, 0, "astrometric geocentric right ascension" H},
+     {"a_dec", Get_astrodec, 0, "astrometric geocentric declination" D},
+     {"a_epoch", Get_epoch, 0,
+      "date giving the equinox of the body's astrometric right"
+      " ascension and declination",
+     },
+     {"elong", Get_elong, 0, "elongation" D},
      {"mag", Get_mag, 0, "magnitude"},
-     {"size", Get_size, 0, "visual size (seconds of arc)"},
-     {"radius", Get_radius, 0, "visual radius (radians that print as degrees)"},
+     {"size", Get_size, 0, "visual size in arcseconds"},
+     {"radius", Get_radius, 0, "visual radius" D},
 
-     {"az", Get_az, 0, "azimuth (radians that print as degrees)"},
-     {"alt", Get_alt, 0, "altitude (radians that print as degrees)"},
+     {"az", Get_az, 0, "azimuth" D},
+     {"alt", Get_alt, 0, "altitude" D},
 
      {"rise_time", Get_rise_time, 0, "rise time"},
-     {"rise_az", Get_rise_az, 0, "rise azimuth"
-      " (radians that print as degrees)"},
+     {"rise_az", Get_rise_az, 0, "azimuth at which the body rises" D},
      {"transit_time", Get_transit_time, 0, "transit time"},
-     {"transit_alt", Get_transit_alt, 0, "transit altitude"
-      " (radians that print as degrees)"},
+     {"transit_alt", Get_transit_alt, 0, "transit altitude" D},
      {"set_time", Get_set_time, 0, "set time"},
-     {"set_az", Get_set_az, 0, "set azimuth"
-      " (radians that print as degrees)"},
+     {"set_az", Get_set_az, 0, "azimuth at which the body sets" D},
      {"circumpolar", Get_circumpolar, 0,
       "whether object remains above the horizon this day"},
      {"neverup", Get_neverup, 0,
@@ -1737,17 +1734,16 @@ static PyGetSetDef Body_getset[] = {
 };
 
 static PyGetSetDef Planet_getset[] = {
-     {"hlon", Get_hlong, 0, "heliocentric longitude"
-      " (radians that print as degrees)"},
-     {"hlat", Get_hlat, 0, "heliocentric latitude"
-      " (radians that print as degrees)"},
-     {"sun_distance", Get_sun_distance, 0, "distance from sun (AU)"},
-     {"earth_distance", Get_earth_distance, 0, "distance from earth (AU)"},
-     {"phase", Get_phase, 0, "phase (percent illuminated)"},
+     {"hlon", Get_hlong, 0,
+      "heliocentric longitude (but Sun().hlon means the hlon of Earth)" D},
+     {"hlat", Get_hlat, 0,
+      "heliocentric latitude (but Sun().hlat means the hlat of Earth)" D},
+     {"sun_distance", Get_sun_distance, 0, "distance from sun in AU"},
+     {"earth_distance", Get_earth_distance, 0, "distance from earth in AU"},
+     {"phase", Get_phase, 0, "phase as percent of the surface illuminated"},
 
      /* For compatibility with older scripts: */
-     {"hlong", Get_hlong, 0, "heliocentric longitude"
-      " (radians that print as degrees)"},
+     {"hlong", Get_hlong, 0, "heliocentric longitude" D},
 
      {NULL}
 };
@@ -1761,33 +1757,25 @@ static PyGetSetDef Planet_getset[] = {
 static PyGetSetDef PlanetMoon_getset[] = {
      {"name", Get_name, 0, "object name (read-only string)"},
 
-     {"a_ra", Get_astrora, 0,
-      "astrometric geocentric right ascension"
-      " (radians that print as hours of arc)"},
-     {"a_dec", Get_astrodec, 0,
-      "astrometric geocentric declination"
-      " (radians that print as degrees)"},
+     {"a_ra", Get_astrora, 0, "astrometric geocentric right ascension" H},
+     {"a_dec", Get_astrodec, 0, "astrometric geocentric declination" D},
 
-     {"g_ra", Get_gaera, 0,
-      "apparent geocentric right ascension"
-      " (radians that print as hours of arc)"},
-     {"g_dec", Get_gaedec, 0,
-      "apparent geocentric declination"
-      " (radians that print as degrees)"},
+     {"g_ra", Get_gaera, 0, "apparent geocentric right ascension" H},
+     {"g_dec", Get_gaedec, 0, "apparent geocentric declination" D},
 
-     {"ra", Get_ra, 0, "right ascension (radians that print as hours of arc)"},
-     {"dec", Get_dec, 0, "declination (radians that print as degrees)"},
+     {"ra", Get_ra, 0, "right ascension" H},
+     {"dec", Get_dec, 0, "declination" D},
 
-     {"az", Get_az, 0, "azimuth (radians that print as degrees)"},
-     {"alt", Get_alt, 0, "altitude (radians that print as degrees)"},
+     {"az", Get_az, 0, "azimuth" D},
+     {"alt", Get_alt, 0, "altitude" D},
 
      {"x", Get_x, 0, "how far east or west of its planet"
-      " the moon lies in the sky (in planet radii, east is positive)"},
+      " the moon lies in the sky in planet radii; east is positive"},
      {"y", Get_y, 0, "how far north or south of its planet"
-      " the moon lies in the sky (in planet radii, south is positive)"},
+      " the moon lies in the sky in planet radii; south is positive"},
      {"z", Get_z, 0, "how much closer or farther from Earth the moon is"
       " than its planet"
-      " (in planet radii, closer to Earth is positive)"},
+      " in planet radii; closer to Earth is positive"},
 
      {"earth_visible", Get_earth_visible, 0, "whether visible from earth"},
      {"sun_visible", Get_sun_visible, 0, "whether visible from sun"},
@@ -1795,36 +1783,28 @@ static PyGetSetDef PlanetMoon_getset[] = {
 };
 
 static PyGetSetDef Moon_getset[] = {
-     {"libration_lat", Get_libration_lat, 0,
-      "lunar libration in latitude (radians that print as degrees)"},
+     {"libration_lat", Get_libration_lat, 0, "lunar libration in latitude" D},
      {"libration_long", Get_libration_long, 0,
-      "lunar libration in longitude (radians that print as degrees)"},
-     {"colong", Get_colong, 0,
-      "lunar selenographic colongitude (radians that print as degrees)"},
+      "lunar libration in longitude" D},
+     {"colong", Get_colong, 0, "lunar selenographic colongitude" D},
      {"moon_phase", Get_moon_phase, 0,
       "fraction of lunar surface illuminated when viewed from earth"},
      {"subsolar_lat", Get_subsolar_lat, 0,
-      "lunar latitude of subsolar point (radians that print as degrees)"},
+      "lunar latitude of subsolar point" D},
      {NULL}
 };
 
 static PyGetSetDef Jupiter_getset[] = {
-     {"cmlI", Get_cmlI, 0,
-      "central meridian longitude, System I (radians that print as degrees)"
-     },
-     {"cmlII", Get_cmlII, 0,
-      "central meridian longitude, System II (radians that print as degrees)"
-     },
+     {"cmlI", Get_cmlI, 0, "central meridian longitude, System I" D},
+     {"cmlII", Get_cmlII, 0, "central meridian longitude, System II" D},
      {NULL}
 };
 
 static PyGetSetDef Saturn_getset[] = {
      {"earth_tilt", Get_earth_tilt, 0,
-      "tilt of rings towards Earth (radians that print as degrees,"
-      " positive for southward tilt and negative for northward)"},
+      "tilt of rings towards Earth, positive for southward tilt," D},
      {"sun_tilt", Get_sun_tilt, 0,
-      "tilt of rings towards Sun radians that print as degrees,"
-      " positive for southward tilt and negative for northward)"},
+      "tilt of rings towards Sun, positive for southward tilt," D},
      {NULL}
 };
 
@@ -1929,12 +1909,12 @@ static PyGetSetDef EarthSatellite_getset[] = {
 
      /* results: */
 
-     {"sublat", Get_sublat, 0, "latitude below satellite (degrees north)"},
-     {"sublong", Get_sublong, 0, "longitude below satellite (degrees east)"},
-     {"elevation", Get_elevation, 0, "height above sea level (meters)"},
-     {"range", Get_range, 0, "distance from observer to satellite (meters)"},
+     {"sublat", Get_sublat, 0, "latitude beneath satellite" D},
+     {"sublong", Get_sublong, 0, "longitude beneath satellite" D},
+     {"elevation", Get_elevation, 0, "height above sea level in meters"},
+     {"range", Get_range, 0, "distance from observer to satellite in meters"},
      {"range_velocity", Get_range_velocity, 0,
-      "range rate of change (meters per second)"},
+      "range rate of change in meters per second"},
      {"eclipsed", Get_eclipsed, 0, "whether satellite is in earth's shadow"},
      {NULL}
 };
@@ -2951,8 +2931,7 @@ static PyMethodDef libastro_methods[] = {
      {"readdb", readdb, METH_VARARGS, "Read an ephem database entry"},
      {"readtle", readtle, METH_VARARGS, "Read TLE-format satellite elements"},
      {"separation", separation, METH_VARARGS,
-      "Return the angular separation between two objects or positions "
-      "(degrees)"},
+      "Return the angular separation between two objects or positions" D},
 
      {"uranometria", uranometria, METH_VARARGS,
       "given right ascension and declination (in radians), return the page"
