@@ -61,7 +61,7 @@ Bodies
 
  >>> m = ephem.Mars('2003/8/27')
  >>> print(m.name, m.elong, m.size)
- Mars -173:00:34.2 25.1121063232
+ Mars -173:00:34.2 25.112106323242188
 
  * Extra arguments when you create a Body
    are used to perform an initial ``compute()``
@@ -192,7 +192,7 @@ catalog format
  >>> yh = ephem.readdb(line)
  >>> yh.compute('2007/10/1')
  >>> print(yh.earth_distance)
- 14.8046731949
+ 14.804673194885254
  >>> print(yh.mag)
  23.96
 

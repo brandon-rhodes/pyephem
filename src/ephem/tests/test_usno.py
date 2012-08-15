@@ -454,7 +454,8 @@ class Moon_Phases(Trial):
 class Mixin(object):
     def test_usno(self):
 
-        content = open(self.path).read()
+        with open(self.path) as f:
+            content = f.read()
         g = globals()
         for obj in g.values():
             if (isinstance(obj, type) and issubclass(obj, Trial)

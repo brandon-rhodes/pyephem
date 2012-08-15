@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
-from .ephem_test import unittest, MyTestCase
+import unittest
 import ephem
 import locale
 
 # Determine whether we can convert values regardless of locale.
 
-class locales_suite(MyTestCase):
+class locales_suite(unittest.TestCase):
     def setUp(self):
         self.old_locale = locale.getlocale(locale.LC_NUMERIC)
         locale.setlocale(locale.LC_NUMERIC, 'de_CH.UTF-8')

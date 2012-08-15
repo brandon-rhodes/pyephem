@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-from .ephem_test import *
+import unittest
+from ephem import date
 
 # Determine whether dates behave reasonably.
 
@@ -12,9 +13,10 @@ class DateTests(unittest.TestCase):
 
         def construct_and_compare(args1, args2):
             d1, d2 = date(*args1), date(*args2)
-            self.assert_(-1e-15 < (d1 / d2 - 1) < 1e-15,
-                         'dates not equal:\n %r = date%r\n %r = date%r'
-                         % (d1.tuple(), args1, d2.tuple(), args2))
+            self.assertTrue(
+                -1e-15 < (d1 / d2 - 1) < 1e-15,
+                 'dates not equal:\n %r = date%r\n %r = date%r'
+                 % (d1.tuple(), args1, d2.tuple(), args2))
 
         std = ('2004/09/04 00:17:15.8',)
         pairs = [

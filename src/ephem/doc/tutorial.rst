@@ -149,9 +149,9 @@ and examine the results in more detail:
 >>> print(str(u.dec))
 22:04:47.4
 >>> print(float(u.dec))
-0.385365877213
+0.3853658772127582
 >>> print(u.dec + 1)
-1.38536587721
+1.3853658772127582
 
 The rule is that angles become strings when printed or given to ``str()``,
 but otherwise act like Python floating point numbers.
@@ -174,7 +174,7 @@ by multiplying its angular motion in radians by its distance from the Sun:
 >>> aph_angle = ephem.separation(hpos(ma0), hpos(ma1))
 >>> aph_distance = aph_angle * ma0.sun_distance
 >>> print(aph_distance)
-0.0126911122281
+0.012691112228101424
 
 So, it moved nearly 0.013 AU in a single day (about 1.9 million kilometers).
 A line drawn between it and the sun would have, roughly,
@@ -184,7 +184,7 @@ and whose area is therefore:
 
 >>> aph_area = aph_distance * ma0.sun_distance / 2.
 >>> print(aph_area)
-0.0105710807908
+0.010571080790794597
 
 According to Kepler our results should be the same
 for any other one-day period for which we compute this;
@@ -194,7 +194,7 @@ we can try using the two Mars positions from near perihelion:
 >>> peri_distance = peri_angle * mp0.sun_distance
 >>> peri_area = peri_distance * mp0.sun_distance / 2.
 >>> print(peri_area)     # the area, to high precision, is the same!
-0.0105712665517
+0.010571266551740269
 
 Despite the fact that Mars moves twenty percent faster at perihelion,
 the area swept out — to quite high precision — is identical,
@@ -212,7 +212,7 @@ PyEphem supplies both a ``degrees()`` and an ``hours()`` function.
 For example:
 
 >>> print(peri_angle * 2)
-0.0221584026149
+0.02215840261490909
 >>> print(ephem.degrees(peri_angle * 2))
 1:16:10.5
 
@@ -368,7 +368,7 @@ we can provide azimuth and altitude:
 >>> print(ephem.separation((sun.az, sun.alt), (moon.az, moon.alt)))
 0:00:00.3
 >>> print(sun.size, moon.size, sun.size - moon.size)
-1892.91210938 1891.85778809 1.05432128906
+1892.912109375 1891.8577880859375 1.0543212890625
 
 The Sun's diameter is larger by 1.05′′,
 so placing the Moon at its center

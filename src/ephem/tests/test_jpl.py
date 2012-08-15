@@ -30,7 +30,8 @@ class JPLTest(unittest.TestCase):
     def runTest(self):
         in_data = False
 
-        for line in open(self.path):
+        f = open(self.path)
+        for line in f:
 
             if line.startswith('Target body name:'):
                 name = line.split()[3]
@@ -71,6 +72,8 @@ class JPLTest(unittest.TestCase):
                                          (date, body.name, attr, body_value,
                                           attr, jpl_value,
                                           ephem.degrees(difference)))
+
+        f.close()
 
 re, traceback, datetime, strptime, ephem
 
