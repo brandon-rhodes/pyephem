@@ -430,14 +430,14 @@ Observers
 =========
 
  >>> lowell = ephem.Observer()
- >>> lowell.lon = '111:32.1'
+ >>> lowell.lon = '-111:32.1'
  >>> lowell.lat = '35:05.8'
  >>> lowell.elevation = 2198
  >>> lowell.date = '1986/3/13'
  >>> j = ephem.Jupiter()
  >>> j.compute(lowell)
  >>> print j.alt, j.az
- 20:48:43.7 120:21:44.9
+ 0:57:44.7 256:41:01.3
 
  * Describes a position on Earth's surface.
  * Pass to the ``compute()`` method of a ``Body``.
