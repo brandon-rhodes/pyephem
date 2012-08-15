@@ -4,10 +4,8 @@ if sys.version_info[0] != 3:
           ' try "pyephem" for Python 2.x')
     sys.exit(1)
 
-#from setuptools import setup, Extension
-from distutils.core import setup, Extension
-
 import os
+from distutils.core import setup, Extension
 from glob import glob
 
 # Read the current version from ephem/__init__.py itself.
@@ -20,7 +18,7 @@ for line in open(path):
 # The 'ephem' module is built from every .c file in the libastro
 # directory plus ...
 
-libastro_version = '3.7.4'
+libastro_version = '3.7.5'
 libastro_files = glob('libastro-%s/*.c' % libastro_version)
 libastro_data = glob('extensions/data/*.c')
 
