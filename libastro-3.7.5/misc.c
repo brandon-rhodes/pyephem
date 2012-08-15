@@ -12,6 +12,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* For dtoa.c from Netlib */
+double ascii_strtod(const char *s00, char **se);
+
 /* zero from loc for len bytes */
 void
 zero_mem (void *loc, unsigned len)
@@ -358,7 +361,7 @@ double *mp)
 double
 atod (char *buf)
 {
-     return (PyOS_ascii_strtod(buf, NULL));
+     return (ascii_strtod(buf, NULL));
 }
 
 /* solve a spherical triangle:

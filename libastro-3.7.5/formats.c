@@ -9,6 +9,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* For dtoa.c from Netlib */
+double ascii_strtod(const char *s00, char **se);
+
 /* sprint the variable a in sexagesimal format into out[].
  * w is the number of spaces for the whole part.
  * fracbase is the number of pieces a whole is to broken into; valid options:
@@ -146,19 +149,19 @@ double *dp)		/* cracked value, if return 0 */
            Note that, per the semantics of the strtod call, if we run
            out of valid numbers to parse, then the last few values will
            just get zero. */
-        a = PyOS_ascii_strtod(str, &end);
+        a = ascii_strtod(str, &end);
         if (str == end) { /* since a will be -1 */
              a = b = c = 0.0;
         } else {
              s = end;
              if (*s == ':') s++;
-             b = PyOS_ascii_strtod(s, &end);
+             b = ascii_strtod(s, &end);
              if (s == end) { /* since b will be -1 */
                   b = c = 0.0;
              } else {
                   s = end;
                   if (*s == ':') s++;
-                  c = PyOS_ascii_strtod(s, &end);
+                  c = ascii_strtod(s, &end);
                   if (s == end) /* since c will be -1 */
                        c = 0.0;
              }
@@ -192,21 +195,21 @@ int *y)
 	X = Y = Z = 0.0;
 
         /* This replaces an old, locale-sensitive sscanf(). */
-        X = PyOS_ascii_strtod(bp, &end);
+        X = ascii_strtod(bp, &end);
         if (bp == end) {
              n = 0;
              X = 0.0; /* X will be -1 */
         } else {
              s = end;
              if (*s == '/' || *s == ':') s++;
-             Y = PyOS_ascii_strtod(s, &end);
+             Y = ascii_strtod(s, &end);
              if (s == end) {
                   n = 1;
                   Y = 0.0; /* Y will be -1 */
              } else {
                   s = end;
                   if (*s == '/' || *s == ':') s++;
-                  Z = PyOS_ascii_strtod(s, &end);
+                  Z = ascii_strtod(s, &end);
                   if (s == end) {
                        n = 2;
                        Z = 0.0; /* Z will be -1 */

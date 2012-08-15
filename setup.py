@@ -50,7 +50,8 @@ setup(name = 'ephem',
                                  ],},
       ext_modules = [
     Extension('ephem._libastro',
-              ['extensions/_libastro.c'] + libastro_files + libastro_data,
+              ['extensions/_libastro.c', 'extensions/dtoa.c']
+              + libastro_files + libastro_data,
               include_dirs=['libastro-' + libastro_version],
               )],
       )
