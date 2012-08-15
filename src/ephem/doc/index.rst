@@ -46,7 +46,7 @@
 
    <p>
      Ask questions on <b>Stack Overflow</b>, or use our community support
-     tools on <b>Bitbucket</b>!
+     tools on <b>GitHub</b>!
    </p>
    <img src="_static/stackoverflow.png"/>
    <p>
@@ -55,11 +55,11 @@
      <a href="http://stackoverflow.com/questions/ask?tags=pyephem"
         >Ask a new question</a><br/>
    </p>
-   <img src="_static/bitbucket.png"/>
+   <img src="_static/github.png"/>
    <p>
-     <a href="http://bitbucket.org/brandon/pyephem/src"
+     <a href="https://github.com/brandon-rhodes/pyephem"
         >Code Repository</a><br/>
-     <a href="http://bitbucket.org/brandon/pyephem/issues"
+     <a href="https://github.com/brandon-rhodes/pyephem/issues?state=open"
         >Issue Tracker</a><br/>
    </p>
 
