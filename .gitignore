@@ -2,7 +2,9 @@
 *.egg-info
 *~
 *.bak
+MANIFEST
 build/
+dist/
 src/ephem/_libastro*.so
 src/ephem/doc/_build
 tmp*.py
