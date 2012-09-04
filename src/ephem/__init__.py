@@ -1,8 +1,5 @@
-# The core functionalty of PyEphem lives in the C-language _libastro
-# module, which packages the astronomy routines from XEphem as
-# convenient Python types.
+"""Science-grade astronomy for Python"""
 
-import ephem._libastro as _libastro
 from math import pi
 
 __version__ = '3.7.5.1'
@@ -12,13 +9,15 @@ halfpi = pi / 2.
 quarterpi = pi / 4.
 eighthpi = pi / 8.
 
-degree = twopi / 360.
+degree = pi / 180.
 arcminute = degree / 60.
 arcsecond = arcminute / 60.
 half_arcsecond = arcsecond / 2.
 tiny = arcsecond / 360.
 
 c = 299792458.  # exact speed of light in meters/second
+
+"""
 meters_per_au = _libastro.meters_per_au
 earth_radius = _libastro.earth_radius
 moon_radius = _libastro.moon_radius
@@ -35,12 +34,14 @@ degrees = _libastro.degrees
 hours = _libastro.hours
 
 Date = _libastro.Date
+"""
 hour = 1. / 24.
 minute = hour / 60.
 second = minute / 60.
 
 default_newton_precision = second / 10.
 
+"""
 delta_t = _libastro.delta_t
 julian_date = _libastro.julian_date
 
@@ -63,24 +64,13 @@ millennium_atlas = _libastro.millennium_atlas
 uranometria = _libastro.uranometria
 uranometria2000 = _libastro.uranometria2000
 
-# We also create a Python class ("Mercury", "Venus", etcetera) for
-# each planet and moon for which _libastro offers specific algorithms.
-
-for index, classname, name in _libastro.builtin_planets():
-    exec '''
-class %(name)s(_libastro.%(classname)s):
-    "Create a Body instance representing %(name)s"
-    __planet__ = %(index)r
-''' % dict(name=name, classname=classname, index=index)
-
-del index, classname, name
-
 # We now replace two of the classes we have just created, because
 # _libastro actually provides separate types for two of the bodies.
 
 Jupiter = _libastro.Jupiter
 Saturn = _libastro.Saturn
 Moon = _libastro.Moon
+"""
 
 # Newton's method.
 
@@ -99,7 +89,7 @@ def newton(f, x0, x1, precision=default_newton_precision):
 
 # Find equinoxes and solstices.
 
-_sun = Sun()                    # used for computing equinoxes
+# _sun = Sun()                    # used for computing equinoxes
 
 def holiday(d0, motion, offset):
     """Function that assists the finding of equinoxes and solstices."""
@@ -175,7 +165,7 @@ def next_solstice(date):
 
 # Find phases of the Moon.
 
-_moon = Moon()                  # used for computing Moon phases
+# _moon = Moon()                  # used for computing Moon phases
 
 def _find_moon_phase(d0, motion, target):
     """Function that assists the finding of moon phases."""
@@ -234,7 +224,7 @@ class CircumpolarError(ValueError): pass
 class NeverUpError(CircumpolarError): pass
 class AlwaysUpError(CircumpolarError): pass
 
-class Observer(_libastro.Observer):
+class Observer(object): #_libastro.Observer):
     """
     Observers instances allow you to compute positions of celestial bodies.
     No parameters to init are taken.
@@ -248,7 +238,7 @@ class Observer(_libastro.Observer):
      epoch: 2000
     """
     __slots__ = [ 'name' ]
-    elev = _libastro.Observer.elevation
+    # elev = _libastro.Observer.elevation
 
     def __repr__(self):
         """Return a useful textual representation of this Observer."""
@@ -582,8 +572,8 @@ class Galactic(LonLatCoordinate):
 # For backwards compatibility, provide lower-case names for our Date
 # and Angle classes, and also allow "Lon" to be spelled "Long".
 
-date = Date
-angle = Angle
+# date = Date
+# angle = Angle
 LongLatCoordinate = LonLatCoordinate
 
 # Catalog boostraps.  Each of these functions imports a catalog
