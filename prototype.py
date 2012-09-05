@@ -1,11 +1,19 @@
 # -*- coding: utf-8 -*-
 
 from sgp4.ext import jday
-from ephem.planets import mercury, earth
+from ephem.planets import earth, mercury, jupiter
 from ephem import J2000
 
 jd = jday(2006, 6, 19, 0, 0, 0)
 pos = earth(jd).observe(mercury).radec(J2000)    # Astrometric
+
+print(pos.ra)
+print(pos.dec)
+
+print('----')
+
+jd = jday(2008, 7, 25, 0, 0, 0)
+pos = earth(jd).observe(jupiter).radec()    # Apparent
 
 print(pos.ra)
 print(pos.dec)

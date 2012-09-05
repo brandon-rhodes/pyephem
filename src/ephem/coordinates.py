@@ -55,11 +55,20 @@ class XYZ(ndarray):
 
     def radec(self, epoch=None):
         if epoch is None:
-            raise NotImplementedError()
+            # Geocentric apparent.
+
+            # TODO: precession
+            # TODO: deflection near sun
+            # TODO: nutation
+            # TODO: aberration
+
+            return GeocentricRADec(self)
 
         else:
             if epoch != J2000:
                 raise NotImplementedError()
+
+            # Geocentric astrometric.
 
             return GeocentricRADec(self)
 

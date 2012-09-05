@@ -35,6 +35,7 @@ class Planet(object):
 
 mercury = Planet('mercury')
 mars = Planet('mars')
+jupiter = Planet('jupiter')
 
 def earth(jd):
     earthmoon = e.compute('earthmoon', jd)
