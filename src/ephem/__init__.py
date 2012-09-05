@@ -17,6 +17,8 @@ tiny = arcsecond / 360.
 
 c = 299792458.  # exact speed of light in meters/second
 
+J2000 = 2451545.0
+
 """
 meters_per_au = _libastro.meters_per_au
 earth_radius = _libastro.earth_radius

@@ -3,7 +3,15 @@
 from numpy import ndarray
 from math import asin, atan2, cos, sin, pi, sqrt
 
+J2000 = 2451545.0
+
 ecliptic_obliquity = (23 + (26/60.) + (21.406/3600.)) * pi / 180.
+
+import de421
+from jplephem import Ephemeris
+e = Ephemeris(de421)
+
+days_for_light_to_go_1m = 1. / (e.CLIGHT * 60. * 60. * 24.)
 
 class Hours(float):
 
@@ -45,8 +53,26 @@ class XYZ(ndarray):
     @property
     def z(self): return self[2]
 
+    def radec(self, epoch=None):
+        if epoch is None:
+            raise NotImplementedError()
+
+        else:
+            if epoch != J2000:
+                raise NotImplementedError()
+
+            return GeocentricRADec(self)
+
 class HeliocentricXYZ(XYZ):
-    pass
+
+    def observe(self, body):
+        # TODO: should also accept another HeliocentricXYZ?
+        jd = self.jd
+        vector = body(jd) - self
+        light_travel_time = sqrt(vector.dot(vector)) * days_for_light_to_go_1m
+        jd -= light_travel_time
+        vector = body(jd) - self
+        return GeocentricXYZ(*vector[:3])
 
 class GeocentricXYZ(XYZ):
     pass
