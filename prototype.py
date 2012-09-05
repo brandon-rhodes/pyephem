@@ -1,18 +1,24 @@
 # -*- coding: utf-8 -*-
 
-from ephem.planets import mars, earth
+from sgp4.ext import jday
+from ephem.planets import mercury, earth
 import ephem.coordinates as coordinates
 
-jed = 2444391.5  # 1980.06.01
-mpos = mars.at(jed)
-print('mars xyz:')
-print(mpos)
-
+#jed = 2444391.5  # 1980.06.01
+#jday(year, mon, day, hr, minute, sec)
+jed = jday(2006, 6, 19, 0, 0, 0)
+print jed
 epos = earth.at(jed)
-print('earth xyz:')
+print('earth xyz and date:')
 print(epos)
+print(epos.date)
 
-diff = mpos - epos
+# epos = earth.at(jed)
+# print('earth xyz:')
+# print(epos)
+
+diff = mercury.seen_from(epos)
+print('diff:')
 print(diff)
 
 gxyz = coordinates.GeocentricXYZ(diff[0], diff[1], diff[2])
