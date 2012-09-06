@@ -72,10 +72,10 @@ class XYZ(ndarray):
 
             return GeocentricRADec(self)
 
-class HeliocentricXYZ(XYZ):
+class ICRS(XYZ):
 
     def observe(self, body):
-        # TODO: should also accept another HeliocentricXYZ?
+        # TODO: should also accept another ICRS?
         jd = self.jd
         vector = body(jd) - self
         light_travel_time = sqrt(vector.dot(vector)) * days_for_light_to_go_1m
@@ -112,7 +112,7 @@ class HeliocentricLonLat(ndarray):
 
     def __new__(cls, other):
         self = ndarray.__new__(cls, (3,))
-        if isinstance(other, HeliocentricXYZ):
+        if isinstance(other, ICRS):
             x, y, z = other
             y, z = (
                 y * cos(ecliptic_obliquity) + z * sin(ecliptic_obliquity),

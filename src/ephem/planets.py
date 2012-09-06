@@ -2,7 +2,7 @@
 import de421
 from jplephem import Ephemeris
 from ephem.coordinates import (
-    GeocentricRADec, GeocentricXYZ, HeliocentricXYZ, XYZ,
+    GeocentricRADec, GeocentricXYZ, ICRS, XYZ,
     )
 from numpy import sqrt
 
@@ -14,7 +14,7 @@ class Planet(object):
 
     def __call__(self, date):
         x, y, z, dx, dy, dz = e.compute(self.jplname, date)
-        xyz = HeliocentricXYZ(x, y, z)
+        xyz = ICRS(x, y, z)
         xyz.date = date
         return xyz
 
@@ -41,6 +41,6 @@ def earth(jd):
     earthmoon = e.compute('earthmoon', jd)
     moon = e.compute('moon', jd)
     x, y, z, dx, dy, dz = earthmoon - moon / e.EMRAT
-    xyz = HeliocentricXYZ(x, y, z)
+    xyz = ICRS(x, y, z)
     xyz.jd = jd
     return xyz
