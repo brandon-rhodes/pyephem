@@ -38,9 +38,17 @@ mars = Planet('mars')
 jupiter = Planet('jupiter')
 
 def earth(jd):
-    earthmoon = e.compute('earthmoon', jd)
-    moon = e.compute('moon', jd)
-    x, y, z, dx, dy, dz = earthmoon - moon / e.EMRAT
+    earthmoon_xyz = e.compute('earthmoon', jd)
+    moon_xyz = e.compute('moon', jd)
+    x, y, z, dx, dy, dz = earthmoon_xyz - moon_xyz / e.EMRAT
+    xyz = ICRS(x, y, z)
+    xyz.jd = jd
+    return xyz
+
+def moon(jd):
+    earthmoon_xyz = e.compute('earthmoon', jd)
+    moon_xyz = e.compute('moon', jd)
+    x, y, z, dx, dy, dz = earthmoon_xyz + moon_xyz
     xyz = ICRS(x, y, z)
     xyz.jd = jd
     return xyz

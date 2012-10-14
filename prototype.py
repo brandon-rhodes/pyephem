@@ -1,8 +1,25 @@
 # -*- coding: utf-8 -*-
 
 from sgp4.ext import jday
-from ephem.planets import earth, mercury, jupiter
+from ephem.angles import Angle
+from ephem.planets import earth, moon, mercury, jupiter
 from ephem import J2000
+
+jd = 2450203.5
+#ggr = earth.location('45 N', '75 W', 0.0, temperature=10.0, pressure=1010.0)
+ggr = earth
+ra, dec, dis = ggr(jd).observe(moon).radec(J2000)
+print(Angle(ra).hours())
+print(Angle(dec).degrees())
+print('')
+print(Angle(ra).hours() - 11.739849403)
+print(Angle(dec).degrees() - -0.31860323)
+print('')
+print(dis)
+
+#JD = 2450203.500000  RA = 11.739849403  Dec =  -0.31860323  Dis = 0.0026040596
+
+exit(0)
 
 jd = jday(2006, 6, 19, 0, 0, 0)
 pos = earth(jd).observe(mercury).radec(J2000)    # Astrometric
