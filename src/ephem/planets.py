@@ -5,6 +5,7 @@ from ephem.coordinates import (
     GeocentricRADec, GeocentricXYZ, ICRS, XYZ,
     )
 from numpy import sqrt
+from ephem.angles import interpret_longitude, interpret_latitude
 
 e = Ephemeris(de421)
 
@@ -52,3 +53,14 @@ def moon(jd):
     xyz = ICRS(x, y, z)
     xyz.jd = jd
     return xyz
+
+class EarthLocation(object):
+
+    def __init__(self, longitude, latitude, altitude=0.,
+                 temperature=10.0, pressure=1010.0):
+        self.longitude = interpret_longitude(longitude)
+        self.latitude = interpret_latitude(latitude)
+        self.altitude = altitude
+
+    def __call__(self, jd):
+        return earth(jd)
