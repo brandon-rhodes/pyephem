@@ -6,6 +6,7 @@ from ephem.coordinates import (
     )
 from numpy import sqrt
 from ephem.angles import interpret_longitude, interpret_latitude
+from ephem import timescales
 
 e = Ephemeris(de421)
 
@@ -62,5 +63,18 @@ class EarthLocation(object):
         self.latitude = interpret_latitude(latitude)
         self.altitude = altitude
 
-    def __call__(self, jd):
-        return earth(jd)
+    def __call__(self, jd_tt):
+        delta_t = 0
+        jd_tdb = jd_tt + timescales.tdb_minus_tt(jd_tt)
+        jd_ut1 = jd_tt - (delta_t / 86400.)
+
+        # sidereal_time (jd_ut1,0.0,delta_t,0,1,accuracy, &gmst);
+        # e_tilt (jd_tdb,accuracy, &x1,&x2,&eqeq,&x3,&x4);
+        # gast = gmst + eqeq / 3600.0;
+        # t_last = jd_ut1;
+
+        # terra (&obs->on_surf,gast, pos1,vel1);
+
+        # ...
+
+        return earth(jd_tt)

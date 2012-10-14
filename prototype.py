@@ -5,9 +5,9 @@ from ephem.angles import Angle
 from ephem.planets import earth, moon, mercury, jupiter, EarthLocation
 from ephem import J2000
 
-jd = 2450203.5
+jd_tt = 2450203.5
 ggr = EarthLocation('75 W', '45 N', 0.0, temperature=10.0, pressure=1010.0)
-ra, dec, dis = ggr(jd).observe(moon).radec(J2000)
+ra, dec, dis = ggr(jd_tt).observe(moon).radec(J2000)
 print(Angle(ra).hours())
 print(Angle(dec).degrees())
 print('')
