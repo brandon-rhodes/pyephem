@@ -60,6 +60,6 @@ def earth_rotation_angle(jd_ut1):
     Uses the expression from the note to IAU Resolution B1.8 of 2000.
 
     """
-    fraction = 0.7790572732640 + 0.00273781191135448 * (jd_ut1 - T0)
-    rotation = (jd_ut1 + fraction) % 1.0
-    return rotation * 360.0
+    thet1 = 0.7790572732640 + 0.00273781191135448 * (jd_ut1 - T0)
+    thet3 = jd_ut1 % 1.0
+    return (thet1 + thet3) % 1.0 * 360.0
