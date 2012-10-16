@@ -1,7 +1,7 @@
 """Compare the output of PyEphem routines with the same routines from NOVAS."""
 
-from unittest import TestCase
-from ephem import timescales
+from unittest import TestCase, skip
+from ephem import earthlib, timescales
 try:
     import novas
     import novas.compat as c
@@ -23,6 +23,13 @@ class NOVASTests(TestCase):
 
     def eq(self, first, second):
         self.assertAlmostEqual(first, second, delta=self.delta)
+
+    @skip('not yet implemented')
+    def test_earth_tilt(self):
+        self.delta = 1e-12
+        self.eq(c.e_tilt(T0), earthlib.earth_tilt(T0))
+        self.eq(c.e_tilt(TA), earthlib.earth_tilt(TA))
+        self.eq(c.e_tilt(TB), earthlib.earth_tilt(TB))
 
     def test_earth_rotation_angle(self):
         self.delta = 1e-12

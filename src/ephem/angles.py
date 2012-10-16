@@ -1,6 +1,8 @@
 from math import pi
 
 tau = pi * 2.
+ASEC2RAD = 4.848136811095359935899141e-6
+DEG2RAD = 0.017453292519943296
 
 class Angle(object):
 
