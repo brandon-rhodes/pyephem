@@ -24,6 +24,12 @@ class NOVASTests(TestCase):
     def eq(self, first, second):
         self.assertAlmostEqual(first, second, delta=self.delta)
 
+    def test_earth_rotation_angle(self):
+        self.delta = 1e-12
+        self.eq(c.era(T0), timescales.earth_rotation_angle(T0))
+        self.eq(c.era(TA), timescales.earth_rotation_angle(TA))
+        self.eq(c.era(TB), timescales.earth_rotation_angle(TB))
+
     def test_sidereal_time(self):
         delta_t = 0.0
         self.delta = 1e-13
@@ -33,12 +39,6 @@ class NOVASTests(TestCase):
                 timescales.sidereal_time(TA, delta_t))
         self.eq(c.sidereal_time(TB, 0.0, delta_t, False),
                 timescales.sidereal_time(TB, delta_t))
-
-    def test_earth_rotation_angle(self):
-        self.delta = 1e-12
-        self.eq(c.era(T0), timescales.earth_rotation_angle(T0))
-        self.eq(c.era(TA), timescales.earth_rotation_angle(TA))
-        self.eq(c.era(TB), timescales.earth_rotation_angle(TB))
 
     def test_tdb_minus_tt(self):
         self.delta = 1e-16
