@@ -1,10 +1,11 @@
 """Compare the output of PyEphem routines with the same routines from NOVAS."""
 
 from unittest import TestCase, skip
-from ephem import earthlib, timescales
+from ephem import earthlib, nutationlib, timescales
 try:
     import novas
     import novas.compat as c
+    import novas.compat.nutation
 except ImportError:
     novas = None
 
@@ -36,6 +37,18 @@ class NOVASTests(TestCase):
         self.eq(c.era(T0), timescales.earth_rotation_angle(T0))
         self.eq(c.era(TA), timescales.earth_rotation_angle(TA))
         self.eq(c.era(TB), timescales.earth_rotation_angle(TB))
+
+    def test_iau2000a(self):
+        self.delta = 1e-19
+
+        self.eq(nutationlib.iau2000a(T0)[0], c.nutation.iau2000a(T0, 0.0)[0])
+        self.eq(nutationlib.iau2000a(T0)[1], c.nutation.iau2000a(T0, 0.0)[1])
+
+        self.eq(nutationlib.iau2000a(TA)[0], c.nutation.iau2000a(TA, 0.0)[0])
+        self.eq(nutationlib.iau2000a(TA)[1], c.nutation.iau2000a(TA, 0.0)[1])
+
+        self.eq(nutationlib.iau2000a(TB)[0], c.nutation.iau2000a(TB, 0.0)[0])
+        self.eq(nutationlib.iau2000a(TB)[1], c.nutation.iau2000a(TB, 0.0)[1])
 
     def test_sidereal_time(self):
         delta_t = 0.0
