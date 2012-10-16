@@ -1,15 +1,17 @@
 """Formulae for specific earth behaviors and effects."""
 
-from math import cos, fmod
-from ephem.angles import ASEC2RAD, DEG2RAD, ASEC360
+from math import cos, fmod, sin
+from ephem.angles import ASEC2RAD, DEG2RAD, ASEC360, tau
+from ephem.nutationlib import iau2000a
 from ephem.timescales import T0
+
+PSI_COR = 0.0
+EPS_COR = 0.0
 
 def earth_tilt(jd_tdb):
     """Return stuff about the earth's axis and position."""
 
-    t = (jd_tdb - T0) / 36525.0
-
-    dp, de = nutation_angles(t)
+    dp, de = iau2000a(jd_tdb)
     c_terms = ee_ct(jd_tdb, 0.0, accuracy) / ASEC2RAD
 
     d_psi = dp + PSI_COR
@@ -25,6 +27,154 @@ def earth_tilt(jd_tdb):
     eq_eq /= 15.0
 
     return d_psi, d_eps, eq_eq, mean_ob, true_ob
+
+def equation_of_the_equinoxes_complimentary_terms(jd_tt):
+    """Compute the "complementary terms" of the equation of the equinoxes."""
+
+    # Interval between fundamental epoch J2000.0 and current date.
+
+    t = (jd_tt - T0) / 36525.0
+
+    # Fundamental Arguments.
+
+    fa = [0] * 14
+
+    # Mean Anomaly of the Moon.
+
+    a0, a1, a2, a3, a4 = fundamental_arguments(t)
+    fa[0] = (a0 + 1325.0 * t) % 1.0 * tau
+
+    # Mean Anomaly of the Sun.
+
+    fa[1] = (a1 + 99.0 * t) % 1.0 * tau
+
+    # Mean Longitude of the Moon minus Mean Longitude of the Ascending
+    # Node of the Moon.
+
+    fa[2] = (a2 + 1342.0 * t) % 1.0 * tau
+
+    # Mean Elongation of the Moon from the Sun.
+
+    fa[3] = (a3 + 1236.0 * t) % 1.0 * tau
+
+    # Mean Longitude of the Ascending Node of the Moon.
+
+    fa[4] = (a4 + -5.0 * t) % 1.0 * tau
+
+    fa[ 5] = (4.402608842 + 2608.7903141574 * t) % tau
+    fa[ 6] = (3.176146697 + 1021.3285546211 * t) % tau
+    fa[ 7] = (1.753470314 +  628.3075849991 * t) % tau
+    fa[ 8] = (6.203480913 +  334.0612426700 * t) % tau
+    fa[ 9] = (0.599546497 +   52.9690962641 * t) % tau
+    fa[10] = (0.874016757 +   21.3299104960 * t) % tau
+    fa[11] = (5.481293872 +    7.4781598567 * t) % tau
+    fa[12] = (5.311886287 +    3.8133035638 * t) % tau
+    fa[13] = (0.024381750 +    0.00000538691 * t) * t
+
+    # Evaluate the complementary terms.
+
+    s0 = 0.0
+    s1 = 0.0
+
+    for i in reversed(range(33)):
+
+        a = 0.0
+
+        for j in range(14):
+            a += ke0_t[i][j] * fa[j]
+
+        s0 += se0_t[i][0] * sin(a) + se0_t[i][1] * cos(a)
+
+    a = 0.0
+
+    for j in range(14):
+        a += (ke1[j]) * fa[j]
+
+    s1 += se1[0] * sin(a) + se1[1] * cos(a)
+    c_terms = s0 + s1 * t
+    c_terms *= ASEC2RAD
+    return c_terms
+
+
+ke0_t = (
+      (0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (0,  0,  0,  0,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (0,  0,  2, -2,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (0,  0,  2, -2,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (0,  0,  2, -2,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (0,  0,  2,  0,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (0,  0,  2,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (0,  0,  0,  0,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (0,  1,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (0,  1,  0,  0, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (1,  0,  0,  0, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (0,  1,  2, -2,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (0,  1,  2, -2,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (0,  0,  4, -4,  4,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (0,  0,  1, -1,  1,  0, -8, 12,  0,  0,  0,  0,  0,  0),
+      (0,  0,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (0,  0,  2,  0,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (1,  0,  2,  0,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (1,  0,  2,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (0,  0,  2, -2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (0,  1, -2,  2, -3,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (0,  1, -2,  2, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (0,  0,  0,  0,  0,  0,  8,-13,  0,  0,  0,  0,  0, -1),
+      (0,  0,  0,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (2,  0, -2,  0, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (1,  0,  0, -2,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (0,  1,  2, -2,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (1,  0,  0, -2, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (0,  0,  4, -2,  4,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (0,  0,  2, -2,  4,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (1,  0, -2,  0, -3,  0,  0,  0,  0,  0,  0,  0,  0,  0),
+      (1,  0, -2,  0, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0))
+
+# Argument coefficients for t^1.
+
+ke1 = (0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0)
+
+# Sine and cosine coefficients for t^0.
+
+se0_t = (
+      (+2640.96e-6,          -0.39e-6),
+      (  +63.52e-6,          -0.02e-6),
+      (  +11.75e-6,          +0.01e-6),
+      (  +11.21e-6,          +0.01e-6),
+      (   -4.55e-6,          +0.00e-6),
+      (   +2.02e-6,          +0.00e-6),
+      (   +1.98e-6,          +0.00e-6),
+      (   -1.72e-6,          +0.00e-6),
+      (   -1.41e-6,          -0.01e-6),
+      (   -1.26e-6,          -0.01e-6),
+      (   -0.63e-6,          +0.00e-6),
+      (   -0.63e-6,          +0.00e-6),
+      (   +0.46e-6,          +0.00e-6),
+      (   +0.45e-6,          +0.00e-6),
+      (   +0.36e-6,          +0.00e-6),
+      (   -0.24e-6,          -0.12e-6),
+      (   +0.32e-6,          +0.00e-6),
+      (   +0.28e-6,          +0.00e-6),
+      (   +0.27e-6,          +0.00e-6),
+      (   +0.26e-6,          +0.00e-6),
+      (   -0.21e-6,          +0.00e-6),
+      (   +0.19e-6,          +0.00e-6),
+      (   +0.18e-6,          +0.00e-6),
+      (   -0.10e-6,          +0.05e-6),
+      (   +0.15e-6,          +0.00e-6),
+      (   -0.14e-6,          +0.00e-6),
+      (   +0.14e-6,          +0.00e-6),
+      (   -0.14e-6,          +0.00e-6),
+      (   +0.14e-6,          +0.00e-6),
+      (   +0.13e-6,          +0.00e-6),
+      (   -0.11e-6,          +0.00e-6),
+      (   +0.11e-6,          +0.00e-6),
+      (   +0.11e-6,          +0.00e-6))
+
+# Sine and cosine coefficients for t^1.
+
+se1 = (   -0.87e-6,          +0.00e-6)
 
 def fundamental_arguments(t):
     """Compute the fundamental arguments (mean elements) of Sun and Moon.

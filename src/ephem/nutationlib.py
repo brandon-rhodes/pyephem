@@ -1,9 +1,6 @@
 from math import cos, fmod, sin
-from ephem.angles import ASEC2RAD
-from ephem.earthlib import fundamental_arguments
+from ephem.angles import ASEC2RAD, tau
 from ephem.timescales import T0
-
-tau = 6.283185307179586476925287
 
 def iau2000a(jd_tt):
 
@@ -13,6 +10,7 @@ def iau2000a(jd_tt):
 
     # Compute fundamental arguments from Simon et al. (1994), in radians.
 
+    from ephem.earthlib import fundamental_arguments
     a = fundamental_arguments(t)
 
     # ** Luni-solar nutation **

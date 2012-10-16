@@ -38,6 +38,15 @@ class NOVASTests(TestCase):
         self.eq(c.era(TA), timescales.earth_rotation_angle(TA))
         self.eq(c.era(TB), timescales.earth_rotation_angle(TB))
 
+    def test_equation_of_the_equinoxes_complimentary_terms(self):
+        self.delta = 1e-19
+
+        print(earthlib.equation_of_the_equinoxes_complimentary_terms(T0))
+        print(c.ee_ct(T0, 0.0, False))
+        # self.eq(nutationlib.iau2000a(T0)[0], c.nutation.iau2000a(T0, 0.0)[0])
+        # self.eq(nutationlib.iau2000a(TA)[1], c.nutation.iau2000a(TA, 0.0)[1])
+        # self.eq(nutationlib.iau2000a(TB)[1], c.nutation.iau2000a(TB, 0.0)[1])
+
     def test_iau2000a(self):
         self.delta = 1e-19
 
