@@ -25,18 +25,20 @@ class NOVASTests(TestCase):
     def eq(self, first, second):
         self.assertAlmostEqual(first, second, delta=self.delta)
 
-    @skip('not yet implemented')
-    def test_earth_tilt(self):
-        self.delta = 1e-12
-        self.eq(c.e_tilt(T0), earthlib.earth_tilt(T0))
-        self.eq(c.e_tilt(TA), earthlib.earth_tilt(TA))
-        self.eq(c.e_tilt(TB), earthlib.earth_tilt(TB))
-
     def test_earth_rotation_angle(self):
         self.delta = 1e-12
         self.eq(c.era(T0), timescales.earth_rotation_angle(T0))
         self.eq(c.era(TA), timescales.earth_rotation_angle(TA))
         self.eq(c.era(TB), timescales.earth_rotation_angle(TB))
+
+    def test_earth_tilt(self):
+        self.delta = 1e-14
+        for a, b in zip(c.e_tilt(T0), earthlib.earth_tilt(T0)):
+            self.eq(a, b)
+        for a, b in zip(c.e_tilt(TA), earthlib.earth_tilt(TA)):
+            self.eq(a, b)
+        for a, b in zip(c.e_tilt(TB), earthlib.earth_tilt(TB)):
+            self.eq(a, b)
 
     def test_equation_of_the_equinoxes_complimentary_terms(self):
         self.delta = 1e-23
@@ -79,6 +81,8 @@ class NOVASTests(TestCase):
         self.eq(nutationlib.iau2000a(TB)[1], c.nutation.iau2000a(TB, 0.0)[1])
 
     def test_mean_obliquity(self):
+        self.delta = 0
+
         self.eq(c.mean_obliq(T0), earthlib.mean_obliquity(T0))
         self.eq(c.mean_obliq(TA), earthlib.mean_obliquity(TA))
         self.eq(c.mean_obliq(TB), earthlib.mean_obliquity(TB))

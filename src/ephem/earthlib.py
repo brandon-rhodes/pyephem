@@ -12,12 +12,14 @@ def earth_tilt(jd_tdb):
     """Return stuff about the earth's axis and position."""
 
     dp, de = iau2000a(jd_tdb)
-    c_terms = ee_ct(jd_tdb, 0.0, accuracy) / ASEC2RAD
+    dp /= ASEC2RAD
+    de /= ASEC2RAD
+    c_terms = equation_of_the_equinoxes_complimentary_terms(jd_tdb) / ASEC2RAD
 
     d_psi = dp + PSI_COR
     d_eps = de + EPS_COR
 
-    mean_ob = mean_obliq(jd_tdb)
+    mean_ob = mean_obliquity(jd_tdb)
     true_ob = mean_ob + d_eps
 
     mean_ob /= 3600.0
@@ -26,7 +28,7 @@ def earth_tilt(jd_tdb):
     eq_eq = d_psi * cos(mean_ob * DEG2RAD) + c_terms
     eq_eq /= 15.0
 
-    return d_psi, d_eps, eq_eq, mean_ob, true_ob
+    return mean_ob, true_ob, eq_eq, d_psi, d_eps
 
 def equation_of_the_equinoxes_complimentary_terms(jd_tt):
     """Compute the "complementary terms" of the equation of the equinoxes."""
