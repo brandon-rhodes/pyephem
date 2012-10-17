@@ -97,6 +97,25 @@ class NOVASTests(TestCase):
         self.eq(c.sidereal_time(TB, 0.0, delta_t, False),
                 timescales.sidereal_time(TB, delta_t))
 
+    def test_terra(self):
+        self.delta = 1e-18
+
+        obs1 = c.make_on_surface(45.0, -75.0, 0.0, 10.0, 1010.0)
+
+        class Obs(object):
+            latitude = 45.0
+            longitude = -75.0
+            elevation = 0.0
+        obs2 = Obs()
+
+        for v1, v2 in zip(c.terra(obs1, 11.0), earthlib.terra(obs2, 11.0)):
+            for a, b in zip(v1, v2):
+                self.eq(a, b)
+
+        for v1, v2 in zip(c.terra(obs1, 23.9), earthlib.terra(obs2, 23.9)):
+            for a, b in zip(v1, v2):
+                self.eq(a, b)
+
     def test_tdb_minus_tt(self):
         self.delta = 1e-16
         self.eq(c.tdb2tt(T0)[1], timescales.tdb_minus_tt(T0))

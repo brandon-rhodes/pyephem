@@ -6,7 +6,7 @@ from ephem.coordinates import (
     )
 from numpy import sqrt
 from ephem.angles import interpret_longitude, interpret_latitude
-from ephem import timescales
+from ephem import earthlib, timescales
 
 e = Ephemeris(de421)
 
@@ -57,11 +57,11 @@ def moon(jd):
 
 class EarthLocation(object):
 
-    def __init__(self, longitude, latitude, altitude=0.,
+    def __init__(self, longitude, latitude, elevation=0.,
                  temperature=10.0, pressure=1010.0):
         self.longitude = interpret_longitude(longitude)
         self.latitude = interpret_latitude(latitude)
-        self.altitude = altitude
+        self.elevation = elevation
 
     def __call__(self, jd_tt):
         delta_t = 0
@@ -69,10 +69,10 @@ class EarthLocation(object):
         jd_ut1 = jd_tt - (delta_t / 86400.)
 
         gmst = timescales.sidereal_time(jd_ut1, delta_t)
-        # e_tilt (jd_tdb,accuracy, &x1,&x2,&eqeq,&x3,&x4);
-        # gast = gmst + eqeq / 3600.0;
+        x1, x2, eqeq, x3, x4 = earthlib.earth_tilt(jd_tdb)
+        gast = gmst + eqeq / 3600.0;
 
-        # terra (&obs->on_surf,gast, pos1,vel1);
+        terra(&obs->on_surf, gast, pos1, vel1);
 
         # ...
 
