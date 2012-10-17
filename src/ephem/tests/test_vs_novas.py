@@ -27,7 +27,7 @@ class NOVASTests(TestCase):
     def eq(self, first, second):
         self.assertAlmostEqual(first, second, delta=self.delta)
 
-    def test_earth_rotation_angle(self):
+    def test_era(self):
         self.delta = 1e-12
         self.eq(c.era(T0), timescales.earth_rotation_angle(T0))
         self.eq(c.era(TA), timescales.earth_rotation_angle(TA))
@@ -82,7 +82,7 @@ class NOVASTests(TestCase):
         for i in range(5):
             self.eq(a[i], b[i])
 
-    def test_geocentric_position_and_velocity(self):
+    def test_geo_posvel(self):
         self.delta = 1e-13
 
         obs1 = c.make_observer_on_surface(45.0, -75.0, 0.0, 10.0, 1010.0)
@@ -107,7 +107,7 @@ class NOVASTests(TestCase):
         self.eq(nutationlib.iau2000a(TB)[0], c.nutation.iau2000a(TB, 0.0)[0])
         self.eq(nutationlib.iau2000a(TB)[1], c.nutation.iau2000a(TB, 0.0)[1])
 
-    def test_mean_obliquity(self):
+    def test_mean_obliq(self):
         self.delta = 0
 
         self.eq(c.mean_obliq(T0), earthlib.mean_obliquity(T0))
@@ -130,7 +130,10 @@ class NOVASTests(TestCase):
                         nutationlib.nutation(TB, v, invert=True)):
             self.eq(a, b)
 
-    def test_precess(self):
+    def test_topo_planet(self):
+        pass
+
+    def test_precession(self):
         self.delta = 1e-15
         v = [1, 2, 3]
 
@@ -173,7 +176,7 @@ class NOVASTests(TestCase):
             for a, b in zip(v1, v2):
                 self.eq(a, b)
 
-    def test_tdb_minus_tt(self):
+    def test_tdb2tt(self):
         self.delta = 1e-16
         self.eq(c.tdb2tt(T0)[1], timescales.tdb_minus_tt(T0))
         self.eq(c.tdb2tt(TA)[1], timescales.tdb_minus_tt(TA))
