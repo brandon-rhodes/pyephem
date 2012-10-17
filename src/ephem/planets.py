@@ -6,7 +6,7 @@ from ephem.coordinates import (
     )
 from numpy import sqrt
 from ephem.angles import interpret_longitude, interpret_latitude
-from ephem import earthlib, timescales
+from ephem import earthlib, nutationlib, timescales
 
 e = Ephemeris(de421)
 
@@ -70,10 +70,16 @@ class EarthLocation(object):
 
         gmst = timescales.sidereal_time(jd_ut1, delta_t)
         x1, x2, eqeq, x3, x4 = earthlib.earth_tilt(jd_tdb)
-        gast = gmst + eqeq / 3600.0;
+        gast = gmst + eqeq / 3600.0
 
-        terra(&obs->on_surf, gast, pos1, vel1);
+        pos1, vel1 = earthlib.terra(self, gast)
 
-        # ...
+        nutation(jd_tdb,-1,accuracy,pos1, pos2)
+        precession (jd_tdb,pos2,T0, pos3)
+        frame_tie (pos3,-1, pos)
+
+        nutation (jd_tdb,-1,accuracy,vel1, vel2)
+        precession (jd_tdb,vel2,T0, vel3)
+        frame_tie (vel3,-1, vel)
 
         return earth(jd_tt)

@@ -5,7 +5,8 @@ from ephem import earthlib, nutationlib, timescales
 try:
     import novas
     import novas.compat as c
-    import novas.compat.nutation
+    c_nutation = c.nutation
+    import novas.compat.nutation  # overwrites nutation() function!
 except ImportError:
     novas = None
 
@@ -86,6 +87,22 @@ class NOVASTests(TestCase):
         self.eq(c.mean_obliq(T0), earthlib.mean_obliquity(T0))
         self.eq(c.mean_obliq(TA), earthlib.mean_obliquity(TA))
         self.eq(c.mean_obliq(TB), earthlib.mean_obliquity(TB))
+
+    def test_nutation(self):
+        self.delta = 1e-15
+        v = [1, 2, 3]
+
+        for a, b in zip(c_nutation(T0, v, direction=0),
+                        nutationlib.nutation(T0, v, invert=False)):
+            self.eq(a, b)
+
+        for a, b in zip(c_nutation(TA, v, direction=0),
+                        nutationlib.nutation(TA, v, invert=False)):
+            self.eq(a, b)
+
+        for a, b in zip(c_nutation(TB, v, direction=1),
+                        nutationlib.nutation(TB, v, invert=True)):
+            self.eq(a, b)
 
     def test_sidereal_time(self):
         delta_t = 0.0

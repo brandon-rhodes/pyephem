@@ -1,6 +1,52 @@
 from math import cos, fmod, sin
-from ephem.angles import ASEC2RAD, tau
+from ephem.angles import ASEC2RAD, DEG2RAD, tau
 from ephem.timescales import T0
+
+def nutation(jd_tdb, pos, invert=False):
+    """Nutate equatorial rectangular coordinates.
+
+    Nutates from mean equator and equinox of epoch to true equator and
+    equinox of epoch. Inverse transformation may be applied by setting
+    flag 'direction' to true.
+
+    """
+    # Call 'e_tilt' to get the obliquity and nutation angles.
+
+    from ephem.earthlib import earth_tilt
+    oblm, oblt, eqeq, psi, eps = earth_tilt(jd_tdb)
+
+    cobm = cos(oblm * DEG2RAD)
+    sobm = sin(oblm * DEG2RAD)
+    cobt = cos(oblt * DEG2RAD)
+    sobt = sin(oblt * DEG2RAD)
+    cpsi = cos(psi * ASEC2RAD)
+    spsi = sin(psi * ASEC2RAD)
+
+    # Nutation rotation matrix follows.
+
+    xx = cpsi
+    yx = -spsi * cobm
+    zx = -spsi * sobm
+    xy = spsi * cobt
+    yy = cpsi * cobm * cobt + sobm * sobt
+    zy = cpsi * sobm * cobt - cobm * sobt
+    xz = spsi * sobt
+    yz = cpsi * cobm * sobt - sobm * cobt
+    zz = cpsi * sobm * sobt + cobm * cobt
+
+    if invert:
+        # Perform inverse rotation.
+
+        return [xx * pos[0] + xy * pos[1] + xz * pos[2],
+                yx * pos[0] + yy * pos[1] + yz * pos[2],
+                zx * pos[0] + zy * pos[1] + zz * pos[2]]
+
+    else:
+        # Perform rotation.
+
+        return [xx * pos[0] + yx * pos[1] + zx * pos[2],
+                xy * pos[0] + yy * pos[1] + zy * pos[2],
+                xz * pos[0] + yz * pos[1] + zz * pos[2]]
 
 def iau2000a(jd_tt):
 
@@ -110,8 +156,8 @@ def iau2000a(jd_tt):
                    napl_t[i][12] * alne  +
                    napl_t[i][13] * apa, tau)
 
-        sarg = sin (arg)
-        carg = cos (arg)
+        sarg = sin(arg)
+        carg = cos(arg)
 
         # Term.
 
