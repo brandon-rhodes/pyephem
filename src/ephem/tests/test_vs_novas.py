@@ -82,18 +82,6 @@ class NOVASTests(TestCase):
         for i in range(5):
             self.eq(a[i], b[i])
 
-    def test_iau2000a(self):
-        self.delta = 1e-19
-
-        self.eq(nutationlib.iau2000a(T0)[0], c.nutation.iau2000a(T0, 0.0)[0])
-        self.eq(nutationlib.iau2000a(T0)[1], c.nutation.iau2000a(T0, 0.0)[1])
-
-        self.eq(nutationlib.iau2000a(TA)[0], c.nutation.iau2000a(TA, 0.0)[0])
-        self.eq(nutationlib.iau2000a(TA)[1], c.nutation.iau2000a(TA, 0.0)[1])
-
-        self.eq(nutationlib.iau2000a(TB)[0], c.nutation.iau2000a(TB, 0.0)[0])
-        self.eq(nutationlib.iau2000a(TB)[1], c.nutation.iau2000a(TB, 0.0)[1])
-
     def test_geocentric_position_and_velocity(self):
         self.delta = 1e-13
 
@@ -106,6 +94,18 @@ class NOVASTests(TestCase):
                           ggr.geocentric_position_and_velocity(T0)):
             for a, b in zip(v1, v2):
                 self.eq(a, b)
+
+    def test_iau2000a(self):
+        self.delta = 1e-19
+
+        self.eq(nutationlib.iau2000a(T0)[0], c.nutation.iau2000a(T0, 0.0)[0])
+        self.eq(nutationlib.iau2000a(T0)[1], c.nutation.iau2000a(T0, 0.0)[1])
+
+        self.eq(nutationlib.iau2000a(TA)[0], c.nutation.iau2000a(TA, 0.0)[0])
+        self.eq(nutationlib.iau2000a(TA)[1], c.nutation.iau2000a(TA, 0.0)[1])
+
+        self.eq(nutationlib.iau2000a(TB)[0], c.nutation.iau2000a(TB, 0.0)[0])
+        self.eq(nutationlib.iau2000a(TB)[1], c.nutation.iau2000a(TB, 0.0)[1])
 
     def test_mean_obliquity(self):
         self.delta = 0
