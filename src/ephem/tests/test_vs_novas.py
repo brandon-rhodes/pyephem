@@ -1,6 +1,6 @@
 """Compare the output of PyEphem routines with the same routines from NOVAS."""
 
-from unittest import TestCase, skip
+from unittest import TestCase
 from ephem import earthlib, nutationlib, timescales
 try:
     import novas
