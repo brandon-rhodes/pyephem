@@ -41,11 +41,29 @@ class NOVASTests(TestCase):
     def test_equation_of_the_equinoxes_complimentary_terms(self):
         self.delta = 1e-19
 
-        print(earthlib.equation_of_the_equinoxes_complimentary_terms(T0))
-        print(c.ee_ct(T0, 0.0, False))
+        # print(earthlib.equation_of_the_equinoxes_complimentary_terms(T0))
+        # print(c.ee_ct(T0, 0.0, False))
         # self.eq(nutationlib.iau2000a(T0)[0], c.nutation.iau2000a(T0, 0.0)[0])
         # self.eq(nutationlib.iau2000a(TA)[1], c.nutation.iau2000a(TA, 0.0)[1])
         # self.eq(nutationlib.iau2000a(TB)[1], c.nutation.iau2000a(TB, 0.0)[1])
+
+    def test_fundamental_arguments(self):
+        self.delta = 1e-12
+
+        a = earthlib.fundamental_arguments(jcentury(T0))
+        b = c.fund_args(jcentury(T0))
+        for i in range(5):
+            self.eq(a[i], b[i])
+
+        a = earthlib.fundamental_arguments(jcentury(TA))
+        b = c.fund_args(jcentury(TA))
+        for i in range(5):
+            self.eq(a[i], b[i])
+
+        a = earthlib.fundamental_arguments(jcentury(TB))
+        b = c.fund_args(jcentury(TB))
+        for i in range(5):
+            self.eq(a[i], b[i])
 
     def test_iau2000a(self):
         self.delta = 1e-19
@@ -74,3 +92,6 @@ class NOVASTests(TestCase):
         self.eq(c.tdb2tt(T0)[1], timescales.tdb_minus_tt(T0))
         self.eq(c.tdb2tt(TA)[1], timescales.tdb_minus_tt(TA))
         self.eq(c.tdb2tt(TB)[1], timescales.tdb_minus_tt(TB))
+
+def jcentury(t):
+    return (t - T0) / 36525.0
