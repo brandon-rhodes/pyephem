@@ -1,7 +1,7 @@
 """Compare the output of PyEphem routines with the same routines from NOVAS."""
 
 from unittest import TestCase
-from ephem import earthlib, nutationlib, timescales
+from ephem import earthlib, nutationlib, precessionlib, timescales
 try:
     import novas
     import novas.compat as c
@@ -102,6 +102,20 @@ class NOVASTests(TestCase):
 
         for a, b in zip(c_nutation(TB, v, direction=1),
                         nutationlib.nutation(TB, v, invert=True)):
+            self.eq(a, b)
+
+    def test_precess(self):
+        self.delta = 1e-15
+        v = [1, 2, 3]
+
+        c.precession(T0, v, TA)
+
+        for a, b in zip(c.precession(T0, v, TA),
+                        precessionlib.precess(T0, TA, v)):
+            self.eq(a, b)
+
+        for a, b in zip(c.precession(TB, v, T0),
+                        precessionlib.precess(TB, T0, v)):
             self.eq(a, b)
 
     def test_sidereal_time(self):

@@ -74,12 +74,12 @@ class EarthLocation(object):
 
         pos1, vel1 = earthlib.terra(self, gast)
 
-        nutation(jd_tdb,-1,accuracy,pos1, pos2)
-        precession (jd_tdb,pos2,T0, pos3)
-        frame_tie (pos3,-1, pos)
+        pos2 = nutation(jd_tdb, pos1, invert=True)
+        precession(jd_tdb,pos2,T0, pos3)
+        frame_tie(pos3,-1, pos)
 
-        nutation (jd_tdb,-1,accuracy,vel1, vel2)
-        precession (jd_tdb,vel2,T0, vel3)
-        frame_tie (vel3,-1, vel)
+        vel2 = nutation(jd_tdb, vel1, invert=True)
+        precession(jd_tdb,vel2,T0, vel3)
+        frame_tie(vel3,-1, vel)
 
         return earth(jd_tt)
