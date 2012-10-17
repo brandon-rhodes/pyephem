@@ -6,8 +6,9 @@ from ephem.coordinates import (
     )
 from numpy import sqrt
 from ephem.angles import interpret_longitude, interpret_latitude
-from ephem import earthlib, nutationlib, timescales
+from ephem import earthlib, precessionlib, nutationlib, timescales
 
+T0 = timescales.T0
 e = Ephemeris(de421)
 
 class Planet(object):
@@ -74,12 +75,12 @@ class EarthLocation(object):
 
         pos1, vel1 = earthlib.terra(self, gast)
 
-        pos2 = nutation(jd_tdb, pos1, invert=True)
-        precession(jd_tdb,pos2,T0, pos3)
-        frame_tie(pos3,-1, pos)
+        pos2 = nutationlib.nutation(jd_tdb, pos1, invert=True)
+        pos3 = precessionlib.precession(jd_tdb, T0, pos2)
+        pos = frame_tie(pos3, -1)
 
-        vel2 = nutation(jd_tdb, vel1, invert=True)
-        precession(jd_tdb,vel2,T0, vel3)
-        frame_tie(vel3,-1, vel)
+        vel2 = nutationlib.nutation(jd_tdb, vel1, invert=True)
+        vel3 = precessionlib.precession(jd_tdb, T0, vel2)
+        vel = frame_tie(vel3, -1)
 
         return earth(jd_tt)

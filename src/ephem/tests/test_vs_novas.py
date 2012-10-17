@@ -1,7 +1,7 @@
 """Compare the output of PyEphem routines with the same routines from NOVAS."""
 
 from unittest import TestCase
-from ephem import earthlib, nutationlib, precessionlib, timescales
+from ephem import coordinates, earthlib, nutationlib, precessionlib, timescales
 try:
     import novas
     import novas.compat as c
@@ -50,6 +50,18 @@ class NOVASTests(TestCase):
                 c.ee_ct(TA, 0.0, 0))
         self.eq(earthlib.equation_of_the_equinoxes_complimentary_terms(TB),
                 c.ee_ct(TB, 0.0, 0))
+
+    def test_frame_tie(self):
+        self.delta = 1e-15
+        v = [1, 2, 3]
+
+        for a, b in zip(c.frame_tie(v, 0),
+                        coordinates.frame_tie(v, 0)):
+            self.eq(a, b)
+
+        for a, b in zip(c.frame_tie(v, -1),
+                        coordinates.frame_tie(v, -1)):
+            self.eq(a, b)
 
     def test_fundamental_arguments(self):
         self.delta = 1e-12

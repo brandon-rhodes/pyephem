@@ -2,6 +2,7 @@
 
 from numpy import ndarray
 from math import asin, atan2, cos, sin, pi, sqrt
+from ephem.angles import ASEC2RAD
 
 J2000 = 2451545.0
 
@@ -133,3 +134,55 @@ class HeliocentricLonLat(ndarray):
 
     @property
     def r(self): return self[2]
+
+def frame_tie(pos1, direction):
+    """Transform a vector from the dynamical reference system to the ICRS.
+
+    Or vice versa.  The dynamical reference system is based on the
+    dynamical mean equator and equinox of J2000.0.  The ICRS is based on
+    the space-fixed ICRS axes defined by the radio catalog positions of
+    several hundred extragalactic objects.
+
+    """
+    # Perform the rotation in the sense specified by 'direction'.
+
+    if direction < 0:
+        # Perform rotation from dynamical system to ICRS.
+
+        return [xx * pos1[0] + yx * pos1[1] + zx * pos1[2],
+                xy * pos1[0] + yy * pos1[1] + zy * pos1[2],
+                xz * pos1[0] + yz * pos1[1] + zz * pos1[2]]
+
+    else:
+        # Perform rotation from ICRS to dynamical system.
+
+        return [xx * pos1[0] + xy * pos1[1] + xz * pos1[2],
+                yx * pos1[0] + yy * pos1[1] + yz * pos1[2],
+                zx * pos1[0] + zy * pos1[1] + zz * pos1[2]]
+
+# 'xi0', 'eta0', and 'da0' are ICRS frame biases in arcseconds taken
+# from IERS (2003) Conventions, Chapter 5.
+
+xi0  = -0.0166170
+eta0 = -0.0068192
+da0  = -0.01460
+
+# Compute elements of rotation matrix to first order the first time this
+# function is called.  Elements will be saved for future use and not
+# recomputed.
+
+xx =  1.0
+yx = -da0  * ASEC2RAD
+zx =  xi0  * ASEC2RAD
+xy =  da0  * ASEC2RAD
+yy =  1.0
+zy =  eta0 * ASEC2RAD
+xz = -xi0  * ASEC2RAD
+yz = -eta0 * ASEC2RAD
+zz =  1.0
+
+# Include second-order corrections to diagonal elements.
+
+xx = 1.0 - 0.5 * (yx * yx + zx * zx)
+yy = 1.0 - 0.5 * (yx * yx + zy * zy)
+zz = 1.0 - 0.5 * (zy * zy + zx * zx)
