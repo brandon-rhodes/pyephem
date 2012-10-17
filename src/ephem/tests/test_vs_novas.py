@@ -6,11 +6,17 @@ from ephem import (angles, coordinates, earthlib, nutationlib, planets,
 try:
     import novas
     import novas.compat as c
+    import novas.compat.eph_manager
+
+    jd_start, jd_end, number = c.eph_manager.ephem_open()  # needs novas_de405
+
     c_nutation = c.nutation
-    import novas.compat.nutation  # overwrites nutation() function!
+    import novas.compat.nutation  # overwrites nutation() function with module!
+
 except ImportError:
     novas = None
 
+tau = angles.tau
 T0 = timescales.T0
 TA = c.julian_date(1969, 7, 20, 20. + 18./60.)  # arbitrary test date
 TB = c.julian_date(2012, 12, 21)                # arbitrary test date
@@ -131,16 +137,22 @@ class NOVASTests(TestCase):
             self.eq(a, b)
 
     def test_topo_planet(self):
+        self.delta = 1e-4  # TERRIBLE - because of different ephemera?
+
         moonobj = c.make_object(0, 11, b'Moon', None)
-        position = c.make_on_surface(45.0, -75.0, 0.0, 10.0, 1010.0)
-        delta_t = 0
-        (ra, dec, dis) = c.topo_planet(T0, delta_t, moonobj, position)
-        print(ra, dec, dis)
+
+        # position = c.make_on_surface(45.0, -75.0, 0.0, 10.0, 1010.0)
+        # delta_t = 0
+        # ra1, dec1, dis1 = c.topo_planet(T0, delta_t, moonobj, position)
+        ra1, dec1, dis1 = c.astro_planet(T0, moonobj)
 
         ggr = planets.EarthLocation('75 W', '45 N', 0.0,
                                     temperature=10.0, pressure=1010.0)
-        ra, dec, dis = ggr(T0).observe(planets.moon).radec(T0)
-        print(ra / angles.DEG2RAD, dec / angles.DEG2RAD, dis)
+        ra2, dec2, dis2 = ggr(T0).observe(planets.moon).radec(T0)
+
+        self.eq(ra1, ra2 / tau * 24.0)
+        self.eq(dec1, dec2/ tau * 360.0)
+        self.eq(dis1, dis2 / earthlib.AU_KM)
 
     def test_precession(self):
         self.delta = 1e-15
