@@ -41,25 +41,54 @@ def equation_of_the_equinoxes_complimentary_terms(jd_tt):
 
     # Mean Anomaly of the Moon.
 
-    a0, a1, a2, a3, a4 = fundamental_arguments(t)
-    fa[0] = (a0 + 1325.0 * t) % 1.0 * tau
+    fa[0] = ((485868.249036 +
+              (715923.2178 +
+              (    31.8792 +
+              (     0.051635 +
+              (    -0.00024470)
+              * t) * t) * t) * t) * ASEC2RAD
+              + fmod(1325.0*t, 1.0) * tau) % tau;
 
     # Mean Anomaly of the Sun.
 
-    fa[1] = (a1 + 99.0 * t) % 1.0 * tau
+    fa[1] = ((1287104.793048 +
+              (1292581.0481 +
+              (     -0.5532 +
+              (     +0.000136 +
+              (     -0.00001149)
+              * t) * t) * t) * t) * ASEC2RAD
+              + fmod (99.0*t, 1.0) * tau) % tau;
 
     # Mean Longitude of the Moon minus Mean Longitude of the Ascending
     # Node of the Moon.
 
-    fa[2] = (a2 + 1342.0 * t) % 1.0 * tau
+    fa[2] = (( 335779.526232 +
+              ( 295262.8478 +
+              (    -12.7512 +
+              (     -0.001037 +
+              (      0.00000417)
+              * t) * t) * t) * t) * ASEC2RAD
+              + fmod (1342.0*t, 1.0) * tau) % tau;
 
     # Mean Elongation of the Moon from the Sun.
 
-    fa[3] = (a3 + 1236.0 * t) % 1.0 * tau
+    fa[3] = ((1072260.703692 +
+              (1105601.2090 +
+              (     -6.3706 +
+              (      0.006593 +
+              (     -0.00003169)
+              * t) * t) * t) * t) * ASEC2RAD
+              + fmod (1236.0*t, 1.0) * tau) % tau;
 
     # Mean Longitude of the Ascending Node of the Moon.
 
-    fa[4] = (a4 + -5.0 * t) % 1.0 * tau
+    fa[4] = (( 450160.398036 +
+              (-482890.5431 +
+              (      7.4722 +
+              (      0.007702 +
+              (     -0.00005939)
+              * t) * t) * t) * t) * ASEC2RAD
+              + fmod (-5.0*t, 1.0) * tau) % tau;
 
     fa[ 5] = (4.402608842 + 2608.7903141574 * t) % tau
     fa[ 6] = (3.176146697 + 1021.3285546211 * t) % tau
@@ -88,7 +117,7 @@ def equation_of_the_equinoxes_complimentary_terms(jd_tt):
     a = 0.0
 
     for j in range(14):
-        a += (ke1[j]) * fa[j]
+        a += ke1[j] * fa[j]
 
     s1 += se1[0] * sin(a) + se1[1] * cos(a)
     c_terms = s0 + s1 * t
