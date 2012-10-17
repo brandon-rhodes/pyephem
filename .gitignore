@@ -5,4 +5,5 @@
 build/
 src/ephem/_libastro.so
 src/ephem/doc/_build
+venv[23]
 tmp*.py
