@@ -67,6 +67,7 @@ class EarthLocation(object):
 
     def __call__(self, jd_tt):
         xyz = earth(jd_tt)
+        pos, vel = self.geocentric_position_and_velocity(jd_tt)
         # xyz[0] += pos[0] * AU_KM
         # xyz[1] += pos[1] * AU_KM
         # xyz[2] += pos[2] * AU_KM

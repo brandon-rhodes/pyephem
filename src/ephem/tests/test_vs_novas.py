@@ -131,7 +131,16 @@ class NOVASTests(TestCase):
             self.eq(a, b)
 
     def test_topo_planet(self):
-        pass
+        moonobj = c.make_object(0, 11, b'Moon', None)
+        position = c.make_on_surface(45.0, -75.0, 0.0, 10.0, 1010.0)
+        delta_t = 0
+        (ra, dec, dis) = c.topo_planet(T0, delta_t, moonobj, position)
+        print(ra, dec, dis)
+
+        ggr = planets.EarthLocation('75 W', '45 N', 0.0,
+                                    temperature=10.0, pressure=1010.0)
+        ra, dec, dis = ggr(T0).observe(planets.moon).radec(T0)
+        print(ra / angles.DEG2RAD, dec / angles.DEG2RAD, dis)
 
     def test_precession(self):
         self.delta = 1e-15
