@@ -2,12 +2,13 @@
 import de421
 from jplephem import Ephemeris
 from ephem.coordinates import (
-    GeocentricRADec, GeocentricXYZ, ICRS, XYZ,
+    GeocentricRADec, GeocentricXYZ, ICRS, XYZ, frame_tie,
     )
 from numpy import sqrt
 from ephem.angles import interpret_longitude, interpret_latitude
 from ephem import earthlib, precessionlib, nutationlib, timescales
 
+AU_KM = earthlib.AU_KM
 T0 = timescales.T0
 e = Ephemeris(de421)
 
@@ -76,11 +77,15 @@ class EarthLocation(object):
         pos1, vel1 = earthlib.terra(self, gast)
 
         pos2 = nutationlib.nutation(jd_tdb, pos1, invert=True)
-        pos3 = precessionlib.precession(jd_tdb, T0, pos2)
+        pos3 = precessionlib.precess(jd_tdb, T0, pos2)
         pos = frame_tie(pos3, -1)
 
         vel2 = nutationlib.nutation(jd_tdb, vel1, invert=True)
-        vel3 = precessionlib.precession(jd_tdb, T0, vel2)
+        vel3 = precessionlib.precess(jd_tdb, T0, vel2)
         vel = frame_tie(vel3, -1)
 
-        return earth(jd_tt)
+        xyz = earth(jd_tt)
+        # xyz[0] += pos[0] * AU_KM
+        # xyz[1] += pos[1] * AU_KM
+        # xyz[2] += pos[2] * AU_KM
+        return xyz

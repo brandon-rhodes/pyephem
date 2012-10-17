@@ -8,11 +8,11 @@ from ephem import J2000
 jd_tt = 2450203.5
 ggr = EarthLocation('75 W', '45 N', 0.0, temperature=10.0, pressure=1010.0)
 ra, dec, dis = ggr(jd_tt).observe(moon).radec(J2000)
-print(Angle(ra).hours())
-print(Angle(dec).degrees())
+print('RA:  %s' % Angle(ra).hours())
+print('dec: %s' % Angle(dec).degrees())
 print('')
-print(Angle(ra).hours() - 11.739849403)
-print(Angle(dec).degrees() - -0.31860323)
+print('RA diff:  %s' % (Angle(ra).hours() - 11.739849403))
+print('dec diff: %s' % (Angle(dec).degrees() - -0.31860323))
 print('')
 print(dis)
 
