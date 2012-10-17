@@ -78,6 +78,11 @@ class NOVASTests(TestCase):
         self.eq(nutationlib.iau2000a(TB)[0], c.nutation.iau2000a(TB, 0.0)[0])
         self.eq(nutationlib.iau2000a(TB)[1], c.nutation.iau2000a(TB, 0.0)[1])
 
+    def test_mean_obliquity(self):
+        self.eq(c.mean_obliq(T0), earthlib.mean_obliquity(T0))
+        self.eq(c.mean_obliq(TA), earthlib.mean_obliquity(TA))
+        self.eq(c.mean_obliq(TB), earthlib.mean_obliquity(TB))
+
     def test_sidereal_time(self):
         delta_t = 0.0
         self.delta = 1e-13

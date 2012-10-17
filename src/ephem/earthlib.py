@@ -205,6 +205,8 @@ se0_t = (
 
 se1 = (   -0.87e-6,          +0.00e-6)
 
+#
+
 def fundamental_arguments(t):
     """Compute the fundamental arguments (mean elements) of Sun and Moon.
 
@@ -251,3 +253,24 @@ def fundamental_arguments(t):
              t * (       - 0.00005939)))), ASEC360) * ASEC2RAD
 
     return a0, a1, a2, a3, a4
+
+#
+
+def mean_obliquity(jd_tdb):
+    """Compute the mean obliquity of the ecliptic."""
+
+    # Compute time in Julian centuries from epoch J2000.0.
+
+    t = (jd_tdb - T0) / 36525.0;
+
+    # Compute the mean obliquity in arcseconds.  Use expression from the
+    # reference's eq. (39) with obliquity at J2000.0 taken from eq. (37)
+    # or Table 8.
+
+    epsilon = (((( -  0.0000000434   * t
+                   -  0.000000576  ) * t
+                   +  0.00200340   ) * t
+                   -  0.0001831    ) * t
+                   - 46.836769     ) * t + 84381.406;
+
+    return epsilon
