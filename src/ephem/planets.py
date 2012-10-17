@@ -66,6 +66,13 @@ class EarthLocation(object):
         self.elevation = elevation
 
     def __call__(self, jd_tt):
+        xyz = earth(jd_tt)
+        # xyz[0] += pos[0] * AU_KM
+        # xyz[1] += pos[1] * AU_KM
+        # xyz[2] += pos[2] * AU_KM
+        return xyz
+
+    def geocentric_position_and_velocity(self, jd_tt):
         delta_t = 0
         jd_tdb = jd_tt + timescales.tdb_minus_tt(jd_tt)
         jd_ut1 = jd_tt - (delta_t / 86400.)
@@ -84,8 +91,4 @@ class EarthLocation(object):
         vel3 = precessionlib.precess(jd_tdb, T0, vel2)
         vel = frame_tie(vel3, -1)
 
-        xyz = earth(jd_tt)
-        # xyz[0] += pos[0] * AU_KM
-        # xyz[1] += pos[1] * AU_KM
-        # xyz[2] += pos[2] * AU_KM
-        return xyz
+        return pos, vel

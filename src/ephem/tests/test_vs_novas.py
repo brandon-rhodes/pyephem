@@ -1,7 +1,8 @@
 """Compare the output of PyEphem routines with the same routines from NOVAS."""
 
 from unittest import TestCase
-from ephem import coordinates, earthlib, nutationlib, precessionlib, timescales
+from ephem import (angles, coordinates, earthlib, nutationlib, planets,
+                   precessionlib, timescales)
 try:
     import novas
     import novas.compat as c
@@ -93,6 +94,19 @@ class NOVASTests(TestCase):
         self.eq(nutationlib.iau2000a(TB)[0], c.nutation.iau2000a(TB, 0.0)[0])
         self.eq(nutationlib.iau2000a(TB)[1], c.nutation.iau2000a(TB, 0.0)[1])
 
+    def test_geocentric_position_and_velocity(self):
+        self.delta = 1e-13
+
+        obs1 = c.make_observer_on_surface(45.0, -75.0, 0.0, 10.0, 1010.0)
+        ggr = planets.EarthLocation('75 W', '45 N', 0.0,
+                                    temperature=10.0, pressure=1010.0)
+        delta_t = 0.0
+
+        for v1, v2 in zip(c.geo_posvel(T0, delta_t, obs1),
+                          ggr.geocentric_position_and_velocity(T0)):
+            for a, b in zip(v1, v2):
+                self.eq(a, b)
+
     def test_mean_obliquity(self):
         self.delta = 0
 
@@ -146,8 +160,8 @@ class NOVASTests(TestCase):
         obs1 = c.make_on_surface(45.0, -75.0, 0.0, 10.0, 1010.0)
 
         class Obs(object):
-            latitude = 45.0
-            longitude = -75.0
+            latitude = 45.0 * angles.DEG2RAD
+            longitude = -75.0 * angles.DEG2RAD
             elevation = 0.0
         obs2 = Obs()
 

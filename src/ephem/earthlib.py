@@ -27,7 +27,7 @@ def terra(location, st):
     df = 1.0 - F
     df2 = df * df
 
-    phi = location.latitude * DEG2RAD
+    phi = location.latitude
     sinphi = sin(phi)
     cosphi = cos(phi)
     c = 1.0 / sqrt(cosphi * cosphi + df2 * sinphi * sinphi)
@@ -38,7 +38,7 @@ def terra(location, st):
 
     # Compute local sidereal time factors at the observer's longitude.
 
-    stlocl = (st * 15.0 + location.longitude) * DEG2RAD
+    stlocl = st * 15.0 * DEG2RAD + location.longitude
     sinst = sin(stlocl)
     cosst = cos(stlocl)
 
