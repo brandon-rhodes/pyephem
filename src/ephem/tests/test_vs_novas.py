@@ -36,7 +36,7 @@ class NOVASTests(TestCase):
     # Tests of generating a full position or coordinate.
 
     def test_astro_planet(self):
-        self.delta = 1e-4  # TERRIBLE - because of different ephemera?
+        self.delta = 1e-6  # Not as good as I would like
 
         moonobj = c.make_object(0, 11, b'Moon', None)
 
