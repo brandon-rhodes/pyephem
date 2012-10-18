@@ -50,9 +50,8 @@ class NOVASTests(TestCase):
     def test_topo_planet(self):
         self.delta = 1e-4  # TERRIBLE - because of different ephemera?
 
-        moonobj = c.make_object(0, 11, b'Moon', None)
-
         print()
+        moonobj = c.make_object(0, 11, b'Moon', None)
         position = c.make_on_surface(45.0, -75.0, 0.0, 10.0, 1010.0)
         delta_t = 0
         ra1, dec1, dis1 = c.topo_planet(T0, delta_t, moonobj, position)
@@ -60,7 +59,7 @@ class NOVASTests(TestCase):
 
         ggr = planets.EarthLocation('75 W', '45 N', 0.0,
                                     temperature=10.0, pressure=1010.0)
-        ra2, dec2, dis2 = ggr(T0).observe(planets.moon).radec(T0)
+        ra2, dec2, dis2 = ggr(T0).observe(planets.moon).radec()
         print(ra2 / tau * 24.0, dec2/ tau * 360.0, dis2 / earthlib.AU_KM)
 
         self.eq(ra1, ra2 / tau * 24.0)

@@ -77,12 +77,19 @@ class ICRS(XYZ):
 
     def observe(self, body):
         # TODO: should also accept another ICRS?
+
         jd = self.jd
+        lighttime0 = 0.0
         vector = body(jd) - self
-        light_travel_time = sqrt(vector.dot(vector)) * days_for_light_to_go_1m
-        jd -= light_travel_time
-        vector = body(jd) - self
-        return GeocentricXYZ(*vector[:3])
+
+        for i in range(10):
+            lighttime = sqrt(vector.dot(vector)) * days_for_light_to_go_1m
+            if -1e-12 < lighttime - lighttime0 < 1e-12:
+                return GeocentricXYZ(*vector[:3])
+            lighttime0 = lighttime
+            vector = body(jd - lighttime) - self
+
+        raise ValueError('observation light-travel loop failed to converge')
 
 class GeocentricXYZ(XYZ):
     pass
