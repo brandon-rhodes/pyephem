@@ -1,5 +1,5 @@
 
-import de421
+import de405
 from jplephem import Ephemeris
 from ephem.coordinates import (
     GeocentricRADec, GeocentricXYZ, ICRS, XYZ, frame_tie,
@@ -10,7 +10,7 @@ from ephem import earthlib, precessionlib, nutationlib, timescales
 
 AU_KM = earthlib.AU_KM
 T0 = timescales.T0
-e = Ephemeris(de421)
+e = Ephemeris(de405)
 
 class Planet(object):
     def __init__(self, jplname):
@@ -68,9 +68,9 @@ class EarthLocation(object):
     def __call__(self, jd_tt):
         xyz = earth(jd_tt)
         pos, vel = self.geocentric_position_and_velocity(jd_tt)
-        # xyz[0] += pos[0] * AU_KM
-        # xyz[1] += pos[1] * AU_KM
-        # xyz[2] += pos[2] * AU_KM
+        xyz[0] += pos[0] * AU_KM
+        xyz[1] += pos[1] * AU_KM
+        xyz[2] += pos[2] * AU_KM
         return xyz
 
     def geocentric_position_and_velocity(self, jd_tt):
