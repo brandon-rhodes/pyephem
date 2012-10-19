@@ -4,7 +4,7 @@ from numpy import array
 from ephem import earthlib, precessionlib, timescales
 from ephem.angles import interpret_longitude, interpret_latitude
 from ephem.coordinates import GCRS, ICRS, rotation_from_ICRS, rotation_to_ICRS
-from ephem.nutationlib import nutation_matrix
+from ephem.nutationlib import earth_tilt, nutation_matrix
 from ephem.planets import earth
 from ephem.precessionlib import precess
 from ephem.relativity import add_aberration, add_deflection
@@ -35,7 +35,7 @@ class Topos(object):
         jd_ut1 = jd_tt - (delta_t / 86400.)
 
         gmst = timescales.sidereal_time(jd_ut1, delta_t)
-        x1, x2, eqeq, x3, x4 = earthlib.earth_tilt(jd_tdb)
+        x1, x2, eqeq, x3, x4 = earth_tilt(jd_tdb)
         gast = gmst + eqeq / 3600.0
 
         pos1, vel1 = earthlib.terra(self, gast)

@@ -88,21 +88,21 @@ class NOVASTests(TestCase):
 
     def test_earth_tilt(self):
         self.delta = 1e-14
-        for a, b in zip(c.e_tilt(T0), earthlib.earth_tilt(T0)):
+        for a, b in zip(c.e_tilt(T0), nutationlib.earth_tilt(T0)):
             self.eq(a, b)
-        for a, b in zip(c.e_tilt(TA), earthlib.earth_tilt(TA)):
+        for a, b in zip(c.e_tilt(TA), nutationlib.earth_tilt(TA)):
             self.eq(a, b)
-        for a, b in zip(c.e_tilt(TB), earthlib.earth_tilt(TB)):
+        for a, b in zip(c.e_tilt(TB), nutationlib.earth_tilt(TB)):
             self.eq(a, b)
 
     def test_equation_of_the_equinoxes_complimentary_terms(self):
         self.delta = 1e-23
 
-        self.eq(earthlib.equation_of_the_equinoxes_complimentary_terms(T0),
+        self.eq(nutationlib.equation_of_the_equinoxes_complimentary_terms(T0),
                 c.ee_ct(T0, 0.0, 0))
-        self.eq(earthlib.equation_of_the_equinoxes_complimentary_terms(TA),
+        self.eq(nutationlib.equation_of_the_equinoxes_complimentary_terms(TA),
                 c.ee_ct(TA, 0.0, 0))
-        self.eq(earthlib.equation_of_the_equinoxes_complimentary_terms(TB),
+        self.eq(nutationlib.equation_of_the_equinoxes_complimentary_terms(TB),
                 c.ee_ct(TB, 0.0, 0))
 
     def test_frame_tie(self):
@@ -120,17 +120,17 @@ class NOVASTests(TestCase):
     def test_fundamental_arguments(self):
         self.delta = 1e-12
 
-        a = earthlib.fundamental_arguments(jcentury(T0))
+        a = nutationlib.fundamental_arguments(jcentury(T0))
         b = c.fund_args(jcentury(T0))
         for i in range(5):
             self.eq(a[i], b[i])
 
-        a = earthlib.fundamental_arguments(jcentury(TA))
+        a = nutationlib.fundamental_arguments(jcentury(TA))
         b = c.fund_args(jcentury(TA))
         for i in range(5):
             self.eq(a[i], b[i])
 
-        a = earthlib.fundamental_arguments(jcentury(TB))
+        a = nutationlib.fundamental_arguments(jcentury(TB))
         b = c.fund_args(jcentury(TB))
         for i in range(5):
             self.eq(a[i], b[i])
@@ -163,9 +163,9 @@ class NOVASTests(TestCase):
     def test_mean_obliq(self):
         self.delta = 0
 
-        self.eq(c.mean_obliq(T0), earthlib.mean_obliquity(T0))
-        self.eq(c.mean_obliq(TA), earthlib.mean_obliquity(TA))
-        self.eq(c.mean_obliq(TB), earthlib.mean_obliquity(TB))
+        self.eq(c.mean_obliq(T0), nutationlib.mean_obliquity(T0))
+        self.eq(c.mean_obliq(TA), nutationlib.mean_obliquity(TA))
+        self.eq(c.mean_obliq(TB), nutationlib.mean_obliquity(TB))
 
     def test_nutation(self):
         self.delta = 1e-15
