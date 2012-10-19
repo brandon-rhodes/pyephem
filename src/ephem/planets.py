@@ -16,9 +16,13 @@ class Planet(object):
     def __init__(self, jplname):
         self.jplname = jplname
 
+    def __repr__(self):
+        return '<planet %s>' % (self.jplname,)
+
     def __call__(self, jd):
         pv = e.compute(self.jplname, jd)
         return ICRS(pv[:3] * KM_AU, pv[3:] * KMS_AUDAY, jd)
+
 
 sun = Planet('sun')
 mercury = Planet('mercury')

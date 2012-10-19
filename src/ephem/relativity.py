@@ -151,7 +151,6 @@ def grav_vec(position, observer_position, deflector_position, rmass):
     # Correct position vector.
 
     position += fac1 * (pdotq * ehat - edotp * qhat) / fac2 * pmag
-    print("P INTERMEDIATE:", repr(pdotq))
 
 #
 
