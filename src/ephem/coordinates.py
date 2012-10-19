@@ -39,8 +39,8 @@ class Degrees(float):
 
 class XYZ(ndarray):
 
-    def __new__(cls, x, y, z):
-        self = ndarray.__new__(cls, (3,))
+    def __new__(cls, x, y, z, dx, dy, dz):
+        self = ndarray.__new__(cls, (6,))
         self[0] = x
         self[1] = y
         self[2] = z
@@ -76,11 +76,15 @@ class ICRS(XYZ):
         for i in range(10):
             lighttime = sqrt(vector.dot(vector)) * days_for_light_to_go_1m
             if -1e-12 < lighttime - lighttime0 < 1e-12:
-                return GeocentricXYZ(*vector[:3])
+                break
             lighttime0 = lighttime
             vector = body(jd - lighttime) - self
+        else:
+            raise ValueError('observe() light-travel time failed to converge')
 
-        raise ValueError('observation light-travel loop failed to converge')
+        g = GeocentricXYZ(*vector)
+        g.lighttime = lighttime
+        return g
 
 class GeocentricXYZ(XYZ):
     pass
@@ -90,7 +94,7 @@ class GeocentricRADec(ndarray):
     def __new__(cls, other):
         self = ndarray.__new__(cls, (3,))
         if isinstance(other, GeocentricXYZ):
-            x, y, z = other
+            x, y, z, dx, dy, dz = other
             self[2] = r = sqrt(x*x + y*y + z*z)
             self[0] = atan2(-y, -x) + pi
             self[1] = asin(z / r)

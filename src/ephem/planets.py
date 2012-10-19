@@ -46,7 +46,7 @@ def earth(jd):
     earthmoon_xyz = e.compute('earthmoon', jd)
     moon_xyz = e.compute('moon', jd)
     x, y, z, dx, dy, dz = earthmoon_xyz - moon_xyz * moon_share
-    xyz = ICRS(x, y, z)
+    xyz = ICRS(x, y, z, dx, dy, dz)
     xyz.jd = jd
     return xyz
 
@@ -54,6 +54,6 @@ def moon(jd):
     earthmoon_xyz = e.compute('earthmoon', jd)
     moon_xyz = e.compute('moon', jd)
     x, y, z, dx, dy, dz = earthmoon_xyz + moon_xyz * earth_share
-    xyz = ICRS(x, y, z)
+    xyz = ICRS(x, y, z, dx, dy, dz)
     xyz.jd = jd
     return xyz
