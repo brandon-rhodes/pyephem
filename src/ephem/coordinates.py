@@ -3,10 +3,10 @@
 from numpy import ndarray
 from math import asin, atan2, cos, sin, pi, sqrt
 from ephem.angles import ASEC2RAD
-from ephem.relativity import C_AUDAY
 from ephem.timescales import T0
 
 J2000 = 2451545.0
+C_AUDAY = 173.1446326846693
 
 ecliptic_obliquity = (23 + (26/60.) + (21.406/3600.)) * pi / 180.
 

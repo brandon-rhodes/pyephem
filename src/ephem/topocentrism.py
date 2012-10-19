@@ -1,11 +1,19 @@
+from math import asin, acos, pi, sqrt
+
 from ephem import earthlib, nutationlib, precessionlib, timescales
 from ephem.angles import interpret_longitude, interpret_latitude
 from ephem.coordinates import GCRS, ICRS, frame_tie
 from ephem.nutationlib import nutation
 from ephem.planets import earth
 from ephem.precessionlib import precess
-from ephem.relativity import aberration
+from ephem.relativity import aberration, deflect
 from ephem.timescales import T0
+
+halfpi = pi / 2.0
+ERAD = 6378136.6
+AU = 1.4959787069098932e+11
+rade = ERAD / AU
+RAD2DEG = 57.295779513082321
 
 class Topos(object):
 
@@ -49,18 +57,67 @@ class ToposXYZ(ICRS):
 
         pv = super(ToposXYZ, self).observe(body)
 
-        # TODO: deflection near sun
-
+        print(list(pv.position))
+        limb_angle, nadir_angle = limb(pv.position, self.position)
+        use_earth = limb_angle >= 0.8
+        deflect(pv.position, self.position, pv.jd, use_earth)
+        print(list(pv.position))
         x, y, z = aberration(pv.position, self.velocity, pv.lighttime)
         pv.position[0] = x
         pv.position[1] = y
         pv.position[2] = z
+        print(list(pv.position))
 
         pv.position = frame_tie(pv.position, 1)
         pv.position = precess(T0, pv.jd, pv.position)
         pv.position = nutation(pv.jd, pv.position)
+        print(pv.position)
 
         return pv
 
 class TopocentricXYZ(GCRS):
     pass
+
+#
+
+def limb(position, observer_position):
+    """Determine the angle of an object above or below the Earth's limb.
+
+    Returns (limb_angle, nadir_angle).
+
+    """
+    # Compute the distance to the object and the distance to the observer.
+
+    disobj = sqrt(position.dot(position))
+    disobs = sqrt(observer_position.dot(observer_position))
+
+    # Compute apparent angular radius of Earth's limb.
+
+    if disobs >= rade:
+        aprad = asin(rade / disobs)
+    else:
+        aprad = halfpi
+
+    # Compute zenith distance of Earth's limb.
+
+    zdlim = pi - aprad
+
+    # Compute zenith distance of observed object.
+
+    coszd = position.dot(observer_position) / (disobj * disobs)
+    if coszd <= -1.0:
+        zdobj = pi
+    elif coszd >= 1.0:
+        zdobj = 0.0
+    else:
+        zdobj = acos(coszd)
+
+    # Angle of object wrt limb is difference in zenith distances.
+
+    limb_angle = (zdlim - zdobj) * RAD2DEG
+
+    # Nadir angle of object as a fraction of angular radius of limb.
+
+    nadir_angle = (pi - zdobj) / aprad
+
+    return limb_angle, nadir_angle

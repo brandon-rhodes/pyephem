@@ -20,9 +20,15 @@ class Planet(object):
         pv = e.compute(self.jplname, jd)
         return ICRS(pv[:3] * KM_AU, pv[3:] * KMS_AUDAY, jd)
 
+sun = Planet('sun')
 mercury = Planet('mercury')
+venus = Planet('venus')
 mars = Planet('mars')
 jupiter = Planet('jupiter')
+saturn = Planet('saturn')
+uranus = Planet('uranus')
+neptune = Planet('neptune')
+pluto = Planet('pluto')
 
 moon_share = 1.0 / (1.0 + e.EMRAT)
 earth_share = e.EMRAT / (1.0 + e.EMRAT)
