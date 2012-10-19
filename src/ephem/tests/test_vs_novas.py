@@ -42,16 +42,14 @@ class NOVASTests(TestCase):
     # Tests of generating a full position or coordinate.
 
     def test_astro_planet(self):
-        self.delta = 1e-6  # Not as good as I would like
-
         moonobj = c.make_object(0, 11, b'Moon', None)
         for t in T0, TA, TB:
             ra1, dec1, dis1 = c.astro_planet(t, moonobj)
-            ra2, dec2, dis2 = planets.earth(t).observe(planets.moon).radec(T0)
+            ra2, dec2, dis2 = planets.earth(t).observe(planets.moon).radec()
 
             self.eq(ra1 * tau / 24.0, ra2, 0.001 * arcsecond)
             self.eq(dec1 * tau / 360.0, dec2, 0.001 * arcsecond)
-            self.eq(dis1, dis2, 100.0 * meter)
+            self.eq(dis1, dis2, 0.0001 * meter)
 
     def test_topo_planet(self):
         self.delta = 1e-7
