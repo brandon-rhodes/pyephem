@@ -17,6 +17,10 @@ except ImportError:
     novas = None
 
 tau = angles.tau
+degree = tau / 360.0
+arcminute = degree / 60.0
+arcsecond = arcminute / 60.0
+meter = 1.0 / earthlib.AU_KM
 T0 = timescales.T0
 TA = c.julian_date(1969, 7, 20, 20. + 18./60.)  # arbitrary test date
 TB = c.julian_date(2012, 12, 21)                # arbitrary test date
@@ -45,9 +49,9 @@ class NOVASTests(TestCase):
             ra1, dec1, dis1 = c.astro_planet(t, moonobj)
             ra2, dec2, dis2 = planets.earth(t).observe(planets.moon).radec(T0)
 
-            self.eq(ra1, ra2 / tau * 24.0)
-            self.eq(dec1, dec2/ tau * 360.0)
-            self.eq(dis1, dis2)
+            self.eq(ra1 * tau / 24.0, ra2, 0.001 * arcsecond)
+            self.eq(dec1 * tau / 360.0, dec2, 0.001 * arcsecond)
+            self.eq(dis1, dis2, 100.0 * meter)
 
     def test_topo_planet(self):
         self.delta = 1e-7
