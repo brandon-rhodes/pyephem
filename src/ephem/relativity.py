@@ -28,7 +28,7 @@ rmasses = {
     planets.moon: 27068700.387534,
     }
 
-def deflect(position, observer_position, jd, apply_earth, deflector_count=3):
+def add_deflection(position, observer_position, jd, apply_earth, corrections=3):
     """Compute the gravitational deflection of light for the observed object.
 
     Based on novas.c:grav_def().
@@ -49,7 +49,7 @@ def deflect(position, observer_position, jd, apply_earth, deflector_count=3):
 
     # Cycle through gravitating bodies.
 
-    for planet in deflectors[:deflector_count]:
+    for planet in deflectors[:corrections]:
 
         # Get position of gravitating body wrt ss barycenter at time 'jd_tdb'.
 
@@ -154,20 +154,18 @@ def grav_vec(position, observer_position, deflector_position, rmass):
 
 #
 
-def aberration(position, velocity, lighttime):
+def add_aberration(position, velocity, lighttime):
     """Corrects a relative position vector for aberration of light."""
-
-    pos, ve = position, velocity
 
     if lighttime:
         p1mag = lighttime * C_AUDAY
     else:
-        p1mag = sqrt(pos[0] * pos[0] + pos[1] * pos[1] + pos[2] * pos[2])
+        p1mag = sqrt(position.dot(position))
         lighttime = p1mag / C_AUDAY
 
-    vemag = sqrt(ve[0] * ve[0] + ve[1] * ve[1] + ve[2] * ve[2])
+    vemag = sqrt(velocity.dot(velocity))
     beta = vemag / C_AUDAY
-    dot = pos[0] * ve[0] + pos[1] * ve[1] + pos[2] * ve[2]
+    dot = position.dot(velocity)
 
     cosd = dot / (p1mag * vemag)
     gammai = sqrt(1.0 - beta * beta)
@@ -175,6 +173,6 @@ def aberration(position, velocity, lighttime):
     q = (1.0 + p / (1.0 + gammai)) * lighttime
     r = 1.0 + p
 
-    return [(gammai * pos[0] + q * ve[0]) / r,
-            (gammai * pos[1] + q * ve[1]) / r,
-            (gammai * pos[2] + q * ve[2]) / r]
+    position *= gammai
+    position += q * velocity
+    position /= r

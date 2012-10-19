@@ -6,7 +6,7 @@ from ephem.coordinates import GCRS, ICRS, frame_tie
 from ephem.nutationlib import nutation
 from ephem.planets import earth
 from ephem.precessionlib import precess
-from ephem.relativity import aberration, deflect
+from ephem.relativity import add_aberration, add_deflection
 from ephem.timescales import T0
 
 halfpi = pi / 2.0
@@ -60,12 +60,8 @@ class ToposXYZ(ICRS):
 
         limb_angle, nadir_angle = limb(pv.position, self.position)
         use_earth = limb_angle >= 0.8
-        deflect(pv.position, self.position, pv.jd, use_earth)
-
-        x, y, z = aberration(pv.position, self.velocity, pv.lighttime)
-        pv.position[0] = x
-        pv.position[1] = y
-        pv.position[2] = z
+        add_deflection(pv.position, self.position, pv.jd, use_earth)
+        add_aberration(pv.position, self.velocity, pv.lighttime)
 
         pv.position = frame_tie(pv.position, 1)
         pv.position = precess(T0, pv.jd, pv.position)
