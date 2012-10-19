@@ -45,11 +45,10 @@ class NOVASTests(TestCase):
 
             self.eq(ra1, ra2 / tau * 24.0)
             self.eq(dec1, dec2/ tau * 360.0)
-            self.eq(dis1, dis2 / earthlib.AU_KM)
+            self.eq(dis1, dis2)
 
     def test_topo_planet(self):
         self.delta = 1e-4  # TERRIBLE - because of different ephemera?
-        return
 
         print()
         moonobj = c.make_object(0, 11, b'Moon', None)

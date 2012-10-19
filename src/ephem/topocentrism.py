@@ -15,18 +15,12 @@ class Topos(object):
         self.elevation = elevation
 
     def __call__(self, jd_tt):
-        epos = earth(jd_tt)
+        e = earth(jd_tt)
         tpos, tvel = self.geocentric_position_and_velocity(jd_tt)
         seconds_per_day = 24.0 * 60.0 * 60.0
-        t = ToposXYZ(epos[0] + tpos[0] * AU_KM,
-                     epos[1] + tpos[1] * AU_KM,
-                     epos[2] + tpos[2] * AU_KM,
-                     epos[3] + tvel[0] * AU_KM / seconds_per_day,
-                     epos[4] + tvel[1] * AU_KM / seconds_per_day,
-                     epos[5] + tvel[2] * AU_KM / seconds_per_day,
-                     )
-        t.jd = jd_tt
-        return t
+        return ToposXYZ(e.position + tpos * AU_KM,
+                        e.velocity + tvel * AU_KM / seconds_per_day,
+                        jd_tt)
 
     def geocentric_position_and_velocity(self, jd_tt):
         delta_t = 0
@@ -55,17 +49,15 @@ class ToposXYZ(ICRS):
     def observe(self, body):
         """Make geocentric apparent coord."""
 
-        xyz = super(ToposXYZ, self).observe(body)
-        print('here1', xyz.x, xyz.y, xyz.z)
+        pv = super(ToposXYZ, self).observe(body)
+        print('here1', pv.position)
 
         # TODO: deflection near sun
-        print(xyz)
-        print(self[3:])
-        print(xyz.lighttime)
-        print(aberration(xyz, self[3:], xyz.lighttime))
+        print(pv.lighttime)
+        print(aberration(pv.position, self.velocity, pv.lighttime))
         # TODO: frame_tie
         # TODO: precession
         # TODO: nutation
-        print('here2', xyz.x, xyz.y, xyz.z)
+        # print('here2', xyz.x, xyz.y, xyz.z)
 
-        return xyz
+        return pv

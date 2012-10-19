@@ -3,6 +3,7 @@
 from numpy import ndarray
 from math import asin, atan2, cos, sin, pi, sqrt
 from ephem.angles import ASEC2RAD
+from ephem.relativity import C_AUDAY
 from ephem.timescales import T0
 
 J2000 = 2451545.0
@@ -12,8 +13,6 @@ ecliptic_obliquity = (23 + (26/60.) + (21.406/3600.)) * pi / 180.
 import de421
 from jplephem import Ephemeris
 e = Ephemeris(de421)
-
-days_for_light_to_go_1m = 1. / (e.CLIGHT * 60. * 60. * 24.)
 
 class Hours(float):
 
@@ -63,7 +62,8 @@ class ICRS(XYZ):
         vector = target.position - self.position
 
         for i in range(10):
-            lighttime = sqrt(vector.dot(vector)) * days_for_light_to_go_1m
+            lighttime = sqrt(vector.dot(vector)) / C_AUDAY;
+            print('lt', sqrt(vector.dot(vector)), lighttime)
             if -1e-12 < lighttime - lighttime0 < 1e-12:
                 break
             lighttime0 = lighttime
@@ -141,16 +141,20 @@ def frame_tie(pos1, direction):
     if direction < 0:
         # Perform rotation from dynamical system to ICRS.
 
-        return [xx * pos1[0] + yx * pos1[1] + zx * pos1[2],
-                xy * pos1[0] + yy * pos1[1] + zy * pos1[2],
-                xz * pos1[0] + yz * pos1[1] + zz * pos1[2]]
+        a = ndarray((3,))
+        a[0] = xx * pos1[0] + yx * pos1[1] + zx * pos1[2]
+        a[1] = xy * pos1[0] + yy * pos1[1] + zy * pos1[2]
+        a[2] = xz * pos1[0] + yz * pos1[1] + zz * pos1[2]
+        return a
 
     else:
         # Perform rotation from ICRS to dynamical system.
 
-        return [xx * pos1[0] + xy * pos1[1] + xz * pos1[2],
-                yx * pos1[0] + yy * pos1[1] + yz * pos1[2],
-                zx * pos1[0] + zy * pos1[1] + zz * pos1[2]]
+        a = ndarray((3,))
+        a[0] = xx * pos1[0] + xy * pos1[1] + xz * pos1[2]
+        a[1] = yx * pos1[0] + yy * pos1[1] + yz * pos1[2]
+        a[2] = zx * pos1[0] + zy * pos1[1] + zz * pos1[2]
+        return a
 
 # 'xi0', 'eta0', and 'da0' are ICRS frame biases in arcseconds taken
 # from IERS (2003) Conventions, Chapter 5.
