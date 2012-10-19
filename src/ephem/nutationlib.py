@@ -1,13 +1,13 @@
 from math import cos, fmod, sin
+from numpy import array
 from ephem.angles import ASEC2RAD, DEG2RAD, tau
 from ephem.timescales import T0
 
-def nutation(jd_tdb, pos, invert=False):
-    """Nutate equatorial rectangular coordinates.
+def nutation_matrix(jd_tdb):
+    """Generate the nutation for `jd_tdb`.
 
-    Nutates from mean equator and equinox of epoch to true equator and
-    equinox of epoch. Inverse transformation may be applied by setting
-    flag 'direction' to true.
+    The 3x3 matrix that is returned will nutate a position from mean
+    equator and equinox of epoch to true equator and equinox of epoch.
 
     """
     # Call 'e_tilt' to get the obliquity and nutation angles.
@@ -22,31 +22,13 @@ def nutation(jd_tdb, pos, invert=False):
     cpsi = cos(psi * ASEC2RAD)
     spsi = sin(psi * ASEC2RAD)
 
-    # Nutation rotation matrix follows.
-
-    xx = cpsi
-    yx = -spsi * cobm
-    zx = -spsi * sobm
-    xy = spsi * cobt
-    yy = cpsi * cobm * cobt + sobm * sobt
-    zy = cpsi * sobm * cobt - cobm * sobt
-    xz = spsi * sobt
-    yz = cpsi * cobm * sobt - sobm * cobt
-    zz = cpsi * sobm * sobt + cobm * cobt
-
-    if invert:
-        # Perform inverse rotation.
-
-        return [xx * pos[0] + xy * pos[1] + xz * pos[2],
-                yx * pos[0] + yy * pos[1] + yz * pos[2],
-                zx * pos[0] + zy * pos[1] + zz * pos[2]]
-
-    else:
-        # Perform rotation.
-
-        return [xx * pos[0] + yx * pos[1] + zx * pos[2],
-                xy * pos[0] + yy * pos[1] + zy * pos[2],
-                xz * pos[0] + yz * pos[1] + zz * pos[2]]
+    return array(((cpsi, spsi * cobt, spsi * sobt),
+                  (-spsi * cobm,
+                    cpsi * cobm * cobt + sobm * sobt,
+                    cpsi * cobm * sobt - sobm * cobt),
+                  (-spsi * sobm,
+                    cpsi * sobm * cobt - cobm * sobt,
+                    cpsi * sobm * sobt + cobm * cobt)))
 
 def iau2000a(jd_tt):
 

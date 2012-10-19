@@ -1,10 +1,10 @@
 from math import asin, acos, pi, sqrt
 from numpy import array
 
-from ephem import earthlib, nutationlib, precessionlib, timescales
+from ephem import earthlib, precessionlib, timescales
 from ephem.angles import interpret_longitude, interpret_latitude
 from ephem.coordinates import GCRS, ICRS, rotation_from_ICRS, rotation_to_ICRS
-from ephem.nutationlib import nutation
+from ephem.nutationlib import nutation_matrix
 from ephem.planets import earth
 from ephem.precessionlib import precess
 from ephem.relativity import add_aberration, add_deflection
@@ -40,12 +40,14 @@ class Topos(object):
 
         pos1, vel1 = earthlib.terra(self, gast)
 
-        pos2 = nutationlib.nutation(jd_tdb, pos1, invert=True)
+        pos1 = array(pos1)
+        pos2 = pos1.dot(nutation_matrix(jd_tdb).T)
         pos3 = precessionlib.precess(jd_tdb, T0, pos2)
         pos = array(pos3)
         pos = pos.dot(rotation_to_ICRS)
 
-        vel2 = nutationlib.nutation(jd_tdb, vel1, invert=True)
+        vel1 = array(vel1)
+        vel2 = vel1.dot(nutation_matrix(jd_tdb).T)
         vel3 = precessionlib.precess(jd_tdb, T0, vel2)
         vel = array(vel3)
         vel = vel.dot(rotation_to_ICRS)
@@ -68,7 +70,8 @@ class ToposXYZ(ICRS):
 
         pv.position = pv.position.dot(rotation_from_ICRS)
         pv.position = precess(T0, pv.jd, pv.position)
-        pv.position = nutation(pv.jd, pv.position)
+        pv.position = array(pv.position)
+        pv.position = pv.position.dot(nutation_matrix(pv.jd))
 
         return pv
 

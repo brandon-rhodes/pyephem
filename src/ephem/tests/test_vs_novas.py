@@ -169,18 +169,18 @@ class NOVASTests(TestCase):
 
     def test_nutation(self):
         self.delta = 1e-15
-        v = [1, 2, 3]
+        v = array([1, 2, 3])
 
         for a, b in zip(c_nutation(T0, v, direction=0),
-                        nutationlib.nutation(T0, v, invert=False)):
+                        v.dot(nutationlib.nutation_matrix(T0))):
             self.eq(a, b)
 
         for a, b in zip(c_nutation(TA, v, direction=0),
-                        nutationlib.nutation(TA, v, invert=False)):
+                        v.dot(nutationlib.nutation_matrix(TA))):
             self.eq(a, b)
 
         for a, b in zip(c_nutation(TB, v, direction=1),
-                        nutationlib.nutation(TB, v, invert=True)):
+                        v.dot(nutationlib.nutation_matrix(TB).T)):
             self.eq(a, b)
 
     def test_precession(self):
