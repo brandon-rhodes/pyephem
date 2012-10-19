@@ -52,21 +52,19 @@ class NOVASTests(TestCase):
             self.eq(dis1, dis2, 0.0001 * meter)
 
     def test_topo_planet(self):
-        self.delta = 1e-7
-
         moonobj = c.make_object(0, 11, b'Moon', None)
         position = c.make_on_surface(45.0, -75.0, 0.0, 10.0, 1010.0)
+        ggr = topocentrism.Topos('75 W', '45 N', 0.0,
+                                 temperature=10.0, pressure=1010.0)
         delta_t = 0
+
         for t in T0, TA, TB:
             ra1, dec1, dis1 = c.topo_planet(t, delta_t, moonobj, position)
-
-            ggr = topocentrism.Topos('75 W', '45 N', 0.0,
-                                     temperature=10.0, pressure=1010.0)
             ra2, dec2, dis2 = ggr(t).observe(planets.moon).radec()
 
-            self.eq(ra1, ra2 / tau * 24.0)
-            self.eq(dec1, dec2/ tau * 360.0)
-            self.eq(dis1, dis2, 1e-6)
+            self.eq(ra1 * tau / 24.0, ra2, 0.001 * arcsecond)
+            self.eq(dec1 * tau / 360.0, dec2, 0.001 * arcsecond)
+            self.eq(dis1, dis2, 0.0001 * meter)
 
     # Tests of basic functions (in alphabetical order by NOVAS name).
 

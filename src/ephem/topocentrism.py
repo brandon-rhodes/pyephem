@@ -50,17 +50,15 @@ class ToposXYZ(ICRS):
         pv = super(ToposXYZ, self).observe(body)
 
         # TODO: deflection near sun
-        print(list(pv.position))
+
         x, y, z = aberration(pv.position, self.velocity, pv.lighttime)
         pv.position[0] = x
         pv.position[1] = y
         pv.position[2] = z
-        print(list(pv.position))
 
         pv.position = frame_tie(pv.position, 1)
         pv.position = precess(T0, pv.jd, pv.position)
         pv.position = nutation(pv.jd, pv.position)
-        print(pv.position)
 
         return pv
 
