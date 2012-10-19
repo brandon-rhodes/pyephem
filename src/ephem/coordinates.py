@@ -37,30 +37,18 @@ class Degrees(float):
     def __str__(self):
         return '%d:%02d:%02f' % self.dms()
 
-class XYZ(ndarray):
+class XYZ(object):
 
-    def __new__(cls, x, y, z, dx, dy, dz):
-        self = ndarray.__new__(cls, (6,))
-        self[0] = x
-        self[1] = y
-        self[2] = z
-        return self
-
-    @property
-    def x(self): return self[0]
-
-    @property
-    def y(self): return self[1]
-
-    @property
-    def z(self): return self[2]
+    def __init__(self, position, velocity=None, jd=None):
+        self.position = position
+        self.velocity = velocity
+        self.jd = jd
 
     def radec(self, epoch=T0):
         if epoch != T0:
             raise NotImplementedError()
 
         # Geocentric astrometric.
-
 
         return GeocentricRADec(self)
 
@@ -71,18 +59,20 @@ class ICRS(XYZ):
 
         jd = self.jd
         lighttime0 = 0.0
-        vector = body(jd) - self
+        target = body(jd)
+        vector = target.position - self.position
 
         for i in range(10):
             lighttime = sqrt(vector.dot(vector)) * days_for_light_to_go_1m
             if -1e-12 < lighttime - lighttime0 < 1e-12:
                 break
             lighttime0 = lighttime
-            vector = body(jd - lighttime) - self
+            target = body(jd - lighttime)
+            vector = target.position - self.position
         else:
             raise ValueError('observe() light-travel time failed to converge')
 
-        g = GeocentricXYZ(*vector)
+        g = GeocentricXYZ(vector, target.velocity - self.velocity, jd)
         g.lighttime = lighttime
         return g
 
@@ -94,12 +84,12 @@ class GeocentricRADec(ndarray):
     def __new__(cls, other):
         self = ndarray.__new__(cls, (3,))
         if isinstance(other, GeocentricXYZ):
-            x, y, z, dx, dy, dz = other
+            x, y, z = other.position
             self[2] = r = sqrt(x*x + y*y + z*z)
             self[0] = atan2(-y, -x) + pi
             self[1] = asin(z / r)
         else:
-            raise ValueError('how do I use that?')
+            raise ValueError('how do I use this? %r' % (other,))
         return self
 
     @property

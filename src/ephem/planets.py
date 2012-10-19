@@ -15,10 +15,8 @@ class Planet(object):
         self.jplname = jplname
 
     def __call__(self, date):
-        x, y, z, dx, dy, dz = e.compute(self.jplname, date)
-        xyz = ICRS(x, y, z)
-        xyz.date = date
-        return xyz
+        pv = e.compute(self.jplname, date)
+        return ICRS(pv[:3], pv[3:], date)
 
 mercury = Planet('mercury')
 mars = Planet('mars')
@@ -28,17 +26,9 @@ moon_share = 1.0 / (1.0 + e.EMRAT)
 earth_share = e.EMRAT / (1.0 + e.EMRAT)
 
 def earth(jd):
-    earthmoon_xyz = e.compute('earthmoon', jd)
-    moon_xyz = e.compute('moon', jd)
-    x, y, z, dx, dy, dz = earthmoon_xyz - moon_xyz * moon_share
-    xyz = ICRS(x, y, z, dx, dy, dz)
-    xyz.jd = jd
-    return xyz
+    pv = e.compute('earthmoon', jd) - e.compute('moon', jd) * moon_share
+    return ICRS(pv[:3], pv[3:], jd)
 
 def moon(jd):
-    earthmoon_xyz = e.compute('earthmoon', jd)
-    moon_xyz = e.compute('moon', jd)
-    x, y, z, dx, dy, dz = earthmoon_xyz + moon_xyz * earth_share
-    xyz = ICRS(x, y, z, dx, dy, dz)
-    xyz.jd = jd
-    return xyz
+    pv = e.compute('earthmoon', jd) + e.compute('moon', jd) * earth_share
+    return ICRS(pv[:3], pv[3:], jd)
