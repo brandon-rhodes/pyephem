@@ -1,27 +1,16 @@
 from math import cos, sin
+from numpy import array
 from ephem.angles import ASEC2RAD
 from ephem.timescales import T0
 
-def precess(jd_tdb1, jd_tdb2, pos1):
-    """Precesses equatorial rectangular coordinates from one epoch to another.
+def precession_matrix(jd_tdb):
+    """Return the rotation matrix for precessing to epoch `jd_tdb`."""
 
-    One of the two epochs must be J2000.0.  The coordinates are referred
-    to the mean dynamical equator and equinox of the two respective
-    epochs.
-
-    """
     eps0 = 84381.406
 
-    # Check to be sure that either 'jd_tdb1' or 'jd_tdb2' is equal to T0.
+    # 't' is time in TDB centuries.
 
-    if jd_tdb1 != T0 and jd_tdb2 != T0:
-        raise ValueError('either jd_tdb1 or jd_tdb2 must = T0')
-
-    # 't' is time in TDB centuries between the two epochs.
-
-    t = (jd_tdb2 - jd_tdb1) / 36525.0
-    if jd_tdb2 == T0:
-        t = -t
+    t = (jd_tdb - T0) / 36525.0
 
     # Numerical coefficients of psi_a, omega_a, and chi_a, along with
     # epsilon_0, the obliquity at J2000.0, are 4-angle formulation from
@@ -62,26 +51,12 @@ def precess(jd_tdb1, jd_tdb2, pos1):
     # Compute elements of precession rotation matrix equivalent to
     # R3(chi_a) R1(-omega_a) R3(-psi_a) R1(epsilon_0).
 
-    xx =  cd * cb - sb * sd * cc
-    yx =  cd * sb * ca + sd * cc * cb * ca - sa * sd * sc
-    zx =  cd * sb * sa + sd * cc * cb * sa + ca * sd * sc
-    xy = -sd * cb - sb * cd * cc
-    yy = -sd * sb * ca + cd * cc * cb * ca - sa * cd * sc
-    zy = -sd * sb * sa + cd * cc * cb * sa + ca * cd * sc
-    xz =  sb * sc
-    yz = -sc * cb * ca - sa * cc
-    zz = -sc * cb * sa + cc * ca
-
-    if jd_tdb2 == T0:
-        # Perform rotation from epoch to J2000.0.
-
-        return [xx * pos1[0] + xy * pos1[1] + xz * pos1[2],
-                yx * pos1[0] + yy * pos1[1] + yz * pos1[2],
-                zx * pos1[0] + zy * pos1[1] + zz * pos1[2]]
-
-    else:
-        # Perform rotation from J2000.0 to epoch.
-
-        return [xx * pos1[0] + yx * pos1[1] + zx * pos1[2],
-                xy * pos1[0] + yy * pos1[1] + zy * pos1[2],
-                xz * pos1[0] + yz * pos1[1] + zz * pos1[2]]
+    return array(((cd * cb - sb * sd * cc,
+                   -sd * cb - sb * cd * cc,
+                   sb * sc),
+                  (cd * sb * ca + sd * cc * cb * ca - sa * sd * sc,
+                   -sd * sb * ca + cd * cc * cb * ca - sa * cd * sc,
+                   -sc * cb * ca - sa * cc),
+                  (cd * sb * sa + sd * cc * cb * sa + ca * sd * sc,
+                   -sd * sb * sa + cd * cc * cb * sa + ca * cd * sc,
+                   -sc * cb * sa + cc * ca)))

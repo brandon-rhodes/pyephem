@@ -6,7 +6,7 @@ from ephem.angles import interpret_longitude, interpret_latitude
 from ephem.coordinates import GCRS, ICRS, rotation_from_ICRS, rotation_to_ICRS
 from ephem.nutationlib import earth_tilt, nutation_matrix
 from ephem.planets import earth
-from ephem.precessionlib import precess
+from ephem.precessionlib import precession_matrix
 from ephem.relativity import add_aberration, add_deflection
 from ephem.timescales import T0
 
@@ -38,21 +38,13 @@ class Topos(object):
         x1, x2, eqeq, x3, x4 = earth_tilt(jd_tdb)
         gast = gmst + eqeq / 3600.0
 
-        pos1, vel1 = earthlib.terra(self, gast)
+        pos, vel = earthlib.terra(self, gast)
 
-        pos1 = array(pos1)
-        pos2 = pos1.dot(nutation_matrix(jd_tdb).T)
-        pos3 = precessionlib.precess(jd_tdb, T0, pos2)
-        pos = array(pos3)
-        pos = pos.dot(rotation_to_ICRS)
+        n = nutation_matrix(jd_tdb).T
+        p = precession_matrix(jd_tdb).T
+        npr = n.dot(p).dot(rotation_to_ICRS)
 
-        vel1 = array(vel1)
-        vel2 = vel1.dot(nutation_matrix(jd_tdb).T)
-        vel3 = precessionlib.precess(jd_tdb, T0, vel2)
-        vel = array(vel3)
-        vel = vel.dot(rotation_to_ICRS)
-
-        return pos, vel
+        return pos.dot(npr), vel.dot(npr)
 
 class ToposXYZ(ICRS):
     """In ICRS, right?"""
@@ -69,8 +61,7 @@ class ToposXYZ(ICRS):
         add_aberration(pv.position, self.velocity, pv.lighttime)
 
         pv.position = pv.position.dot(rotation_from_ICRS)
-        pv.position = precess(T0, pv.jd, pv.position)
-        pv.position = array(pv.position)
+        pv.position = pv.position.dot(precession_matrix(pv.jd))
         pv.position = pv.position.dot(nutation_matrix(pv.jd))
 
         return pv

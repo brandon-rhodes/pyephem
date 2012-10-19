@@ -1,6 +1,6 @@
 """Coordinate systems."""
 
-from numpy import array, dot, ndarray
+from numpy import array, ndarray
 from math import asin, atan2, cos, sin, pi, sqrt
 from ephem.angles import ASEC2RAD
 from ephem.timescales import T0
@@ -159,14 +159,5 @@ zz = 1.0 - 0.5 * (zy * zy + zx * zx)
 
 #
 
-rotation_to_ICRS = array((
-    (xx, xy, xz),
-    (yx, yy, yz),
-    (zx, zy, zz),
-    ))
-
-rotation_from_ICRS = array((
-    (xx, yx, zx),
-    (xy, yy, zy),
-    (xz, yz, zz),
-    ))
+rotation_to_ICRS = array(((xx, xy, xz), (yx, yy, yz), (zx, zy, zz)))
+rotation_from_ICRS = array(((xx, yx, zx), (xy, yy, zy), (xz, yz, zz)))

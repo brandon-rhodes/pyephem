@@ -185,16 +185,15 @@ class NOVASTests(TestCase):
 
     def test_precession(self):
         self.delta = 1e-15
-        v = [1, 2, 3]
-
+        v = array([1, 2, 3])
         c.precession(T0, v, TA)
 
         for a, b in zip(c.precession(T0, v, TA),
-                        precessionlib.precess(T0, TA, v)):
+                        v.dot(precessionlib.precession_matrix(TA))):
             self.eq(a, b)
 
         for a, b in zip(c.precession(TB, v, T0),
-                        precessionlib.precess(TB, T0, v)):
+                        v.dot(precessionlib.precession_matrix(TB).T)):
             self.eq(a, b)
 
     def test_sidereal_time(self):

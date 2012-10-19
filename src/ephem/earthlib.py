@@ -1,6 +1,7 @@
 """Formulae for specific earth behaviors and effects."""
 
 from math import cos, sin, sqrt
+from numpy import array
 from ephem.angles import DEG2RAD
 
 AU_KM = 1.4959787069098932e+8
@@ -39,17 +40,12 @@ def terra(location, st):
 
     # Compute position vector components in kilometers.
 
-    pos = [ach * cosphi * cosst, ach * cosphi * sinst, ash * sinphi]
+    ac = ach * cosphi
+    pos = array((ac * cosst, ac * sinst, ash * sinphi)) / AU_KM
 
     # Compute velocity vector components in kilometers/sec.
 
-    vel = [-ANGVEL * ach * cosphi * sinst, ANGVEL * ach * cosphi * cosst, 0.0]
-
-    # Convert position and velocity components to AU and AU/DAY.
-
-    for j in range(3):
-        pos[j] /= AU_KM
-        vel[j] /= AU_KM
-        vel[j] *= 86400.0
+    aac = ANGVEL * ach * cosphi
+    vel = array((-aac * sinst, aac * cosst, 0.0)) / AU_KM * 86400.0
 
     return pos, vel
