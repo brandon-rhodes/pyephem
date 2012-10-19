@@ -20,21 +20,6 @@ class Planet(object):
         xyz.date = date
         return xyz
 
-    def seen_from(self, observer):
-        """Where will we appear to be, from an observer at xyz?"""
-        date = observer.date
-        vector = self.at(date) - observer
-        light_travel_time = sqrt(vector.dot(vector)) * days_for_light_to_go_1m
-        date -= light_travel_time
-        vector = self.at(date) - observer
-        return XYZ(*vector[:3])
-
-    def astrometric(self, body):
-        diff = body.seen_from(self)
-        gxyz = GeocentricXYZ(diff[0], diff[1], diff[2])
-        radec = GeocentricRADec(gxyz)
-        return radec
-
 mercury = Planet('mercury')
 mars = Planet('mars')
 jupiter = Planet('jupiter')
