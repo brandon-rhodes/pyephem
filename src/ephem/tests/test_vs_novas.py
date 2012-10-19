@@ -2,7 +2,7 @@
 
 from unittest import TestCase
 from ephem import (angles, coordinates, earthlib, nutationlib, planets,
-                   precessionlib, timescales)
+                   precessionlib, timescales, topocentrism)
 try:
     import novas
     import novas.compat as c
@@ -57,8 +57,8 @@ class NOVASTests(TestCase):
         ra1, dec1, dis1 = c.topo_planet(T0, delta_t, moonobj, position)
         print(ra1, dec1, dis1)
 
-        ggr = planets.EarthLocation('75 W', '45 N', 0.0,
-                                    temperature=10.0, pressure=1010.0)
+        ggr = topocentrism.Topos('75 W', '45 N', 0.0,
+                                 temperature=10.0, pressure=1010.0)
         ra2, dec2, dis2 = ggr(T0).observe(planets.moon).radec()
         print(ra2 / tau * 24.0, dec2/ tau * 360.0, dis2 / earthlib.AU_KM)
 
@@ -127,8 +127,8 @@ class NOVASTests(TestCase):
         self.delta = 1e-13
 
         obs1 = c.make_observer_on_surface(45.0, -75.0, 0.0, 10.0, 1010.0)
-        ggr = planets.EarthLocation('75 W', '45 N', 0.0,
-                                    temperature=10.0, pressure=1010.0)
+        ggr = topocentrism.Topos('75 W', '45 N', 0.0,
+                                 temperature=10.0, pressure=1010.0)
         delta_t = 0.0
 
         for v1, v2 in zip(c.geo_posvel(T0, delta_t, obs1),

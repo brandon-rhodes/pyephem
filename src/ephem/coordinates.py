@@ -3,6 +3,7 @@
 from numpy import ndarray
 from math import asin, atan2, cos, sin, pi, sqrt
 from ephem.angles import ASEC2RAD
+from ephem.timescales import T0
 
 J2000 = 2451545.0
 
@@ -54,24 +55,14 @@ class XYZ(ndarray):
     @property
     def z(self): return self[2]
 
-    def radec(self, epoch=None):
-        if epoch is None:
-            # Geocentric apparent.
+    def radec(self, epoch=T0):
+        if epoch != T0:
+            raise NotImplementedError()
 
-            # TODO: precession
-            # TODO: deflection near sun
-            # TODO: nutation
-            # TODO: aberration
+        # Geocentric astrometric.
 
-            return GeocentricRADec(self)
 
-        else:
-            if epoch != J2000:
-                raise NotImplementedError()
-
-            # Geocentric astrometric.
-
-            return GeocentricRADec(self)
+        return GeocentricRADec(self)
 
 class ICRS(XYZ):
 
