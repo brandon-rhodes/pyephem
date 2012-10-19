@@ -1,9 +1,9 @@
-from numpy import ndarray
-
 from ephem import earthlib, nutationlib, precessionlib, timescales
 from ephem.angles import interpret_longitude, interpret_latitude
 from ephem.coordinates import GCRS, ICRS, frame_tie
+from ephem.nutationlib import nutation
 from ephem.planets import earth
+from ephem.precessionlib import precess
 from ephem.relativity import aberration
 from ephem.timescales import T0
 
@@ -50,12 +50,18 @@ class ToposXYZ(ICRS):
         pv = super(ToposXYZ, self).observe(body)
 
         # TODO: deflection near sun
-        print(pv.position)
+        # print(pv.position)
         x, y, z = aberration(pv.position, self.velocity, pv.lighttime)
         pv.position[0] = x
         pv.position[1] = y
         pv.position[2] = z
-        print(pv.position)
+        # print(pv.position)
+
+        pv.position = frame_tie(pv.position, 1)
+        pv.position = precess(T0, pv.jd, pv.position)
+        pv.position = nutation(pv.jd, pv.position)
+        # print(pv.position)
+
         # TODO: frame_tie
         # TODO: precession
         # TODO: nutation
