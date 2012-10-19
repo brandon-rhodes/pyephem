@@ -1,8 +1,9 @@
 from math import asin, acos, pi, sqrt
+from numpy import array
 
 from ephem import earthlib, nutationlib, precessionlib, timescales
 from ephem.angles import interpret_longitude, interpret_latitude
-from ephem.coordinates import GCRS, ICRS, frame_tie
+from ephem.coordinates import GCRS, ICRS, rotation_from_ICRS, rotation_to_ICRS
 from ephem.nutationlib import nutation
 from ephem.planets import earth
 from ephem.precessionlib import precess
@@ -41,11 +42,13 @@ class Topos(object):
 
         pos2 = nutationlib.nutation(jd_tdb, pos1, invert=True)
         pos3 = precessionlib.precess(jd_tdb, T0, pos2)
-        pos = frame_tie(pos3, -1)
+        pos = array(pos3)
+        pos = pos.dot(rotation_to_ICRS)
 
         vel2 = nutationlib.nutation(jd_tdb, vel1, invert=True)
         vel3 = precessionlib.precess(jd_tdb, T0, vel2)
-        vel = frame_tie(vel3, -1)
+        vel = array(vel3)
+        vel = vel.dot(rotation_to_ICRS)
 
         return pos, vel
 
@@ -63,7 +66,7 @@ class ToposXYZ(ICRS):
         add_deflection(pv.position, self.position, pv.jd, use_earth)
         add_aberration(pv.position, self.velocity, pv.lighttime)
 
-        pv.position = frame_tie(pv.position, 1)
+        pv.position = pv.position.dot(rotation_from_ICRS)
         pv.position = precess(T0, pv.jd, pv.position)
         pv.position = nutation(pv.jd, pv.position)
 

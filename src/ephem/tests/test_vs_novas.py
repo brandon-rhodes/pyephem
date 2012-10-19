@@ -1,6 +1,7 @@
 """Compare the output of PyEphem routines with the same routines from NOVAS."""
 
 from itertools import product
+from numpy import array
 from unittest import TestCase
 
 from ephem import (angles, coordinates, earthlib, nutationlib, planets,
@@ -106,14 +107,14 @@ class NOVASTests(TestCase):
 
     def test_frame_tie(self):
         self.delta = 1e-15
-        v = [1, 2, 3]
+        v = array((1, 2, 3))
 
         for a, b in zip(c.frame_tie(v, 0),
-                        coordinates.frame_tie(v, 0)):
+                        v.dot(coordinates.rotation_from_ICRS)):
             self.eq(a, b)
 
         for a, b in zip(c.frame_tie(v, -1),
-                        coordinates.frame_tie(v, -1)):
+                        v.dot(coordinates.rotation_to_ICRS)):
             self.eq(a, b)
 
     def test_fundamental_arguments(self):

@@ -1,6 +1,6 @@
 """Coordinate systems."""
 
-from numpy import ndarray
+from numpy import array, dot, ndarray
 from math import asin, atan2, cos, sin, pi, sqrt
 from ephem.angles import ASEC2RAD
 from ephem.timescales import T0
@@ -130,35 +130,6 @@ class HeliocentricLonLat(ndarray):
     @property
     def r(self): return self[2]
 
-def frame_tie(pos1, direction):
-    """Transform a vector from the dynamical reference system to the ICRS.
-
-    Or vice versa.  The dynamical reference system is based on the
-    dynamical mean equator and equinox of J2000.0.  The ICRS is based on
-    the space-fixed ICRS axes defined by the radio catalog positions of
-    several hundred extragalactic objects.
-
-    """
-    # Perform the rotation in the sense specified by 'direction'.
-
-    if direction < 0:
-        # Perform rotation from dynamical system to ICRS.
-
-        a = ndarray((3,))
-        a[0] = xx * pos1[0] + yx * pos1[1] + zx * pos1[2]
-        a[1] = xy * pos1[0] + yy * pos1[1] + zy * pos1[2]
-        a[2] = xz * pos1[0] + yz * pos1[1] + zz * pos1[2]
-        return a
-
-    else:
-        # Perform rotation from ICRS to dynamical system.
-
-        a = ndarray((3,))
-        a[0] = xx * pos1[0] + xy * pos1[1] + xz * pos1[2]
-        a[1] = yx * pos1[0] + yy * pos1[1] + yz * pos1[2]
-        a[2] = zx * pos1[0] + zy * pos1[1] + zz * pos1[2]
-        return a
-
 # 'xi0', 'eta0', and 'da0' are ICRS frame biases in arcseconds taken
 # from IERS (2003) Conventions, Chapter 5.
 
@@ -185,3 +156,17 @@ zz =  1.0
 xx = 1.0 - 0.5 * (yx * yx + zx * zx)
 yy = 1.0 - 0.5 * (yx * yx + zy * zy)
 zz = 1.0 - 0.5 * (zy * zy + zx * zx)
+
+#
+
+rotation_to_ICRS = array((
+    (xx, xy, xz),
+    (yx, yy, yz),
+    (zx, zy, zz),
+    ))
+
+rotation_from_ICRS = array((
+    (xx, yx, zx),
+    (xy, yy, zy),
+    (xz, yz, zz),
+    ))
