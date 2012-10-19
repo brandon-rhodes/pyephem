@@ -63,7 +63,6 @@ class ICRS(XYZ):
 
         for i in range(10):
             lighttime = sqrt(vector.dot(vector)) / C_AUDAY;
-            print('lt', sqrt(vector.dot(vector)), lighttime)
             if -1e-12 < lighttime - lighttime0 < 1e-12:
                 break
             lighttime0 = lighttime
@@ -72,18 +71,18 @@ class ICRS(XYZ):
         else:
             raise ValueError('observe() light-travel time failed to converge')
 
-        g = GeocentricXYZ(vector, target.velocity - self.velocity, jd)
+        g = GCRS(vector, target.velocity - self.velocity, jd)
         g.lighttime = lighttime
         return g
 
-class GeocentricXYZ(XYZ):
+class GCRS(XYZ):
     pass
 
 class GeocentricRADec(ndarray):
 
     def __new__(cls, other):
         self = ndarray.__new__(cls, (3,))
-        if isinstance(other, GeocentricXYZ):
+        if isinstance(other, GCRS):
             x, y, z = other.position
             self[2] = r = sqrt(x*x + y*y + z*z)
             self[0] = atan2(-y, -x) + pi

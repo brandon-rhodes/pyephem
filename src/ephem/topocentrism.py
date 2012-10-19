@@ -1,7 +1,8 @@
+from numpy import ndarray
+
 from ephem import earthlib, nutationlib, precessionlib, timescales
 from ephem.angles import interpret_longitude, interpret_latitude
-from ephem.coordinates import ICRS, frame_tie
-from ephem.earthlib import AU_KM
+from ephem.coordinates import GCRS, ICRS, frame_tie
 from ephem.planets import earth
 from ephem.relativity import aberration
 from ephem.timescales import T0
@@ -17,10 +18,7 @@ class Topos(object):
     def __call__(self, jd_tt):
         e = earth(jd_tt)
         tpos, tvel = self.geocentric_position_and_velocity(jd_tt)
-        seconds_per_day = 24.0 * 60.0 * 60.0
-        return ToposXYZ(e.position + tpos * AU_KM,
-                        e.velocity + tvel * AU_KM / seconds_per_day,
-                        jd_tt)
+        return ToposXYZ(e.position + tpos, e.velocity + tvel, jd_tt)
 
     def geocentric_position_and_velocity(self, jd_tt):
         delta_t = 0
@@ -50,14 +48,20 @@ class ToposXYZ(ICRS):
         """Make geocentric apparent coord."""
 
         pv = super(ToposXYZ, self).observe(body)
-        print('here1', pv.position)
 
         # TODO: deflection near sun
-        print(pv.lighttime)
-        print(aberration(pv.position, self.velocity, pv.lighttime))
+        print(pv.position)
+        x, y, z = aberration(pv.position, self.velocity, pv.lighttime)
+        pv.position[0] = x
+        pv.position[1] = y
+        pv.position[2] = z
+        print(pv.position)
         # TODO: frame_tie
         # TODO: precession
         # TODO: nutation
         # print('here2', xyz.x, xyz.y, xyz.z)
 
         return pv
+
+class TopocentricXYZ(GCRS):
+    pass
