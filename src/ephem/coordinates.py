@@ -3,7 +3,9 @@
 from numpy import array, ndarray
 from math import asin, atan2, cos, sin, pi, sqrt
 from ephem.angles import ASEC2RAD
-from ephem.timescales import T0
+from ephem.nutationlib import nutation_matrix
+from ephem.precessionlib import precession_matrix
+from ephem.relativity import add_aberration, add_deflection
 
 J2000 = 2451545.0
 C_AUDAY = 173.1446326846693
@@ -88,9 +90,6 @@ class GCRS(XYZ):
         position = self.position.copy()
 
         from ephem.topocentrism import limb
-        from ephem.nutationlib import nutation_matrix
-        from ephem.precessionlib import precession_matrix
-        from ephem.relativity import add_aberration, add_deflection
 
         if observer.geocentric:
             use_earth = False
