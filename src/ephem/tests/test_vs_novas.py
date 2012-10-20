@@ -37,6 +37,7 @@ planet_codes = {
     planets.uranus: 7,
     planets.neptune: 8,
     planets.pluto: 9,
+    planets.sun: 10,
     planets.moon: 11,
     }
 
@@ -62,25 +63,28 @@ class NOVASTests(TestCase):
     # Tests of generating a full position or coordinate.
 
     def test_astro_planet(self):
-        moonobj = c.make_object(0, 11, b'Moon', None)
-        earth = planets.earth
-        for t in T0, TA, TB:
-            ra1, dec1, dis1 = c.astro_planet(t, moonobj)
-            g = earth(t).observe(planets.moon).astrometric()
 
-            self.eq(ra1 * tau / 24.0, g.ra, 0.001 * arcsecond)
-            self.eq(dec1 * tau / 360.0, g.dec, 0.001 * arcsecond)
-            self.eq(dis1, g.distance, 0.0001 * meter)
+        for t, planet in product((T0, TA, TB), planets_to_test):
+            obj = c.make_object(0, planet_codes[planet], b'planet', None)
+            ra, dec, dis = c.astro_planet(t, obj)
+
+            g = planets.earth(t).observe(planet).astrometric()
+
+            self.eq(ra * tau / 24.0, g.ra, 0.001 * arcsecond)
+            self.eq(dec * tau / 360.0, g.dec, 0.001 * arcsecond)
+            self.eq(dis, g.distance, 0.1 * meter)
 
     def test_app_planet(self):
-        moonobj = c.make_object(0, 11, b'Moon', None)
-        for t in T0, TA, TB:
-            ra1, dec1, dis1 = c.app_planet(t, moonobj)
-            g = planets.earth(t).observe(planets.moon).apparent()
 
-            self.eq(ra1 * tau / 24.0, g.ra, 0.001 * arcsecond)
-            self.eq(dec1 * tau / 360.0, g.dec, 0.001 * arcsecond)
-            self.eq(dis1, g.distance, 0.0001 * meter)
+        for t, planet in product((T0, TA, TB), planets_to_test):
+            obj = c.make_object(0, planet_codes[planet], b'planet', None)
+            ra, dec, dis = c.app_planet(t, obj)
+
+            g = planets.earth(t).observe(planet).apparent()
+
+            self.eq(ra * tau / 24.0, g.ra, 0.001 * arcsecond)
+            self.eq(dec * tau / 360.0, g.dec, 0.001 * arcsecond)
+            self.eq(dis, g.distance, 0.1 * meter)
 
     def test_topo_planet(self):
         position = c.make_on_surface(45.0, -75.0, 0.0, 10.0, 1010.0)
@@ -89,14 +93,14 @@ class NOVASTests(TestCase):
         delta_t = 0
 
         for t, planet in product((T0, TA, TB), planets_to_test):
-            object = c.make_object(0, planet_codes[planet], b'planet', None)
+            obj = c.make_object(0, planet_codes[planet], b'planet', None)
+            ra, dec, dis = c.topo_planet(t, delta_t, obj, position)
 
-            ra1, dec1, dis1 = c.topo_planet(t, delta_t, object, position)
             g = ggr(t).observe(planet).apparent()
 
-            self.eq(ra1 * tau / 24.0, g.ra, 0.001 * arcsecond)
-            self.eq(dec1 * tau / 360.0, g.dec, 0.001 * arcsecond)
-            self.eq(dis1, g.distance, 0.1 * meter)  # TODO: improve this?
+            self.eq(ra * tau / 24.0, g.ra, 0.001 * arcsecond)
+            self.eq(dec * tau / 360.0, g.dec, 0.001 * arcsecond)
+            self.eq(dis, g.distance, 0.1 * meter)  # TODO: improve this?
 
     # Tests of basic functions (in alphabetical order by NOVAS name).
 
