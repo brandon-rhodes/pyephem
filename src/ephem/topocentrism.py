@@ -2,11 +2,10 @@ from math import asin, acos, pi, sqrt
 
 from ephem import earthlib, timescales
 from ephem.angles import interpret_longitude, interpret_latitude
-from ephem.coordinates import GCRS, ICRS, rotation_from_ICRS, rotation_to_ICRS
+from ephem.coordinates import ICRS, rotation_to_ICRS
 from ephem.nutationlib import earth_tilt, nutation_matrix
 from ephem.planets import earth
 from ephem.precessionlib import precession_matrix
-from ephem.relativity import add_aberration, add_deflection
 
 halfpi = pi / 2.0
 ERAD = 6378136.6
