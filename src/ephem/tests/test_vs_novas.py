@@ -4,8 +4,8 @@ from itertools import product
 from numpy import array
 from unittest import TestCase
 
-from ephem import (angles, coordinates, earthlib, nutationlib, planets,
-                   precessionlib, timescales, topocentrism)
+from ephem import (angles, coordinates, earthlib, framelib, nutationlib,
+                   planets, precessionlib, timescales)
 try:
     import novas
     import novas.compat as c
@@ -143,11 +143,11 @@ class NOVASTests(TestCase):
         v = array((1, 2, 3))
 
         for a, b in zip(c.frame_tie(v, 0),
-                        v.dot(coordinates.rotation_from_ICRS)):
+                        v.dot(framelib.ICRS_to_J2000)):
             self.eq(a, b)
 
         for a, b in zip(c.frame_tie(v, -1),
-                        v.dot(coordinates.rotation_to_ICRS)):
+                        v.dot(framelib.J2000_to_ICRS)):
             self.eq(a, b)
 
     def test_fundamental_arguments(self):

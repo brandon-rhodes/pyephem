@@ -1,8 +1,9 @@
 """Coordinate systems."""
 
-from numpy import array, ndarray
+from numpy import ndarray
 from math import asin, atan2, cos, sin, pi, sqrt
-from ephem.angles import ASEC2RAD, interpret_longitude, interpret_latitude
+from ephem.angles import interpret_longitude, interpret_latitude
+from ephem.framelib import ICRS_to_J2000
 from ephem.nutationlib import nutation_matrix
 from ephem.precessionlib import precession_matrix
 from ephem.relativity import add_aberration, add_deflection
@@ -117,7 +118,7 @@ class GCRS(XYZ):
                        jd, use_earth)
         add_aberration(position, observer.velocity, self.lighttime)
 
-        position = position.dot(rotation_from_ICRS)
+        position = position.dot(ICRS_to_J2000)
         position = position.dot(precession_matrix(jd))
         position = position.dot(nutation_matrix(jd))
 
@@ -166,37 +167,3 @@ def to_polar(position):
     phi = atan2(-position[1], -position[0]) + pi
     theta = asin(position[2] / r)
     return phi, theta
-
-# ICRS Rotations
-
-# 'xi0', 'eta0', and 'da0' are ICRS frame biases in arcseconds taken
-# from IERS (2003) Conventions, Chapter 5.
-
-xi0  = -0.0166170
-eta0 = -0.0068192
-da0  = -0.01460
-
-# Compute elements of rotation matrix to first order the first time this
-# function is called.  Elements will be saved for future use and not
-# recomputed.
-
-xx =  1.0
-yx = -da0  * ASEC2RAD
-zx =  xi0  * ASEC2RAD
-xy =  da0  * ASEC2RAD
-yy =  1.0
-zy =  eta0 * ASEC2RAD
-xz = -xi0  * ASEC2RAD
-yz = -eta0 * ASEC2RAD
-zz =  1.0
-
-# Include second-order corrections to diagonal elements.
-
-xx = 1.0 - 0.5 * (yx * yx + zx * zx)
-yy = 1.0 - 0.5 * (yx * yx + zy * zy)
-zz = 1.0 - 0.5 * (zy * zy + zx * zx)
-
-#
-
-rotation_to_ICRS = array(((xx, xy, xz), (yx, yy, yz), (zx, zy, zz)))
-rotation_from_ICRS = array(((xx, yx, zx), (xy, yy, zy), (xz, yz, zz)))

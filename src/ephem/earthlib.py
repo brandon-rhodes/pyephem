@@ -4,7 +4,7 @@ from math import asin, acos, cos, pi, sin, sqrt
 from numpy import array
 from ephem import timescales
 from ephem.angles import DEG2RAD
-from ephem.coordinates import rotation_to_ICRS
+from ephem.framelib import J2000_to_ICRS
 from ephem.nutationlib import earth_tilt, nutation_matrix
 from ephem.precessionlib import precession_matrix
 
@@ -31,7 +31,7 @@ def geocentric_position_and_velocity(location, jd_tt):
 
     n = nutation_matrix(jd_tdb).T
     p = precession_matrix(jd_tdb).T
-    npr = n.dot(p).dot(rotation_to_ICRS)
+    npr = n.dot(p).dot(J2000_to_ICRS)
 
     return pos.dot(npr), vel.dot(npr)
 
