@@ -24,20 +24,18 @@ rmasses = {
     'moon': 27068700.387534,
     }
 
-def add_deflection(position, observer_position, ephemeris, jd, apply_earth,
+def add_deflection(position, observer, ephemeris, jd, apply_earth,
                    count=3):
-    """Compute the gravitational deflection of light for the observed object.
+    """Update `position` for how solar system masses will deflect its light.
 
-    Based on novas.c:grav_def().
-
-      loc_code (short int)
-         Code for location of observer, determining whether the
-         gravitational deflection due to the earth itself is applied.
-            = 0 ... No earth deflection (normally means observer
-                          is at geocenter)
-            = 1 ... Add in earth deflection (normally means
-         observer is on or above surface of earth, including earth
-         orbit)
+    Given the ICRS `position` [x,y,z] of an object (AU) that is being
+    viewed from the `observer` also expressed as [x,y,z], and given an
+    ephemeris that can be used to determine solar system body positions,
+    and given the time `jd` and Boolean `apply_earth` indicating whether
+    to worry about the effect of Earth's mass, and a `count` of how many
+    major solar system bodies to worry about, this function updates
+    `position` in-place to show how the masses in the solar system will
+    deflect its image.
 
     """
     # Compute light-time to observed object.
@@ -54,12 +52,12 @@ def add_deflection(position, observer_position, ephemeris, jd, apply_earth,
 
         # Get position of gravitating body wrt observer at time 'jd_tdb'.
 
-        gpv = bpv.position - observer_position
+        gpv = bpv.position - observer
 
         # Compute light-time from point on incoming light ray that is closest
         # to gravitating body.
 
-        dlt = d_light(position, gpv)
+        dlt = light_time_difference(position, gpv)
 
         # Get position of gravitating body wrt ss barycenter at time when
         # incoming photons were closest to it.
@@ -74,18 +72,18 @@ def add_deflection(position, observer_position, ephemeris, jd, apply_earth,
 
         bpv = ephemeris.compute(name, tclose)
         rmass = rmasses[name]
-        grav_vec(position, observer_position, bpv.position, rmass)
+        _add_deflection(position, observer, bpv.position, rmass)
 
     # If observer is not at geocenter, add in deflection due to Earth.
 
     if apply_earth:
         bpv = ephemeris.compute('earth', jd)
         rmass = rmasses['earth']
-        grav_vec(position, observer_position, bpv.position, rmass)
+        _add_deflection(position, observer, bpv.position, rmass)
 
 #
 
-def d_light(position, observer_position):
+def light_time_difference(position, observer_position):
     """Returns the difference in light-time, for a star,
       between the barycenter of the solar system and the observer (or
       the geocenter).
@@ -105,17 +103,20 @@ def d_light(position, observer_position):
 
 #
 
-def grav_vec(position, observer_position, deflector_position, rmass):
-    """Correct a position vector for the deflection of light.
+def _add_deflection(position, observer, deflector, rmass):
+    """Correct a position vector for how one particular mass deflects light.
 
-    Based on novas.c:grav_vec().
+    Given the ICRS `position` [x,y,z] of an object (AU) together with
+    the positions of an `observer` and a `deflector` of reciprocal mass
+    `rmass`, this function updates `position` in-place to show how much
+    the presence of the deflector will deflect the image of the object.
 
     """
     # Construct vector 'pq' from gravitating body to observed object and
     # construct vector 'pe' from gravitating body to observer.
 
-    pq = observer_position + position - deflector_position
-    pe = observer_position - deflector_position
+    pq = observer + position - deflector
+    pe = observer - deflector
 
     # Compute vector magnitudes and unit vectors.
 
@@ -152,8 +153,15 @@ def grav_vec(position, observer_position, deflector_position, rmass):
 #
 
 def add_aberration(position, velocity, lighttime):
-    """Corrects a relative position vector for aberration of light."""
+    """Correct a relative position vector for aberration of light.
 
+    Given the relative `position` [x,y,z] of an object (AU) from a
+    particular observer, the `velocity` [dx,dy,dz] at which the observer
+    is traveling (AU/day), and the light propagation delay `lighttime`
+    to the object (days), this function updates `position` in-place to
+    give the object's apparent position due to the aberration of light.
+
+    """
     if lighttime:
         p1mag = lighttime * C_AUDAY
     else:
