@@ -43,15 +43,9 @@ class XYZ(object):
         self.velocity = velocity
         self.jd = jd
 
-    def radec(self, epoch=T0):
-        if epoch != T0:
-            raise NotImplementedError()
-
-        # Geocentric astrometric.
-
-        return GeocentricRADec(self)
-
 class ICRS(XYZ):
+
+    geocentric = True
 
     def observe(self, body):
         # TODO: should also accept another ICRS?
@@ -74,35 +68,55 @@ class ICRS(XYZ):
             raise ValueError('observe() light-travel time failed to converge')
 
         g = GCRS(vector, target.velocity - self.velocity, jd)
+        g.observer = self
         g.distance = euclidian_distance
         g.lighttime = lighttime
         return g
 
 class GCRS(XYZ):
+
+    def astrometric(self, epoch=None):
+        eq = Astrometric()
+        eq.ra, eq.dec = to_polar(self.position)
+        eq.distance = self.distance
+        # TODO: epoch
+        return eq
+
+    def apparent(self):
+        jd = self.jd
+        observer = self.observer
+        position = self.position.copy()
+
+        from ephem.topocentrism import limb
+        from ephem.nutationlib import nutation_matrix
+        from ephem.precessionlib import precession_matrix
+        from ephem.relativity import add_aberration, add_deflection
+
+        if observer.geocentric:
+            use_earth = False
+        else:
+            limb_angle, nadir_angle = limb(position, observer.position)
+            use_earth = limb_angle >= 0.8
+        add_deflection(position, observer.position, jd, use_earth)
+        add_aberration(position, observer.velocity, self.lighttime)
+
+        position = position.dot(rotation_from_ICRS)
+        position = position.dot(precession_matrix(jd))
+        position = position.dot(nutation_matrix(jd))
+
+        eq = Apparent()
+        eq.ra, eq.dec = to_polar(position)
+        eq.distance = self.distance
+        return eq
+
+class RADec():
     pass
 
-class GeocentricRADec(ndarray):
+class Astrometric(RADec):
+    pass
 
-    def __new__(cls, other):
-        self = ndarray.__new__(cls, (3,))
-        if isinstance(other, GCRS):
-            x, y, z = other.position
-            r = sqrt(x*x + y*y + z*z)
-            self[0] = atan2(-y, -x) + pi
-            self[1] = asin(z / r)
-            self[2] = other.distance
-        else:
-            raise ValueError('how do I use this? %r' % (other,))
-        return self
-
-    @property
-    def ra(self): return Hours(self[0])
-
-    @property
-    def dec(self): return Degrees(self[1])
-
-    @property
-    def r(self): return self[2]
+class Apparent(RADec):
+    pass
 
 class HeliocentricLonLat(ndarray):
 
@@ -129,6 +143,14 @@ class HeliocentricLonLat(ndarray):
 
     @property
     def r(self): return self[2]
+
+def to_polar(position):
+    r = sqrt(position.dot(position))
+    phi = atan2(-position[1], -position[0]) + pi
+    theta = asin(position[2] / r)
+    return phi, theta
+
+# ICRS Rotations
 
 # 'xi0', 'eta0', and 'da0' are ICRS frame biases in arcseconds taken
 # from IERS (2003) Conventions, Chapter 5.

@@ -47,25 +47,7 @@ class Topos(object):
 class ToposXYZ(ICRS):
     """In ICRS, right?"""
 
-    def observe(self, body):
-        """Make geocentric apparent coord."""
-
-        pv = super(ToposXYZ, self).observe(body)
-
-
-        limb_angle, nadir_angle = limb(pv.position, self.position)
-        use_earth = limb_angle >= 0.8
-        add_deflection(pv.position, self.position, pv.jd, use_earth)
-        add_aberration(pv.position, self.velocity, pv.lighttime)
-
-        pv.position = pv.position.dot(rotation_from_ICRS)
-        pv.position = pv.position.dot(precession_matrix(pv.jd))
-        pv.position = pv.position.dot(nutation_matrix(pv.jd))
-
-        return pv
-
-class TopocentricXYZ(GCRS):
-    pass
+    geocentric = False
 
 #
 

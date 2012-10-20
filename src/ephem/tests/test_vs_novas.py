@@ -54,13 +54,24 @@ class NOVASTests(TestCase):
 
     def test_astro_planet(self):
         moonobj = c.make_object(0, 11, b'Moon', None)
+        earth = planets.earth
         for t in T0, TA, TB:
             ra1, dec1, dis1 = c.astro_planet(t, moonobj)
-            ra2, dec2, dis2 = planets.earth(t).observe(planets.moon).radec()
+            g = earth(t).observe(planets.moon).astrometric()
 
-            self.eq(ra1 * tau / 24.0, ra2, 0.001 * arcsecond)
-            self.eq(dec1 * tau / 360.0, dec2, 0.001 * arcsecond)
-            self.eq(dis1, dis2, 0.0001 * meter)
+            self.eq(ra1 * tau / 24.0, g.ra, 0.001 * arcsecond)
+            self.eq(dec1 * tau / 360.0, g.dec, 0.001 * arcsecond)
+            self.eq(dis1, g.distance, 0.0001 * meter)
+
+    def test_app_planet(self):
+        moonobj = c.make_object(0, 11, b'Moon', None)
+        for t in T0, TA, TB:
+            ra1, dec1, dis1 = c.app_planet(t, moonobj)
+            g = planets.earth(t).observe(planets.moon).apparent()
+
+            self.eq(ra1 * tau / 24.0, g.ra, 0.001 * arcsecond)
+            self.eq(dec1 * tau / 360.0, g.dec, 0.001 * arcsecond)
+            self.eq(dis1, g.distance, 0.0001 * meter)
 
     def test_topo_planet(self):
         position = c.make_on_surface(45.0, -75.0, 0.0, 10.0, 1010.0)
@@ -72,11 +83,11 @@ class NOVASTests(TestCase):
             object = c.make_object(0, planet_codes[planet], b'planet', None)
 
             ra1, dec1, dis1 = c.topo_planet(t, delta_t, object, position)
-            ra2, dec2, dis2 = ggr(t).observe(planet).radec()
+            g = ggr(t).observe(planet).apparent()
 
-            self.eq(ra1 * tau / 24.0, ra2, 0.001 * arcsecond)
-            self.eq(dec1 * tau / 360.0, dec2, 0.001 * arcsecond)
-            self.eq(dis1, dis2, 0.01 * meter)  # TODO: improve this?
+            self.eq(ra1 * tau / 24.0, g.ra, 0.001 * arcsecond)
+            self.eq(dec1 * tau / 360.0, g.dec, 0.001 * arcsecond)
+            self.eq(dis1, g.distance, 0.01 * meter)  # TODO: improve this?
 
     # Tests of basic functions (in alphabetical order by NOVAS name).
 
