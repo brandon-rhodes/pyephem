@@ -2,7 +2,7 @@
 
 from numpy import array, ndarray
 from math import asin, atan2, cos, sin, pi, sqrt
-from ephem.angles import ASEC2RAD
+from ephem.angles import ASEC2RAD, interpret_longitude, interpret_latitude
 from ephem.nutationlib import nutation_matrix
 from ephem.precessionlib import precession_matrix
 from ephem.relativity import add_aberration, add_deflection
@@ -11,10 +11,6 @@ J2000 = 2451545.0
 C_AUDAY = 173.1446326846693
 
 ecliptic_obliquity = (23 + (26/60.) + (21.406/3600.)) * pi / 180.
-
-import de421
-from jplephem import Ephemeris
-e = Ephemeris(de421)
 
 class Hours(float):
 
@@ -75,6 +71,27 @@ class ICRS(XYZ):
         g.lighttime = lighttime
         return g
 
+class Topos(object):
+
+    def __init__(self, longitude, latitude, elevation=0.,
+                 temperature=10.0, pressure=1010.0):
+        self.longitude = interpret_longitude(longitude)
+        self.latitude = interpret_latitude(latitude)
+        self.elevation = elevation
+
+    def __call__(self, jd_tt):
+        from ephem.earthlib import geocentric_position_and_velocity
+        e = self.earth(jd_tt)
+        tpos, tvel = geocentric_position_and_velocity(self, jd_tt)
+        t = ToposICRS(e.position + tpos, e.velocity + tvel, jd_tt)
+        t.ephemeris = self.ephemeris
+        return t
+
+class ToposICRS(ICRS):
+    """In ICRS, right?"""
+
+    geocentric = False
+
 class GCRS(XYZ):
 
     def astrometric(self, epoch=None):
@@ -89,7 +106,7 @@ class GCRS(XYZ):
         observer = self.observer
         position = self.position.copy()
 
-        from ephem.topocentrism import limb
+        from ephem.earthlib import limb
 
         if observer.geocentric:
             use_earth = False

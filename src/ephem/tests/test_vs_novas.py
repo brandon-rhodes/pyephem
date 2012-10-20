@@ -94,8 +94,8 @@ class NOVASTests(TestCase):
 
     def test_topo_planet(self):
         position = c.make_on_surface(45.0, -75.0, 0.0, 10.0, 1010.0)
-        ggr = topocentrism.Topos('75 W', '45 N', 0.0,
-                                 temperature=10.0, pressure=1010.0)
+        ggr = coordinates.Topos('75 W', '45 N', 0.0,
+                                temperature=10.0, pressure=1010.0)
         ggr.earth = self.e.earth
         ggr.ephemeris = self.e
         delta_t = 0
@@ -172,12 +172,12 @@ class NOVASTests(TestCase):
         self.delta = 1e-13
 
         obs1 = c.make_observer_on_surface(45.0, -75.0, 0.0, 10.0, 1010.0)
-        ggr = topocentrism.Topos('75 W', '45 N', 0.0,
-                                 temperature=10.0, pressure=1010.0)
+        ggr = coordinates.Topos('75 W', '45 N', 0.0,
+                                temperature=10.0, pressure=1010.0)
         delta_t = 0.0
 
         for v1, v2 in zip(c.geo_posvel(T0, delta_t, obs1),
-                          ggr.geocentric_position_and_velocity(T0)):
+                          earthlib.geocentric_position_and_velocity(ggr, T0)):
             for a, b in zip(v1, v2):
                 self.eq(a, b)
 
