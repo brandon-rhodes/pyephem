@@ -4,7 +4,6 @@ from ephem import earthlib, timescales
 from ephem.angles import interpret_longitude, interpret_latitude
 from ephem.coordinates import ICRS, rotation_to_ICRS
 from ephem.nutationlib import earth_tilt, nutation_matrix
-from ephem.planets import earth
 from ephem.precessionlib import precession_matrix
 
 halfpi = pi / 2.0
@@ -22,9 +21,11 @@ class Topos(object):
         self.elevation = elevation
 
     def __call__(self, jd_tt):
-        e = earth(jd_tt)
+        e = self.earth(jd_tt)
         tpos, tvel = self.geocentric_position_and_velocity(jd_tt)
-        return ToposXYZ(e.position + tpos, e.velocity + tvel, jd_tt)
+        t = ToposXYZ(e.position + tpos, e.velocity + tvel, jd_tt)
+        t.ephemeris = self.ephemeris
+        return t
 
     def geocentric_position_and_velocity(self, jd_tt):
         delta_t = 0

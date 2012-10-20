@@ -1,5 +1,4 @@
 from math import fabs, sqrt
-from ephem import planets
 
 C = 299792458.0
 AU = 1.4959787069098932e+11
@@ -9,26 +8,24 @@ C_AUDAY = 173.1446326846693
 
 GS = 1.32712440017987e+20
 
-deflectors = [
-    planets.sun, planets.jupiter, planets.saturn, planets.moon,
-    planets.venus, planets.uranus, planets.neptune,
-    ]
+deflectors = ['sun', 'jupiter', 'saturn', 'moon', 'venus', 'uranus', 'neptune']
 rmasses = {
     # earth-moon barycenter: 328900.561400
-    planets.mercury: 6023600.0,
-    planets.venus: 408523.71,
-    planets.earth: 332946.050895,
-    planets.mars: 3098708.0,
-    planets.jupiter: 1047.3486,
-    planets.saturn: 3497.898,
-    planets.uranus: 22902.98,
-    planets.neptune: 19412.24,
-    planets.pluto: 135200000.0,
-    planets.sun: 1.0,
-    planets.moon: 27068700.387534,
+    'mercury': 6023600.0,
+    'venus': 408523.71,
+    'earth': 332946.050895,
+    'mars': 3098708.0,
+    'jupiter': 1047.3486,
+    'saturn': 3497.898,
+    'uranus': 22902.98,
+    'neptune': 19412.24,
+    'pluto': 135200000.0,
+    'sun': 1.0,
+    'moon': 27068700.387534,
     }
 
-def add_deflection(position, observer_position, jd, apply_earth, corrections=3):
+def add_deflection(position, observer_position, ephemeris, jd, apply_earth,
+                   count=3):
     """Compute the gravitational deflection of light for the observed object.
 
     Based on novas.c:grav_def().
@@ -49,11 +46,11 @@ def add_deflection(position, observer_position, jd, apply_earth, corrections=3):
 
     # Cycle through gravitating bodies.
 
-    for planet in deflectors[:corrections]:
+    for name in deflectors[:count]:
 
         # Get position of gravitating body wrt ss barycenter at time 'jd_tdb'.
 
-        bpv = planet(jd)
+        bpv = ephemeris.compute(name, jd)
 
         # Get position of gravitating body wrt observer at time 'jd_tdb'.
 
@@ -75,15 +72,15 @@ def add_deflection(position, observer_position, jd, apply_earth, corrections=3):
         if tlt < dlt:
             tclose = jd - tlt
 
-        bpv = planet(tclose)
-        rmass = rmasses[planet]
+        bpv = ephemeris.compute(name, tclose)
+        rmass = rmasses[name]
         grav_vec(position, observer_position, bpv.position, rmass)
 
     # If observer is not at geocenter, add in deflection due to Earth.
 
     if apply_earth:
-        bpv = planets.earth(jd)
-        rmass = rmasses[planets.earth]
+        bpv = ephemeris.compute('earth', jd)
+        rmass = rmasses['earth']
         grav_vec(position, observer_position, bpv.position, rmass)
 
 #

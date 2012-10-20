@@ -1,48 +1,61 @@
-
-import de405
-from jplephem import Ephemeris
+import jplephem
 
 from ephem import earthlib, timescales
 from ephem.coordinates import ICRS
 
 DAY_S = 24.0 * 60.0 * 60.0
 KM_AU = 1.0 / earthlib.AU_KM
-KMS_AUDAY = KM_AU * DAY_S
 
 T0 = timescales.T0
-e = Ephemeris(de405)
 
 class Planet(object):
-    def __init__(self, jplname):
+    def __init__(self, ephemeris, jplephemeris, jplname):
+        self.ephemeris = ephemeris
+        self.jplephemeris = jplephemeris
         self.jplname = jplname
 
     def __repr__(self):
-        return '<planet %s>' % (self.jplname,)
+        return '<Planet %s>' % (self.jplname,)
 
     def __call__(self, jd):
-        pv = e.compute(self.jplname, jd)
-        return ICRS(pv[:3] * KM_AU, pv[3:] * KMS_AUDAY, jd)
+        pv = self.jplephemeris.compute(self.jplname, jd)
+        pv *= KM_AU
+        i = ICRS(pv[:3], pv[3:], jd)
+        i.ephemeris = self.ephemeris
+        return i
 
+class Ephemeris(object):
 
-sun = Planet('sun')
-mercury = Planet('mercury')
-venus = Planet('venus')
-mars = Planet('mars')
-jupiter = Planet('jupiter')
-saturn = Planet('saturn')
-uranus = Planet('uranus')
-neptune = Planet('neptune')
-pluto = Planet('pluto')
+    def __init__(self, module):
+        self.jplephemeris = e = jplephem.Ephemeris(module)
+        self.moon_share = 1.0 / (1.0 + e.EMRAT)
+        self.earth_share = e.EMRAT / (1.0 + e.EMRAT)
 
-moon_share = 1.0 / (1.0 + e.EMRAT)
-earth_share = e.EMRAT / (1.0 + e.EMRAT)
+        self.sun = Planet(self, self.jplephemeris, 'sun')
+        self.mercury = Planet(self, self.jplephemeris, 'mercury')
+        self.venus = Planet(self, self.jplephemeris, 'venus')
+        self.mars = Planet(self, self.jplephemeris, 'mars')
+        self.jupiter = Planet(self, self.jplephemeris, 'jupiter')
+        self.saturn = Planet(self, self.jplephemeris, 'saturn')
+        self.uranus = Planet(self, self.jplephemeris, 'uranus')
+        self.neptune = Planet(self, self.jplephemeris, 'neptune')
+        self.pluto = Planet(self, self.jplephemeris, 'pluto')
 
-def earth(jd):
-    pv = e.compute('earthmoon', jd) - e.compute('moon', jd) * moon_share
-    pv *= KM_AU
-    return ICRS(pv[:3], pv[3:], jd)
+    def compute(self, name, jd):
+        return getattr(self, name)(jd)
 
-def moon(jd):
-    pv = e.compute('earthmoon', jd) + e.compute('moon', jd) * earth_share
-    pv *= KM_AU
-    return ICRS(pv[:3], pv[3:], jd)
+    def earth(self, jd):
+        compute = self.jplephemeris.compute
+        pv = compute('earthmoon', jd) - compute('moon', jd) * self.moon_share
+        pv *= KM_AU
+        i = ICRS(pv[:3], pv[3:], jd)
+        i.ephemeris = self
+        return i
+
+    def moon(self, jd):
+        compute = self.jplephemeris.compute
+        pv = compute('earthmoon', jd) + compute('moon', jd) * self.earth_share
+        pv *= KM_AU
+        i = ICRS(pv[:3], pv[3:], jd)
+        i.ephemeris = self
+        return i

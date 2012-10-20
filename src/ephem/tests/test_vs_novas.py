@@ -29,16 +29,16 @@ TA = c.julian_date(1969, 7, 20, 20. + 18./60.)  # arbitrary test date
 TB = c.julian_date(2012, 12, 21)                # arbitrary test date
 
 planet_codes = {
-    planets.mercury: 1,
-    planets.venus: 2,
-    planets.mars: 4,
-    planets.jupiter: 5,
-    planets.saturn: 6,
-    planets.uranus: 7,
-    planets.neptune: 8,
-    planets.pluto: 9,
-    planets.sun: 10,
-    planets.moon: 11,
+    'mercury': 1,
+    'venus': 2,
+    'mars': 4,
+    'jupiter': 5,
+    'saturn': 6,
+    'uranus': 7,
+    'neptune': 8,
+    'pluto': 9,
+    'sun': 10,
+    'moon': 11,
     }
 
 planets_to_test = planet_codes.keys()
@@ -51,6 +51,8 @@ class NOVASTests(TestCase):
     def setUpClass(cls):
         if novas is None:
             cls.__unittest_skip__ = True
+        import de405
+        cls.e = planets.Ephemeris(de405)
 
     def eq(self, first, second, delta=None):
         if delta is None:
@@ -64,11 +66,13 @@ class NOVASTests(TestCase):
 
     def test_astro_planet(self):
 
-        for t, planet in product((T0, TA, TB), planets_to_test):
-            obj = c.make_object(0, planet_codes[planet], b'planet', None)
+        for t, name in product((T0, TA, TB), planets_to_test):
+            obj = c.make_object(0, planet_codes[name], b'planet', None)
             ra, dec, dis = c.astro_planet(t, obj)
 
-            g = planets.earth(t).observe(planet).astrometric()
+            earth = self.e.earth
+            planet = getattr(self.e, name)
+            g = earth(t).observe(planet).astrometric()
 
             self.eq(ra * tau / 24.0, g.ra, 0.001 * arcsecond)
             self.eq(dec * tau / 360.0, g.dec, 0.001 * arcsecond)
@@ -76,11 +80,13 @@ class NOVASTests(TestCase):
 
     def test_app_planet(self):
 
-        for t, planet in product((T0, TA, TB), planets_to_test):
-            obj = c.make_object(0, planet_codes[planet], b'planet', None)
+        for t, name in product((T0, TA, TB), planets_to_test):
+            obj = c.make_object(0, planet_codes[name], b'planet', None)
             ra, dec, dis = c.app_planet(t, obj)
 
-            g = planets.earth(t).observe(planet).apparent()
+            earth = self.e.earth
+            planet = getattr(self.e, name)
+            g = earth(t).observe(planet).apparent()
 
             self.eq(ra * tau / 24.0, g.ra, 0.001 * arcsecond)
             self.eq(dec * tau / 360.0, g.dec, 0.001 * arcsecond)
@@ -90,12 +96,15 @@ class NOVASTests(TestCase):
         position = c.make_on_surface(45.0, -75.0, 0.0, 10.0, 1010.0)
         ggr = topocentrism.Topos('75 W', '45 N', 0.0,
                                  temperature=10.0, pressure=1010.0)
+        ggr.earth = self.e.earth
+        ggr.ephemeris = self.e
         delta_t = 0
 
-        for t, planet in product((T0, TA, TB), planets_to_test):
-            obj = c.make_object(0, planet_codes[planet], b'planet', None)
+        for t, name in product((T0, TA, TB), planets_to_test):
+            obj = c.make_object(0, planet_codes[name], b'planet', None)
             ra, dec, dis = c.topo_planet(t, delta_t, obj, position)
 
+            planet = getattr(self.e, name)
             g = ggr(t).observe(planet).apparent()
 
             self.eq(ra * tau / 24.0, g.ra, 0.001 * arcsecond)

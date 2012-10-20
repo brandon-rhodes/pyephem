@@ -97,7 +97,8 @@ class GCRS(XYZ):
         else:
             limb_angle, nadir_angle = limb(position, observer.position)
             use_earth = limb_angle >= 0.8
-        add_deflection(position, observer.position, jd, use_earth)
+        add_deflection(position, observer.position, observer.ephemeris,
+                       jd, use_earth)
         add_aberration(position, observer.velocity, self.lighttime)
 
         position = position.dot(rotation_from_ICRS)
