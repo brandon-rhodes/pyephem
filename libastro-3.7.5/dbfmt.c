@@ -430,7 +430,7 @@ crack_f (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 	status = f_scansexa (sflds[0], &tmp);
 	if (status < 0) {
 		if (whynot)
-		sprintf (whynot, "%s: Invalid angle string %s", enm(flds), sflds[0]);
+		sprintf (whynot, "%s: Invalid angle string '%s'", enm(flds), sflds[0]);
 		return (-1);
 	}
 	op->f_RA = hrrad(tmp);
@@ -441,7 +441,7 @@ crack_f (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 	status = f_scansexa (sflds[0], &tmp);
 	if (status < 0) {
 		if (whynot)
-		sprintf (whynot, "%s: Invalid angle string %s", enm(flds), sflds[0]);
+		sprintf (whynot, "%s: Invalid angle string '%s'", enm(flds), sflds[0]);
 		return (-1);
 	}
 	op->f_dec = degrad(tmp);
@@ -688,7 +688,7 @@ crack_B (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 	status = f_scansexa (sflds[0], &tmp);
 	if (status < 0) {
 		if (whynot)
-		sprintf (whynot, "%s: Invalid angle string %s", enm(flds), sflds[0]);
+		sprintf (whynot, "%s: Invalid angle string '%s'", enm(flds), sflds[0]);
 		return (-1);
 	}
 	op->f_RA = hrrad(tmp);
@@ -699,7 +699,7 @@ crack_B (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 	status = f_scansexa (sflds[0], &tmp);
 	if (status < 0) {
 		if (whynot)
-		sprintf (whynot, "%s: Invalid angle string %s", enm(flds), sflds[0]);
+		sprintf (whynot, "%s: Invalid angle string '%s'", enm(flds), sflds[0]);
 		return (-1);
 	}
 	op->f_dec = degrad(tmp);
