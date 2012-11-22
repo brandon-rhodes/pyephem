@@ -1,0 +1,19 @@
+# Config file for automatic testing at travis-ci.org
+
+language: python
+
+python:
+#  - "2.5"
+#  - "2.6"
+  - "2.7"
+  - "3.2"
+
+# command to install dependencies
+install:
+  # Need to install in-place or we'll get an ImportError when running the tests
+  - python setup.py build_ext --inplace
+
+# command to run tests
+script:
+  - cd src/ephem/tests/
+  - python -m unittest discover
