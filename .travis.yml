@@ -10,8 +10,7 @@ python:
 
 # command to install dependencies
 install:
-  # Need to install in-place or we'll get an ImportError when running the tests
-  - python setup.py build_ext --inplace
+  - python setup.py install
 
 # command to run tests
 script:
