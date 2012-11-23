@@ -1,8 +1,6 @@
+/.tox/
+/MANIFEST
 *.py[co]
-*.egg-info
-*~
-*.bak
-build/
-src/ephem/_libastro.so
-src/ephem/doc/_build
-tmp*.py
+/src/ephem/_libastro.so
+/src/ephem/doc/_build
+/tmp*.py
