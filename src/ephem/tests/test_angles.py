@@ -18,6 +18,12 @@ class AngleTests(unittest.TestCase):
     def test_degrees_constructor(self):
         self.assertAlmostEqual(self.d, degrees('85:56:37'),
                                places=arcsecond_places)
+    def test_degrees_constructor_refuses_alphabetics(self):
+        self.assertRaises(ValueError, degrees, 'foo:bar')
+        self.assertRaises(ValueError, degrees, '1:bar')
+        self.assertRaises(ValueError, degrees, '1:2:bar')
+        # self.assertRaises(ValueError, degrees, '1:2:3bar') - drat - fix?
+
     def test_degrees_float_value(self):
         self.assertAlmostEqual(self.d, 1.5)
     def test_degrees_string_value(self):
