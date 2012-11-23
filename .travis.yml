@@ -11,12 +11,8 @@ python:
 
 # command to install dependencies
 install:
-  - python setup.py install
-  # To run tests on Python 2.5 and 2.6 we need the unittest2 module
-  - pip install -q unittest2 --use-mirrors
+  - pip install -q tox --use-mirrors
 
 # command to run tests
 script:
-  - cd src/ephem/tests/
-  # - python -m unittest discover
-  - unit2 discover ephem
+  - tox
