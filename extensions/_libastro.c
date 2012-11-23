@@ -608,9 +608,13 @@ static int parse_angle(PyObject *value, double factor, double *result)
 	  double scaled;
 	  char *s = PyString_AsString(value);
           if (!s) return -1;
-          f_scansexa(s, &scaled);
+          int status = f_scansexa(s, &scaled);
 	  *result = scaled / factor;
-	  return 0;
+	  if (status == -1) {
+          PyErr_Format(PyExc_ValueError, "your angle string '%s' does not "
+                       "have the format [number[:number[:number]]]", s);
+	  }
+	  return status;
      } else {
 	  PyErr_SetString(PyExc_TypeError,
 			  "angle can only be created from string or number");
@@ -638,8 +642,11 @@ static double to_angle(PyObject *value, double efactor, int *status)
                *status = -1;
                return 0;
           }
-          f_scansexa(s, &scaled);
-	  *status = 0;
+          *status = f_scansexa(s, &scaled);
+          if (*status == -1) {
+              PyErr_Format(PyExc_ValueError, "your angle string '%s' does not "
+                           "have the format [number[:number[:number]]]", s);
+          }
 	  return scaled / efactor;
      } else {
 	  PyErr_SetString(PyExc_TypeError,

@@ -115,10 +115,10 @@ fs_date (char out[], int format, double jd)
 }
 
 
-/* convert sexagesimal string str AxBxC to double.
- *   x can be anything non-numeric. Any missing A, B or C will be assumed 0.
+/* convert sexagesimal string str A:B:C to double.
+ *   Any missing A, B or C will be assumed 0.
  *   optional - and + can be anywhere.
- * return 0 if ok, -1 if can't find a thing.
+ * return 0 if ok, -1 if can't find a thing or A, B or C are invalid numbers.
  */
 int
 f_scansexa (
@@ -128,7 +128,7 @@ double *dp)		/* cracked value, if return 0 */
 	double a, b, c;
 	char str[256];
 	char *neg, *s, *end;
-	int isneg;
+	int isneg, status;
 
 	/* copy str0 so we can play with it */
 	strncpy (str, str0, sizeof(str)-1);
@@ -146,29 +146,36 @@ double *dp)		/* cracked value, if return 0 */
            Note that, per the semantics of the strtod call, if we run
            out of valid numbers to parse, then the last few values will
            just get zero. */
-        a = PyOS_ascii_strtod(str, &end);
-        if (str == end) { /* since a will be -1 */
-             a = b = c = 0.0;
-        } else {
-             s = end;
-             if (*s == ':') s++;
-             b = PyOS_ascii_strtod(s, &end);
-             if (s == end) { /* since b will be -1 */
-                  b = c = 0.0;
-             } else {
-                  s = end;
-                  if (*s == ':') s++;
-                  c = PyOS_ascii_strtod(s, &end);
-                  if (s == end) /* since c will be -1 */
-                       c = 0.0;
-             }
+        status = 0;
+        s = str;
+        a = PyOS_ascii_strtod(s, &end);
+        if (end == s) { /* since a will be -1 */
+             a = 0.0;
+             /* don't fail if A is an empty string */
+             if ((*end != ':') && (*end != '\0')) status = -1;
+        }
+        s = end;
+        if (*s == ':') s++;
+        b = PyOS_ascii_strtod(s, &end);
+        if (end == s) { /* since b will be -1 */
+             b = 0.0;
+             /* don't fail if B is an empty string */
+             if ((*end != ':') && (*end != '\0')) status = -1;
+        }
+        s = end;
+        if (*s == ':') s++;
+        c = PyOS_ascii_strtod(s, &end);
+        if (end == s) { /* since c will be -1 */
+             c = 0.0;
+             /* don't fail if C is an empty string */
+             if ((*end != ':') && (*end != '\0')) status = -1;
         }
 
 	/* back to one value, restoring neg */
 	*dp = a + b/60.0 + c/3600.0;
 	if (isneg)
 	    *dp *= -1;
-	return (0);
+	return status;
 }
 
 /* crack a floating date string, bp, of the form X/Y/Z determined by the
