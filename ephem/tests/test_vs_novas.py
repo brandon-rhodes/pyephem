@@ -232,11 +232,11 @@ class NOVASTests(TestCase):
     def test_sidereal_time(self):
         delta_t = 0.0
         self.delta = 1e-13
-        self.eq(c.sidereal_time(T0, 0.0, delta_t, False),
+        self.eq(c.sidereal_time(T0, 0.0, delta_t, False, True),
                 timescales.sidereal_time(T0, delta_t))
-        self.eq(c.sidereal_time(TA, 0.0, delta_t, False),
+        self.eq(c.sidereal_time(TA, 0.0, delta_t, False, True),
                 timescales.sidereal_time(TA, delta_t))
-        self.eq(c.sidereal_time(TB, 0.0, delta_t, False),
+        self.eq(c.sidereal_time(TB, 0.0, delta_t, False, True),
                 timescales.sidereal_time(TB, delta_t))
 
     def test_terra(self):
