@@ -4,3 +4,4 @@
 /src/ephem/_libastro.so
 /src/ephem/doc/_build
 /tmp*.py
+/build
