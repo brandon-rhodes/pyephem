@@ -42,11 +42,11 @@ we simply create a ``Uranus`` object
 and ask where it was on the 13th of March, 1781:
 
 >>> u = ephem.Uranus()
->>> u.compute('1871/3/13')
+>>> u.compute('1781/3/13')
 >>> print u.ra, u.dec, u.mag
-7:38:06.27 22:04:47.4 5.46
+5:35:45.28 23:32:54.1 5.6
 >>> print ephem.constellation(u)
-('Gem', 'Gemini')
+('Tau', 'Taurus')
 
 Calling ``compute()`` sets many attributes of a body,
 beyond the right ascension, declination, and magnitude printed here;
