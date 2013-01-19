@@ -2,3 +2,4 @@
 MANIFEST
 src/ephem/doc/_build
 tmp*.py
+*.pyc
