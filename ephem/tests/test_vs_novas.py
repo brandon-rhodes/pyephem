@@ -6,8 +6,17 @@ from unittest import TestCase
 
 from ephem import (angles, coordinates, earthlib, framelib, nutationlib,
                    planets, precessionlib, timescales)
+
+try:
+    import de405
+except ImportError:
+    de405 = None
+
 try:
     import novas
+except ImportError:
+    novas = None
+else:
     import novas.compat as c
     import novas.compat.eph_manager
 
@@ -16,8 +25,8 @@ try:
     c_nutation = c.nutation
     import novas.compat.nutation  # overwrites nutation() function with module!
 
-except ImportError:
-    novas = None
+    TA = c.julian_date(1969, 7, 20, 20. + 18./60.)  # arbitrary test date
+    TB = c.julian_date(2012, 12, 21)                # arbitrary test date
 
 tau = angles.tau
 degree = tau / 360.0
@@ -25,8 +34,6 @@ arcminute = degree / 60.0
 arcsecond = arcminute / 60.0
 meter = 1.0 / earthlib.AU_KM
 T0 = timescales.T0
-TA = c.julian_date(1969, 7, 20, 20. + 18./60.)  # arbitrary test date
-TB = c.julian_date(2012, 12, 21)                # arbitrary test date
 
 planet_codes = {
     'mercury': 1,
@@ -49,9 +56,9 @@ class NOVASTests(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        if novas is None:
+        if de405 is None or novas is None:
             cls.__unittest_skip__ = True
-        import de405
+            return
         cls.e = planets.Ephemeris(de405)
 
     def eq(self, first, second, delta=None):
