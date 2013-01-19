@@ -1,6 +1,8 @@
+.coverage
 .tox
 MANIFEST
 build
+htmlcov
 src/ephem/doc/_build
 tmp*.py
 *.pyc
