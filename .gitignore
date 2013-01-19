@@ -1,5 +1,7 @@
 .tox
 MANIFEST
+build
 src/ephem/doc/_build
 tmp*.py
 *.pyc
+*.egg-info
