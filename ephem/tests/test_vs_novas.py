@@ -14,6 +14,7 @@ except ImportError:
 
 try:
     import novas
+    import novas_de405
 except ImportError:
     novas = None
 else:
