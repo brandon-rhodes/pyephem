@@ -28,7 +28,7 @@ def read(*filenames):
 setup(name = 'pyephem',
       version = __version__,
       description = 'Scientific-grade astronomy routines',
-      long_description = read('README'),
+      long_description = read('README.rst'),
       license = 'LGPL',
       author = 'Brandon Craig Rhodes',
       author_email = 'brandon@rhodesmill.org',
