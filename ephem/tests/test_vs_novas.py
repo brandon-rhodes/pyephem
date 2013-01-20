@@ -196,14 +196,14 @@ class NOVASTests(TestCase):
     def test_iau2000a(self):
         self.delta = 1e-19
 
-        self.eq(nutationlib.iau2000a(T0)[0], c.nutation.iau2000a(T0, 0.0)[0])
-        self.eq(nutationlib.iau2000a(T0)[1], c.nutation.iau2000a(T0, 0.0)[1])
+        self.eq(nutationlib.iau2000a(A0)[0], c.nutation.iau2000a(T0, 0.0)[0])
+        self.eq(nutationlib.iau2000a(A0)[1], c.nutation.iau2000a(T0, 0.0)[1])
 
-        self.eq(nutationlib.iau2000a(TA)[0], c.nutation.iau2000a(TA, 0.0)[0])
-        self.eq(nutationlib.iau2000a(TA)[1], c.nutation.iau2000a(TA, 0.0)[1])
+        self.eq(nutationlib.iau2000a(AA)[0], c.nutation.iau2000a(TA, 0.0)[0])
+        self.eq(nutationlib.iau2000a(AA)[1], c.nutation.iau2000a(TA, 0.0)[1])
 
-        self.eq(nutationlib.iau2000a(TB)[0], c.nutation.iau2000a(TB, 0.0)[0])
-        self.eq(nutationlib.iau2000a(TB)[1], c.nutation.iau2000a(TB, 0.0)[1])
+        self.eq(nutationlib.iau2000a(AB)[0], c.nutation.iau2000a(TB, 0.0)[0])
+        self.eq(nutationlib.iau2000a(AB)[1], c.nutation.iau2000a(TB, 0.0)[1])
 
     def test_mean_obliq(self):
         self.delta = 0
