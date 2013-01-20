@@ -36,6 +36,10 @@ arcsecond = arcminute / 60.0
 meter = 1.0 / earthlib.AU_KM
 T0 = timescales.T0
 
+A0 = array([T0])
+AA = array([TA])
+AB = array([TB])
+
 planet_codes = {
     'mercury': 1,
     'venus': 2,
@@ -129,21 +133,21 @@ class NOVASTests(TestCase):
 
     def test_earth_tilt(self):
         self.delta = 1e-14
-        for a, b in zip(c.e_tilt(T0), nutationlib.earth_tilt(T0)):
+        for a, b in zip(c.e_tilt(T0), nutationlib.earth_tilt(A0)):
             self.eq(a, b)
-        for a, b in zip(c.e_tilt(TA), nutationlib.earth_tilt(TA)):
+        for a, b in zip(c.e_tilt(TA), nutationlib.earth_tilt(AA)):
             self.eq(a, b)
-        for a, b in zip(c.e_tilt(TB), nutationlib.earth_tilt(TB)):
+        for a, b in zip(c.e_tilt(TB), nutationlib.earth_tilt(AB)):
             self.eq(a, b)
 
     def test_equation_of_the_equinoxes_complimentary_terms(self):
         self.delta = 1e-23
 
-        self.eq(nutationlib.equation_of_the_equinoxes_complimentary_terms(T0),
+        self.eq(nutationlib.equation_of_the_equinoxes_complimentary_terms(A0),
                 c.ee_ct(T0, 0.0, 0))
-        self.eq(nutationlib.equation_of_the_equinoxes_complimentary_terms(TA),
+        self.eq(nutationlib.equation_of_the_equinoxes_complimentary_terms(AA),
                 c.ee_ct(TA, 0.0, 0))
-        self.eq(nutationlib.equation_of_the_equinoxes_complimentary_terms(TB),
+        self.eq(nutationlib.equation_of_the_equinoxes_complimentary_terms(AB),
                 c.ee_ct(TB, 0.0, 0))
 
     def test_frame_tie(self):
@@ -185,7 +189,7 @@ class NOVASTests(TestCase):
         delta_t = 0.0
 
         for v1, v2 in zip(c.geo_posvel(T0, delta_t, obs1),
-                          earthlib.geocentric_position_and_velocity(ggr, T0)):
+                          earthlib.geocentric_position_and_velocity(ggr, A0)):
             for a, b in zip(v1, v2):
                 self.eq(a, b)
 
@@ -213,15 +217,15 @@ class NOVASTests(TestCase):
         v = array([1, 2, 3])
 
         for a, b in zip(c_nutation(T0, v, direction=0),
-                        v.dot(nutationlib.nutation_matrix(T0))):
+                        v.dot(nutationlib.nutation_matrix(A0)[:,:,0])):
             self.eq(a, b)
 
         for a, b in zip(c_nutation(TA, v, direction=0),
-                        v.dot(nutationlib.nutation_matrix(TA))):
+                        v.dot(nutationlib.nutation_matrix(AA)[:,:,0])):
             self.eq(a, b)
 
         for a, b in zip(c_nutation(TB, v, direction=1),
-                        v.dot(nutationlib.nutation_matrix(TB).T)):
+                        v.dot(nutationlib.nutation_matrix(AB).T[0])):
             self.eq(a, b)
 
     def test_precession(self):

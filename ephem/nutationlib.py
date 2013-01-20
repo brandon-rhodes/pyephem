@@ -196,7 +196,7 @@ def iau2000a(jd_tt):
 
         # Argument and functions.
 
-        arg = fmod((nals_t[i] * a.T).sum(axis=1), tau)
+        arg = fmod((nals_t[i] * a.T).sum(axis=-1), tau)
 
         sarg = sin(arg)
         carg = cos(arg)
