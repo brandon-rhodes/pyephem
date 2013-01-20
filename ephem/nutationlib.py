@@ -1,4 +1,4 @@
-from numpy import array, cos, fmod, sin, sum, zeros
+from numpy import array, cos, fmod, sin, tensordot, zeros
 from ephem.angles import ASEC2RAD, ASEC360, DEG2RAD, tau
 from ephem.timescales import T0
 
@@ -192,11 +192,11 @@ def iau2000a(jd_tt):
     sarg = sin(arg)
     carg = cos(arg)
 
-    dpde = array((sarg, t * sarg, carg, carg, t * carg, sarg)).T * cls_t
-    dpde = dpde.sum(axis=1)
+    stsc = array((sarg, t * sarg, carg)).T
+    ctcs = array((carg, t * carg, sarg)).T
 
-    dp = dpde[:,:3].sum(axis=1)
-    de = dpde[:,3:].sum(axis=1)
+    dp = tensordot(stsc, lunisolar_longitude_coefficients)
+    de = tensordot(ctcs, lunisolar_obliquity_coefficients)
 
     # Convert from 0.1 microarcsec units to radians.
 
@@ -247,15 +247,10 @@ def iau2000a(jd_tt):
                alme, alve, alea, alma, alju, alsa, alur, alne, apa))
 
     arg = fmod(napl_t.dot(a), tau)
+    sc = array((sin(arg), cos(arg))).T
 
-    sarg = sin(arg)
-    carg = cos(arg)
-
-    dp = (array((sarg, carg)).T * cpl_t[:,:2]).sum(axis=2).sum(axis=1)
-    de = (array((sarg, carg)).T * cpl_t[:,2:]).sum(axis=2).sum(axis=1)
-
-    dpsipl = dp * factor
-    depspl = de * factor
+    dpsipl = tensordot(sc, nutation_coefficients_longitude) * factor
+    depspl = tensordot(sc, nutation_coefficients_obliquity) * factor
 
     # Total: Add planetary and luni-solar components.
 
@@ -1082,10 +1077,10 @@ nals_t = array((
 # Luni-Solar nutation coefficients, unit 1e-7 arcsec:
 # longitude (sin, t*sin, cos), obliquity (cos, t*cos, sin)
 
-# Each row of coefficients in 'cls_t' belongs with the corresponding
-# row of fundamental-argument multipliers in 'nals_t'.
+# Each row of coefficients belongs with the corresponding row of
+# fundamental-argument multipliers in 'nals_t'.
 
-cls_t = array((
+lunisolar_coefficients = array((
       (-172064161.0, -174666.0,  33386.0, 92052331.0,  9086.0, 15377.0),
       ( -13170906.0,   -1675.0, -13696.0,  5730336.0, -3015.0, -4587.0),
       (  -2276413.0,    -234.0,   2796.0,   978459.0,  -485.0,  1374.0),
@@ -1765,6 +1760,9 @@ cls_t = array((
       (        -3.0,       0.0,      0.0,        1.0,     0.0,     0.0),
       (        -3.0,       0.0,      0.0,        2.0,     0.0,     0.0),
       ))
+
+lunisolar_longitude_coefficients = lunisolar_coefficients[:,:3]
+lunisolar_obliquity_coefficients = lunisolar_coefficients[:,3:]
 
 # Planetary argument multipliers:
 #      L   L'  F   D   Om  Me  Ve  E  Ma  Ju  Sa  Ur  Ne  pre
@@ -2465,7 +2463,7 @@ napl_t = array((
 # Each row of coefficients in 'cpl_t' belongs with the corresponding
 # row of fundamental-argument multipliers in 'napl_t'.
 
-cpl_t = array((
+nutation_coefficients = array((
       ( 1440.0,          0.0,          0.0,          0.0),
       (   56.0,       -117.0,        -42.0,        -40.0),
       (  125.0,        -43.0,          0.0,        -54.0),
@@ -3154,3 +3152,6 @@ cpl_t = array((
       (    3.0,          0.0,          0.0,         -1.0),
       (    3.0,          0.0,          0.0,         -1.0),
       ))
+
+nutation_coefficients_longitude = nutation_coefficients[:,:2]
+nutation_coefficients_obliquity = nutation_coefficients[:,2:]
