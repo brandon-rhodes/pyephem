@@ -1,5 +1,4 @@
-from math import cos, fmod, sin
-from numpy import array
+from numpy import array, cos, fmod, sin
 from ephem.angles import ASEC2RAD, ASEC360, DEG2RAD, tau
 from ephem.timescales import T0
 

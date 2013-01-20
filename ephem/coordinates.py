@@ -5,6 +5,7 @@ from numpy import arcsin, arctan2, ndarray, max, min, sqrt
 from math import cos, sin, pi
 from ephem.angles import interpret_longitude, interpret_latitude
 from ephem.framelib import ICRS_to_J2000
+from ephem.functions import dots
 from ephem.nutationlib import nutation_matrix
 from ephem.precessionlib import precession_matrix
 from ephem.relativity import add_aberration, add_deflection
@@ -105,8 +106,9 @@ class GCRS(XYZ):
 
     def apparent(self):
         jd = self.jd
-        observer = self.observer
         position = self.position.copy()
+
+        observer = self.observer
 
         from ephem.earthlib import limb
 
@@ -115,13 +117,21 @@ class GCRS(XYZ):
         else:
             limb_angle, nadir_angle = limb(position, observer.position)
             use_earth = limb_angle >= 0.8
+
         add_deflection(position, observer.position, observer.ephemeris,
                        jd, use_earth)
         add_aberration(position, observer.velocity, self.lighttime)
 
-        position = position.dot(ICRS_to_J2000)
-        position = position.dot(precession_matrix(jd))
-        position = position.dot(nutation_matrix(jd))
+        if np.isscalar(jd):
+            jd = np.array((jd,))
+            position = position.reshape((3, 1))
+        else:
+            position = position.copy()
+
+        position = position.T.dot(ICRS_to_J2000)
+        position = np.einsum('ij,jki->ik', position, precession_matrix(jd))
+        position = np.einsum('ij,jki->ik', position, nutation_matrix(jd))
+        position = position.T
 
         eq = Apparent()
         eq.ra, eq.dec = to_polar(position)

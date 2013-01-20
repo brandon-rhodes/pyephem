@@ -1,4 +1,5 @@
-from math import fabs, sqrt
+from numpy import abs, sqrt, where
+from ephem.functions import dots, length
 
 C = 299792458.0
 AU = 1.4959787069098932e+11
@@ -39,7 +40,7 @@ def add_deflection(position, observer, ephemeris, jd, apply_earth, count=3):
     """
     # Compute light-time to observed object.
 
-    tlt = sqrt(position.dot(position)) / C_AUDAY
+    tlt = length(position) / C_AUDAY
 
     # Cycle through gravitating bodies.
 
@@ -63,11 +64,14 @@ def add_deflection(position, observer, ephemeris, jd, apply_earth, count=3):
 
         tclose = jd
 
-        if dlt > 0.0:
-            tclose = jd - dlt
+        # if dlt > 0.0:
+        #     tclose = jd - dlt
 
-        if tlt < dlt:
-            tclose = jd - tlt
+        tclose = where(dlt > 0.0, jd - dlt, tclose)
+        tclose = where(tlt < dlt, jd - tlt, tclose)
+
+        # if tlt < dlt:
+        #     tclose = jd - tlt
 
         bpv = ephemeris.compute(name, tclose)
         rmass = rmasses[name]
@@ -91,13 +95,13 @@ def light_time_difference(position, observer_position):
     # From 'pos1', form unit vector 'u1' in direction of star or light
     # source.
 
-    dis = sqrt(position.dot(position))
+    dis = length(position)
     u1 = position / dis
 
     # Light-time returned is the projection of vector 'pos_obs' onto the
     # unit vector 'u1' (formed from 'pos1'), divided by the speed of light.
 
-    diflt = observer_position.dot(u1) / C_AUDAY;
+    diflt = (observer_position * u1).sum(axis=0) / C_AUDAY
     return diflt
 
 #
@@ -119,9 +123,9 @@ def _add_deflection(position, observer, deflector, rmass):
 
     # Compute vector magnitudes and unit vectors.
 
-    pmag = sqrt(position.dot(position))
-    qmag = sqrt(pq.dot(pq))
-    emag = sqrt(pe.dot(pe))
+    pmag = length(position)
+    qmag = length(pq)
+    emag = length(pe)
 
     phat = position / pmag
     qhat = pq / qmag
@@ -129,16 +133,15 @@ def _add_deflection(position, observer, deflector, rmass):
 
     # Compute dot products of vectors.
 
-    pdotq = phat.dot(qhat)
-    qdote = qhat.dot(ehat)
-    edotp = ehat.dot(phat)
+    pdotq = dots(phat, qhat)
+    qdote = dots(qhat, ehat)
+    edotp = dots(ehat, phat)
 
     # If gravitating body is observed object, or is on a straight line
     # toward or away from observed object to within 1 arcsec, deflection
     # is set to zero set 'pos2' equal to 'pos1'.
 
-    if fabs(edotp) > 0.99999999999:
-        return
+    make_no_correction = abs(edotp) > 0.99999999999
 
     # Compute scalar factors.
 
@@ -147,7 +150,8 @@ def _add_deflection(position, observer, deflector, rmass):
 
     # Correct position vector.
 
-    position += fac1 * (pdotq * ehat - edotp * qhat) / fac2 * pmag
+    position += where(make_no_correction, 0.0,
+                      fac1 * (pdotq * ehat - edotp * qhat) / fac2 * pmag)
 
 #
 
@@ -161,15 +165,10 @@ def add_aberration(position, velocity, lighttime):
     give the object's apparent position due to the aberration of light.
 
     """
-    if lighttime:
-        p1mag = lighttime * C_AUDAY
-    else:
-        p1mag = sqrt(position.dot(position))
-        lighttime = p1mag / C_AUDAY
-
-    vemag = sqrt(velocity.dot(velocity))
+    p1mag = lighttime * C_AUDAY
+    vemag = length(velocity)
     beta = vemag / C_AUDAY
-    dot = position.dot(velocity)
+    dot = dots(position, velocity)
 
     cosd = dot / (p1mag * vemag)
     gammai = sqrt(1.0 - beta * beta)

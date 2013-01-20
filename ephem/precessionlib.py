@@ -1,5 +1,4 @@
-from math import cos, sin
-from numpy import array
+from numpy import array, cos, rollaxis, sin
 from ephem.angles import ASEC2RAD
 from ephem.timescales import T0
 
@@ -51,7 +50,7 @@ def precession_matrix(jd_tdb):
     # Compute elements of precession rotation matrix equivalent to
     # R3(chi_a) R1(-omega_a) R3(-psi_a) R1(epsilon_0).
 
-    return array(((cd * cb - sb * sd * cc,
+    rot3 = array(((cd * cb - sb * sd * cc,
                    -sd * cb - sb * cd * cc,
                    sb * sc),
                   (cd * sb * ca + sd * cc * cb * ca - sa * sd * sc,
@@ -60,3 +59,8 @@ def precession_matrix(jd_tdb):
                   (cd * sb * sa + sd * cc * cb * sa + ca * sd * sc,
                    -sd * sb * sa + cd * cc * cb * sa + ca * cd * sc,
                    -sc * cb * sa + cc * ca)))
+
+    if rot3.ndim > 2:
+        pass #rot3 = rollaxis(rot3, 2)
+
+    return rot3
