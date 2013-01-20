@@ -185,25 +185,16 @@ def iau2000a(jd_tt):
     a = fundamental_arguments(t)
 
     # ** Luni-solar nutation **
-    # Initialize the nutation values.
-
-    dp = 0.0
-    de = 0.0
-
     # Summation of luni-solar nutation series (in reverse order).
 
-    for i in reversed(range(678)):
+    arg = fmod(nals_t.dot(a), tau)
 
-        # Argument and functions.
+    sarg = sin(arg)
+    carg = cos(arg)
 
-        arg = fmod((nals_t[i] * a.T).sum(axis=-1), tau)
-
-        sarg = sin(arg)
-        carg = cos(arg)
-
-        # Term.
-        dp += (array((sarg, t * sarg, carg)).T * cls_t[i,:3]).sum(axis=-1)
-        de += (array((carg, t * carg, sarg)).T * cls_t[i,3:]).sum(axis=-1)
+    dp = (array((sarg, t * sarg, carg)).T * cls_t[:,:3]).sum(axis=2).sum(axis=1)
+    de = (array((carg, t * carg, sarg)).T * cls_t[:,3:]).sum(axis=2).sum(axis=1)
+    # ^ TODO: reverse the order, and clean this up if possible
 
     # Convert from 0.1 microarcsec units to radians.
 
