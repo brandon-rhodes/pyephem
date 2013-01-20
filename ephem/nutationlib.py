@@ -202,11 +202,8 @@ def iau2000a(jd_tt):
         carg = cos(arg)
 
         # Term.
-
-        dp += ((cls_t[i][0] + cls_t[i][1] * t) * sarg
-              + cls_t[i][2] * carg)
-        de += ((cls_t[i][3] + cls_t[i][4] * t) * carg
-              + cls_t[i][5] * sarg)
+        dp += (array((sarg, t * sarg, carg)).T * cls_t[i,:3]).sum(axis=-1)
+        de += (array((carg, t * carg, sarg)).T * cls_t[i,3:]).sum(axis=-1)
 
     # Convert from 0.1 microarcsec units to radians.
 
@@ -1116,7 +1113,7 @@ nals_t = array((
 # Each row of coefficients in 'cls_t' belongs with the corresponding
 # row of fundamental-argument multipliers in 'nals_t'.
 
-cls_t = (
+cls_t = array((
       (-172064161.0, -174666.0,  33386.0, 92052331.0,  9086.0, 15377.0),
       ( -13170906.0,   -1675.0, -13696.0,  5730336.0, -3015.0, -4587.0),
       (  -2276413.0,    -234.0,   2796.0,   978459.0,  -485.0,  1374.0),
@@ -1794,7 +1791,8 @@ cls_t = (
       (         3.0,       0.0,      0.0,       -1.0,     0.0,     0.0),
       (        -3.0,       0.0,      0.0,        1.0,     0.0,     0.0),
       (        -3.0,       0.0,      0.0,        1.0,     0.0,     0.0),
-      (        -3.0,       0.0,      0.0,        2.0,     0.0,     0.0))
+      (        -3.0,       0.0,      0.0,        2.0,     0.0,     0.0),
+      ))
 
 # Planetary argument multipliers:
 #      L   L'  F   D   Om  Me  Ve  E  Ma  Ju  Sa  Ur  Ne  pre
