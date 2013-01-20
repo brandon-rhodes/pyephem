@@ -1,4 +1,4 @@
-from numpy import array, cos, fmod, sin
+from numpy import array, cos, fmod, sin, sum, zeros
 from ephem.angles import ASEC2RAD, ASEC360, DEG2RAD, tau
 from ephem.timescales import T0
 
@@ -75,7 +75,11 @@ def mean_obliquity(jd_tdb):
     return epsilon
 
 def equation_of_the_equinoxes_complimentary_terms(jd_tt):
-    """Compute the "complementary terms" of the equation of the equinoxes."""
+    """Compute the complementary terms of the equation of the equinoxes.
+
+    `jd_tt` - numpy.array of dates for which to compute the terms
+
+    """
 
     # Interval between fundamental epoch J2000.0 and current date.
 
@@ -83,7 +87,7 @@ def equation_of_the_equinoxes_complimentary_terms(jd_tt):
 
     # Fundamental Arguments.
 
-    fa = [0] * 14
+    fa = zeros((14, jd_tt.shape[0]))
 
     # Mean Anomaly of the Moon.
 
@@ -192,11 +196,7 @@ def iau2000a(jd_tt):
 
         # Argument and functions.
 
-        arg = fmod (nals_t[i][0] * a[0]  +
-                    nals_t[i][1] * a[1]  +
-                    nals_t[i][2] * a[2]  +
-                    nals_t[i][3] * a[3]  +
-                    nals_t[i][4] * a[4], tau)
+        arg = fmod((nals_t[i] * a.T).sum(axis=1), tau)
 
         sarg = sin(arg)
         carg = cos(arg)
@@ -342,7 +342,7 @@ def fundamental_arguments(t):
              t * (         0.007702 +
              t * (       - 0.00005939)))), ASEC360) * ASEC2RAD
 
-    return a0, a1, a2, a3, a4
+    return array((a0, a1, a2, a3, a4))
 
 # Argument coefficients for t^0.
 
@@ -429,7 +429,7 @@ se1 = (   -0.87e-6,          +0.00e-6)
 # Luni-Solar argument multipliers:
 #      L     L'    F     D     Om
 
-nals_t = (
+nals_t = array((
       ( 0,    0,    0,    0,    1),
       ( 0,    0,    2,   -2,    2),
       ( 0,    0,    2,    0,    2),
@@ -1107,7 +1107,8 @@ nals_t = (
       ( 3,    1,    2,    2,    2),
       ( 5,    0,    2,    0,    1),
       ( 2,   -1,    2,    4,    2),
-      ( 2,    0,    2,    4,    1))
+      ( 2,    0,    2,    4,    1),
+      ))
 
 # Luni-Solar nutation coefficients, unit 1e-7 arcsec:
 # longitude (sin, t*sin, cos), obliquity (cos, t*cos, sin)
