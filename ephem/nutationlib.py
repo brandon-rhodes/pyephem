@@ -1,4 +1,4 @@
-from numpy import array, cos, fmod, sin, sum, zeros
+from numpy import array, cos, fmod, sin, sum, zeros, tensordot
 from ephem.angles import ASEC2RAD, ASEC360, DEG2RAD, tau
 from ephem.timescales import T0
 
@@ -192,9 +192,11 @@ def iau2000a(jd_tt):
     sarg = sin(arg)
     carg = cos(arg)
 
-    dp = (array((sarg, t * sarg, carg)).T * cls_t[:,:3]).sum(axis=2).sum(axis=1)
-    de = (array((carg, t * carg, sarg)).T * cls_t[:,3:]).sum(axis=2).sum(axis=1)
-    # ^ TODO: reverse the order, and clean this up if possible
+    dpde = array((sarg, t * sarg, carg, carg, t * carg, sarg)).T * cls_t
+    dpde = dpde.sum(axis=1)
+
+    dp = dpde[:,:3].sum(axis=1)
+    de = dpde[:,3:].sum(axis=1)
 
     # Convert from 0.1 microarcsec units to radians.
 
