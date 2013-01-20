@@ -1,7 +1,8 @@
 """Coordinate systems."""
 
-from numpy import ndarray
-from math import asin, atan2, cos, sin, pi, sqrt
+import numpy as np
+from numpy import arcsin, arctan2, ndarray, max, min, sqrt
+from math import cos, sin, pi
 from ephem.angles import interpret_longitude, interpret_latitude
 from ephem.framelib import ICRS_to_J2000
 from ephem.nutationlib import nutation_matrix
@@ -40,7 +41,7 @@ class XYZ(object):
     def __init__(self, position, velocity=None, jd=None):
         self.position = position
         self.velocity = velocity
-        self.jd = jd
+        self.jd = np.float64(jd)
 
 class ICRS(XYZ):
 
@@ -51,18 +52,18 @@ class ICRS(XYZ):
 
         jd = self.jd
         lighttime0 = 0.0
-        target = body(jd)
-        vector = target.position - self.position
-        euclidian_distance = distance = sqrt(vector.dot(vector))
+        vector = body(jd).position - self.position
+        euclidian_distance = distance = sqrt((vector * vector).sum(axis=0))
 
         for i in range(10):
-            lighttime = distance / C_AUDAY;
-            if -1e-12 < lighttime - lighttime0 < 1e-12:
+            lighttime = distance / C_AUDAY
+            delta = lighttime - lighttime0
+            if -1e-12 < min(delta) and max(delta) < 1e-12:
                 break
             lighttime0 = lighttime
             target = body(jd - lighttime)
             vector = target.position - self.position
-            distance = sqrt(vector.dot(vector))
+            distance = sqrt((vector * vector).sum(axis=0))
         else:
             raise ValueError('observe() light-travel time failed to converge')
 
@@ -128,7 +129,9 @@ class GCRS(XYZ):
         return eq
 
 class RADec():
-    pass
+    def __repr__(self):
+        return '<%s position RA=%s dec=%s>' % (
+            self.__class__.__name__, self.ra, self.dec)
 
 class Astrometric(RADec):
     pass
@@ -147,8 +150,8 @@ class HeliocentricLonLat(ndarray):
                 z * cos(ecliptic_obliquity) - y * sin(ecliptic_obliquity),
                 )
             self[2] = r = sqrt(x*x + y*y + z*z)
-            self[0] = atan2(-y, -x) + pi
-            self[1] = asin(z / r)
+            self[0] = arctan2(-y, -x) + pi
+            self[1] = arcsin(z / r)
         else:
             raise ValueError('how do I use that?')
         return self
@@ -163,7 +166,7 @@ class HeliocentricLonLat(ndarray):
     def r(self): return self[2]
 
 def to_polar(position):
-    r = sqrt(position.dot(position))
-    phi = atan2(-position[1], -position[0]) + pi
-    theta = asin(position[2] / r)
+    r = sqrt((position * position).sum(axis=0))
+    phi = arctan2(-position[1], -position[0]) + pi
+    theta = arcsin(position[2] / r)
     return phi, theta
