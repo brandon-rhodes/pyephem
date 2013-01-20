@@ -26,7 +26,20 @@ class Planet(object):
 
 class Ephemeris(object):
 
-    def __init__(self, module):
+    def __init__(self, module=None):
+
+        if module is None:
+            try:
+                import de421
+            except ImportError:
+                raise ValueError(
+                    'if you want to instantiate Ephemeris() without '
+                    'providing an argument, then you must install the '
+                    'default ephemeris DE421 with the command: '
+                    '"pip install de421"')
+            else:
+                module = de421
+
         self.jplephemeris = e = jplephem.Ephemeris(module)
         self.moon_share = 1.0 / (1.0 + e.EMRAT)
         self.earth_share = e.EMRAT / (1.0 + e.EMRAT)
