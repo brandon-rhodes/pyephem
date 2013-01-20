@@ -1,4 +1,4 @@
-from numpy import array, cos, fmod, sin, sum, zeros, tensordot
+from numpy import array, cos, fmod, sin, sum, zeros
 from ephem.angles import ASEC2RAD, ASEC360, DEG2RAD, tau
 from ephem.timescales import T0
 
@@ -241,39 +241,18 @@ def iau2000a(jd_tt):
     alur = fmod(5.481293871 +    7.4781598567 * t, tau)
     alne = fmod(5.321159000 +    3.8127774000 * t, tau)
 
-    # Initialize the nutation values.
-
-    dp = 0.0
-    de = 0.0
-
     # Summation of planetary nutation series (in reverse order).
 
-    for i in reversed(range(687)):
+    a = array((al, alsu, af, ad, aom,
+               alme, alve, alea, alma, alju, alsa, alur, alne, apa))
 
-        # Argument and functions.
+    arg = fmod(napl_t.dot(a), tau)
 
-        arg = fmod(napl_t[i][ 0] * al    +
-                   napl_t[i][ 1] * alsu  +
-                   napl_t[i][ 2] * af    +
-                   napl_t[i][ 3] * ad    +
-                   napl_t[i][ 4] * aom   +
-                   napl_t[i][ 5] * alme  +
-                   napl_t[i][ 6] * alve  +
-                   napl_t[i][ 7] * alea  +
-                   napl_t[i][ 8] * alma  +
-                   napl_t[i][ 9] * alju  +
-                   napl_t[i][10] * alsa  +
-                   napl_t[i][11] * alur  +
-                   napl_t[i][12] * alne  +
-                   napl_t[i][13] * apa, tau)
+    sarg = sin(arg)
+    carg = cos(arg)
 
-        sarg = sin(arg)
-        carg = cos(arg)
-
-        # Term.
-
-        dp += cpl_t[i][0] * sarg + cpl_t[i][1] * carg
-        de += cpl_t[i][2] * sarg + cpl_t[i][3] * carg
+    dp = (array((sarg, carg)).T * cpl_t[:,:2]).sum(axis=2).sum(axis=1)
+    de = (array((sarg, carg)).T * cpl_t[:,2:]).sum(axis=2).sum(axis=1)
 
     dpsipl = dp * factor
     depspl = de * factor
@@ -1790,7 +1769,7 @@ cls_t = array((
 # Planetary argument multipliers:
 #      L   L'  F   D   Om  Me  Ve  E  Ma  Ju  Sa  Ur  Ne  pre
 
-napl_t = (
+napl_t = array((
       ( 0,  0,  0,  0,  0,  0,  0,  8,-16,  4,  5,  0,  0,  0),
       ( 0,  0,  0,  0,  0,  0,  0, -8, 16, -4, -5,  0,  0,  2),
       ( 0,  0,  0,  0,  0,  0,  0,  8,-16,  4,  5,  0,  0,  2),
@@ -2477,7 +2456,8 @@ napl_t = (
       (-1,  0,  2,  2,  2,  0,  0,  2,  0, -2,  0,  0,  0,  0),
       (-1,  0,  2,  2,  2,  0,  3, -3,  0,  0,  0,  0,  0,  0),
       ( 1,  0,  2,  0,  2,  0,  1, -1,  0,  0,  0,  0,  0,  0),
-      ( 0,  0,  2,  2,  2,  0,  0,  2,  0, -2,  0,  0,  0,  0))
+      ( 0,  0,  2,  2,  2,  0,  0,  2,  0, -2,  0,  0,  0,  0),
+      ))
 
 # Planetary nutation coefficients, unit 1e-7 arcsec:
 # longitude (sin, cos), obliquity (sin, cos)
@@ -2485,7 +2465,7 @@ napl_t = (
 # Each row of coefficients in 'cpl_t' belongs with the corresponding
 # row of fundamental-argument multipliers in 'napl_t'.
 
-cpl_t = (
+cpl_t = array((
       ( 1440.0,          0.0,          0.0,          0.0),
       (   56.0,       -117.0,        -42.0,        -40.0),
       (  125.0,        -43.0,          0.0,        -54.0),
@@ -3172,4 +3152,5 @@ cpl_t = (
       (   13.0,          0.0,          0.0,         -6.0),
       (    7.0,          0.0,          0.0,         -3.0),
       (    3.0,          0.0,          0.0,         -1.0),
-      (    3.0,          0.0,          0.0,         -1.0))
+      (    3.0,          0.0,          0.0,         -1.0),
+      ))
