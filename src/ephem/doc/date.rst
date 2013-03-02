@@ -100,8 +100,8 @@ Datetime objects
   by calling its ``datetime()`` method.
 
     >>> from datetime import date, datetime
-    >>> print ephem.Date(datetime(2005, 4, 18, 22, 15))
-    2005/4/18 22:15:00
+    >>> print ephem.Date(datetime(2005, 4, 18, 22, 19))
+    2005/4/18 22:18:59
 
     >>> d = ephem.Date('2000/12/25 12:41:16')
     >>> d.datetime()

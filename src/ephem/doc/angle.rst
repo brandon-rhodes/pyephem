@@ -17,8 +17,11 @@ as degrees, minutes of arc, and seconds of arc:
     >>> j = ephem.Jupiter('1994/7/16 20:13:16')
     >>> print j.dec
     -12:09:28.2
-    >>> print repr(j.dec)
-    -0.21219402907256785
+
+But the real value is always in radians,
+which you can view by using ``repr()``::
+
+    print repr(j.dec)  # => -0.21219402907256785
 
 The only kind of angle which does not use degrees for display
 is right ascension,
@@ -27,8 +30,6 @@ into twenty-four “hours” which are each fifteen degress wide.
 
     >>> print j.ra
     14:12:45.77
-    >>> print repr(j.ra)
-    3.7208800741095827
 
 As with PyEphem dates,
 doing math with a PyEphem angle results in an unadorned float being returned.
