@@ -245,13 +245,10 @@ obj_earthsat (Now *np, Obj *op)
 	    ra = op->s_gaera;
 	    dec = op->s_gaedec;
 	}
-	if (epoch != EOD && mjd != epoch)
-	    precess (mjd, epoch, &ra, &dec);
 	op->s_ra = ra;
 	op->s_dec = dec;
-
-	/* Since nutation and aberration not relevant for a satellite,
-	   we store the same RA and dec in its "astrometric" fields */
+	if (epoch != EOD && mjd != epoch)
+	    precess (mjd, epoch, &ra, &dec);
 	op->s_astrora = ra;
 	op->s_astrodec = dec;
 

@@ -191,6 +191,12 @@ body.compute(observer)
    for the observer's ``temp`` and ``presure``;
    set the observer's ``pressure`` to zero to ignore refraction.
 
+ * For earth satellite objects,
+   the astrometric coordinates are topocentric instead of geocentric,
+   since there is little point in figuring out where the satellite
+   would appear on a J2000 (or whatever epoch you are using) star chart
+   for an observer sitting at the center of the earth.
+
 catalog format
 --------------
 
