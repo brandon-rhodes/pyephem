@@ -39,8 +39,6 @@ doing math with a PyEphem angle results in an unadorned float being returned.
     >>> a = j.dec + 3.14
     >>> type(a)
     <type 'float'>
-    >>> a
-    2.9278059709274324
 
 If you want to display the result of a computation
 as an attractively formatted angle,
