@@ -416,6 +416,8 @@ static int parse_mjd_from_datetime(PyObject *value, double *mjdp)
           *mjdp += PyDateTime_DATE_GET_HOUR(value) / 24.;
           *mjdp += PyDateTime_DATE_GET_MINUTE(value) / (24. * 60.);
           *mjdp += PyDateTime_DATE_GET_SECOND(value) / (24. * 60. * 60.);
+          *mjdp += PyDateTime_DATE_GET_MICROSECOND(value)
+               / (24. * 60. * 60. * 1000000.);
      }
      return 0;
 }

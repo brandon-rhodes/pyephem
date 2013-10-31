@@ -40,6 +40,7 @@ class DateTests(unittest.TestCase):
             [std, ((2004, 9, 4, 0.28772222222222221),)],
             [std, ((2004, 9, 4, 0, 17.263333333333332),)],
             [std, ((2004, 9, 4, 0, 17, 15.8),)],
+            [std, (datetime(2004, 9, 4, 0, 17, 15, 800000),)],
             ]
         for args1, args2 in pairs:
             construct_and_compare(args1, args2)
