@@ -4,8 +4,9 @@ PyEphem CHANGELOG
 Version 3.7.5.2 (2013 November 1)
 ----------------------------------
 
-- No longer ignore the microseconds of an input ``datetime`` value when
-  building a PyEphem `Date` object.
+- PyEphem routines no longer ignore the microseconds of ``datetime``
+  objects provided as input.
+  `(GitHub #29) <https://github.com/brandon-rhodes/pyephem/issues/29>`_
 
 - PyEphem is more careful to raise an exception if angles are specified
   using strings that contain invalid characters.
