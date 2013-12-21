@@ -1,8 +1,14 @@
 PyEphem CHANGELOG
 =================
 
-Version 3.7.5.2 (2013 December 20)
+Version 3.7.5.2 (2013 December 21)
 ----------------------------------
+
+- The ``separation()`` function will no longer allow hardware floating
+  point rounding errors to produce a non-zero result when a position is
+  compared to itself, nor return a ``NaN`` result (which one user
+  reports seeing as the angle ``1389660529:33:00.8`` degrees).
+  `(GitHub #31) <https://github.com/brandon-rhodes/pyephem/issues/31>`_
 
 - PyEphem routines no longer ignore the microseconds of ``datetime``
   objects provided as input.

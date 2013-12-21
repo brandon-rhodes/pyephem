@@ -2496,11 +2496,15 @@ static int separation_arg(PyObject *arg, double *lngi, double *lati)
 static PyObject* separation(PyObject *self, PyObject *args)
 {
      double plat, plng, qlat, qlng;
-     double spy, cpy, px, qx, sqy, cqy;
+     double spy, cpy, px, qx, sqy, cqy, cosine;
      PyObject *p, *q;
      if (!PyArg_ParseTuple(args, "OO:separation", &p, &q)) return 0;
      if (separation_arg(p, &plng, &plat)) return 0;
      if (separation_arg(q, &qlng, &qlat)) return 0;
+
+     /* rounding errors in the trigonometry might return >0 for this case */
+     if ((plat == qlat) && (plng == qlng))
+          return new_Angle(0.0, raddeg(1));
 
      spy = sin (plat);
      cpy = cos (plat);
@@ -2509,7 +2513,11 @@ static PyObject* separation(PyObject *self, PyObject *args)
      sqy = sin (qlat);
      cqy = cos (qlat);
 
-     return new_Angle(acos(spy*sqy + cpy*cqy*cos(px-qx)), raddeg(1));
+     cosine = spy*sqy + cpy*cqy*cos(px-qx);
+     if (cosine >= 1.0)  /* rounding sometimes makes this >1 */
+          return new_Angle(0.0, raddeg(1));
+
+     return new_Angle(acos(cosine), raddeg(1));
 }
 
 /* Read various database formats, with strings as input. */

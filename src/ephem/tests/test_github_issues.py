@@ -18,3 +18,7 @@ class GitHubIssues(TestCase):
         self.assertEqual(str(iss.a_ra), '8:50:10.99')
         self.assertEqual(str(iss.g_ra), '6:54:40.64')
         self.assertEqual(str(iss.ra), '8:50:16.76')
+
+    def test_github_31(self):
+        position = (4.116325133165859, 0.14032240860186646)
+        self.assertEqual(ephem.separation(position, position), 0.0)
