@@ -2,6 +2,9 @@
 PyEphem README
 ==============
 
+.. image:: http://bottlepy.org/docs/dev/_static/Gittip.png
+   :target: https://www.gittip.com/brandon-rhodes/
+
 .. image:: https://travis-ci.org/brandon-rhodes/pyephem.png
    :target: https://travis-ci.org/brandon-rhodes/pyephem
 
