@@ -1,6 +1,6 @@
 PyEphem TODO list
 
- Before next release:
+ For 3.7.6:
 
  - Add functions for perihelion and aphelion.
  - Make Jupiter's GRS available.
