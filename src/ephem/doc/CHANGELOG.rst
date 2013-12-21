@@ -1,15 +1,19 @@
 PyEphem CHANGELOG
 =================
 
-Version 3.7.5.2 (2013 November 1)
+Version 3.7.5.2 (2013 December 20)
 ----------------------------------
 
 - PyEphem routines no longer ignore the microseconds of ``datetime``
   objects provided as input.
   `(GitHub #29) <https://github.com/brandon-rhodes/pyephem/issues/29>`_
 
-- PyEphem is more careful to raise an exception if angles are specified
-  using strings that contain invalid characters.
+- PyEphem is now more careful to raise an exception if angles are
+  specified using strings that contain invalid characters.
+
+- The Earth-satellite attributes ``ra`` and ``dec`` are now correctly
+  referenced to the epoch-of-date, instead of being expressed in J2000
+  like the astrometric attributes.
 
 Version 3.7.5.1 (2011 November 24)
 ----------------------------------
