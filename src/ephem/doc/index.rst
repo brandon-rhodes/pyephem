@@ -43,14 +43,14 @@
       >PyPI PyEphem page</a>
      <br/>
      <br/>
-     <a href="http://pypi.python.org/packages/2.7/p/pyephem/pyephem-3.7.5.1.win32-py2.7.exe"
+     <a href="http://pypi.python.org/packages/2.7/p/pyephem/pyephem-3.7.5.2.win32-py2.7.exe"
       >Python 2.7 Windows installer</a>
      <br/>
-     <a href="http://pypi.python.org/packages/2.6/p/pyephem/pyephem-3.7.5.1.win32-py2.6.exe"
+     <a href="http://pypi.python.org/packages/2.6/p/pyephem/pyephem-3.7.5.2.win32-py2.6.exe"
       >Python 2.6 Windows installer</a>
      <br/>
      <br/>
-     <a href="http://pypi.python.org/packages/source/p/pyephem/pyephem-3.7.5.1.tar.gz"
+     <a href="http://pypi.python.org/packages/source/p/pyephem/pyephem-3.7.5.2.tar.gz"
       >Source code (.tar.gz)</a><br/>
    </p>
 
@@ -151,7 +151,7 @@ for us to use them as the basis for PyEphem.
 Installation
 ------------
 
-Version **3.7.5.1** is the most recent release of PyEphem.
+Version **3.7.5.2** is the most recent release of PyEphem.
 Consult the `change log`_ to see the new features!
 
 .. _change log: CHANGELOG
