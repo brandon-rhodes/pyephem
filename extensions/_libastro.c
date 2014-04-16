@@ -627,6 +627,13 @@ static int parse_angle(PyObject *value, double factor, double *result)
 static double to_angle(PyObject *value, double efactor, int *status)
 {
      double r;
+     if (PyUnicode_Check(value)) {
+          value = PyUnicode_AsUTF8String(value);
+          if (!value) {
+	       *status = -1;
+               return 0;
+          }
+     }
      if (PyNumber_Check(value)) {
 	  value = PyNumber_Float(value);
 	  if (!value) {
