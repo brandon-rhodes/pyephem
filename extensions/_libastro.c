@@ -2713,7 +2713,7 @@ static PyObject* constellation
 			       "two numeric coordinates");
 	       goto fail;
 	  }
-	  if (!PySequence_Length(position_arg) == 2) {
+	  if (PySequence_Length(position_arg) != 2) {
 	       PyErr_SetString(PyExc_ValueError, "the sequence specifying a "
 			       "position must have exactly two coordinates");
 	       goto fail;
