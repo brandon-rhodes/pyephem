@@ -1262,6 +1262,7 @@ static PyObject* Body_copy(PyObject *self)
      PyObject *newbody = _PyObject_New(self->ob_type);
      if (!newbody) return 0;
      memcpy(newbody, self, self->ob_type->tp_basicsize);
+     newbody->ob_refcnt = 1;  /* since memcpy will have overwritten it */
      Py_XINCREF(((Body*) self)->name);
      return newbody;
 }
