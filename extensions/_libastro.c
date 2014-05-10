@@ -2,6 +2,21 @@
 
 #include "Python.h"
 
+#if PY_MAJOR_VERSION == 2
+#define PyLong_AsLong PyInt_AsLong
+#define PyLong_FromLong PyInt_FromLong
+#define PyUnicode_Check PyString_Check
+#define PyUnicode_FromFormat PyString_FromFormat
+#define PyUnicode_FromString PyString_FromString
+#define PyUnicode_GET_LENGTH PyString_Size
+#define PyUnicode_Type PyString_Type
+#define _PyUnicode_AsString PyString_AsString
+#define PyVarObject_HEAD_INIT(p, b) PyObject_HEAD_INIT(p)
+#define OB_TYPE ob_type
+#else
+#define OB_TYPE ob_base.ob_type
+#endif
+
 #include "datetime.h"
 #include "structmember.h"
 
@@ -212,7 +227,7 @@ static char *Angle_format(PyObject *self)
 
 static PyObject* Angle_str(PyObject *self)
 {
-     return PyString_FromString(Angle_format(self));
+     return PyUnicode_FromString(Angle_format(self));
 }
 
 static int Angle_print(PyObject *self, FILE *fp, int flags)
@@ -259,7 +274,10 @@ static PyObject *Angle_get_znorm(PyObject *self, void *v)
 }
 
 static PyNumberMethods Angle_NumberMethods = {
-     NULL, NULL, NULL, NULL, NULL, NULL, NULL, /* skip seven fields */
+     NULL, NULL, NULL, NULL, NULL, NULL, /* skip six fields */
+#if PY_MAJOR_VERSION == 2
+     NULL,
+#endif
      Angle_neg, /* nb_negative */
      Angle_pos, /* nb_positive */
      NULL
@@ -274,8 +292,7 @@ static PyGetSetDef Angle_getset[] = {
 };
 
 static PyTypeObject AngleType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.Angle",
      sizeof(AngleObject),
      0,
@@ -348,7 +365,7 @@ static int parse_mjd_from_string(PyObject *so, double *mjdp)
 
      if (len >= 1) {
 	  int i;
-          char *s = PyString_AsString(PyList_GetItem(pieces, 0));
+          char *s = _PyUnicode_AsString(PyList_GetItem(pieces, 0));
           if (!s) goto fail;
 
 	  /* Make sure all characters are in set '-/.0123456789' */
@@ -364,7 +381,7 @@ static int parse_mjd_from_string(PyObject *so, double *mjdp)
      }
 
      if (len >= 2) {
-          char *t = PyString_AsString(PyList_GetItem(pieces, 1));
+          char *t = _PyUnicode_AsString(PyList_GetItem(pieces, 1));
 	  double hours;
           if (!t) goto fail;
 	  if (f_scansexa(t, &hours) == -1) {
@@ -381,10 +398,10 @@ static int parse_mjd_from_string(PyObject *so, double *mjdp)
 fail:
      if (! PyErr_Occurred()) {
 	  PyObject *repr = PyObject_Repr(so);
-          PyObject *complaint = PyString_FromFormat(
+          PyObject *complaint = PyUnicode_FromFormat(
 	       "your date string %s does not look like a year/month/day"
 	       " optionally followed by hours:minutes:seconds",
-	       PyString_AsString(repr));
+	       _PyUnicode_AsString(repr));
 	  PyErr_SetObject(PyExc_ValueError, complaint);
 	  Py_DECREF(repr);
 	  Py_DECREF(complaint);
@@ -426,7 +443,7 @@ static int parse_mjd(PyObject *value, double *mjdp)
 {
      if (PyNumber_Check(value))
 	  return parse_mjd_from_number(value, mjdp);
-     else if (PyString_Check(value))
+     else if (PyUnicode_Check(value))
 	  return parse_mjd_from_string(value, mjdp);
      else if (PyTuple_Check(value))
 	  return parse_mjd_from_tuple(value, mjdp);
@@ -485,7 +502,7 @@ static char *Date_format(PyObject *self)
 
 static PyObject* Date_str(PyObject *self)
 {
-     return PyString_FromString(Date_format(self));
+     return PyUnicode_FromString(Date_format(self));
 }
 
 static int Date_print(PyObject *self, FILE *fp, int flags)
@@ -535,8 +552,7 @@ static PyMethodDef Date_methods[] = {
 };
 
 static PyTypeObject DateType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.Date",
      sizeof(PyFloatObject),
      0,
@@ -606,9 +622,9 @@ static int parse_angle(PyObject *value, double factor, double *result)
 {
      if (PyNumber_Check(value)) {
 	  return PyNumber_AsDouble(value, result);
-     } else if (PyString_Check(value)) {
+     } else if (PyUnicode_Check(value)) {
 	  double scaled;
-	  char *s = PyString_AsString(value);
+	  char *s = _PyUnicode_AsString(value);
           if (!s) return -1;
           if (f_scansexa(s, &scaled) == -1) {
                PyErr_Format(PyExc_ValueError, "your angle string %r does not "
@@ -627,6 +643,8 @@ static int parse_angle(PyObject *value, double factor, double *result)
 static double to_angle(PyObject *value, double efactor, int *status)
 {
      double r;
+#if PY_MAJOR_VERSION == 2
+     /* Support Unicode strings under Python 2 */
      if (PyUnicode_Check(value)) {
           value = PyUnicode_AsUTF8String(value);
           if (!value) {
@@ -634,6 +652,7 @@ static double to_angle(PyObject *value, double efactor, int *status)
                return 0;
           }
      }
+#endif
      if (PyNumber_Check(value)) {
 	  value = PyNumber_Float(value);
 	  if (!value) {
@@ -644,9 +663,9 @@ static double to_angle(PyObject *value, double efactor, int *status)
 	  Py_DECREF(value);
 	  *status = 0;
 	  return r;
-     } else if (PyString_Check(value)) {
+     } else if (PyUnicode_Check(value)) {
 	  double scaled;
-          char *s = PyString_AsString(value);
+          char *s = _PyUnicode_AsString(value);
           if (!s) {
                *status = -1;
                return 0;
@@ -659,7 +678,7 @@ static double to_angle(PyObject *value, double efactor, int *status)
 	  return scaled / efactor;
      } else {
 	  PyErr_SetString(PyExc_TypeError,
-			  "can only update value with String or number");
+			  "can only update value with string or number");
 	  *status = -1;
 	  return 0;
      }
@@ -767,23 +786,23 @@ static int setd_mjd(PyObject *self, PyObject *value, void *v)
 static PyObject* get_f_spect(PyObject *self, void *v)
 {
      Body *b = (Body*) self;
-     return PyString_FromStringAndSize(b->obj.f_spect, 2);
+     return PyUnicode_FromStringAndSize(b->obj.f_spect, 2);
 }
 
 static int set_f_spect(PyObject *self, PyObject *value, void *v)
 {
      Body *b = (Body*) self;
      char *s;
-     if (!PyString_Check(value)) {
+     if (!PyUnicode_Check(value)) {
 	  PyErr_SetString(PyExc_ValueError, "spectral code must be a string");
 	  return -1;
      }
-     if (PyString_Size(value) != 2) {
+     if (PyUnicode_GET_LENGTH(value) != 2) {
 	  PyErr_SetString(PyExc_ValueError,
 			  "spectral code must be two characters long");
 	  return -1;
      }
-     s = PyString_AsString(value);
+     s = _PyUnicode_AsString(value);
      b->obj.f_spect[0] = s[0];
      b->obj.f_spect[1] = s[1];
      return 0;
@@ -1006,8 +1025,7 @@ static PyMemberDef Observer_members[] = {
 #undef OFF
 
 static PyTypeObject ObserverType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "_libastro.Observer",
      sizeof(Observer),
      0,
@@ -1107,7 +1125,7 @@ static int Planet_init(PyObject *self, PyObject *args, PyObject *kw)
                            " init Planet without a __planet__ code");
           return -1;
      }
-     builtin_index = PyInt_AsLong(o);
+     builtin_index = PyLong_AsLong(o);
      Py_DECREF(o);
      if ((builtin_index == -1) && PyErr_Occurred()) {
           PyErr_SetString(PyExc_TypeError, "internal error: __planet__"
@@ -1261,7 +1279,7 @@ static PyObject* Body_writedb(PyObject *self)
      Body *body = (Body*) self;
      char line[1024];
      db_write_line(&body->obj, line);
-     return PyString_FromString(line);
+     return PyUnicode_FromString(line);
 }
 
 static PyObject* Body_copy(PyObject *self)
@@ -1282,19 +1300,19 @@ static PyObject* Body_repr(PyObject *body_object)
 	  PyObject *repr, *result;
 	  repr = PyObject_Repr(body->name);
 	  if (!repr) return 0;
-	  name = PyString_AsString(repr);
+	  name = _PyUnicode_AsString(repr);
 	  Py_DECREF(repr);
 	  if (!name) return 0;
-	  result = PyString_FromFormat("<%s %s at %p>",
-				       body->ob_type->tp_name, name, body);
+	  result = PyUnicode_FromFormat("<%s %s at %p>",
+				       body->OB_TYPE->tp_name, name, body);
 	  return result;
      } else if (body->obj.o_name[0])
-	  return PyString_FromFormat("<%s \"%s\" at %p>",
-				     body->ob_type->tp_name,
+	  return PyUnicode_FromFormat("<%s \"%s\" at %p>",
+				     body->OB_TYPE->tp_name,
 				     body->obj.o_name, body);
      else
-	  return PyString_FromFormat("<%s at %p>",
-				     body->ob_type->tp_name, body);
+	  return PyUnicode_FromFormat("<%s at %p>",
+				     body->OB_TYPE->tp_name, body);
 }
 
 static PyMethodDef Body_methods[] = {
@@ -1592,13 +1610,13 @@ static PyObject *Get_name(PyObject *self, void *v)
 	  Py_INCREF(body->name);
 	  return body->name;
      } else
-	  return PyString_FromString(body->obj.o_name);
+	  return PyUnicode_FromString(body->obj.o_name);
 }
 
 static int Set_name(PyObject *self, PyObject *value, void *v)
 {
      Body *body = (Body*) self;
-     char *name = PyString_AsString(value);
+     char *name = _PyUnicode_AsString(value);
      if (!name) return -1;
      strncpy(body->obj.o_name, name, MAXNM);
      body->obj.o_name[MAXNM - 1] = '\0';
@@ -1931,8 +1949,7 @@ static char body_doc[] =
      "A celestial body, that can compute() its sky position";
 
 static PyTypeObject BodyType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.Body",
      sizeof(Body),
      0,
@@ -1974,8 +1991,7 @@ static PyTypeObject BodyType = {
 };
 
 static PyTypeObject PlanetType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.Planet",
      sizeof(Planet),
      0,
@@ -2017,8 +2033,7 @@ static PyTypeObject PlanetType = {
 };
 
 static PyTypeObject PlanetMoonType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.PlanetMoon",
      sizeof(PlanetMoon),
      0,
@@ -2060,8 +2075,7 @@ static PyTypeObject PlanetMoonType = {
 };
 
 static PyTypeObject JupiterType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.Jupiter",
      sizeof(Jupiter),
      0,
@@ -2103,8 +2117,7 @@ static PyTypeObject JupiterType = {
 };
 
 static PyTypeObject SaturnType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.Saturn",
      sizeof(Saturn),
      0,
@@ -2146,8 +2159,7 @@ static PyTypeObject SaturnType = {
 };
 
 static PyTypeObject MoonType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.Moon",
      sizeof(Moon),
      0,
@@ -2189,8 +2201,7 @@ static PyTypeObject MoonType = {
 };
 
 static PyTypeObject FixedBodyType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.FixedBody",
      sizeof(FixedBody),
      0,
@@ -2232,8 +2243,7 @@ static PyTypeObject FixedBodyType = {
 };
 
 static PyTypeObject BinaryStarType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.BinaryStar",
      sizeof(BinaryStar),
      0,
@@ -2275,8 +2285,7 @@ static PyTypeObject BinaryStarType = {
 };
 
 static PyTypeObject EllipticalBodyType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.EllipticalBody",
      sizeof(EllipticalBody),
      0,
@@ -2318,8 +2327,7 @@ static PyTypeObject EllipticalBodyType = {
 };
 
 static PyTypeObject HyperbolicBodyType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.HyperbolicBody",
      sizeof(HyperbolicBody),
      0,
@@ -2361,8 +2369,7 @@ static PyTypeObject HyperbolicBodyType = {
 };
 
 static PyTypeObject ParabolicBodyType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.ParabolicBody",
      sizeof(ParabolicBody),
      0,
@@ -2404,8 +2411,7 @@ static PyTypeObject ParabolicBodyType = {
 };
 
 static PyTypeObject EarthSatelliteType = {
-     PyObject_HEAD_INIT(NULL)
-     0,
+     PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.EarthSatellite",
      sizeof(EarthSatellite),
      0,
@@ -2585,9 +2591,9 @@ static PyObject* readdb(PyObject *self, PyObject *args)
      }
      comma = strchr(line, ',');
      if (comma)
-	  name = PyString_FromStringAndSize(line, comma - line);
+	  name = PyUnicode_FromStringAndSize(line, comma - line);
      else
-	  name = PyString_FromString(line);
+	  name = PyUnicode_FromString(line);
      if (!name)
 	  return 0;
      return build_body_from_obj(name, &obj);
@@ -2599,11 +2605,11 @@ static PyObject* readtle(PyObject *self, PyObject *args)
      PyObject *name, *stripped_name, *body, *catalog_number;
      Obj obj;
      if (!PyArg_ParseTuple(args, "O!ss:readtle",
-			   &PyString_Type, &name, &l1, &l2))
+			   &PyUnicode_Type, &name, &l1, &l2))
 	  return 0;
-     l0 = PyString_AsString(name);
+     l0 = _PyUnicode_AsString(name);
      if (!l0) return 0;
-     if (db_tle(PyString_AsString(name), l1, l2, &obj)) {
+     if (db_tle(_PyUnicode_AsString(name), l1, l2, &obj)) {
 	  PyErr_SetString(PyExc_ValueError,
 			  "line does not conform to tle format");
 	  return 0;
@@ -2614,7 +2620,7 @@ static PyObject* readtle(PyObject *self, PyObject *args)
      body = build_body_from_obj(stripped_name, &obj);
      if (!body)
 	  return 0;
-     catalog_number = PyInt_FromLong(strtod(l1+2, 0));
+     catalog_number = PyLong_FromLong(strtod(l1+2, 0));
      if (!catalog_number)
 	  return 0;
      ((EarthSatellite*) body)->catalog_number = catalog_number;
@@ -2652,7 +2658,7 @@ static PyObject* uranometria(PyObject *self, PyObject *args)
      if (!PyArg_ParseTuple(args, "OO:uranometria", &rao, &deco)) return 0;
      if (parse_angle(rao, radhr(1), &ra) == -1) return 0;
      if (parse_angle(deco, raddeg(1), &dec) == -1) return 0;
-     return PyString_FromString(um_atlas(ra, dec));
+     return PyUnicode_FromString(um_atlas(ra, dec));
 }
 
 static PyObject* uranometria2000(PyObject *self, PyObject *args)
@@ -2662,7 +2668,7 @@ static PyObject* uranometria2000(PyObject *self, PyObject *args)
      if (!PyArg_ParseTuple(args, "OO:uranometria2000", &rao, &deco)) return 0;
      if (parse_angle(rao, radhr(1), &ra) == -1) return 0;
      if (parse_angle(deco, raddeg(1), &dec) == -1) return 0;
-     return PyString_FromString(u2k_atlas(ra, dec));
+     return PyUnicode_FromString(u2k_atlas(ra, dec));
 }
 
 static PyObject* millennium_atlas(PyObject *self, PyObject *args)
@@ -2672,7 +2678,7 @@ static PyObject* millennium_atlas(PyObject *self, PyObject *args)
      if (!PyArg_ParseTuple(args, "OO:millennium_atlas", &rao, &deco)) return 0;
      if (parse_angle(rao, radhr(1), &ra) == -1) return 0;
      if (parse_angle(deco, raddeg(1), &dec) == -1) return 0;
-     return PyString_FromString(msa_atlas(ra, dec));
+     return PyUnicode_FromString(msa_atlas(ra, dec));
 }
 
 /* Return in which constellation a particular coordinate lies. */
@@ -2977,12 +2983,25 @@ static PyMethodDef libastro_methods[] = {
      {NULL}
 };
 
+#if PY_MAJOR_VERSION == 3
+
+/* PyDoc_STRVAR(doc_module, */
+/* "(Put documentation here.)"); */
+
+static struct PyModuleDef libastro_module = {
+     PyModuleDef_HEAD_INIT,
+     "_libastro",
+     "Astronomical calculations for Python",
+     -1,
+     libastro_methods
+};
+
+#endif
+
 #ifdef PyMODINIT_FUNC
 PyMODINIT_FUNC
-#else
-DL_EXPORT(void)
 #endif
-init_libastro(void)
+PyInit__libastro(void)
 {
      PyObject *module;
 
@@ -3019,9 +3038,13 @@ init_libastro(void)
      PyType_Ready(&ParabolicBodyType);
      PyType_Ready(&EarthSatelliteType);
 
+#if PY_MAJOR_VERSION == 2
      module = Py_InitModule3("_libastro", libastro_methods,
                              "Astronomical calculations for Python");
-     if (!module) return;
+#else
+     module = PyModule_Create(&libastro_module);
+#endif
+     if (!module) return 0;
 
      {
 	  struct {
@@ -3061,7 +3084,7 @@ init_libastro(void)
 	  for (i=0; objects[i].name; i++)
 	       if (PyModule_AddObject(module, objects[i].name, objects[i].obj)
 		   == -1)
-		    return;
+		    return 0;
      }
 
      /* Set a default preference. */
@@ -3071,4 +3094,20 @@ init_libastro(void)
      /* Tell libastro that we do not have data files anywhere. */
 
      setMoonDir(NULL);
+
+     /* All done! */
+
+     return module;
 }
+
+#if PY_MAJOR_VERSION == 2
+#ifdef PyMODINIT_FUNC
+PyMODINIT_FUNC
+#else
+DL_EXPORT(void)
+#endif
+init_libastro(void)
+{
+     PyInit__libastro();
+}
+#endif

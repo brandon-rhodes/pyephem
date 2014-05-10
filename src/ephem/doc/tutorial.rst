@@ -43,9 +43,9 @@ and ask where it was on the 13th of March, 1781:
 
 >>> u = ephem.Uranus()
 >>> u.compute('1781/3/13')
->>> print u.ra, u.dec, u.mag
+>>> print('%s %s %s' % (u.ra, u.dec, u.mag))
 5:35:45.28 23:32:54.1 5.6
->>> print ephem.constellation(u)
+>>> print(ephem.constellation(u))
 ('Tau', 'Taurus')
 
 Calling ``compute()`` sets many attributes of a body,
@@ -74,11 +74,11 @@ we create one instance of each planet and compare their positions:
 
 >>> j = ephem.Jupiter('1612/12/28')
 >>> n = ephem.Neptune('1612/12/28')
->>> print j.ra, j.dec, j.mag
+>>> print("%s %s %s" % (j.ra, j.dec, j.mag))
 11:48:20.52 2:41:13.6 -1.96
->>> print n.ra, n.dec, n.mag
+>>> print("%s %s %s" % (n.ra, n.dec, n.mag))
 11:49:15.77 2:37:04.5 7.92
->>> print ephem.separation(j, n)
+>>> print(ephem.separation(j, n))
 0:14:24.6
 
 Notice that, while in our first example
@@ -102,11 +102,11 @@ and verify that its speed is greater when closer to the Sun:
 >>> def hpos(body): return body.hlon, body.hlat
 >>> ma0 = ephem.Mars('1976/05/21')    # ma: mars near aphelion
 >>> ma1 = ephem.Mars('1976/05/22')
->>> print ephem.separation(hpos(ma0), hpos(ma1))
+>>> print(ephem.separation(hpos(ma0), hpos(ma1)))
 0:26:11.4
 >>> mp0 = ephem.Mars('1975/06/13')    # mp: mars near perihelion
 >>> mp1 = ephem.Mars('1975/06/14')
->>> print ephem.separation(hpos(mp0), hpos(mp1))
+>>> print(ephem.separation(hpos(mp0), hpos(mp1)))
 0:38:05.2
 
 Here we wanted to measure the motion of Mars around the Sun,
@@ -146,11 +146,11 @@ Let us return to our first example above,
 and examine the results in more detail:
 
 >>> u = ephem.Uranus('1871/3/13')
->>> print str(u.dec)
+>>> print(str(u.dec))
 22:04:47.4
->>> print float(u.dec)
+>>> print('%.12f' % float(u.dec))
 0.385365877213
->>> print u.dec + 1
+>>> print('%.11f' % (u.dec + 1))
 1.38536587721
 
 The rule is that angles become strings when printed or given to ``str()``,
@@ -158,7 +158,7 @@ but otherwise act like Python floating point numbers.
 Note that the format operator ``%`` can return either value,
 depending on whether you use ``%s`` or one of the numeric formats:
 
->>> print "as a string: %s, as a float: %f" % (u.dec, u.dec)
+>>> print("as a string: %s, as a float: %f" % (u.dec, u.dec))
 as a string: 22:04:47.4, as a float: 0.385366
 
 As an example computation,
@@ -173,7 +173,7 @@ by multiplying its angular motion in radians by its distance from the Sun:
 
 >>> aph_angle = ephem.separation(hpos(ma0), hpos(ma1))
 >>> aph_distance = aph_angle * ma0.sun_distance
->>> print aph_distance
+>>> print('%.13f' % aph_distance)
 0.0126911122281
 
 So, it moved nearly 0.013 AU in a single day (about 1.9 million kilometers).
@@ -183,7 +183,7 @@ whose height is the distance to the Sun,
 and whose area is therefore:
 
 >>> aph_area = aph_distance * ma0.sun_distance / 2.
->>> print aph_area
+>>> print('%.13f' % aph_area)
 0.0105710807908
 
 According to Kepler our results should be the same
@@ -193,7 +193,7 @@ we can try using the two Mars positions from near perihelion:
 >>> peri_angle = ephem.separation(hpos(mp0), hpos(mp1))
 >>> peri_distance = peri_angle * mp0.sun_distance
 >>> peri_area = peri_distance * mp0.sun_distance / 2.
->>> print peri_area      # the area, to high precision, is the same!
+>>> print('%.13f' % peri_area)    # the area, to high precision, is the same!
 0.0105712665517
 
 Despite the fact that Mars moves twenty percent faster at perihelion,
@@ -211,9 +211,9 @@ To turn radian measures back into printable angles,
 PyEphem supplies both a ``degrees()`` and an ``hours()`` function.
 For example:
 
->>> print peri_angle * 2
+>>> print('%.13f' % (peri_angle * 2))
 0.0221584026149
->>> print ephem.degrees(peri_angle * 2)
+>>> print(ephem.degrees(peri_angle * 2))
 1:16:10.5
 
 You may find that your angle arithmetic often returns angles
@@ -222,9 +222,9 @@ You can access the ``norm`` attribute of an angle
 to force it into this range:
 
 >>> deg = ephem.degrees
->>> print deg(deg('270') + deg('180'))
+>>> print(deg(deg('270') + deg('180')))
 450:00:00.0
->>> print deg(deg('270') + deg('180')).norm
+>>> print(deg(deg('270') + deg('180')).norm)
 90:00:00.0
 
 Computing With Dates
@@ -240,7 +240,7 @@ which returns a Python ``datetime`` object:
 >>> d = ephem.Date('1984/12/21 15:00')
 >>> ephem.localtime(d)
 datetime.datetime(1984, 12, 21, 10, 0, 0, 4)
->>> print ephem.localtime(d).ctime()
+>>> print(ephem.localtime(d).ctime())
 Fri Dec 21 10:00:00 1984
 
 As you can see from this result,
@@ -261,9 +261,9 @@ you must pass them back through ``ephem.Date()``
 to turn them back into dates:
 
 >>> d = ephem.Date('1950/2/28')
->>> print d + 1
+>>> print(d + 1)
 18321.5
->>> print ephem.Date(d + 1)
+>>> print(ephem.Date(d + 1))
 1950/3/1 00:00:00
 
 The ``ephem`` module provides three constants
@@ -290,12 +290,12 @@ while ``tuple()`` provides everything down to floating point seconds.
 After any of the above calls,
 the date can be examined as:
 
->>> print 'as a float: %f\nas a string: "%s"' % (d, d)
+>>> print('as a float: %f\nas a string: "%s"' % (d, d))
 as a float: 34530.343750
 as a string: "1994/7/16 20:15:00"
->>> print d.triple()
+>>> print(d.triple())
 (1994, 7, 16.84375)
->>> print d.tuple()
+>>> print(d.tuple())
 (1994, 7, 16, 20, 15, 0.0)
 
 Any PyEphem function argument that requires an angle or date
@@ -337,9 +337,9 @@ As an example, we can examine the 1984 eclipse of the sun from Atlanta:
 >>> sun, moon = ephem.Sun(), ephem.Moon()
 >>> sun.compute(gatech)
 >>> moon.compute(gatech)
->>> print sun.alt, sun.az
+>>> print("%s %s" % (sun.alt, sun.az))
 70:08:39.2 122:11:26.4
->>> print moon.alt, moon.az
+>>> print("%s %s" % (moon.alt, moon.az))
 70:08:39.5 122:11:26.0
 
 For those unfamiliar with azimuth and altitude:
@@ -365,9 +365,9 @@ Since each argument to ``separation()``
 can be an arbitrary measure of spherical longitude and latitude,
 we can provide azimuth and altitude:
 
->>> print ephem.separation((sun.az, sun.alt), (moon.az, moon.alt))
+>>> print(ephem.separation((sun.az, sun.alt), (moon.az, moon.alt)))
 0:00:00.3
->>> print sun.size, moon.size, sun.size - moon.size
+>>> print("%.8f %.8f %.11f" % (sun.size, moon.size, sun.size - moon.size))
 1892.91210938 1891.85778809 1.05432128906
 
 The Sun's diameter is larger by 1.05′′,
@@ -396,7 +396,7 @@ because the atmosphere bends its image upwards as it approaches the horizon:
 ...     gatech.date += ephem.minute * 5.
 ...     sun.compute(gatech)
 ...     sep = ephem.separation((old_az, old_alt), (sun.az, sun.alt))
-...     print gatech.date, sun.alt, sep
+...     print("%s %s %s" % (gatech.date, sun.alt, sep))
 1984/5/31 00:05:00 6:17:36.8 1:08:48.1
 1984/5/31 00:10:00 5:21:15.6 1:08:36.3
 1984/5/31 00:15:00 4:25:31.6 1:08:20.0
@@ -430,9 +430,9 @@ before it finds the exact circumstances of rising or setting.
 But this is taken care of automatically,
 leaving you to simply ask:
 
->>> print gatech.next_setting(sun)
+>>> print(gatech.next_setting(sun))
 1984/5/31 00:42:21
->>> print sun.alt, sun.az
+>>> print("%s %s" % (sun.alt, sun.az))
 -0:15:46.4 297:20:44.3
 
 Functions also exist for finding risings, transits, and —
@@ -472,11 +472,11 @@ in `ephem database format`_ and the resulting object is ready to use:
 ...    "166.2194,128.8232,242.5695,0.0002609,0.99705756,0.0000," +
 ...    "04/13.2508/2003,2000,g  6.5,4.0")
 >>> yh.compute('2003/4/11')
->>> print yh.name
+>>> print(yh.name)
 C/2002 Y1 (Juels-Holvorcem)
->>> print yh.ra, yh.dec
+>>> print("%s %s" % (yh.ra, yh.dec))
 0:22:44.58 26:49:48.1
->>> print ephem.constellation(yh), yh.mag
+>>> print("%s %s" % (ephem.constellation(yh), yh.mag))
 ('And', 'Andromeda') 5.96
 
 .. _online catalogs: http://rhodesmill.org/pyephem/catalogs
@@ -488,7 +488,7 @@ Each call to ``readdb()`` returns an object appropriate
 for the orbit specified in the database entry;
 in this case it has returned an ``EllipticalBody``:
 
->>> print yh # doctest: +ELLIPSIS
+>>> print(yh)  # doctest: +ELLIPSIS
 <ephem.EllipticalBody 'C/2002 Y1 (Juels-Holvorcem)' at 0x...>
 
 For objects for which you cannot find an entry in ephem database format,
@@ -510,7 +510,7 @@ Here are some recent elements for the International Space Station.
 ...  "2 25544  51.6361  13.7980 0004256  35.6671  59.2566 15.58778559250029")
 >>> gatech.date = '2003/3/23'
 >>> iss.compute(gatech)
->>> print iss.rise_time, iss.transit_time, iss.set_time
+>>> print("%s %s %s" % (iss.rise_time, iss.transit_time, iss.set_time))
 2003/3/23 00:00:44 2003/3/23 00:03:22 2003/3/23 00:06:00
 
 Note that earth satellites are fast movers —
@@ -522,7 +522,7 @@ Repeating the above query eight hours later gives complete different results:
 
 >>> gatech.date = '2003/3/23 8:00'
 >>> iss.compute(gatech)
->>> print iss.rise_time, iss.transit_time, iss.set_time
+>>> print("%s %s %s" % (iss.rise_time, iss.transit_time, iss.set_time))
 2003/3/23 08:03:41 2003/3/23 08:08:29 2003/3/23 08:13:16
 
 When calling ``compute()`` for an earth satellite
@@ -547,7 +547,7 @@ One example is Polaris, the North Star,
 which lies at the end of Ursa Minor's tail:
 
 >>> polaris = ephem.readdb("Polaris,f|M|F7,2:31:48.704,89:15:50.72,2.02,2000")
->>> print polaris.dec
+>>> print(polaris.dec)
 Traceback (most recent call last):
  ...
 RuntimeError: field dec undefined until first compute()
@@ -560,9 +560,9 @@ until you call their ``compute()`` method
 to determine their position for a particular date or ``Observer``:
 
 >>> polaris.compute()    # uses the current time by default
->>> print polaris.a_dec
+>>> print(polaris.a_dec)
 89:15:50.7
->>> print ephem.degrees(ephem.degrees('90') - polaris.a_dec)
+>>> print(ephem.degrees(ephem.degrees('90') - polaris.a_dec))
 0:44:09.3
 
 Much better; we see that the `North Star` lies
@@ -598,7 +598,7 @@ but we can provide an ``epoch=`` keyword parameter
 to have the coordinates translated into those for another year:
 
 >>> polaris.compute(epoch='2100')
->>> print polaris.a_dec
+>>> print(polaris.a_dec)
 89:32:26.1
 
 Thus we see that in another hundred years Polaris
@@ -619,7 +619,7 @@ lies more than twenty degrees from the pole:
 
 >>> thuban = ephem.readdb("Thuban,f|V|A0,14:4:23.3,64:22:33,3.65,2000")
 >>> thuban.compute()
->>> print thuban.a_dec
+>>> print(thuban.a_dec)
 64:22:33.0
 
 But in 2801 BC, as the Egyptians built the pyramids,
@@ -627,10 +627,10 @@ Thuban served as their pole star,
 while Polaris lay further from their pole than Thuban lies from ours today:
 
 >>> thuban.compute(epoch='-2800')
->>> print thuban.a_dec
+>>> print(thuban.a_dec)
 89:54:35.0
 >>> polaris.compute(epoch='-2800')
->>> print polaris.a_dec
+>>> print(polaris.a_dec)
 63:33:17.6
 
 Realize that in these examples I have been lazy
@@ -679,10 +679,10 @@ is accomplished by simply providing the same argument for both date and epoch:
 
 >>> j = ephem.Jupiter()
 >>> j.compute(epoch=ephem.now())   # so both date and epoch are now
->>> print j.a_ra, j.a_dec # doctest: +SKIP
+>>> print("%s %s" % (j.a_ra, j.a_dec))  # doctest: +SKIP
 8:44:29.49 19:00:10.23
 >>> j.compute('2003/3/25', epoch='2003/3/25')
->>> print j.a_ra, j.a_dec
+>>> print("%s %s" % (j.a_ra, j.a_dec))
 8:43:32.82 19:03:32.5
 
 Be careful when computing distances;
@@ -693,15 +693,15 @@ than if the two were based on the same epoch:
 >>> j1, j2 = ephem.Jupiter(), ephem.Jupiter()
 >>> j1.compute('2003/3/1')
 >>> j2.compute('2003/4/1')
->>> print ephem.separation(
+>>> print(ephem.separation(
 ...     (j1.a_ra, j1.a_dec),
-...     (j2.a_ra, j2.a_dec))    # coordinates are both epoch 2000
+...     (j2.a_ra, j2.a_dec)))   # coordinates are both epoch 2000
 1:46:35.9
 >>> j1.compute('2003/3/1', '2003/3/1')
 >>> j2.compute('2003/4/1', '2003/4/1')
->>> print ephem.separation(
+>>> print(ephem.separation(
 ...     (j1.a_ra, j1.a_dec),
-...     (j2.a_ra, j2.a_dec))    # coordinates are both epoch-of-date
+...     (j2.a_ra, j2.a_dec)))   # coordinates are both epoch-of-date
 1:46:31.6
 
 Comparing coordinates of the same epoch, as in the first call above,

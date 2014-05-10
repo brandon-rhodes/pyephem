@@ -67,8 +67,8 @@ used in the `XEphem`_ graphical astronomy application.
 
   >>> import ephem
   >>> j = ephem.Jupiter('2007/12/6')
-  >>> print j.earth_distance * ephem.meters_per_au / ephem.c, "seconds"
-  3098.61793563 seconds
+  >>> print("%.2f sec" % (j.earth_distance * ephem.meters_per_au / ephem.c))
+  3098.62 sec
 
   This means that we on Earth are not actually seeing Jupiter
   as it really is at this moment;

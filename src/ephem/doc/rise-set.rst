@@ -59,13 +59,13 @@ above with the correct pressure and horizon settings:
 
     >>> atlanta.lat, atlanta.lon = '33.8', '-84.4'
     >>> atlanta.date = '2009/09/06 17:00' # noon EST
-    >>> print atlanta.previous_rising(ephem.Sun())
+    >>> print(atlanta.previous_rising(ephem.Sun()))
     2009/9/6 11:14:56
-    >>> print atlanta.next_setting(ephem.Sun())
+    >>> print(atlanta.next_setting(ephem.Sun()))
     2009/9/6 23:56:09
-    >>> print atlanta.previous_rising(ephem.Moon())
+    >>> print(atlanta.previous_rising(ephem.Moon()))
     2009/9/6 00:16:31
-    >>> print atlanta.next_setting(ephem.Moon())
+    >>> print(atlanta.next_setting(ephem.Moon()))
     2009/9/7 14:05:29
 
 As you can see, these values, given in Universal Time, match quite
@@ -100,9 +100,9 @@ when doing the calculation.  For example, here is how you would use the
 twilight in Atlanta:
 
     >>> atlanta.horizon = '-6'
-    >>> print atlanta.previous_rising(ephem.Sun(), use_center=True)
+    >>> print(atlanta.previous_rising(ephem.Sun(), use_center=True))
     2009/9/6 10:49:40
-    >>> print atlanta.next_setting(ephem.Sun(), use_center=True)
+    >>> print(atlanta.next_setting(ephem.Sun(), use_center=True))
     2009/9/7 00:21:22
 
 As you can see, these values match quite precisely the times given in

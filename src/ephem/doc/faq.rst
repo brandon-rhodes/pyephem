@@ -29,5 +29,5 @@
  ...     pass
  >>> boston = MyObserver()
  >>> boston.friend = 'John Adams'
- >>> print boston.friend
+ >>> print(boston.friend)
  John Adams

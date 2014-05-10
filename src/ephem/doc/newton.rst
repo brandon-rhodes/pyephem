@@ -17,5 +17,5 @@ it returns a quite good appoximation of π (“pi”):
 
     >>> import math
     >>> n = newton(math.sin, 3.0, 3.1)
-    >>> print n
+    >>> print('%.11f' % n)
     3.14159265359

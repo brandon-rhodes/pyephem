@@ -454,7 +454,12 @@ class Moon_Phases(Trial):
 class Mixin(object):
     def test_usno(self):
 
-        content = open(self.path).read()
+        f = open(self.path)
+        try:
+            content = f.read()
+        finally:
+            f.close()
+
         g = globals()
         for obj in g.values():
             if (isinstance(obj, type) and issubclass(obj, Trial)
@@ -473,5 +478,5 @@ class Mixin(object):
 
 i = 1
 for path in glob.glob(os.path.dirname(__file__) + '/usno/*.txt'):
-    exec 'class T%d(unittest.TestCase, Mixin): path = %r' % (i, path)
+    exec('class T%d(unittest.TestCase, Mixin): path = %r' % (i, path))
     i += 1
