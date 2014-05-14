@@ -158,8 +158,8 @@ Floats
     2001/12/14 16:07:57
 
     >>> d = ephem.Date('2000/12/25 12:41:16')
-    >>> print(float(d))
-    36884.028657407405
+    >>> print('%.6f' % d)
+    36884.028657
 
   For more information on what the floating point number means
   when interpreted as a date,

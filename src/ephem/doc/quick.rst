@@ -825,8 +825,10 @@ Stars and Cities
 ..
 
  >>> stuttgart = ephem.city('Stuttgart')
- >>> print(stuttgart.lon, stuttgart.lat)
- 9:10:50.8 48:46:37.6
+ >>> print(stuttgart.lon)
+ 9:10:50.8
+ >>> print(stuttgart.lat)
+ 48:46:37.6
 
  * PyEphem knows 122 world cities.
  * The ``city()`` function returns an ``Observer``

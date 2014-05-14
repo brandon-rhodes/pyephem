@@ -5,15 +5,17 @@
 #if PY_MAJOR_VERSION == 2
 #define PyLong_AsLong PyInt_AsLong
 #define PyLong_FromLong PyInt_FromLong
-#define PyUnicode_Check PyString_Check
+#define PyUnicode_Check3 PyString_Check
 #define PyUnicode_FromFormat PyString_FromFormat
 #define PyUnicode_FromString PyString_FromString
+#define PyUnicode_FromStringAndSize PyString_FromStringAndSize
 #define PyUnicode_GET_LENGTH PyString_Size
 #define PyUnicode_Type PyString_Type
 #define _PyUnicode_AsString PyString_AsString
-#define PyVarObject_HEAD_INIT(p, b) PyObject_HEAD_INIT(p)
+#define PyVarObject_HEAD_INIT(p, b) PyObject_HEAD_INIT(p) 0,
 #define OB_TYPE ob_type
 #else
+#define PyUnicode_Check3 PyUnicode_Check
 #define OB_TYPE ob_base.ob_type
 #endif
 
@@ -443,7 +445,7 @@ static int parse_mjd(PyObject *value, double *mjdp)
 {
      if (PyNumber_Check(value))
 	  return parse_mjd_from_number(value, mjdp);
-     else if (PyUnicode_Check(value))
+     else if (PyUnicode_Check3(value))
 	  return parse_mjd_from_string(value, mjdp);
      else if (PyTuple_Check(value))
 	  return parse_mjd_from_tuple(value, mjdp);
@@ -622,7 +624,7 @@ static int parse_angle(PyObject *value, double factor, double *result)
 {
      if (PyNumber_Check(value)) {
 	  return PyNumber_AsDouble(value, result);
-     } else if (PyUnicode_Check(value)) {
+     } else if (PyUnicode_Check3(value)) {
 	  double scaled;
 	  char *s = _PyUnicode_AsString(value);
           if (!s) return -1;
@@ -663,7 +665,7 @@ static double to_angle(PyObject *value, double efactor, int *status)
 	  Py_DECREF(value);
 	  *status = 0;
 	  return r;
-     } else if (PyUnicode_Check(value)) {
+     } else if (PyUnicode_Check3(value)) {
 	  double scaled;
           char *s = _PyUnicode_AsString(value);
           if (!s) {
@@ -793,7 +795,7 @@ static int set_f_spect(PyObject *self, PyObject *value, void *v)
 {
      Body *b = (Body*) self;
      char *s;
-     if (!PyUnicode_Check(value)) {
+     if (!PyUnicode_Check3(value)) {
 	  PyErr_SetString(PyExc_ValueError, "spectral code must be a string");
 	  return -1;
      }
@@ -2998,10 +3000,7 @@ static struct PyModuleDef libastro_module = {
 
 #endif
 
-#ifdef PyMODINIT_FUNC
-PyMODINIT_FUNC
-#endif
-PyInit__libastro(void)
+PyObject *PyInit__libastro(void)
 {
      PyObject *module;
 
