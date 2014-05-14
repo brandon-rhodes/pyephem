@@ -4,7 +4,11 @@
 import unittest
 import sys
 import warnings
-from sets import Set
+
+try:
+    set
+except NameError:  # older Python versions
+    from sets import Set as set
 
 import ephem
 from ephem import (Body, Planet, Moon, Jupiter, Saturn, PlanetMoon,
@@ -104,7 +108,7 @@ class BodyTests(unittest.TestCase):
     def compare_attributes(self, body, was_computed, was_given_observer):
         p = predict_attributes(body, was_computed, was_given_observer)
         t = self.measure_attributes(body)
-        for a in Set(p).union(t):
+        for a in set(p).union(t):
             if p[a] is None and t[a] is None:
                 continue
             if p[a] and isinstance(t[a], p[a]):
@@ -163,7 +167,7 @@ class BodyTests(unittest.TestCase):
         # Build another body by setting the attributes on a body.
 
         ba = bodytype()
-        for attribute, value in attributes.iteritems():
+        for attribute, value in attributes.items():
             try:
                 setattr(ba, attribute, value)
             except TypeError:
@@ -189,11 +193,13 @@ class BodyTests(unittest.TestCase):
             for attr in attrs:
                 vl, va = getattr(bl, attr), getattr(ba, attr)
                 if isinstance(vl, float):
-                    vl, va = str(float(vl)), str(float(va))
+                    vl, va = repr(float(vl)), repr(float(va))
+                    if vl[:15] == va[:15]:
+                        continue  # todo: investigate these numbers later
                 if vl != va:
-                    raise TestError, ("%s item from line returns %s for %s"
-                                      " but constructed object returns %s"
-                                      % (type(bl), vl, attr, va))
+                    raise TestError("%s item from line returns %s for %s"
+                                    " but constructed object returns %s"
+                                    % (type(bl), vl, attr, va))
 
     def test_FixedBody(self):
         self.build(

@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+double ascii_strtod(const char *s00, char **se);  /* for PyEphem */
+
 /* sprint the variable a in sexagesimal format into out[].
  * w is the number of spaces for the whole part.
  * fracbase is the number of pieces a whole is to broken into; valid options:
@@ -148,7 +150,7 @@ double *dp)		/* cracked value, if return 0 */
            just get zero. */
         status = 0;
         s = str;
-        a = PyOS_ascii_strtod(s, &end);
+        a = ascii_strtod(s, &end);
         if (end == s) { /* since a will be -1 */
              a = 0.0;
              /* don't fail if A is an empty string */
@@ -156,7 +158,7 @@ double *dp)		/* cracked value, if return 0 */
         }
         s = end;
         if (*s == ':') s++;
-        b = PyOS_ascii_strtod(s, &end);
+        b = ascii_strtod(s, &end);
         if (end == s) { /* since b will be -1 */
              b = 0.0;
              /* don't fail if B is an empty string */
@@ -164,7 +166,7 @@ double *dp)		/* cracked value, if return 0 */
         }
         s = end;
         if (*s == ':') s++;
-        c = PyOS_ascii_strtod(s, &end);
+        c = ascii_strtod(s, &end);
         if (end == s) { /* since c will be -1 */
              c = 0.0;
              /* don't fail if C is an empty string */
@@ -200,21 +202,21 @@ int *y)
 	X = Y = Z = 0.0;
 
         /* This replaces an old, locale-sensitive sscanf(). */
-        X = PyOS_ascii_strtod(bp, &end);
+        X = ascii_strtod(bp, &end);
         if (bp == end) {
              n = 0;
              X = 0.0; /* X will be -1 */
         } else {
              s = end;
              if (*s == '-' || *s == '/' || *s == ':') s++;
-             Y = PyOS_ascii_strtod(s, &end);
+             Y = ascii_strtod(s, &end);
              if (s == end) {
                   n = 1;
                   Y = 0.0; /* Y will be -1 */
              } else {
                   s = end;
                   if (*s == '-' || *s == '/' || *s == ':') s++;
-                  Z = PyOS_ascii_strtod(s, &end);
+                  Z = ascii_strtod(s, &end);
                   if (s == end) {
                        n = 2;
                        Z = 0.0; /* Z will be -1 */

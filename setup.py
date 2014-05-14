@@ -1,10 +1,5 @@
-import sys
-if sys.version_info[0] != 2:
-    print('Error: this project, "pyephem", is for Python 2.x;'
-          ' try "ephem" for Python 3')
-    sys.exit(1)
-
 import os
+import sys
 from distutils.core import setup, Extension
 from glob import glob
 
@@ -48,7 +43,8 @@ setup(name = 'pyephem',
                                  ],},
       ext_modules = [
     Extension('ephem._libastro',
-              ['extensions/_libastro.c'] + libastro_files + libastro_data,
+              ['extensions/_libastro.c', 'extensions/dtoa.c']
+              + libastro_files + libastro_data,
               include_dirs=['libastro-' + libastro_version],
               )],
       )

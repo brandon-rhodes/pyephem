@@ -15,7 +15,7 @@ as degrees, minutes of arc, and seconds of arc:
 
     >>> import ephem
     >>> j = ephem.Jupiter('1994/7/16 20:13:16')
-    >>> print j.dec
+    >>> print(j.dec)
     -12:09:28.2
 
 But the real value is always in radians,
@@ -28,17 +28,17 @@ is right ascension,
 which instead traditionally breaks the celestial equator
 into twenty-four “hours” which are each fifteen degress wide.
 
-    >>> print j.ra
+    >>> print(j.ra)
     14:12:45.77
 
 As with PyEphem dates,
 doing math with a PyEphem angle results in an unadorned float being returned.
 
-    >>> type(j.dec)
-    <type 'ephem.Angle'>
+    >>> type(j.dec).__name__
+    'Angle'
     >>> a = j.dec + 3.14
-    >>> type(a)
-    <type 'float'>
+    >>> type(a).__name__
+    'float'
 
 If you want to display the result of a computation
 as an attractively formatted angle,
@@ -54,9 +54,9 @@ the right ascension calls fifteen additional degrees “one hour” of motion:
 
     >>> import math
     >>> fifteen_degrees = ephem.degrees(math.pi / 12.)
-    >>> print j.dec, ephem.degrees(j.dec + fifteen_degrees)
+    >>> print('%s %s' % (j.dec, ephem.degrees(j.dec + fifteen_degrees)))
     -12:09:28.2 2:50:31.8
-    >>> print j.ra, ephem.hours(j.ra + fifteen_degrees)
+    >>> print('%s %s' % (j.ra, ephem.hours(j.ra + fifteen_degrees)))
     14:12:45.77 15:12:45.77
 
 Often when adding or subtracting with angles,
@@ -73,37 +73,37 @@ normalized to the interval (-π, π] centered on zero.
 ::
 
     >>> a = + fifteen_degrees
-    >>> print a, a.norm, a.znorm
+    >>> print('%s %s %s' % (a, a.norm, a.znorm))
     15:00:00.0 15:00:00.0 15:00:00.0
 
 ::
 
     >>> a = - fifteen_degrees
-    >>> print a, a.norm, a.znorm
+    >>> print('%s %s %s' % (a, a.norm, a.znorm))
     -15:00:00.0 345:00:00.0 -15:00:00.0
 
 ::
 
     >>> a = ephem.degrees(circle - fifteen_degrees)
-    >>> print a, a.norm, a.znorm
+    >>> print('%s %s %s' % (a, a.norm, a.znorm))
     345:00:00.0 345:00:00.0 -15:00:00.0
-    
+
 ::
 
     >>> a = ephem.degrees(circle + fifteen_degrees)
-    >>> print a, a.norm, a.znorm
+    >>> print('%s %s %s' % (a, a.norm, a.znorm))
     375:00:00.0 15:00:00.0 15:00:00.0
-    
+
 ::
 
     >>> a = ephem.degrees(- circle + fifteen_degrees)
-    >>> print a, a.norm, a.znorm
+    >>> print('%s %s %s' % (a, a.norm, a.znorm))
     -345:00:00.0 15:00:00.0 15:00:00.0
 
 ::
 
     >>> a = ephem.degrees(- circle - fifteen_degrees)
-    >>> print a, a.norm, a.znorm
+    >>> print('%s %s %s' % (a, a.norm, a.znorm))
     -375:00:00.0 345:00:00.0 -15:00:00.0
 
 Note that you cannot instantiate a raw ``Angle``:

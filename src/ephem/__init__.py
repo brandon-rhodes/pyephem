@@ -67,11 +67,11 @@ uranometria2000 = _libastro.uranometria2000
 # each planet and moon for which _libastro offers specific algorithms.
 
 for index, classname, name in _libastro.builtin_planets():
-    exec '''
+    exec('''
 class %(name)s(_libastro.%(classname)s):
     "Create a Body instance representing %(name)s"
     __planet__ = %(index)r
-''' % dict(name=name, classname=classname, index=index)
+''' % dict(name=name, classname=classname, index=index))
 
 del index, classname, name
 

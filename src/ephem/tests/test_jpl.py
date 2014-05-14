@@ -30,7 +30,13 @@ class JPLTest(unittest.TestCase):
     def runTest(self):
         in_data = False
 
-        for line in open(self.path):
+        f = open(self.path)
+        try:
+            lines = f.readlines()
+        finally:
+            f.close()
+
+        for line in lines:
 
             if line.startswith('Target body name:'):
                 name = line.split()[3]
