@@ -4,7 +4,7 @@ from glob import glob
 
 # Read the current version from ephem/__init__.py itself.
 
-path = os.path.join(os.path.dirname(__file__), 'src', 'ephem', '__init__.py')
+path = os.path.join(os.path.dirname(__file__), 'ephem', '__init__.py')
 for line in open(path):
     if line.startswith('__version__'):
         __version__ = eval(line.split(None, 2)[2]) # skip '__version__', '='
@@ -37,7 +37,6 @@ setup(name = 'pyephem',
         'Programming Language :: Python :: 3.0',
         ],
       packages = [ 'ephem', 'ephem.tests' ],
-      package_dir = { '': 'src' },
       package_data = { 'ephem': ['doc/*.rst',
                                  'tests/jpl/*.txt',
                                  'tests/usno/*.txt',

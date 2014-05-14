@@ -3,8 +3,8 @@
 MANIFEST
 build
 dist
-src/ephem/_libastro*.so
-src/ephem/doc/_build
+ephem/_libastro*.so
+ephem/doc/_build
 tmp*.py
 *.py[co]
 *.egg-info
