@@ -3,7 +3,7 @@
 MANIFEST
 build
 dist
-src/ephem/_libastro.so
+src/ephem/_libastro*.so
 src/ephem/doc/_build
 tmp*.py
 *.py[co]

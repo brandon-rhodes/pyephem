@@ -15,13 +15,6 @@ PyEphem README
 .. _Tutorial: http://rhodesmill.org/pyephem/tutorial
 .. _PyEphem web site: http://rhodesmill.org/pyephem/
 
-**This version of PyEphem,
-named** `pyephem`_ **in the Python Package Index,
-is the version for the Python 2.x series.
-If you have gone ahead and transitioned to Python 3.0,
-then look for the package named** `ephem`_
-**instead.**
-
 PyEphem provides an ``ephem`` Python package
 for performing high-precision astronomy computations.
 The underlying numeric routines are coded in C

@@ -1,5 +1,4 @@
 import os
-import sys
 from distutils.core import setup, Extension
 from glob import glob
 
@@ -10,7 +9,7 @@ for line in open(path):
     if line.startswith('__version__'):
         __version__ = eval(line.split(None, 2)[2]) # skip '__version__', '='
 
-# The `pyephem' module is built from every .c file in the libastro
+# The 'ephem' module is built from every .c file in the libastro
 # directory plus ...
 
 libastro_version = '3.7.5'
@@ -34,6 +33,8 @@ setup(name = 'pyephem',
         'License :: OSI Approved ::'
         ' GNU Library or Lesser General Public License (LGPL)',
         'Topic :: Scientific/Engineering :: Astronomy',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.0',
         ],
       packages = [ 'ephem', 'ephem.tests' ],
       package_dir = { '': 'src' },

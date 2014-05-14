@@ -172,10 +172,10 @@ class BodyTests(unittest.TestCase):
                 setattr(ba, attribute, value)
             except TypeError:
                 raise TestError('cannot modify attribute %s of %r: %s'
-                                  % (attribute, ba, sys.exc_info()[1]))
+                                % (attribute, ba, sys.exc_info()[1]))
         if not isinstance(bl, bodytype):
             raise TestError('ephem database entry returned type %s'
-                              ' rather than type %s' % (type(bl), bodytype))
+                            ' rather than type %s' % (type(bl), bodytype))
 
         # Now, compare the bodies to see if they are equivalent.
         # First test whether they present the right attributes.
@@ -269,6 +269,18 @@ class BodyTests(unittest.TestCase):
                 ' 00000-0  59688-4 0  1902\n',
                 '2 20580  28.4694  17.3953 0004117 265.2946  '
                 '94.7172 14.99359833594524\n')
+
+    # TODO: get this failure mode failing again
+
+    def OFF_test_badTLE(self):
+        """Make sure illegal-character TLE strings are properly caught."""
+        # based on bug report from Reto Schüttel, 2008 Dec 10
+        self.assertRaises(ValueError, readtle,
+                          'HST      \xfe              ', # \xfe is bad char
+                          '1 20580U 90037B   04296.45910607  .00000912 '
+                          ' 00000-0  59688-4 0  1902',
+                          '2 20580  28.4694  17.3953 0004117 265.2946  '
+                          '94.7172 14.99359833594524')
 
 # A user reported that Saturn's ring tilt was misbehaving, and there was
 # indeed a major error occuring in its calculation.  This small test

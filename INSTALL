@@ -15,25 +15,19 @@ in this directory for licensing information.
 
 INSTALLING
 
-If you have installed the Python "distribute" package (or the ancient
-and outdated "setuptools") and "pip" on your system, then you can
-install PyEphem simply by typing:
+If you have installed the standard Python package tool "pip", then you
+can install PyEphem simply by typing:
 
         pip install pyephem
-
-If for some reason you cannot install "pip", then "distribute" by itself
-offers an installer that you can use this way:
-
-        easy_install pyephem
 
 Alternately, if you are on a Windows machine, look at the PyEphem web
 site and you should find prominent links to an auto-install tool for
 Windows.
 
-If, instead, you want to build and install the module yourself, you
-only need Python, your C compiler, and the standard Python distutils.
-You can run the setup.py script in this directory to build or install
-the package.  Typically, entering
+If instead you want to build and install the module yourself, you only
+need Python, your C compiler, and the standard Python distutils.  You
+can run the setup.py script in this directory to build or install the
+package.  Typically, entering
 
 	python setup.py install
 
