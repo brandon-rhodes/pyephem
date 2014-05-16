@@ -11,7 +11,7 @@
 #define PyUnicode_FromStringAndSize PyString_FromStringAndSize
 #define PyUnicode_GET_LENGTH PyString_Size
 #define PyUnicode_Type PyString_Type
-#define _PyUnicode_AsString PyString_AsString
+#define PyUnicode_AsUTF8 PyString_AsString
 #define PyVarObject_HEAD_INIT(p, b) PyObject_HEAD_INIT(p) 0,
 #define OB_TYPE ob_type
 #else
@@ -367,7 +367,7 @@ static int parse_mjd_from_string(PyObject *so, double *mjdp)
 
      if (len >= 1) {
 	  int i;
-          char *s = _PyUnicode_AsString(PyList_GetItem(pieces, 0));
+          char *s = PyUnicode_AsUTF8(PyList_GetItem(pieces, 0));
           if (!s) goto fail;
 
 	  /* Make sure all characters are in set '-/.0123456789' */
@@ -383,7 +383,7 @@ static int parse_mjd_from_string(PyObject *so, double *mjdp)
      }
 
      if (len >= 2) {
-          char *t = _PyUnicode_AsString(PyList_GetItem(pieces, 1));
+          char *t = PyUnicode_AsUTF8(PyList_GetItem(pieces, 1));
 	  double hours;
           if (!t) goto fail;
 	  if (f_scansexa(t, &hours) == -1) {
@@ -403,7 +403,7 @@ fail:
           PyObject *complaint = PyUnicode_FromFormat(
 	       "your date string %s does not look like a year/month/day"
 	       " optionally followed by hours:minutes:seconds",
-	       _PyUnicode_AsString(repr));
+	       PyUnicode_AsUTF8(repr));
 	  PyErr_SetObject(PyExc_ValueError, complaint);
 	  Py_DECREF(repr);
 	  Py_DECREF(complaint);
@@ -626,7 +626,7 @@ static int parse_angle(PyObject *value, double factor, double *result)
 	  return PyNumber_AsDouble(value, result);
      } else if (PyUnicode_Check3(value)) {
 	  double scaled;
-	  char *s = _PyUnicode_AsString(value);
+	  char *s = PyUnicode_AsUTF8(value);
           if (!s) return -1;
           if (f_scansexa(s, &scaled) == -1) {
                PyErr_Format(PyExc_ValueError, "your angle string %r does not "
@@ -667,7 +667,7 @@ static double to_angle(PyObject *value, double efactor, int *status)
 	  return r;
      } else if (PyUnicode_Check3(value)) {
 	  double scaled;
-          char *s = _PyUnicode_AsString(value);
+          char *s = PyUnicode_AsUTF8(value);
           if (!s) {
                *status = -1;
                return 0;
@@ -804,7 +804,7 @@ static int set_f_spect(PyObject *self, PyObject *value, void *v)
 			  "spectral code must be two characters long");
 	  return -1;
      }
-     s = _PyUnicode_AsString(value);
+     s = PyUnicode_AsUTF8(value);
      b->obj.f_spect[0] = s[0];
      b->obj.f_spect[1] = s[1];
      return 0;
@@ -1302,7 +1302,7 @@ static PyObject* Body_repr(PyObject *body_object)
 	  PyObject *repr, *result;
 	  repr = PyObject_Repr(body->name);
 	  if (!repr) return 0;
-	  name = _PyUnicode_AsString(repr);
+	  name = PyUnicode_AsUTF8(repr);
 	  Py_DECREF(repr);
 	  if (!name) return 0;
 	  result = PyUnicode_FromFormat("<%s %s at %p>",
@@ -1618,7 +1618,7 @@ static PyObject *Get_name(PyObject *self, void *v)
 static int Set_name(PyObject *self, PyObject *value, void *v)
 {
      Body *body = (Body*) self;
-     char *name = _PyUnicode_AsString(value);
+     char *name = PyUnicode_AsUTF8(value);
      if (!name) return -1;
      strncpy(body->obj.o_name, name, MAXNM);
      body->obj.o_name[MAXNM - 1] = '\0';
@@ -2609,9 +2609,9 @@ static PyObject* readtle(PyObject *self, PyObject *args)
      if (!PyArg_ParseTuple(args, "O!ss:readtle",
 			   &PyUnicode_Type, &name, &l1, &l2))
 	  return 0;
-     l0 = _PyUnicode_AsString(name);
+     l0 = PyUnicode_AsUTF8(name);
      if (!l0) return 0;
-     if (db_tle(_PyUnicode_AsString(name), l1, l2, &obj)) {
+     if (db_tle(PyUnicode_AsUTF8(name), l1, l2, &obj)) {
 	  PyErr_SetString(PyExc_ValueError,
 			  "line does not conform to tle format");
 	  return 0;
