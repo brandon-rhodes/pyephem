@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 
-import unittest
 import ephem
 import locale
 import sys
 
 if sys.version_info < (2, 7):
-    from unittest2 import SkipTest
+    import unittest2 as unittest
 else:
-    from unittest import SkipTest
+    import unittest
 
 # Determine whether we can convert values regardless of locale.
 
@@ -27,12 +26,12 @@ class locales_suite(unittest.TestCase):
 
     def test_date_creation(self):
         if not self.locale_available:
-            raise SkipTest()
+            raise unittest.SkipTest()
         self.assertEqual(ephem.date('2008.5'), 39629.5) # instead of 2008.0
 
     def test_satellite_creation(self):
         if not self.locale_available:
-            raise SkipTest()
+            raise unittest.SkipTest()
         s = ephem.readtle('ISS (ZARYA)',
                           '1 25544U 98067A   08334.54218750  .00025860  '
                           '00000-0  20055-3 0  7556',
