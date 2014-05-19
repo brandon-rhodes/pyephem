@@ -5,6 +5,8 @@ from datetime import datetime
 
 from ephem import Date, localtime
 
+millisecond = 1.0 / 24.0 / 60.0 / 60.0 / 1e3
+
 # Determine whether dates behave reasonably.
 
 class DateTests(unittest.TestCase):
@@ -15,7 +17,7 @@ class DateTests(unittest.TestCase):
 
         def construct_and_compare(args1, args2):
             d1, d2 = Date(args1), Date(args2)
-            self.assertTrue(-1e-15 < (d1 / d2 - 1) < 1e-15,
+            self.assertTrue(abs(d1 - d2) < millisecond,
                             'dates not equal:\n %r = date%r\n %r = date%r'
                             % (d1.tuple(), args1, d2.tuple(), args2))
 
