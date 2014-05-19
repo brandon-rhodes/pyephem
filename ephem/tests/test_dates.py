@@ -50,7 +50,7 @@ class DateTests(unittest.TestCase):
                 construct_and_compare(arg1, '  %s  ' % arg2)
 
     def test_date_string_value(self):
-        self.assertEqual(str(self.date), '2004/9/4 00:17:15')
+        self.assertEqual(str(self.date), '2004/9/4 00:17:16')
 
     def test_date_triple_value(self):
         self.assertEqual(self.date.triple(), (2004, 9, 4.0119884259256651))

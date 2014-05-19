@@ -496,7 +496,9 @@ static char *Date_format(PyObject *self)
      static char buffer[64];
      int year, month, day, hour, minute;
      double second;
-     mjd_six(d->ob_fval, &year, &month, &day, &hour, &minute, &second);
+     /* Note the offset, which makes us round instead of truncate. */
+     mjd_six(d->ob_fval + 0.5 / 24.0 / 60.0 / 60.0,
+             &year, &month, &day, &hour, &minute, &second);
      sprintf(buffer, "%d/%d/%d %02d:%02d:%02d",
 	     year, month, day, hour, minute, (int) second);
      return buffer;
