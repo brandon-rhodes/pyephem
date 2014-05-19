@@ -5,7 +5,7 @@ python: ["2.6", "2.7"]  # "3.2"
 
 install:
   - "if [[ $TRAVIS_PYTHON_VERSION == 2.6 ]] ;then pip install unittest2 ;fi"
-  - "pip install ."
+  - "python setup.py build_ext --inplace"
 
 script:
   - "if [[ $TRAVIS_PYTHON_VERSION == 2.6 ]] ;then unit2 discover ephem ;else python -m unittest discover ephem ;fi"
