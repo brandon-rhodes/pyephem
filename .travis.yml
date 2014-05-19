@@ -1,17 +1,11 @@
 # Config file for automatic testing at travis-ci.org
 
 language: python
+python: ["2.6", "2.7"]  # "3.2"
 
-python:
-  - "2.6"
-  - "2.7"
-  # Python 3
-#  - "3.2"
-
-# command to install dependencies
 install:
-  - pip install -q tox --use-mirrors
+  - [[ $TRAVIS_PYTHON_VERSION == 2.6 ]] && pip install unittest2
 
-# command to run tests
 script:
-  - tox
+  - [[ $TRAVIS_PYTHON_VERSION == 2.6 ]] && unit2 discover ephem
+  - [[ $TRAVIS_PYTHON_VERSION != 2.6 ]] && python -m unittest discover ephem
