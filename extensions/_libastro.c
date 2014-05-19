@@ -9,7 +9,6 @@
 #define PyUnicode_FromFormat PyString_FromFormat
 #define PyUnicode_FromString PyString_FromString
 #define PyUnicode_FromStringAndSize PyString_FromStringAndSize
-#define PyUnicode_GET_LENGTH PyString_Size
 #define PyUnicode_Type PyString_Type
 #define _PyUnicode_AsString PyString_AsString
 #define PyVarObject_HEAD_INIT(p, b) PyObject_HEAD_INIT(p) 0,
@@ -801,12 +800,12 @@ static int set_f_spect(PyObject *self, PyObject *value, void *v)
 	  PyErr_SetString(PyExc_ValueError, "spectral code must be a string");
 	  return -1;
      }
-     if (PyUnicode_GET_LENGTH(value) != 2) {
+     s = _PyUnicode_AsString(value);
+     if (s[0] == '\0' || s[1] == '\0' || s[2] != '\0') {
 	  PyErr_SetString(PyExc_ValueError,
 			  "spectral code must be two characters long");
 	  return -1;
      }
-     s = _PyUnicode_AsString(value);
      b->obj.f_spect[0] = s[0];
      b->obj.f_spect[1] = s[1];
      return 0;
