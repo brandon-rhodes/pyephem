@@ -120,6 +120,12 @@ typedef struct {
      PyObject *catalog_number;	/* TLE catalog number */
 } EarthSatellite;
 
+/* A forward-reference function definition, so that C does not have to
+   do anything crazy like make two passes over its input file.  Keep it
+   cool, C, I will just repeat myself instead. */
+
+static int Body_obj_cir(Body *body, char *fieldname, unsigned topocentric);
+
 /* Return the mjd of the current time. */
 
 static double mjd_now(void)
@@ -1281,6 +1287,23 @@ fail:
      return 0;
 }
 
+static PyObject* Body_parallactic_angle(PyObject *self)
+{
+     PyObject *a1, *a2;
+     Body *body = (Body*) self;
+     double ha, pa;
+     if (Body_obj_cir(body, "parallactic_angle", 1) == -1)
+          return 0;
+     radec2ha(&(body->now), body->obj.s_ra, body->obj.s_dec, &ha);
+     pa = parallacticLHD(body->now.n_lat, ha, body->obj.s_dec);
+     a1 = new_Angle(pa, raddeg(1));
+     if (!a1)
+          return 0;
+     a2 = Angle_get_znorm(a1, 0);
+     Py_XDECREF(a1);
+     return a2;
+}
+
 static PyObject* Body_writedb(PyObject *self)
 {
      Body *body = (Body*) self;
@@ -1330,6 +1353,10 @@ static PyMethodDef Body_methods[] = {
      {"compute", (PyCFunction) Body_compute, METH_VARARGS | METH_KEYWORDS,
       "compute the location of the body for the given date or Observer,"
       " or for the current time if no date is supplied"},
+     {"parallactic_angle", (PyCFunction) Body_parallactic_angle, METH_NOARGS,
+      "return the parallactic angle to the body; an Observer must have been"
+      " provided to the most recent compute() call, because a parallactic"
+      " angle is always measured with respect to a specfic observer"},
      {"writedb", (PyCFunction) Body_writedb, METH_NOARGS,
       "return a string representation of the body "
       "appropriate for inclusion in an ephem database file"},
