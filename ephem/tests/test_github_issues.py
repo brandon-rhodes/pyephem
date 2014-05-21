@@ -22,3 +22,9 @@ class GitHubIssues(TestCase):
     def test_github_31(self):
         position = (4.116325133165859, 0.14032240860186646)
         self.assertEqual(ephem.separation(position, position), 0.0)
+
+    def test_github_41(self):
+        g = ephem.Galactic('45:00', '55:00')
+        self.assertEqual(str(g.long), '45:00:00.0')
+        g.long = ephem.degrees('-35')
+        self.assertEqual(str(g.long), '-35:00:00.0')

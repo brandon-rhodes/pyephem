@@ -549,6 +549,8 @@ class Coordinate(object):
                 )
 
 class Equatorial(Coordinate):
+    """An equatorial sky coordinate in right ascension and declination."""
+
     def get(self):
         return self.ra, self.dec
 
@@ -559,13 +561,25 @@ class Equatorial(Coordinate):
     from_radec = set
 
 class LonLatCoordinate(Coordinate):
+    """A coordinate that is measured with a longitude and latitude."""
+
     def set(self, lon, lat):
         self.lon, self.lat = degrees(lon), degrees(lat)
 
     def get(self):
         return self.lon, self.lat
 
+    @property
+    def long(self):
+        return self.lon
+
+    @long.setter
+    def long(self, value):
+        self.lon = value
+
 class Ecliptic(LonLatCoordinate):
+    """An ecliptic latitude and longitude."""
+
     def to_radec(self):
         return _libastro.ecl_eq(self.epoch, self.lon, self.lat)
 
@@ -573,6 +587,8 @@ class Ecliptic(LonLatCoordinate):
         self.lon, self.lat = _libastro.eq_ecl(self.epoch, ra, dec)
 
 class Galactic(LonLatCoordinate):
+    """A galactic latitude and longitude."""
+
     def to_radec(self):
         return _libastro.gal_eq(self.epoch, self.lon, self.lat)
 
