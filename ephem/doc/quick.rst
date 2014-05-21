@@ -515,9 +515,12 @@ transit, rising, setting
  * Each takes a ``Body`` argument,
    which can be any body except an ``EarthSatellite``
    (for which the ``next_pass()`` method below should be used).
- * Returns a ``Date`` value.
- * Leaves the ``Body`` at its position on that date.
- * The Observer itself is unchanged.
+ * Starting at the Observer’s ``date``
+   they search the entire circuit of the sky
+   that the body was making from its previous anti-transit to the next.
+ * If the search is successful, returns a ``Date`` value.
+ * Always leaves the ``Body`` at its position on that date.
+ * Always leaves the Observer unmodified.
  * Takes an optional ``start=`` argument
    giving the date and time
    from which the search for a rising, transit, or setting should commence.
@@ -526,7 +529,7 @@ transit, rising, setting
    and the anti-meridian as the other half of the same great circle;
    so the transit and anti-transit methods always succeed,
    whether the body crosses the horizon or not.
- * But the rising and setting functions raise execptions
+ * But the rising and setting functions raise exceptions
    if the body does not to cross the horizon;
    the exception hierarchy is::
 

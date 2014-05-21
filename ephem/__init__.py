@@ -234,18 +234,36 @@ class CircumpolarError(ValueError): pass
 class NeverUpError(CircumpolarError): pass
 class AlwaysUpError(CircumpolarError): pass
 
-class Observer(_libastro.Observer):
+def describe_riset_search(method):
+    method.__doc__ += """, returning its date.
+
+    The search starts at the `date` of this `Observer` and is limited to
+    the single circuit of the sky, from antitransit to antitransit, that
+    the `body` was in the middle of describing at that date and time.
+    If the body did not, in fact, cross the horizon in the direction you
+    are asking about during that particular circuit, then the search
+    must raise a `CircumpolarError` exception like `NeverUpError` or
+    `AlwaysUpError` instead of returning a date.
+
     """
-    Observers instances allow you to compute positions of celestial bodies.
-    No parameters to init are taken.
-    Includes a position on the Earth's surface, a time, a temperature, and a pressure.
-    Needed by the compute() method of Body instances.
-    Defaults:
-     time: now
-     temperature: 15 degrees Celsius
-     pressure: 1010 mBar
-     elevation, lat, long: 0
-     epoch: 2000
+    return method
+
+class Observer(_libastro.Observer):
+    """A location on earth for which positions are to be computed.
+
+    An `Observer` instance allows you to compute the positions of
+    celestial bodies as seen from a particular latitude and longitude on
+    the Earth's surface.  The constructor takes no parameters; instead,
+    set its attributes once you have created it.  Defaults:
+
+    `time` - the moment the `Observer` is created
+    `temperature` - 15 degrees Celsius
+    `pressure` - 1010 mBar
+    `elevation` - 0 meters above sea level
+    `lat` - zero degrees latitude
+    `long` - zero degrees longitude
+    `epoch` - J2000
+
     """
     __slots__ = [ 'name' ]
     elev = _libastro.Observer.elevation
@@ -444,20 +462,24 @@ class Observer(_libastro.Observer):
         self.date = original_date
         return result
 
+    @describe_riset_search
     def previous_rising(self, body, start=None, use_center=False):
-        """Move to the given body's previous rising, returning the date."""
+        """Search for the given body's previous rising"""
         return self._riset_helper(body, start, use_center, True, True)
 
+    @describe_riset_search
     def previous_setting(self, body, start=None, use_center=False):
-        """Move to the given body's previous setting, returning the date."""
+        """Search for the given body's previous setting"""
         return self._riset_helper(body, start, use_center, False, True)
 
+    @describe_riset_search
     def next_rising(self, body, start=None, use_center=False):
-        """Move to the given body's next rising, returning the date."""
+        """Search for the given body's next rising"""
         return self._riset_helper(body, start, use_center, True, False)
 
+    @describe_riset_search
     def next_setting(self, body, start=None, use_center=False):
-        """Move to the given body's next setting, returning the date."""
+        """Search for the given body's next setting"""
         return self._riset_helper(body, start, use_center, False, False)
 
     def next_pass(self, body):
@@ -470,6 +492,8 @@ class Observer(_libastro.Observer):
                 )
 
         return _libastro._next_pass(self, body)
+
+del describe_riset_search
 
 # Time conversion.
 
