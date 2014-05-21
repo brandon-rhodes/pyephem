@@ -1,6 +1,18 @@
 PyEphem CHANGELOG
 =================
 
+Version UPCOMING (2014 May 23?)
+-------------------------------
+
+- Added a ``.long`` alias for the ``.lon`` longitude attribute on
+  ecliptic and galactic coordinates, fixing GitHub issue #41.
+
+- Combined the Python 2 and Python 3 code bases using the magic of
+  ``#ifdef`` and a barrel full of ``print()`` parentheses, which should
+  prevent either version from ever falling behind the other again.
+
+- Fixed GitHub issues #35, #37, #40.
+
 Version 3.7.5.2 (2013 December 21)
 ----------------------------------
 
