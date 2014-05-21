@@ -583,7 +583,7 @@ observer.horizon
  >>> greenwich.date = '2007/10/1'
  >>> r2 = greenwich.next_rising(sun)
  >>> print('Visual sunrise: %s' % r1)
- Visual sunrise: 2007/10/1 05:59:29
+ Visual sunrise: 2007/10/1 05:59:30
  >>> print('Naval Observatory sunrise: %s' % r2)
  Naval Observatory sunrise: 2007/10/1 05:59:50
 

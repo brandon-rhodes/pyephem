@@ -431,7 +431,7 @@ But this is taken care of automatically,
 leaving you to simply ask:
 
 >>> print(gatech.next_setting(sun))
-1984/5/31 00:42:21
+1984/5/31 00:42:22
 >>> print("%s %s" % (sun.alt, sun.az))
 -0:15:46.4 297:20:44.3
 
@@ -511,7 +511,7 @@ Here are some recent elements for the International Space Station.
 >>> gatech.date = '2003/3/23'
 >>> iss.compute(gatech)
 >>> print("%s %s %s" % (iss.rise_time, iss.transit_time, iss.set_time))
-2003/3/23 00:00:44 2003/3/23 00:03:22 2003/3/23 00:06:00
+2003/3/23 00:00:44 2003/3/23 00:03:23 2003/3/23 00:06:01
 
 Note that earth satellites are fast movers —
 in this case rising and setting in less than six minutes!
@@ -523,7 +523,7 @@ Repeating the above query eight hours later gives complete different results:
 >>> gatech.date = '2003/3/23 8:00'
 >>> iss.compute(gatech)
 >>> print("%s %s %s" % (iss.rise_time, iss.transit_time, iss.set_time))
-2003/3/23 08:03:41 2003/3/23 08:08:29 2003/3/23 08:13:16
+2003/3/23 08:03:41 2003/3/23 08:08:29 2003/3/23 08:13:17
 
 When calling ``compute()`` for an earth satellite
 you should provide an ``Observer``,

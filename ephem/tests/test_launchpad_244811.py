@@ -15,10 +15,10 @@ class Launchpad244811Tests(unittest.TestCase):
         cur_date = ephem.Date("2009/6/29 07:00:00")
 
         cur_date = boston.next_rising(mars, start=cur_date)
-        self.assertEqual(str(cur_date), '2009/6/30 06:17:36')
+        self.assertEqual(str(cur_date), '2009/6/30 06:17:37')
 
         cur_date = boston.next_rising(mars, start=cur_date)
-        self.assertEqual(str(cur_date), '2009/7/1 06:15:44')
+        self.assertEqual(str(cur_date), '2009/7/1 06:15:45')
 
         cur_date = boston.next_rising(mars, start=cur_date)
         self.assertEqual(str(cur_date), '2009/7/2 06:13:53')

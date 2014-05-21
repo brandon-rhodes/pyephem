@@ -60,11 +60,11 @@ above with the correct pressure and horizon settings:
     >>> atlanta.lat, atlanta.lon = '33.8', '-84.4'
     >>> atlanta.date = '2009/09/06 17:00' # noon EST
     >>> print(atlanta.previous_rising(ephem.Sun()))
-    2009/9/6 11:14:56
+    2009/9/6 11:14:57
     >>> print(atlanta.next_setting(ephem.Sun()))
-    2009/9/6 23:56:09
+    2009/9/6 23:56:10
     >>> print(atlanta.previous_rising(ephem.Moon()))
-    2009/9/6 00:16:31
+    2009/9/6 00:16:32
     >>> print(atlanta.next_setting(ephem.Moon()))
     2009/9/7 14:05:29
 
@@ -103,7 +103,7 @@ twilight in Atlanta:
     >>> print(atlanta.previous_rising(ephem.Sun(), use_center=True))
     2009/9/6 10:49:40
     >>> print(atlanta.next_setting(ephem.Sun(), use_center=True))
-    2009/9/7 00:21:22
+    2009/9/7 00:21:23
 
 As you can see, these values match quite precisely the times given in
 the table in the previous section for civil twilight.

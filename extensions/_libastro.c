@@ -9,7 +9,6 @@
 #define PyUnicode_FromFormat PyString_FromFormat
 #define PyUnicode_FromString PyString_FromString
 #define PyUnicode_FromStringAndSize PyString_FromStringAndSize
-#define PyUnicode_GET_LENGTH PyString_Size
 #define PyUnicode_Type PyString_Type
 #define PyUnicode_AsUTF8 PyString_AsString
 #define PyVarObject_HEAD_INIT(p, b) PyObject_HEAD_INIT(p) 0,
@@ -496,7 +495,9 @@ static char *Date_format(PyObject *self)
      static char buffer[64];
      int year, month, day, hour, minute;
      double second;
-     mjd_six(d->ob_fval, &year, &month, &day, &hour, &minute, &second);
+     /* Note the offset, which makes us round instead of truncate. */
+     mjd_six(d->ob_fval + 0.5 / 24.0 / 60.0 / 60.0,
+             &year, &month, &day, &hour, &minute, &second);
      sprintf(buffer, "%d/%d/%d %02d:%02d:%02d",
 	     year, month, day, hour, minute, (int) second);
      return buffer;
@@ -799,12 +800,12 @@ static int set_f_spect(PyObject *self, PyObject *value, void *v)
 	  PyErr_SetString(PyExc_ValueError, "spectral code must be a string");
 	  return -1;
      }
-     if (PyUnicode_GET_LENGTH(value) != 2) {
+     s = PyUnicode_AsUTF8(value);
+     if (s[0] == '\0' || s[1] == '\0' || s[2] != '\0') {
 	  PyErr_SetString(PyExc_ValueError,
 			  "spectral code must be two characters long");
 	  return -1;
      }
-     s = PyUnicode_AsUTF8(value);
      b->obj.f_spect[0] = s[0];
      b->obj.f_spect[1] = s[1];
      return 0;
