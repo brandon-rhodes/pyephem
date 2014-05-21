@@ -16,6 +16,9 @@
 #else
 #define PyUnicode_Check3 PyUnicode_Check
 #define OB_TYPE ob_base.ob_type
+#if PY_MINOR_VERSION == 2
+#define PyUnicode_AsUTF8 _PyUnicode_AsString
+#endif
 #endif
 
 #include "datetime.h"
