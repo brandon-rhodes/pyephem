@@ -404,8 +404,7 @@ fail:
 	  PyObject *repr = PyObject_Repr(so);
           PyObject *complaint = PyUnicode_FromFormat(
 	       "your date string %s does not look like a year/month/day"
-	       " optionally followed by hours:minutes:seconds",
-	       PyUnicode_AsUTF8(repr));
+	       " optionally followed by hours:minutes:seconds", repr);
 	  PyErr_SetObject(PyExc_ValueError, complaint);
 	  Py_DECREF(repr);
 	  Py_DECREF(complaint);
@@ -804,6 +803,8 @@ static int set_f_spect(PyObject *self, PyObject *value, void *v)
 	  return -1;
      }
      s = PyUnicode_AsUTF8(value);
+     if (!s)
+          return -1;
      if (s[0] == '\0' || s[1] == '\0' || s[2] != '\0') {
 	  PyErr_SetString(PyExc_ValueError,
 			  "spectral code must be two characters long");
@@ -1305,12 +1306,16 @@ static PyObject* Body_repr(PyObject *body_object)
 	  char *name;
 	  PyObject *repr, *result;
 	  repr = PyObject_Repr(body->name);
-	  if (!repr) return 0;
+	  if (!repr)
+               return 0;
 	  name = PyUnicode_AsUTF8(repr);
-	  Py_DECREF(repr);
-	  if (!name) return 0;
+	  if (!name) {
+               Py_DECREF(repr);
+               return 0;
+          }
 	  result = PyUnicode_FromFormat("<%s %s at %p>",
 				       body->OB_TYPE->tp_name, name, body);
+	  Py_DECREF(repr);
 	  return result;
      } else if (body->obj.o_name[0])
 	  return PyUnicode_FromFormat("<%s \"%s\" at %p>",
@@ -1623,7 +1628,8 @@ static int Set_name(PyObject *self, PyObject *value, void *v)
 {
      Body *body = (Body*) self;
      char *name = PyUnicode_AsUTF8(value);
-     if (!name) return -1;
+     if (!name)
+          return -1;
      strncpy(body->obj.o_name, name, MAXNM);
      body->obj.o_name[MAXNM - 1] = '\0';
      Py_XDECREF(body->name);
@@ -2614,8 +2620,9 @@ static PyObject* readtle(PyObject *self, PyObject *args)
 			   &PyUnicode_Type, &name, &l1, &l2))
 	  return 0;
      l0 = PyUnicode_AsUTF8(name);
-     if (!l0) return 0;
-     if (db_tle(PyUnicode_AsUTF8(name), l1, l2, &obj)) {
+     if (!l0)
+          return 0;
+     if (db_tle(l0, l1, l2, &obj)) {
 	  PyErr_SetString(PyExc_ValueError,
 			  "line does not conform to tle format");
 	  return 0;
