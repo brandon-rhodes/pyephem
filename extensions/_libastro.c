@@ -1987,6 +1987,23 @@ static PyMemberDef EarthSatellite_members[] = {
 static char body_doc[] =
      "A celestial body, that can compute() its sky position";
 
+static char earth_satellite_doc[] = "\
+A satellite in orbit around the Earth, usually built by passing the\
+ text of a TLE entry to the `ephem.readtle()` routine. You can read\
+ and write its orbital parameters through the following attributes:\n\
+\n\
+_ap -- argument of perigee at epoch (degrees)\n\
+_decay -- orbit decay rate (revolutions per day-squared)\n\
+_drag -- object drag coefficient (per earth radius)\n\
+_e -- eccentricity\n\
+_epoch -- reference epoch (mjd)\n\
+_inc -- inclination (degrees)\n\
+_M -- mean anomaly (degrees from perigee at epoch)\n\
+_n -- mean motion (revolutions per day)\n\
+_orbit -- integer orbit number of epoch\n\
+_raan -- right ascension of ascending node (degrees)\n\
+";
+
 static PyTypeObject BodyType = {
      PyVarObject_HEAD_INIT(NULL, 0)
      "ephem.Body",
@@ -2470,7 +2487,7 @@ static PyTypeObject EarthSatelliteType = {
      0,				/* tp_setattro */
      0,				/* tp_as_buffer */
      Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,	/* tp_flags */
-     body_doc,			/* tp_doc */
+     earth_satellite_doc,	/* tp_doc */
      0,				/* tp_traverse */
      0,				/* tp_clear */
      0,				/* tp_richcompare */
