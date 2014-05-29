@@ -27,7 +27,7 @@ extensions = [
               ),
     ]
 
-setup(name = 'pyephem',
+setup(name = 'ephem',
       version = __version__,
       description = 'Compute positions of the planets and stars',
       long_description = read('README.rst'),
