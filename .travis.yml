@@ -6,7 +6,8 @@ python: ["2.6", "2.7", "3.2", "3.3", "3.4"]
 install:
   - "if [[ $TRAVIS_PYTHON_VERSION == 2.6 ]] ;then pip install unittest2 ;fi"
   - "python setup.py sdist"
-  - "cd dist && pip install ephem*.tar.gz"
+  - "cd dist"
+  - "pip install ephem*.tar.gz"
 
 script:
-  - "cd issues && if [[ $TRAVIS_PYTHON_VERSION == 2.6 ]] ;then unit2 discover ephem ;else python -m unittest discover ephem ;fi"
+  - "if [[ $TRAVIS_PYTHON_VERSION == 2.6 ]] ;then unit2 discover ephem ;else python -m unittest discover ephem ;fi"
