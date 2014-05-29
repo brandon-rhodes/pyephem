@@ -19,6 +19,19 @@ class GitHubIssues(TestCase):
         self.assertEqual(str(iss.g_ra), '6:54:40.64')
         self.assertEqual(str(iss.ra), '8:50:16.76')
 
+    def test_github_24(self):
+        boston = ephem.Observer()
+        boston.lat = '42:21:24'
+        boston.lon = '-71:03:25'
+        boston.elevation = 6.4
+        boston.pressure = 0.0
+        boston.temp = 10.0
+        boston.date = '2014/5/29 00:00:00'
+        mars = ephem.Mars(boston)
+        pa = mars.parallactic_angle()
+        # The exact value that XEphem computes for this circumstance:
+        self.assertEqual('%.2f' % (pa / ephem.degree), '-13.62')
+
     def test_github_31(self):
         position = (4.116325133165859, 0.14032240860186646)
         self.assertEqual(ephem.separation(position, position), 0.0)

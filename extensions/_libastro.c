@@ -1294,8 +1294,8 @@ static PyObject* Body_parallactic_angle(PyObject *self)
      double ha, pa;
      if (Body_obj_cir(body, "parallactic_angle", 1) == -1)
           return 0;
-     radec2ha(&(body->now), body->obj.s_ra, body->obj.s_dec, &ha);
-     pa = parallacticLHD(body->now.n_lat, ha, body->obj.s_dec);
+     radec2ha(&(body->now), body->obj.s_astrora, body->obj.s_astrodec, &ha);
+     pa = parallacticLHD(body->now.n_lat, ha, body->obj.s_astrodec);
      a1 = new_Angle(pa, raddeg(1));
      if (!a1)
           return 0;
