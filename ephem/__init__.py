@@ -12,7 +12,7 @@ halfpi = pi / 2.
 quarterpi = pi / 4.
 eighthpi = pi / 8.
 
-degree = twopi / 360.
+degree = pi / 180.
 arcminute = degree / 60.
 arcsecond = arcminute / 60.
 half_arcsecond = arcsecond / 2.
