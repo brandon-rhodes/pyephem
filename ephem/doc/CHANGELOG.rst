@@ -4,8 +4,11 @@ PyEphem CHANGELOG
 Version UPCOMING (2014 May 23?)
 -------------------------------
 
+- Gave all bodies a ``.parallactic_angle()`` method that computes the
+  same angle as the ``PA`` column in XEphem itself (GitHub #24).
+
 - Added a ``.long`` alias for the ``.lon`` longitude attribute on
-  ecliptic and galactic coordinates, fixing GitHub issue #41.
+  ecliptic and galactic coordinates (GitHub #41).
 
 - Combined the Python 2 and Python 3 code bases using the magic of
   ``#ifdef`` and a barrel full of ``print()`` parentheses, which should
