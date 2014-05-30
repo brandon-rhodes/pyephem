@@ -50,7 +50,7 @@
       >Python 2.6 Windows installer</a>
      <br/>
      <br/>
-     <a href="http://pypi.python.org/packages/source/p/pyephem/pyephem-3.7.5.2.tar.gz"
+     <a href="http://pypi.python.org/packages/source/p/ephem/ephem-3.7.5.3.tar.gz"
       >Source code (.tar.gz)</a><br/>
    </p>
 
@@ -151,7 +151,7 @@ for us to use them as the basis for PyEphem.
 Installation
 ------------
 
-Version **3.7.5.2** is the most recent release of PyEphem.
+Version **3.7.5.3** is the most recent release of PyEphem.
 Consult the `change log`_ to see the new features!
 
 .. _change log: CHANGELOG

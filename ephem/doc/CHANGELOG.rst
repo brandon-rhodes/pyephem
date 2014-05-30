@@ -1,8 +1,8 @@
 PyEphem CHANGELOG
 =================
 
-Version UPCOMING (2014 May 23?)
--------------------------------
+Version 3.7.5.3 (2014 May 29)
+-----------------------------
 
 - Gave all bodies a ``.parallactic_angle()`` method that computes the
   same angle as the ``PA`` column in XEphem itself (GitHub #24).
