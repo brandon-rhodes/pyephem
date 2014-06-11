@@ -28,6 +28,14 @@ giving the position of a planet, asteroid, or comet for a series of dates.
 The `PyEphem web site`_ offers documentation
 and also links to the project bug tracker, user support forum,
 and source code repository.
+If you have a C compiler and the
+`pip Python installer tool <https://pip.pypa.io/en/latest/installing.html>`_
+on your system,
+then installing PyEphem should be as easy as::
+
+  pip install ephem
+
+There are also Windows installers in the downloads section below.
 
 The design of PyEphem emphasizes convenience and ease of use.
 Both celestial bodies and the observer's location on Earth
