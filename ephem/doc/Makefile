@@ -77,4 +77,4 @@ doctest:
 
 sync:
 	chmod -R a+rX _build/html
-	rsync -a _build/html/ wf-rhodesmill:sites/rhodesmill/html/pyephem
+	rsync -crlv _build/html/ ~/Dropbox/rhodesmill.org/pyephem
