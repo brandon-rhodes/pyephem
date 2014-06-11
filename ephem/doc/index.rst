@@ -126,7 +126,7 @@
 Welcome!
 ========
 
-**PyEphem** provides scientific-grade astronomical computations
+**PyEphem** provides basic astronomical computations
 for the Python_ programming language.
 Given a date and location on the Earth's surface,
 it can compute the positions of the Sun and Moon,
