@@ -39,19 +39,15 @@
    directly from the <b>Python Package Index</b>.</p>
    <img src="_static/python.png"/>
    <p>
-     <a href="http://pypi.python.org/pypi/pyephem/"
+     <a href="https://pypi.python.org/pypi/ephem/"
       >PyPI PyEphem page</a>
      <br/>
-     <br/>
-     <a href="http://pypi.python.org/packages/2.7/p/pyephem/pyephem-3.7.5.2.win32-py2.7.exe"
-      >Python 2.7 Windows installer</a>
-     <br/>
-     <a href="http://pypi.python.org/packages/2.6/p/pyephem/pyephem-3.7.5.2.win32-py2.6.exe"
-      >Python 2.6 Windows installer</a>
+     Includes Windows installers!
      <br/>
      <br/>
-     <a href="http://pypi.python.org/packages/source/p/ephem/ephem-3.7.5.3.tar.gz"
-      >Source code (.tar.gz)</a><br/>
+     <a href="https://pypi.python.org/packages/source/e/ephem/ephem-3.7.5.3.tar.gz#md5=0e33905844e3be5c901c13e5a9c938a3"
+      >Source code</a><br/>
+     As a .tar.gz file
    </p>
 
    </td>
