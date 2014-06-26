@@ -2,12 +2,6 @@
 Rising, Transit, Setting
 ========================
 
-Temperature and pressure; set to 0 to turn off
-
-    >>> import ephem
-
-Altitude you ask for
-
 Naval Observatory Risings and Settings
 --------------------------------------
 
@@ -27,6 +21,7 @@ the horizon that you want to use to one that is exactly 34 arcminutes
 lower than the normal horizon, to match the value by which the Navy
 reckons that an object at the horizon is refracted:
 
+    >>> import ephem
     >>> atlanta = ephem.Observer()
     >>> atlanta.pressure = 0
     >>> atlanta.horizon = '-0:34'

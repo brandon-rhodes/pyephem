@@ -95,6 +95,9 @@ body.compute(date)
    | ``size`` — Size (diameter in arcseconds)
    | ``radius`` — Size (radius as an angle)
 
+   | ``circumpolar`` — whether it stays above the horizon
+   | ``neverup`` — whether is stays below the horizon
+
  * On Solar System bodies, also sets:
 
    | ``hlon`` — Heliocentric longitude (see next paragraph)
@@ -130,7 +133,7 @@ body.compute(date)
    | ``range`` — Distance from observer to satellite (m)
    | ``range_velocity`` — Range rate of change (m/s)
    | ``eclipsed`` — Whether satellite is in Earth's shadow
-  
+
  * On ``Moon`` bodies, also sets:
 
    | Current libration:
@@ -442,6 +445,10 @@ Observers
  >>> lowell.date = '1986/3/13'
  >>> j = ephem.Jupiter()
  >>> j.compute(lowell)
+ >>> print(j.circumpolar)
+ False
+ >>> print(j.neverup)
+ False
  >>> print('%s %s' % (j.alt, j.az))
  0:57:44.7 256:41:01.3
 
