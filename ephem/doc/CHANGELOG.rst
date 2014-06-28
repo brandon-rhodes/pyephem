@@ -1,6 +1,13 @@
 PyEphem CHANGELOG
 =================
 
+Next version
+------------
+
+- Fixed GitHub issue #44: a segmentation fault would eventually kill
+  Python 3 if a script called ``Body.copy()`` either directly or via the
+  Standard Library ``copy.copy()`` function.
+
 Version 3.7.5.3 (2014 May 29)
 -----------------------------
 

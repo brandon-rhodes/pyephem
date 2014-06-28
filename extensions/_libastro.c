@@ -12,9 +12,11 @@
 #define PyUnicode_Type PyString_Type
 #define PyUnicode_AsUTF8 PyString_AsString
 #define PyVarObject_HEAD_INIT(p, b) PyObject_HEAD_INIT(p) 0,
+#define OB_REFCNT ob_refcnt
 #define OB_TYPE ob_type
 #else
 #define PyUnicode_Check3 PyUnicode_Check
+#define OB_REFCNT ob_base.ob_refcnt
 #define OB_TYPE ob_base.ob_type
 #if PY_MINOR_VERSION == 2
 #define PyUnicode_AsUTF8 _PyUnicode_AsString
@@ -1314,12 +1316,12 @@ static PyObject* Body_writedb(PyObject *self)
 
 static PyObject* Body_copy(PyObject *self)
 {
-     PyObject *newbody = _PyObject_New(self->ob_type);
+     Body *newbody = self->ob_type->tp_alloc(self->ob_type, 0);
      if (!newbody) return 0;
      memcpy(newbody, self, self->ob_type->tp_basicsize);
-     newbody->ob_refcnt = 1;  /* since memcpy will have overwritten it */
-     Py_XINCREF(((Body*) self)->name);
-     return newbody;
+     newbody->OB_REFCNT = 1;  /* since memcpy will have overwritten it */
+     Py_XINCREF(newbody->name);
+     return (PyObject*) newbody;
 }
 
 static PyObject* Body_repr(PyObject *body_object)
