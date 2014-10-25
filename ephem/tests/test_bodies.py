@@ -73,11 +73,11 @@ def predict_attributes(body, was_computed, was_given_observer):
 
 class BodyTests(unittest.TestCase):
     def setUp(self):
-        self.date = Date('1955/05/21')
+        self.date = Date('2004/05/21')
 
         self.obs = obs = Observer()
         obs.lat, obs.lon, obs.elev = '33:45:10', '-84:23:37', 320.0
-        obs.date = '1997/2/15'
+        obs.date = '2005/2/15'
 
         # Avoid seeing the deprecation warning for old attributes.
         warnings.filterwarnings('ignore', '.', DeprecationWarning)
@@ -133,11 +133,11 @@ class BodyTests(unittest.TestCase):
 
     def run_body(self, body):
         self.compare_attributes(body, False, False)
-        body.compute()
+        body.compute('2004/12/1')
         self.compare_attributes(body, True, False)
         body.compute(self.obs)
         self.compare_attributes(body, True, True)
-        body.compute()
+        body.compute('2004/12/1')
         self.compare_attributes(body, True, False)
 
     def test_Named(self):

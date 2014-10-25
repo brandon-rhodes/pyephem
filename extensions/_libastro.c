@@ -1282,6 +1282,16 @@ static PyObject* Body_compute(PyObject *self, PyObject *args, PyObject *kwds)
 	  body->obj.o_flags = VALID_GEO;
      }
 
+     if (body->obj.o_type == EARTHSAT) {
+          double days_from_epoch = abs(body->obj.es_epoch - body->now.n_mjd);
+          if (days_from_epoch > 365.0) {
+	       PyErr_Format(PyExc_ValueError, "TLE elements are valid for"
+               " a few weeks around their epoch, but you are asking about"
+               " a date %d days from the epoch", (int) days_from_epoch);
+               goto fail;
+          }
+     }
+
      Py_INCREF(Py_None);
      return Py_None;
 
