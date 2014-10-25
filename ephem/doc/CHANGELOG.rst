@@ -4,6 +4,10 @@ PyEphem CHANGELOG
 Next version
 ------------
 
+- Fixed GitHub issue #56: Earth satellites now raise an exception for
+  dates a year or more from their TLE epoch, because ``libastro``
+  refuses to process old elements and would return nonsense coordinates.
+
 - Fixed GitHub issue #44: a segmentation fault would eventually kill
   Python 3 if a script called ``Body.copy()`` either directly or via the
   Standard Library ``copy.copy()`` function.
