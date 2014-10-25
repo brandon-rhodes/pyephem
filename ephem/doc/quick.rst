@@ -563,7 +563,7 @@ transit, rising, setting
  >>> boston.date = '2009/5/1'
  >>> info = boston.next_pass(iridium_80)
  >>> print("Rise time: %s azimuth: %s" % (info[0], info[1]))
- Rise time: 2009/5/1 00:22:15 azimuth: 104:36:21.5
+ Rise time: 2009/5/1 00:22:15 azimuth: 104:36:16.0
 
  * The ``next_pass()`` method takes an ``EarthSatellite`` body
    and determines when it will next cross above the horizon.

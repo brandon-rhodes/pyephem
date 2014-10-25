@@ -520,7 +520,10 @@ double *Latitude, double *Longitude, double *Height)
 
     *Latitude = atan(SatZ/sqrt(SQR(SatX) + SQR(SatY)));
 
-#if SSPELLIPSE
+#define SSPELLIPSE
+#ifdef SSPELLIPSE
+    /* ECD */
+    *Height = r - EarthRadius*(sqrt(1-(2*EarthFlat-SQR(EarthFlat))*SQR(sin(*Latitude))));
 #else
     *Height = r - EarthRadius;
 #endif
@@ -786,4 +789,4 @@ InitOrbitRoutines(double EpochDay, int AtEod)
 }
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: earthsat.c,v $ $Date: 2009/07/03 23:14:02 $ $Revision: 1.12 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: earthsat.c,v $ $Date: 2012/10/01 00:05:10 $ $Revision: 1.13 $ $Name:  $"};

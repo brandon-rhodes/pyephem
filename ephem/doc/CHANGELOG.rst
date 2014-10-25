@@ -4,6 +4,9 @@ PyEphem CHANGELOG
 Next version
 ------------
 
+- Upgraded to the ``libastro`` from XEphem 3.7.6, bringing improvements
+  to Earth satellite transit calculations.
+
 - Fixed GitHub issue #56: Earth satellites now raise an exception for
   dates a year or more from their TLE epoch, because ``libastro``
   refuses to process old elements and would return nonsense coordinates.

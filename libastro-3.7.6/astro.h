@@ -506,6 +506,7 @@ typedef struct {
     double rs_riseaz;	/* azimuth of rise, rads E of N */
     double rs_trantm;	/* mjd time of transit today */
     double rs_tranalt;	/* altitude of transit, rads up from horizon */
+    double rs_tranaz;	/* azimuth of transit, rads E of N */
     double rs_settm;	/* mjd time of set today */
     double rs_setaz;	/* azimuth of set, rads E of N */
 } RiseSet;
@@ -811,5 +812,5 @@ extern int vsop87 (double m, int obj, double prec, double *ret);
 #endif /* _ASTRO_H */
 
 /* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: astro.h,v $ $Date: 2007/03/19 08:05:47 $ $Revision: 1.32 $ $Name:  $
+ * @(#) $RCSfile: astro.h,v $ $Date: 2013/01/06 01:12:57 $ $Revision: 1.33 $ $Name:  $
  */

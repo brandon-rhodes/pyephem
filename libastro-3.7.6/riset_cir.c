@@ -7,13 +7,12 @@
 
 #include "astro.h"
 
-#define	TMACC	(10./3600./24.0)	/* convergence accuracy, days */
 
 static void e_riset_cir (Now *np, Obj *op, double dis, RiseSet *rp);
-static int find_0alt (double dt, double dis, Now *np, Obj *op);
+static int find_0alt (double dt, double fstep, double dis, Now *np, Obj *op);
 static int find_transit (double dt, Now *np, Obj *op);
-static int find_max (Now *np, Obj *op, double tr, double ts, double *tp,
-    double *alp);
+static int find_maxalt (Now *np, Obj *op, double tr, double ts, double *tp,
+    double *alp, double *azp);
 
 /* find where and when an object, op, will rise and set and
  *   it's transit circumstances. all times are utc mjd, angles rads e of n.
@@ -75,7 +74,7 @@ riset_cir (Now *np, Obj *op, double dis, RiseSet *rp)
 
 	/* iterate to find better rise time */
 	n.n_mjd = mjdn;
-	switch (find_0alt ((lr - lstn)/SIDRATE, dis, &n, &o)) {
+	switch (find_0alt ((lr - lstn)/SIDRATE, 60/SPD, dis, &n, &o)) {
 	case 0: /* ok */
 	    rp->rs_risetm = n.n_mjd;
 	    rp->rs_riseaz = o.s_az;
@@ -95,7 +94,7 @@ riset_cir (Now *np, Obj *op, double dis, RiseSet *rp)
 
 	/* iterate to find better set time */
 	n.n_mjd = mjdn;
-	switch (find_0alt ((ls - lstn)/SIDRATE, dis, &n, &o)) {
+	switch (find_0alt ((ls - lstn)/SIDRATE, 60/SPD, dis, &n, &o)) {
 	case 0: /* ok */
 	    rp->rs_settm = n.n_mjd;
 	    rp->rs_setaz = o.s_az;
@@ -120,6 +119,7 @@ riset_cir (Now *np, Obj *op, double dis, RiseSet *rp)
 	case 0: /* ok */
 	    rp->rs_trantm = n.n_mjd;
 	    rp->rs_tranalt = o.s_alt;
+	    rp->rs_tranaz = o.s_az;
 	    break;
 	case -1: /* did not converge */
 	    rp->rs_flags |= RS_TRANSERR;
@@ -159,7 +159,7 @@ twilight_cir (Now *np, double dis, double *dawn, double *dusk, int *status)
 static void
 e_riset_cir (Now *np, Obj *op, double dis, RiseSet *rp)
 {
-#define	DEGSTEP	5		/* time step is about this many degrees */
+#define	DEGSTEP	2		/* time step is about this many degrees */
 	int steps;		/* max number of time steps */
 	double dt;		/* time change per step, days */
 	double t0, t1;		/* current and next mjd values */
@@ -190,7 +190,7 @@ e_riset_cir (Now *np, Obj *op, double dis, RiseSet *rp)
 
 	    if (a0 < 0 && a1 > 0 && !rise) {
 		/* found a rise event -- interate to refine */
-		switch (find_0alt (0.0, dis, np, op)) {
+		switch (find_0alt (10./3600., 5./SPD, dis, np, op)) {
 		case 0: /* ok */
 		    rp->rs_risetm = np->n_mjd;
 		    rp->rs_riseaz = op->s_az;
@@ -206,7 +206,7 @@ e_riset_cir (Now *np, Obj *op, double dis, RiseSet *rp)
 		}
 	    } else if (a0 > 0 && a1 < 0 && !set) {
 		/* found a setting event -- interate to refine */
-		switch (find_0alt (0.0, dis, np, op)) {
+		switch (find_0alt (10./3600., 5./SPD, dis, np, op)) {
 		case 0: /* ok */
 		    rp->rs_settm = np->n_mjd;
 		    rp->rs_setaz = op->s_az;
@@ -230,13 +230,14 @@ e_riset_cir (Now *np, Obj *op, double dis, RiseSet *rp)
 	 * altitude, if we know both the rise and set times.
 	 */
 	if (rise && set) {
-	    double tt, al;
-	    if (find_max (np, op, rp->rs_risetm, rp->rs_settm, &tt, &al) < 0) {
+	    double tt, al, az;
+	    if (find_maxalt (np, op, rp->rs_risetm, rp->rs_settm, &tt, &al, &az) < 0) {
 		rp->rs_flags |= RS_TRANSERR;
 		return;
 	    }
 	    rp->rs_trantm = tt;
 	    rp->rs_tranalt = al;
+	    rp->rs_tranaz = az;
 	} else
 	    rp->rs_flags |= RS_NOTRANS;
 
@@ -255,7 +256,7 @@ e_riset_cir (Now *np, Obj *op, double dis, RiseSet *rp)
 	}
 }
 
-/* given a Now at noon and a dt from noon, in hours, for a first approximation
+/* given a Now at noon and a dt from np, in hours, for a first approximation
  * to a rise or set event, refine the event by searching for when alt+dis = 0.
  * return 0: if find one within 12 hours of noon with np and op set to the
  *    better time and circumstances;
@@ -265,24 +266,25 @@ e_riset_cir (Now *np, Obj *op, double dis, RiseSet *rp)
  */
 static int
 find_0alt (
-double dt,	/* hours from noon to first guess at event */
+double dt,	/* hours from initial np to first guess at event */
+double fstep,	/* first step size, days */
 double dis,	/* horizon displacement, rads */
 Now *np,	/* working Now -- starts with mjd is noon, returns as answer */
 Obj *op)	/* working object -- returns as answer */
 {
+#define	TMACC		(0.01/SPD)	/* convergence accuracy, days; tight for stable az */
 #define	MAXPASSES	20		/* max iterations to try */
-#define	FIRSTSTEP	(1.0/60.0/24.0)	/* first time step, days */
-#define	MAXSTEP		(12.0/24.0)/* max time step,days (to detect flat)*/
+#define	MAXSTEP		(12.0/24.0)	/* max time step,days (to detect flat)*/
 
 	double a0 = 0;
 	double mjdn = mjd;
 	int npasses;
 
 	/* insure initial guess is today -- if not, move by 24 hours */
-	if (dt < -12.0 && !find_0alt (dt+24, dis, np, op))
+	if (dt < -12.0 && !find_0alt (dt+24, fstep, dis, np, op))
 	    return (0);
 	mjd = mjdn;
-	if (dt > 12.0 && !find_0alt (dt-24, dis, np, op))
+	if (dt > 12.0 && !find_0alt (dt-24, fstep, dis, np, op))
 	    return (0);
 	mjd = mjdn;
 	
@@ -299,20 +301,21 @@ Obj *op)	/* working object -- returns as answer */
 		return (-1);
 	    a1 = op->s_alt;
 
-	    dt = (npasses == 0) ? FIRSTSTEP : (dis+a1)*dt/(a0-a1);
+	    dt = (npasses == 0) ? fstep : (dis+a1)*dt/(a0-a1);
 	    a0 = a1;
 
 	    if (++npasses > MAXPASSES || fabs(dt) >= MAXSTEP)
 		return (-3);
 
 	} while (fabs(dt)>TMACC);
+	// fprintf (stderr, "%s 0alt npasses = %d\n", op->o_name, npasses);
 
 	/* return codes */
 	return (fabs(mjdn-mjd) < .5 ? 0 : -2);
 
 #undef	MAXPASSES
-#undef	FIRSTSTEP
 #undef	MAXSTEP
+#undef	TMACC
 }
 
 /* find when the given object transits. start the search when LST matches the
@@ -325,7 +328,7 @@ static int
 find_transit (double dt, Now *np, Obj *op)
 {
 #define	MAXLOOPS	10
-#define	MAXERR		(0.25/60.)		/* hours */
+#define	MAXERR		(1./3600.)		/* hours */
 	double mjdn = mjd;
 	double lst;
 	int i;
@@ -349,6 +352,8 @@ find_transit (double dt, Now *np, Obj *op)
 		dt -= 24.0;
 	} while (++i < MAXLOOPS && fabs(dt) > MAXERR);
 
+	/* fprintf (stderr, "%s find_transit loops = %d, dt = %g seconds\n", op->o_name, i, dt*3600); */
+
 	/* return codes */
 	if (i == MAXLOOPS)
 	    return (-1);
@@ -359,27 +364,63 @@ find_transit (double dt, Now *np, Obj *op)
 }
 
 /* find the mjd time of max altitude between the given rise and set times.
- * N.B. we assume *np and *op are working copies we can mess up.
- * N.B. we just assume max occurs at the center time.
+ * N.B. we assume *np and *op are working copies we can modify.
  * return 0 if ok, else -1.
  */
 static int
-find_max (
+find_maxalt (
 Now *np,
 Obj *op,
-double tr, double ts,		/* times of rise and set */
-double *tp, double *alp)	/* time of max altitude, and that altitude */
+double tr, double ts,		/* mjd of rise and set */
+double *tp, 			/* time of max altitude */
+double *alp, double *azp)	/* max altitude and transit az at said time */
 {
+#define	MAXLOOPS	100	/* max loops */
+#define	MAXERR	(1.0/SPD)	/* days */
+
+	double l, r;		/* times known to bracket max alt */
+	double m1, m2;		/* intermediate range points inside l and r */
+	double a1, a2;		/* alt at m1 and m2 */
+	int nloops;		/* max loop check */
+
 	/* want rise before set */
 	while (ts < tr)
 	    tr -= 1.0/op->es_n;
-	mjd = (ts + tr)/2;
-	if (obj_cir (np, op) < 0)
+
+	/* init time bracket */
+	l = tr;
+	r = ts;
+
+	/* ternary search for max */
+	for (nloops = 0; r - l > MAXERR && nloops < MAXLOOPS; nloops++) {
+
+	    mjd = m1 = (2*l + r)/3;
+	    obj_cir (np, op);
+	    a1 = op->s_alt;
+
+	    mjd = m2 = (l + 2*r)/3;
+	    obj_cir (np, op);
+	    a2 = op->s_alt;
+
+	    if (a1 < a2)
+		l = m1;
+	    else
+	        r = m2;
+	}
+	// fprintf (stderr, "tern nloops = %d\n", nloops);
+	if (nloops >= MAXLOOPS)
 	    return (-1);
-	*tp = mjd;
+
+	/* best is between l and r */
+	mjd = *tp = (l+r)/2;
+	obj_cir (np, op);
 	*alp = op->s_alt;
+	*azp = op->s_az;
+
 	return (0);
+#undef	MAXERR
+#undef	MAXLOOPS
 }
 
 /* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: riset_cir.c,v $ $Date: 2009/04/06 00:17:41 $ $Revision: 1.13 $ $Name:  $"};
+static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: riset_cir.c,v $ $Date: 2013/01/06 01:12:57 $ $Revision: 1.18 $ $Name:  $"};
