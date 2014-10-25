@@ -39,9 +39,7 @@ class SatelliteTests(unittest.TestCase):
         self.assertAlmostEqual(ephem.degrees('64.9'), saz, 1)
 
     def test_more_than_one_year_before_TLE(self):
-        with self.assertRaises(ValueError):
-            self.iss.compute('2008/4/28')
+        self.assertRaises(ValueError, self.iss.compute, '2008/4/28')
 
     def test_more_than_one_year_after_TLE(self):
-        with self.assertRaises(ValueError):
-            self.iss.compute('2010/4/30 20:00')
+        self.assertRaises(ValueError, self.iss.compute, '2010/4/30 20:00')
