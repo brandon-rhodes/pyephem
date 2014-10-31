@@ -563,7 +563,7 @@ class Coordinate(object):
         elif len(args) == 2:
             self.set(*args)
             if epoch is None:
-                self.epoch = epoch = Date('2000')
+                self.epoch = epoch = Date(J2000)
 
         else:
             raise TypeError(
