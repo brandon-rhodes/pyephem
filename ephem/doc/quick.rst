@@ -572,8 +572,8 @@ transit, rising, setting
 
     0  Rise time
     1  Rise azimuth
-    2  Transit time
-    3  Transit altitude
+    2  Maximum altitude time
+    3  Maximum altitude
     4  Set time
     5  Set azimuth
 

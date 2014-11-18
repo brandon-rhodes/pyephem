@@ -513,6 +513,10 @@ Here are some recent elements for the International Space Station.
 >>> print("%s %s %s" % (iss.rise_time, iss.transit_time, iss.set_time))
 2003/3/23 00:00:50 2003/3/23 00:03:26 2003/3/23 00:06:01
 
+The ``transit_time`` for an artificial satellite is actually
+defined in PyEphem as the moment at which it is at highest altitude,
+not the moment at which it crosses (transits) the local meridian.
+
 Note that earth satellites are fast movers —
 in this case rising and setting in less than six minutes!
 They can therefore have multiple risings and settings each day,
