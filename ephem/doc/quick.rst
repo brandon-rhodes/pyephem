@@ -195,7 +195,7 @@ body.compute(observer)
    set the observer's ``pressure`` to zero to ignore refraction.
 
  * For earth satellite objects,
-   the astrometric coordinates `a_ra` and `a_dec` are topocentric
+   the astrometric coordinates ``a_ra`` and ``a_dec`` are topocentric
    instead of geocentric,
    since there is little point in figuring out where the satellite
    would appear on a J2000 (or whatever epoch you are using) star chart
