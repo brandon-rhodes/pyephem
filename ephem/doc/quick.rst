@@ -773,6 +773,8 @@ Dates
  * Only when printed, passed to ``str()``, or formatted with ``'%s'``
    does a date express itself as a string
    giving the calendar day and time.
+ * The modern Gregorian calendar is used for recent dates,
+   and the old Julian calendar for dates before October 15, 1582.
  * Dates *always* use Universal Time, *never* your local time zone.
  * Call ``.triple()`` to split a date into its year, month, and day.
  * Call ``.tuple()`` to split a date into its year, month, day,

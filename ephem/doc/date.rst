@@ -33,6 +33,21 @@ each date is really a Python floating point number:
     >>> print('Behind the date %s is the number %f.' % (d, d))
     Behind the date 1984/5/30 16:23:45 is the number 30831.183161.
 
+PyEphem uses the modern Gregorian calendar
+unless you ask about a date
+from back before the Gregorian calendar started,
+in which case it switches to the old Julian calendar.
+Pope Gregory XIII made the date skip ten days ahead
+to resynchronize the months with the seasons
+when he instituted his new calendar.
+You can see this jump by asking about the date
+on either side of the change:
+
+    >>> print(ephem.Date(-115860.0))
+    1582/10/4 12:00:00
+    >>> print(ephem.Date(-115859.0))
+    1582/10/15 12:00:00
+
 Time zones
 ----------
 
