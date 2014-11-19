@@ -19,7 +19,15 @@ Briefly, these are:
 * ``ra``, ``dec`` — **Apparent Topocentric Position**
   for the epoch-of-date
 
-Actually, the third position,
+For Earth satellites that are given an ``Observer`` to compute,
+there is an important difference:
+
+* ``a_ra``, ``a_dec`` — **Astrometric Topocentric Position**
+  for the ``epoch`` of your Observer
+* ``g_ra``, ``g_dec`` — (same as above)
+* ``ra``, ``dec`` — (same as above)
+
+For all objects, the third position,
 the“Apparent Topocentric” position,
 is only computed if you provide PyEphem with an ``Observer`` to work with.
 If you provide only a date for ``compute()`` instead,
