@@ -487,6 +487,21 @@ Observers
  * XEphem includes a small database of world cities.
  * Each call to ``city()`` returns a new ``Observer``.
  * Only latitude, longitude, and elevation are set.
+ * XEphem can also perform Google geocoding lookups:
+
+ >>> from ephem import cities
+ >>> ven = cities.lookup('Ven, Sweden')
+
+ * To avoid Google rate limits,
+   avoid performing any ``lookup()`` more than once —
+   instead, print the result to your screen
+   and then cut-and-paste the latitude and longitude into your code.
+ * A ``ValueError`` signals a non-existent place.
+
+ >>> cities.lookup('nonsense string')
+ Traceback (most recent call last):
+   ...
+ ValueError: Google cannot find a place named 'nonsense string'
 
 transit, rising, setting
 ------------------------

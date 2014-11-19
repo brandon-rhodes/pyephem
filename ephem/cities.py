@@ -1,6 +1,17 @@
 """Modest database of more than a hundred world cities."""
 
 import ephem
+import json
+import sys
+from math import radians
+
+_python3 = sys.version_info > (3,)
+if _python3:
+    from urllib.parse import urlencode
+    from urllib.request import urlopen
+else:
+    from urllib import urlencode
+    from urllib2 import urlopen
 
 _city_data = {
     'London': ('51.5001524', '-0.1262362', 14.605533),  # United Kingdom
@@ -136,4 +147,22 @@ def city(name):
     o.name = name
     o.lat, o.lon, o.elevation = data
     o.compute_pressure()
+    return o
+
+def lookup(address):
+    """Given a string `address`, do a Google lookup and return an Observer."""
+
+    parameters = urlencode({'address': address, 'sensor': 'false'})
+    url = 'http://maps.googleapis.com/maps/api/geocode/json?' + parameters
+    data = json.loads(urlopen(url).read().decode('utf-8'))
+    results = data['results']
+    if not results:
+        raise ValueError('Google cannot find a place named %r' % address)
+    address_components = results[0]['address_components']
+    location = results[0]['geometry']['location']
+
+    o = ephem.Observer()
+    o.name = ', '.join(c['long_name'] for c in address_components)
+    o.lat = radians(location['lat'])
+    o.lon = radians(location['lng'])
     return o
