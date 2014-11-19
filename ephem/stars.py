@@ -110,6 +110,7 @@ Markab,f|S|B9,23:04:45.6|61.1,15:12:19|-42.56,2.49,2000,0
 
 stars = {}
 
+
 def build_stars():
     global stars
     import ephem
@@ -119,6 +120,7 @@ def build_stars():
 
 build_stars()
 del build_stars
+
 
 def star(name, *args, **kwargs):
     star = stars[name].copy()

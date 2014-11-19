@@ -2,11 +2,9 @@
 
 import json
 import os
-import re
 import sys
 import urllib
 import urllib2
-from urllib2 import urlopen, HTTPError
 
 # Look up each city in "cities.in" on the http://www.fallingrain.com/
 # web site, and append their geographic data into "cities.out".
@@ -14,32 +12,36 @@ from urllib2 import urlopen, HTTPError
 projdir = os.path.join(os.path.dirname(sys.argv[0]), '..')
 
 cin = open(os.path.join(projdir, 'data', 'cities.in'), 'r')
-cout = open(os.path.join(projdir, 'extensions', 'data', 'cities.out'), 'a')
+cout = open(os.path.join(projdir, 'extensions', 'data', 'cities.out'), 'w')
 
 for line in cin:
     line = line.strip()
     if not line or line.startswith('#'):
         continue
-    if not line.startswith('Birmin'):
-        continue
 
     name = line
     url = ('http://maps.googleapis.com/maps/api/geocode/json?'
            + urllib.urlencode({'address': name, 'sensor': 'false'}))
-    data = json.loads(urllib2.urlopen(url).read())
-    location = data['results'][0]['geometry']['location']
+    data = json.loads(urllib2.urlopen(url).read()).get('results').pop()
+    location = data['geometry'].get('location')
 
-    latlng = '%s,%s' % (location['lat'], location['lng'])
+    if not location:
+        print u"No geocode results for {0}".format(name).encode('utf-8')
+        continue
+
+    latlng = u'%s,%s' % (location['lat'], location['lng'])
     url2 = ('http://maps.googleapis.com/maps/api/elevation/json?'
             + urllib.urlencode({'locations': latlng, 'sensor': 'false'}))
-    data2 = json.loads(urllib2.urlopen(url2).read())
+    data2 = json.loads(urllib2.urlopen(url2).read()).get('results').pop()
 
-    s = "    '%s': ('%s', '%s', %f),  # %s" % (
-        name,
+    s = u"    '''{0}''': ('{1}', '{2}', {3:f}),  # {4}".format(
+        name.decode('utf-8'),
         location['lat'],
         location['lng'],
-        data2['results'][0]['elevation'],
-        data['results'][0]['address_components'][-1]['long_name']
+        data2['elevation'],
+        data['address_components'][-1]['long_name']
         )
+
+    cout.write(s.encode('utf-8') + "\n")
+
     print s
-    #print >>cout, s

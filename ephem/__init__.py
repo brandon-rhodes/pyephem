@@ -84,6 +84,7 @@ Moon = _libastro.Moon
 
 # Newton's method.
 
+
 def newton(f, x0, x1, precision=default_newton_precision):
     """Return an x-value at which the given function reaches zero.
 
@@ -93,13 +94,14 @@ def newton(f, x0, x1, precision=default_newton_precision):
     """
     f0, f1 = f(x0), f(x1)
     while f1 and abs(x1 - x0) > precision and f1 != f0:
-        x0, x1 = x1, x1 + (x1 - x0) / (f0/f1 - 1)
+        x0, x1 = x1, x1 + (x1 - x0) / (f0 / f1 - 1)
         f0, f1 = f1, f(x1)
     return x1
 
 # Find equinoxes and solstices.
 
 _sun = Sun()                    # used for computing equinoxes
+
 
 def holiday(d0, motion, offset):
     """Function that assists the finding of equinoxes and solstices."""
@@ -115,33 +117,41 @@ def holiday(d0, motion, offset):
     d = d0 + 365.25 * angle_to_cover / twopi
     return date(newton(f, d, d + hour))
 
+
 def previous_vernal_equinox(date):
     """Return the date of the previous vernal equinox."""
     return holiday(date, -twopi, 0)
+
 
 def next_vernal_equinox(date):
     """Return the date of the next vernal equinox."""
     return holiday(date, twopi, 0)
 
+
 def previous_summer_solstice(date):
     """Return the date of the previous summer solstice."""
     return holiday(date, -twopi, pi + halfpi)
+
 
 def next_summer_solstice(date):
     """Return the date of the next summer solstice."""
     return holiday(date, twopi, pi + halfpi)
 
+
 def previous_autumnal_equinox(date):
     """Return the date of the previous autumnal equinox."""
     return holiday(date, -twopi, pi)
+
 
 def next_autumnal_equinox(date):
     """Return the date of the next autumnal equinox."""
     return holiday(date, twopi, pi)
 
+
 def previous_winter_solstice(date):
     """Return the date of the previous winter solstice."""
     return holiday(date, -twopi, halfpi)
+
 
 def next_winter_solstice(date):
     """Return the date of the next winter solstice."""
@@ -157,17 +167,21 @@ previous_fall_equinox = previous_autumn_equinox = previous_autumnal_equinox
 
 # More-general functions that find any equinox or solstice.
 
+
 def previous_equinox(date):
     """Return the date of the previous equinox."""
     return holiday(date, -pi, 0)
+
 
 def next_equinox(date):
     """Return the date of the next equinox."""
     return holiday(date, pi, 0)
 
+
 def previous_solstice(date):
     """Return the date of the previous solstice."""
     return holiday(date, -pi, halfpi)
+
 
 def next_solstice(date):
     """Return the date of the next solstice."""
@@ -176,6 +190,7 @@ def next_solstice(date):
 # Find phases of the Moon.
 
 _moon = Moon()                  # used for computing Moon phases
+
 
 def _find_moon_phase(d0, motion, target):
     """Function that assists the finding of moon phases."""
@@ -195,33 +210,41 @@ def _find_moon_phase(d0, motion, target):
     d = d0 + 29.53 * angle_to_cover / twopi
     return date(newton(f, d, d + hour))
 
+
 def previous_new_moon(date):
     """Return the date of the previous New Moon."""
     return _find_moon_phase(date, -twopi, 0)
+
 
 def next_new_moon(date):
     """Return the date of the next New Moon."""
     return _find_moon_phase(date, twopi, 0)
 
+
 def previous_first_quarter_moon(date):
     """Return the date of the previous First Quarter Moon."""
     return _find_moon_phase(date, -twopi, halfpi)
+
 
 def next_first_quarter_moon(date):
     """Return the date of the next First Quarter Moon."""
     return _find_moon_phase(date, twopi, halfpi)
 
+
 def previous_full_moon(date):
     """Return the date of the previous Full Moon."""
     return _find_moon_phase(date, -twopi, pi)
+
 
 def next_full_moon(date):
     """Return the date of the next Full Moon."""
     return _find_moon_phase(date, twopi, pi)
 
+
 def previous_last_quarter_moon(date):
     """Return the date of the previous Last Quarter Moon."""
     return _find_moon_phase(date, -twopi, pi + halfpi)
+
 
 def next_last_quarter_moon(date):
     """Return the date of the next Last Quarter Moon."""
@@ -230,9 +253,18 @@ def next_last_quarter_moon(date):
 # We provide a Python extension to our _libastro "Observer" class that
 # can search for circumstances like transits.
 
-class CircumpolarError(ValueError): pass
-class NeverUpError(CircumpolarError): pass
-class AlwaysUpError(CircumpolarError): pass
+
+class CircumpolarError(ValueError):
+    pass
+
+
+class NeverUpError(CircumpolarError):
+    pass
+
+
+class AlwaysUpError(CircumpolarError):
+    pass
+
 
 def describe_riset_search(method):
     method.__doc__ += """, returning its date.
@@ -248,7 +280,9 @@ def describe_riset_search(method):
     """
     return method
 
+
 class Observer(_libastro.Observer):
+
     """A location on earth for which positions are to be computed.
 
     An `Observer` instance allows you to compute the positions of
@@ -265,7 +299,7 @@ class Observer(_libastro.Observer):
     `epoch` - J2000
 
     """
-    __slots__ = [ 'name' ]
+    __slots__ = ['name']
     elev = _libastro.Observer.elevation
 
     def __repr__(self):
@@ -291,7 +325,7 @@ class Observer(_libastro.Observer):
                 'the next and previous transit methods do not'
                 ' support earth satellites because of their speed;'
                 ' please use the higher-resolution next_pass() method'
-                )
+            )
 
         def f(d):
             self.date = d
@@ -387,11 +421,11 @@ class Observer(_libastro.Observer):
                 'the rising and settings methods do not'
                 ' support earth satellites because of their speed;'
                 ' please use the higher-resolution next_pass() method'
-                )
+            )
 
         def visit_transit():
             d = (previous and self._previous_transit(body)
-                 or self._next_transit(body)) # if-then
+                 or self._next_transit(body))  # if-then
             if body.alt + body.radius * use_radius - self.horizon <= 0:
                 raise NeverUpError('%r transits below the horizon at %s'
                                    % (body.name, d))
@@ -399,7 +433,7 @@ class Observer(_libastro.Observer):
 
         def visit_antitransit():
             d = (previous and self._previous_antitransit(body)
-                 or self._next_antitransit(body)) # if-then
+                 or self._next_antitransit(body))  # if-then
             if body.alt + body.radius * use_radius - self.horizon >= 0:
                 raise AlwaysUpError('%r is still above the horizon at %s'
                                     % (body.name, d))
@@ -427,7 +461,7 @@ class Observer(_libastro.Observer):
 
         # Take a big leap towards the solution, then Newton takes us home.
         body.compute(self)
-        heading_downward = (rising == previous) # "==" is inverted "xor"
+        heading_downward = (rising == previous)  # "==" is inverted "xor"
         if heading_downward:
             on_lower_cusp = (body.alt + body.radius * use_radius
                              - self.horizon > tiny)
@@ -436,7 +470,7 @@ class Observer(_libastro.Observer):
                              - self.horizon < - tiny)
 
         az = body.az
-        on_right_side_of_sky = ((rising == (az < pi)) # inverted "xor"
+        on_right_side_of_sky = ((rising == (az < pi))  # inverted "xor"
                                 or (az < tiny
                                     or pi - tiny < az < pi + tiny
                                     or twopi - tiny < az))
@@ -489,7 +523,7 @@ class Observer(_libastro.Observer):
             raise TypeError(
                 'the next_pass() method is only for use with'
                 ' EarthSatellite objects because of their high speed'
-                )
+            )
 
         return _libastro._next_pass(self, body)
 
@@ -497,15 +531,20 @@ del describe_riset_search
 
 # Time conversion.
 
+
 def localtime(date):
     """Convert a PyEphem date into local time, returning a Python datetime."""
-    import calendar, time, datetime
+    import calendar
+    import time
+    import datetime
     timetuple = time.localtime(calendar.timegm(date.tuple()))
     return datetime.datetime(*timetuple[:7])
 
 # Coordinate transformations.
 
+
 class Coordinate(object):
+
     def __init__(self, *args, **kw):
 
         # Accept an optional "epoch" keyword argument.
@@ -524,7 +563,7 @@ class Coordinate(object):
             a = args[0]
 
             if isinstance(a, Body):
-                a = Equatorial(a.a_ra, a.a_dec, epoch = a.a_epoch)
+                a = Equatorial(a.a_ra, a.a_dec, epoch=a.a_epoch)
 
             for cls in (Equatorial, Ecliptic, Galactic):
                 if isinstance(a, cls):
@@ -549,14 +588,14 @@ class Coordinate(object):
                     if epoch != a.epoch:
                         ra, dec = _libastro.precess(
                             a.epoch, epoch, ra, dec
-                            )
+                        )
                     self.from_radec(ra, dec)
                     return
 
             raise TypeError(
                 'a single argument used to initialize %s() must be either'
                 ' a coordinate or a Body, not an %r' % (type(a).__name__,)
-                )
+            )
 
         # Two arguments are interpreted as (ra, dec) or (lon, lat).
 
@@ -570,9 +609,11 @@ class Coordinate(object):
                 'to initialize %s you must pass either a Body,'
                 ' another coordinate, or two coordinate values,'
                 ' but not: %r' % (type(self).__name__, args,)
-                )
+            )
+
 
 class Equatorial(Coordinate):
+
     """An equatorial sky coordinate in right ascension and declination."""
 
     def get(self):
@@ -584,7 +625,9 @@ class Equatorial(Coordinate):
     to_radec = get
     from_radec = set
 
+
 class LonLatCoordinate(Coordinate):
+
     """A coordinate that is measured with a longitude and latitude."""
 
     def set(self, lon, lat):
@@ -601,7 +644,9 @@ class LonLatCoordinate(Coordinate):
     def long(self, value):
         self.lon = value
 
+
 class Ecliptic(LonLatCoordinate):
+
     """An ecliptic latitude and longitude."""
 
     def to_radec(self):
@@ -610,7 +655,9 @@ class Ecliptic(LonLatCoordinate):
     def from_radec(self, ra, dec):
         self.lon, self.lat = _libastro.eq_ecl(self.epoch, ra, dec)
 
+
 class Galactic(LonLatCoordinate):
+
     """A galactic latitude and longitude."""
 
     def to_radec(self):
@@ -630,12 +677,14 @@ LongLatCoordinate = LonLatCoordinate
 # module, then replaces itself with the function of the same name that
 # lives inside of the catalog.
 
+
 def star(name, *args, **kwargs):
     """Load the stars database and return a star."""
     global star
     import ephem.stars
     star = ephem.stars.star
     return star(name, *args, **kwargs)
+
 
 def city(name):
     """Load the cities database and return a city."""
