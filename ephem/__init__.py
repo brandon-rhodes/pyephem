@@ -271,7 +271,7 @@ class Observer(_libastro.Observer):
     def __repr__(self):
         """Return a useful textual representation of this Observer."""
         return ('<ephem.Observer date=%r epoch=%r'
-                ' lon=%s lat=%s elevation=%sm'
+                " lon='%s' lat='%s' elevation=%sm"
                 ' horizon=%s temp=%sC pressure=%smBar>'
                 % (str(self.date), str(self.epoch),
                    self.lon, self.lat, self.elevation,
