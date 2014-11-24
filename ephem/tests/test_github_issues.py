@@ -41,3 +41,15 @@ class GitHubIssues(TestCase):
         self.assertEqual(str(g.long), '45:00:00.0')
         g.long = ephem.degrees('-35')
         self.assertEqual(str(g.long), '-35:00:00.0')
+
+    def test_github_64(self):
+        sun = ephem.Sun()
+        pole = ephem.Observer()
+        pole.lon = '0.0'
+        pole.lat = '90.0'
+        pole.elevation = 0.0
+
+        pole.date = '2009/4/30'
+        with self.assertRaises(ephem.AlwaysUpError):
+            pole.previous_rising(sun)
+        self.assertEqual(str(pole.date), '2009/4/30 00:00:00')

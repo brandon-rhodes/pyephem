@@ -441,26 +441,28 @@ class Observer(_libastro.Observer):
                                     or pi - tiny < az < pi + tiny
                                     or twopi - tiny < az))
 
-        if on_lower_cusp and on_right_side_of_sky:
-            d0 = self.date
-        elif heading_downward:
-            d0 = visit_transit()
-        else:
-            d0 = visit_antitransit()
-        if heading_downward:
-            d1 = visit_antitransit()
-        else:
-            d1 = visit_transit()
-
         def f(d):
             self.date = d
             body.compute(self)
             return body.alt + body.radius * use_radius - self.horizon
 
-        d = (d0 + d1) / 2.
-        result = Date(newton(f, d, d + minute))
-        self.date = original_date
-        return result
+        try:
+            if on_lower_cusp and on_right_side_of_sky:
+                d0 = self.date
+            elif heading_downward:
+                d0 = visit_transit()
+            else:
+                d0 = visit_antitransit()
+            if heading_downward:
+                d1 = visit_antitransit()
+            else:
+                d1 = visit_transit()
+
+            d = (d0 + d1) / 2.
+            result = Date(newton(f, d, d + minute))
+            return result
+        finally:
+            self.date = original_date
 
     @describe_riset_search
     def previous_rising(self, body, start=None, use_center=False):
