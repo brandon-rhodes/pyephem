@@ -1,4 +1,7 @@
-from unittest import TestCase
+try:
+    from unittest2 import TestCase
+except:
+    from unittest import TestCase
 import ephem
 
 class GitHubIssues(TestCase):
