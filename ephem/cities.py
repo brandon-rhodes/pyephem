@@ -150,8 +150,13 @@ def city(name):
     return o
 
 def lookup(address):
-    """Given a string `address`, do a Google lookup and return an Observer."""
+    """Given a string `address`, do a Google lookup and return an Observer.
 
+    Avoid calling this very often, to honor Google's terms of service.
+    Instead you can run it once, print out the result, and cut and paste
+    the Observer back into your code to use as often as you like!
+
+    """
     parameters = urlencode({'address': address, 'sensor': 'false'})
     url = 'http://maps.googleapis.com/maps/api/geocode/json?' + parameters
     data = json.loads(urlopen(url).read().decode('utf-8'))

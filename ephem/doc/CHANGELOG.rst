@@ -4,6 +4,9 @@ PyEphem CHANGELOG
 Next version
 ------------
 
+- The new ``ephem.cities.lookup()`` function runs a Google geocoding
+  search and returns an ``Observer`` object for the top result.
+
 - Upgraded to the ``libastro`` from XEphem 3.7.6, bringing improvements
   to Earth satellite transit calculations.
 
