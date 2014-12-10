@@ -2,7 +2,9 @@ try:
     from unittest2 import TestCase
 except:
     from unittest import TestCase
+import datetime
 import ephem
+import math
 
 class GitHubIssues(TestCase):
 
@@ -34,6 +36,23 @@ class GitHubIssues(TestCase):
         pa = mars.parallactic_angle()
         # The exact value that XEphem computes for this circumstance:
         self.assertEqual('%.2f' % (pa / ephem.degree), '-13.62')
+
+    def test_github_25(self):
+        tle=[
+      "OBJECT L",
+      "1 39276U 13055L   13275.56815576  .28471697  00000-0  53764+0 0    92",
+      "2 39276 080.9963 312.3419 0479021 141.2713 225.6381 14.71846910   412",
+        ]
+        fenton = ephem.Observer()
+        fenton.long = '-106.673887'
+        fenton.lat = '35.881226'
+        fenton.elevation = 2656
+        fenton.horizon = math.radians(10)
+        fenton.compute_pressure()
+        sat = ephem.readtle(*tle)
+        fenton.date = datetime.datetime(2013,10,6,0,0,0,0)
+        sat.compute(fenton)
+        self.assertRaises(RuntimeError, lambda: sat.neverup)
 
     def test_github_31(self):
         position = (4.116325133165859, 0.14032240860186646)

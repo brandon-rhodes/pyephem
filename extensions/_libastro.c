@@ -499,18 +499,23 @@ static PyObject *Date_new(PyObject *self, PyObject *args, PyObject *kw)
      return build_Date(mjd);
 }
 
-static char *Date_format(PyObject *self)
+static char *Date_format_value(double value)
 {
-     DateObject *d = (DateObject*) self;
      static char buffer[64];
      int year, month, day, hour, minute;
      double second;
      /* Note the offset, which makes us round instead of truncate. */
-     mjd_six(d->ob_fval + 0.5 / 24.0 / 60.0 / 60.0,
+     mjd_six(value + 0.5 / 24.0 / 60.0 / 60.0,
              &year, &month, &day, &hour, &minute, &second);
      sprintf(buffer, "%d/%d/%d %02d:%02d:%02d",
 	     year, month, day, hour, minute, (int) second);
      return buffer;
+}
+
+static char *Date_format(PyObject *self)
+{
+     DateObject *d = (DateObject*) self;
+     return Date_format_value(d->ob_fval);
 }
 
 static PyObject* Date_str(PyObject *self)
@@ -1425,7 +1430,11 @@ static int Body_obj_cir(Body *body, char *fieldname, unsigned topocentric)
 	  return 0;
      pref_set(PREF_EQUATORIAL, body->obj.o_flags & VALID_TOPO ?
 	      PREF_TOPO : PREF_GEO);
-     obj_cir(& body->now, & body->obj);
+     if (obj_cir(& body->now, & body->obj) == -1) {
+	  PyErr_Format(PyExc_RuntimeError, "cannot compute the body's position"
+                       " at %s", Date_format_value(body->now.n_mjd));
+	  return -1;
+     }
      body->obj.o_flags |= VALID_OBJ;
      return 0;
 }

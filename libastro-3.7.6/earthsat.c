@@ -170,6 +170,8 @@ obj_earthsat (Now *np, Obj *op)
 
 	/* propagate to np->n_mjd */
 	esat_prop (np, op, &SatX, &SatY, &SatZ, &SatVX, &SatVY, &SatVZ);
+	if (isnan(SatX))
+		return -1;
 	Radius = sqrt (SatX*SatX + SatY*SatY + SatZ*SatZ);
 
 	/* find geocentric EOD equatorial directly from xyz vector */
