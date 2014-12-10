@@ -54,6 +54,18 @@ class GitHubIssues(TestCase):
         sat.compute(fenton)
         self.assertRaises(RuntimeError, lambda: sat.neverup)
 
+    def test_github_28(self):
+        tle = [
+       '1 39519U 98067DM  14145.55394724  .00421800  00000-0  16480-2 0  2721',
+       '2 39519 051.6371 202.2821 0012663 000.6767 359.4251 15.85259233 15944',
+        ]
+        date = "2014-01-04 00:00:00"
+
+        sat = ephem.readtle("Satellite", tle[0], tle[1])
+        sat.compute(date)
+
+        self.assertRaises(RuntimeError, lambda: sat.sublat)
+
     def test_github_31(self):
         position = (4.116325133165859, 0.14032240860186646)
         self.assertEqual(ephem.separation(position, position), 0.0)
