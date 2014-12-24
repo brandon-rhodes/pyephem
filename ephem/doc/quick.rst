@@ -106,10 +106,12 @@ body.compute(date)
    | ``earth_distance`` — Distance to Earth (AU)
    | ``phase`` — Percent of surface illuminated
 
-   Note that ``hlon`` and ``hlat`` on the ``Sun`` object,
-   which would normally have no meaning
-   since those angles are measured from the Sun's point of view,
-   instead give the heliocentric longitude and latitude of Earth.
+   Both ``hlon`` and ``hlat`` have a special meaning
+   for the Sun and Moon.
+   For a ``Sun`` body,
+   they give the *Earth’s* heliocentric longitude and latitude.
+   For a ``Moon`` body,
+   they give the Moon’s *geocentric* longitude and latitude.
 
  * On planetary moons, also sets:
 
