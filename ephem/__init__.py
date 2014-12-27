@@ -319,23 +319,23 @@ class Observer(_libastro.Observer):
         result = Date(newton(f, d, d + minute))
         return result
 
-    def _compute_dec(self, body, date):
-        """Internal function to get the apparent topocentric declination."""
+    def _compute_alt(self, body, date):
+        """Internal function to get the altitude of a body."""
         original_date = self.date
         self.date = date
         body.compute(self)
-        dec = body.dec
+        alt = body.alt
         self.date = original_date
-        return dec
+        return alt
 
-    def _compute_dec_concavity(self, body, date):
-        """Internal function to get the concavity of the apparent geocentric declination."""
+    def _compute_alt_concavity(self, body, date):
+        """Internal function to get the concavity of the altitude."""
 
-        def get_dec(date):
-            """Wrap _compute_dec for use in derivative getters."""
-            return self._compute_dec(body, date)
+        def get_alt(date):
+            """Wrap _compute_alt for use in derivative getters."""
+            return self._compute_alt(body, date)
         
-        concavity = cdiff(get_dec, date, hour, "second")
+        concavity = cdiff(get_alt, date, hour, "second")
         return concavity
 
     def _compute_culmination(self, body, start, sign):
@@ -348,42 +348,47 @@ class Observer(_libastro.Observer):
                 ' please use the higher-resolution next_pass() method'
                 )
 
-        def get_dec(date):
-            """Wrap _compute_dec for use in derivative getters."""
-            return self._compute_dec(body, date)
+        def get_alt(date):
+            """Wrap _compute_alt for use in derivative getters."""
+            return self._compute_alt(body, date)
 
-        def get_dec_d(date):
-            """Get the first derivative w/r/t time of the declination."""
-            dec_d = cdiff(get_dec, date, h, "first")
-            return dec_d
+        def get_alt_d(date):
+            """Get the first derivative w/r/t time of the altitude."""
+            alt_d = cdiff(get_alt, date, h, "first")
+            return alt_d
       
         if start is not None:
             self.date = start
 
-        # Nudge an hour in the appropriate direction to ensure we don't return the start date, in the event that start is itself a culmination.
-        self.date = self.date + sign * 1 * hour
+        # Start slightly to one side of the start date, to prevent
+        # repeated calls from returning the same solution over and over.
+        if start is not None:
+            self.date = start
+        if abs(cdiff(get_alt, self.date, default_newton_precision, "first")) <= default_newton_precision:
+            self.date += sign * hour
 
-        # Walk in 10-hour increments until we find a sign change in the time derivative of the declination. Then use Newton's Method to find where the first derivative is zero.
-        h = minute
+        # Walk in 1-hour increments until we find a sign change in the time derivative of the altitude. Then use Newton's Method to find where the first derivative is zero.
+        h = default_newton_precision
         thistime = self.date
-        nexttime = self.date + sign * 10 * hour
-        thisd = cdiff(get_dec, thistime, h, "first")
-        nextd = cdiff(get_dec, nexttime, h, "first")
+        nexttime = self.date + sign * hour
+        thisd = cdiff(get_alt, thistime, h, "first")
+        nextd = cdiff(get_alt, nexttime, h, "first")
+        count = 1
         while copysign(1, thisd) == copysign(1, nextd):
             self.date = nexttime
             thistime = self.date
-            nexttime = self.date + sign * 10 * hour
-            thisd = cdiff(get_dec, thistime, h, "first")
-            nextd = cdiff(get_dec, nexttime, h, "first")
+            nexttime = self.date + sign * hour
+            thisd = cdiff(get_alt, thistime, h, "first")
+            nextd = cdiff(get_alt, nexttime, h, "first")
 
-        result = Date(newton(get_dec_d, thistime, nexttime))
+        result = Date(newton(get_alt_d, thistime, nexttime))
         return result
 
     def _previous_upper_culmination(self, body, start=None):
         """Find the previous upper culmination of a body."""
         
         c = self._compute_culmination(body, start, -1.)
-        while self._compute_dec_concavity(body, c) > 0:
+        while self._compute_alt_concavity(body, c) > 0:
             c = self._compute_culmination(body, c, -1.)
         return c
 
@@ -391,7 +396,7 @@ class Observer(_libastro.Observer):
         """Find the next upper culmination of a body."""
         
         c = self._compute_culmination(body, start, +1.)
-        while self._compute_dec_concavity(body, c) > 0:
+        while self._compute_alt_concavity(body, c) > 0:
             c = self._compute_culmination(body, c, +1.)
         return c
 
@@ -399,16 +404,16 @@ class Observer(_libastro.Observer):
         """Find the previous lower culmination of a body."""
 
         c = self._compute_culmination(body, start, -1.)
-        while self._compute_dec_concavity(body, c) < 0:
-            c = self._compute_culmination(body, c, -1.)   
+        while self._compute_alt_concavity(body, c) < 0:
+            c = self._compute_culmination(body, c, -1.)
         return c
 
     def _next_lower_culmination(self, body, start=None):
         """Find the next lower culmination of a body."""
 
         c = self._compute_culmination(body, start, +1.)
-        while self._compute_dec_concavity(body, c) < 0:
-            c = self._compute_culmination(body, c, +1.)      
+        while self._compute_alt_concavity(body, c) < 0:
+            c = self._compute_culmination(body, c, +1.)
         return c
 
     def previous_upper_culmination(self, body, start=None):
@@ -584,7 +589,7 @@ class Observer(_libastro.Observer):
                 d1 = visit_lower_culmination()
             else:
                 d1 = visit_upper_culmination()
-
+                
             d = (d0 + d1) / 2.
             result = Date(newton(f, d, d + minute))
             return result
