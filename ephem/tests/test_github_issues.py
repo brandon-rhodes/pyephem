@@ -39,7 +39,7 @@ class GitHubIssues(TestCase):
         self.assertEqual('%.2f' % (pa / ephem.degree), '-13.62')
 
     def test_github_25(self):
-        if sys.maxint > 2147483647:  # breaks under 64 bits, as on Travis-CI
+        if sys.maxsize > 2147483647:  # breaks under 64 bits, as on Travis-CI
             return
         tle=[
       "OBJECT L",
