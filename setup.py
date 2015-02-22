@@ -1,5 +1,9 @@
 import os
-from distutils.core import setup, Extension
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
+from distutils.core import Extension
 from glob import glob
 
 # Read the current version from ephem/__init__.py itself.
