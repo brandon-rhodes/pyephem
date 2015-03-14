@@ -18,7 +18,7 @@
 #define PyUnicode_Check3 PyUnicode_Check
 #define OB_REFCNT ob_base.ob_refcnt
 #define OB_TYPE ob_base.ob_type
-#if PY_MINOR_VERSION == 2
+#if PY_MINOR_VERSION == 0 || PY_MINOR_VERSION == 1 || PY_MINOR_VERSION == 2
 #define PyUnicode_AsUTF8 _PyUnicode_AsString
 #endif
 #endif
