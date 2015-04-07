@@ -388,12 +388,14 @@ double *SatVX, double *SatVY, double *SatVZ)
 	if (sd.deep)
 	    free (sd.deep);
 
-	*SatX = ERAD*posvec.x/1000;	/* earth radii to km */
-	*SatY = ERAD*posvec.y/1000;
-	*SatZ = ERAD*posvec.z/1000;
-	*SatVX = 100*velvec.x;		/* ?? */
-	*SatVY = 100*velvec.y;
-	*SatVZ = 100*velvec.z;
+	/* earth radii to km */
+	*SatX = (ERAD/1000)*posvec.x;	
+	*SatY = (ERAD/1000)*posvec.y;
+	*SatZ = (ERAD/1000)*posvec.z;
+	/* Minutes per day/Seconds by day = Minutes/Second = 1/60 */
+	*SatVX = (ERAD*velvec.x)/(1000*60); 
+	*SatVY =(ERAD*velvec.y)/(1000*60);
+	*SatVZ = (ERAD*velvec.z)/(1000*60);
 #endif
 }
 
