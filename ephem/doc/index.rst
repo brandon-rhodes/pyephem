@@ -160,7 +160,7 @@ is to use the pip_ command, like this:
 .. _pip: http://pypi.python.org/pypi/pip
 .. code-block:: bash
 
-   $ pip install pyephem
+   $ pip install ephem
 
 Better yet,
 you can use virtualenv_ to create a virtual environment,
