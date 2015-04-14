@@ -174,7 +174,7 @@ you should visit the `PyEphem entry`_
 at the Python Package Index,
 or use the links at the top of this page.
 
-.. _PyEphem entry: http://pypi.python.org/pypi/pyephem/
+.. _PyEphem entry: http://pypi.python.org/pypi/ephem/
 .. _virtualenv: http://pypi.python.org/pypi/virtualenv
 
 Documentation
