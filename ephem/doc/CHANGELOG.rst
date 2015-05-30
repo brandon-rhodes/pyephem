@@ -13,16 +13,19 @@ Next version
 - Upgraded to the ``libastro`` from XEphem 3.7.6, bringing improvements
   to Earth satellite transit calculations.
 
-- Fixed GitHub issue #64: rising and setting routines are now careful to
+- GitHub issue #76: Earth satellite velocity is now calculated with
+  greater accuracy.
+
+- GitHub issue #64: rising and setting routines are now careful to
   restore your ``Observer.date`` even if they die with an exception.
 
-- Fixed GitHub issue #56: Earth satellites now raise an exception for
-  dates a year or more from their TLE epoch, because ``libastro``
-  refuses to process old elements and would return nonsense coordinates.
+- GitHub issue #56: Earth satellites now raise an exception for dates a
+  year or more from their TLE epoch, because ``libastro`` refuses to
+  process old elements and would return nonsense coordinates.
 
-- Fixed GitHub issue #44: a segmentation fault would eventually kill
-  Python 3 if a script called ``Body.copy()`` either directly or via the
-  Standard Library ``copy.copy()`` function.
+- GitHub issue #44: a segmentation fault would eventually kill Python 3
+  if a script called ``Body.copy()`` either directly or via the Standard
+  Library ``copy.copy()`` function.
 
 Version 3.7.5.3 (2014 May 29)
 -----------------------------
