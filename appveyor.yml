@@ -58,7 +58,7 @@ install:
 build: off
 
 test_script:
-  - "%CMD_IN_ENV% pip install -U setuptools"
+  - "pip install --upgrade setuptools"
   - "%WITH_COMPILER% %PYTHON%/python setup.py build_ext --inplace"
   - "%WITH_COMPILER% %PYTHON%/python -m unittest ephem.tests.test_github_issues"
 
