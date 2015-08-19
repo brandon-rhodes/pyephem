@@ -1,6 +1,13 @@
 import os
+import sys
 from distutils.core import setup, Extension
 from glob import glob
+
+# Work-around.
+
+if 'bdist_wheel' in sys.argv:
+    del setup
+    from setuptools import setup
 
 # Read the current version from ephem/__init__.py itself.
 
