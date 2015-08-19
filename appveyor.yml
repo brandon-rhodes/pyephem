@@ -54,7 +54,6 @@ init:
 
 install:
   - "powershell appveyor\\install.ps1"
-  - "%PYTHON%\\scripts\\pip install --upgrade setuptools"
 
 build: off
 

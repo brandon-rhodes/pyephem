@@ -6,8 +6,8 @@ from glob import glob
 # Work-around.
 
 if 'bdist_wheel' in sys.argv:
-    del setup
-    from setuptools import setup
+    del setup, Extension
+    from setuptools import setup, Extension
 
 # Read the current version from ephem/__init__.py itself.
 
