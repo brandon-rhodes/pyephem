@@ -54,11 +54,11 @@ init:
 
 install:
   - "powershell appveyor\\install.ps1"
+  - "%CMD_IN_ENV% pip install --upgrade setuptools"
 
 build: off
 
 test_script:
-  - "pip install --upgrade setuptools"
   - "%WITH_COMPILER% %PYTHON%/python setup.py build_ext --inplace"
   - "%WITH_COMPILER% %PYTHON%/python -m unittest ephem.tests.test_github_issues"
 
