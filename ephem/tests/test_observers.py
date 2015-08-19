@@ -27,7 +27,7 @@ class ObserverTests(TestCase):
         c = city('Boston')
         c.date = '2015/5/30 10:09'
         d = c.copy()
-        self.assertIsNot(c, d)
+        assert c is not d
         self.assertEqual(c.date, d.date)
         self.assertEqual(c.lat, d.lat)
         self.assertEqual(c.lon, d.lon)
