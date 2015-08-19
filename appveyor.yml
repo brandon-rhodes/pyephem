@@ -58,7 +58,7 @@ install:
 build: off
 
 test_script:
-  - "%WITH_COMPILER% %PYTHON%/python -m unittest ephem/tests/test_github_issues.py"
+  - "%WITH_COMPILER% %PYTHON%/python -m unittest ephem.tests.test_github_issues"
 
 after_test:
   - "%WITH_COMPILER% %PYTHON%/python setup.py bdist_wheel"
