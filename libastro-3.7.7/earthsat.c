@@ -32,6 +32,9 @@
 #include "sattypes.h"
 #include "satlib.h"
 
+#if defined(_MSC_VER) && (_MSC_VER < 1800)
+#define isnan(x) _isnan(x)
+#endif
 
 #define ESAT_MAG        2       /* fake satellite magnitude */
 
