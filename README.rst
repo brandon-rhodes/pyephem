@@ -43,12 +43,13 @@ are represented by Python objects,
 while dates and angles automatically print themselves
 in standard astronomical formats::
 
- >>> from __future__ import print_function
  >>> import ephem
  >>> mars = ephem.Mars()
  >>> mars.compute('2008/1/1')
- >>> print(mars.ra, mars.dec)
- 5:59:27.35 26:56:27.4
+ >>> print(mars.ra)
+ 5:59:27.35
+ >>> print(mars.dec)
+ 26:56:27.4
 
 The documentation includes both a `Quick Reference`_ and a `Tutorial`_,
 which are included in text files within the module itself
