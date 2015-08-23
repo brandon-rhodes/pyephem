@@ -75,6 +75,9 @@ doctest:
 	@echo "Testing of doctests in the sources finished, look at the " \
 	      "results in $(BUILDDIR)/doctest/output.txt."
 
+diff:
+	colordiff -ur _build/html/ ~/Dropbox/rhodesmill.org/pyephem | less
+
 sync:
 	chmod -R a+rX _build/html
 	rsync -crlv _build/html/ ~/Dropbox/rhodesmill.org/pyephem
