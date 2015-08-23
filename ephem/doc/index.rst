@@ -45,7 +45,7 @@
      Includes Windows installers!
      <br/>
      <br/>
-     <a href="https://pypi.python.org/packages/source/e/ephem/ephem-3.7.5.3.tar.gz#md5=0e33905844e3be5c901c13e5a9c938a3"
+     <a href="https://pypi.python.org/packages/source/e/ephem/ephem-3.7.6.0.tar.gz#md5=0e33905844e3be5c901c13e5a9c938a3"
       >Source code</a><br/>
      As a .tar.gz file
    </p>
@@ -147,7 +147,7 @@ for us to use them as the basis for PyEphem.
 Installation
 ------------
 
-Version **3.7.5.3** is the most recent release of PyEphem.
+Version **3.7.6.0** is the most recent release of PyEphem.
 Consult the `change log`_ to see the new features!
 
 .. _change log: CHANGELOG

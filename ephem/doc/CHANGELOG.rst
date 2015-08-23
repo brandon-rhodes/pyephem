@@ -1,8 +1,8 @@
 PyEphem CHANGELOG
 =================
 
-Next version
-------------
+Version 3.7.6.0 (2015 August 19)
+--------------------------------
 
 - The new ``ephem.cities.lookup()`` function runs a Google geocoding
   search and returns an ``Observer`` object for the top result.
