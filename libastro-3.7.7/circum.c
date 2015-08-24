@@ -384,13 +384,11 @@ obj_elliptical (Now *np, Obj *op)
 	if (op->e_mag.whichm == MAG_HG) {
 	    /* the H and G parameters from the Astro. Almanac.
 	     */
+	    hg_mag (op->e_mag.m1, op->e_mag.m2, rp, rho, rsn, &mag);
 	    if (op->e_size)
 		op->s_size = (float)(op->e_size / rho);
-	    else {
-		hg_mag (op->e_mag.m1, op->e_mag.m2, rp, rho, rsn, &mag);
+	    else
 		op->s_size = (float)(h_albsize (op->e_mag.m1)/rho);
-
-	    }
 	} else {
 	    /* the g/k model of comets */
 	    gk_mag (op->e_mag.m1, op->e_mag.m2, rp, rho, &mag);
@@ -734,6 +732,7 @@ Obj *op)	/* object to set s_ra/dec as per equinox */
 	 */
 	if (pref_get(PREF_EQUATORIAL) == PREF_GEO) {
 	    /* no topo corrections to eq. coords */
+	    dra = ddec = 0.0;
 	} else {
 	    dra = ha_in - ha_out;	/* ra sign is opposite of ha */
 	    ddec = dec_out - dec;
