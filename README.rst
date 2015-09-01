@@ -97,3 +97,28 @@ The features provided by PyEphem include:
   a particular star should appear.
 
 * Return the Julian Date corresponding to any calendar date.
+
+Developers
+----------
+
+If you are interested in learning about how PyEphem works or in
+exploring its source code, check out this repository from GitHub.  It is
+hosted at:
+
+https://github.com/brandon-rhodes/pyephem
+
+If you lack expertise with version control, you can instead simply
+download a static copy of the most recent source code using this link:
+
+https://github.com/brandon-rhodes/pyephem/archive/master.zip
+
+To run its source code in place, create a `virtual environment
+<http://docs.python-guide.org/en/latest/dev/virtualenvs/>`_, activate
+it, change directory to the root of the PyEphem source code, and run::
+
+    python setup.py build_ext -i
+
+You can then run the PyEphem test suite to see whether all of its
+features are working correctly on your operating system and platform::
+
+    python -m unittest discover ephem

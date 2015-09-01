@@ -203,12 +203,7 @@ Version 3.7.2.3 (2008 January 8)
 - Added named functions for every solstice and equinox (before, only
   the vernal equinox could be asked for specifically).
 
-- Product tests have been moved inside of the ``ephem`` module itself,
-  and can now be invoked simply by running:
-
-  .. code-block:: bash
-
-     $ python setup.py test
+- Product tests have been moved inside of the ``ephem`` module itself.
 
 - **Bugfix**: ``Angle()`` can no longer be directly instantiated.
 
