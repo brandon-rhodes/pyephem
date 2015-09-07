@@ -363,6 +363,7 @@ obj_elliptical (Now *np, Obj *op)
             printf("\nrsn=%f rp=%f cpsi=%f ll=%f\n",
                    rsn, rp, cpsi, ll);
 	    rho = sqrt(rsn*rsn+rp*rp-2*rsn*rp*cpsi*cos(ll));
+            printf("\nrho from sqrt(): %f\n", rho);
 
 	    dt = rho*LTAU/3600.0/24.0;	/* light travel time, in days / AU */
 	}
@@ -624,12 +625,13 @@ Obj *op)
 	double el;		/* elongation */
 	double f;		/* fractional phase from earth */
 
+        printf("\nDEBUG1: *rho=%f\n", *rho);
 	/* compute elongation and phase */
 	elongation (lam, bet, lsn, &el);
 	el = raddeg(el);
 	op->s_elong = (float)el;
 	f = 0.25 * ((rp+ *rho)*(rp+ *rho) - rsn*rsn)/(rp* *rho);
-        printf("\nDEBUG: *rho=%f\n", *rho);
+        printf("\nDEBUG2: *rho=%f\n", *rho);
 	op->s_phase = (float)(f*100.0); /* percent */
 
 	/* set heliocentric long/lat; mean ecliptic and EOD */
