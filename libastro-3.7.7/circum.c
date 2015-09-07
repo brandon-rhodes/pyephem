@@ -627,6 +627,7 @@ Obj *op)
 	el = raddeg(el);
 	op->s_elong = (float)el;
 	f = 0.25 * ((rp+ *rho)*(rp+ *rho) - rsn*rsn)/(rp* *rho);
+        printf("DEBUG: *rho=%f f=%f\n", *rho, f);
 	op->s_phase = (float)(f*100.0); /* percent */
 
 	/* set heliocentric long/lat; mean ecliptic and EOD */
