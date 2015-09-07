@@ -365,7 +365,7 @@ static int parse_mjd_from_string(PyObject *so, double *mjdp)
      PyObject *emptytuple = PyTuple_New(0);
      PyObject *split_func = PyObject_GetAttrString(so, "split");
      PyObject *pieces = PyObject_Call(split_func, emptytuple, 0);
-     int len = PyObject_Length(pieces);
+     Py_ssize_t len = PyObject_Length(pieces);
      int year, month = 1;
      double day = 1.0;
 
@@ -883,7 +883,8 @@ static int setf_proper_ra(PyObject *self, PyObject *value, void *v)
                           " as milli-arcseconds per year");
 	  return -1;
      }
-     b->obj.f_pmRA = PyFloat_AsDouble(value) / cos(b->obj.f_dec) * PROPER;
+     b->obj.f_pmRA = (float)
+       (PyFloat_AsDouble(value) / cos(b->obj.f_dec) * PROPER);
      return 0;
 }
 
@@ -901,7 +902,7 @@ static int setf_proper_dec(PyObject *self, PyObject *value, void *v)
                           " as milli-arcseconds per year");
 	  return -1;
      }
-     b->obj.f_pmdec = PyFloat_AsDouble(value) * PROPER;
+     b->obj.f_pmdec = (float) (PyFloat_AsDouble(value) * PROPER);
      return 0;
 }
 
@@ -1288,7 +1289,7 @@ static PyObject* Body_compute(PyObject *self, PyObject *args, PyObject *kwds)
      }
 
      if (body->obj.o_type == EARTHSAT) {
-          double days_from_epoch = abs(body->obj.es_epoch - body->now.n_mjd);
+          double days_from_epoch = fabs(body->obj.es_epoch - body->now.n_mjd);
           if (days_from_epoch > 365.0) {
 	       PyErr_Format(PyExc_ValueError, "TLE elements are valid for"
                " a few weeks around their epoch, but you are asking about"
@@ -1331,7 +1332,7 @@ static PyObject* Body_writedb(PyObject *self)
 
 static PyObject* Body_copy(PyObject *self)
 {
-     Body *newbody = self->ob_type->tp_alloc(self->ob_type, 0);
+     Body *newbody = (Body*) self->ob_type->tp_alloc(self->ob_type, 0);
      if (!newbody) return 0;
      memcpy(newbody, self, self->ob_type->tp_basicsize);
      newbody->OB_REFCNT = 1;  /* since memcpy will have overwritten it */
@@ -1740,7 +1741,7 @@ static int Set_HG(PyObject *self, PyObject *value, void *v)
      Body *body = (Body*) self;
      double n;
      if (PyNumber_AsDouble(value, &n) == -1) return -1;
-     THE_FLOAT = n;
+     THE_FLOAT = (float) n;
      body->obj.e_mag.whichm = MAG_HG;
      return 0;
 }
@@ -1750,7 +1751,7 @@ static int Set_gk(PyObject *self, PyObject *value, void *v)
      Body *body = (Body*) self;
      double n;
      if (PyNumber_AsDouble(value, &n) == -1) return -1;
-     THE_FLOAT = n;
+     THE_FLOAT = (float) n;
      body->obj.e_mag.whichm = MAG_gk;
      return 0;
 }
@@ -2698,7 +2699,7 @@ static PyObject* readtle(PyObject *self, PyObject *args)
      body = build_body_from_obj(stripped_name, &obj);
      if (!body)
 	  return 0;
-     catalog_number = PyLong_FromLong(strtod(l1+2, 0));
+     catalog_number = PyLong_FromLong((long) strtod(l1+2, 0));
      if (!catalog_number)
 	  return 0;
      ((EarthSatellite*) body)->catalog_number = catalog_number;
