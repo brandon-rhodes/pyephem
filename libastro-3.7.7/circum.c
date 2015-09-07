@@ -379,7 +379,7 @@ obj_elliptical (Now *np, Obj *op)
 	bet = atan(rpd*spsi*sin(lam-lpd)/(cpsi*rsn*sll));
 
 	/* fill in all of op->s_* stuff except s_size and s_mag */
-        printf("\nrho about to be sent: %f\n", rho);
+        rho;
 	cir_sky (np, lpd, psi, rp, &rho, lam, bet, lsn, rsn, op);
 
 	/* compute magnitude and size */
