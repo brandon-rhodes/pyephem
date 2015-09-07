@@ -360,8 +360,6 @@ obj_elliptical (Now *np, Obj *op)
 	    cpsi = cos(psi);
 	    rpd = rp*cpsi;
 	    ll = lpd-lg;
-            printf("\nrsn=%f rp=%f cpsi=%f ll=%f\n",
-                   rsn, rp, cpsi, ll);
 	    rho = sqrt(rsn*rsn+rp*rp-2*rsn*rp*cpsi*cos(ll));
             printf("\nrho from sqrt(): %f\n", rho);
 
@@ -381,6 +379,7 @@ obj_elliptical (Now *np, Obj *op)
 	bet = atan(rpd*spsi*sin(lam-lpd)/(cpsi*rsn*sll));
 
 	/* fill in all of op->s_* stuff except s_size and s_mag */
+        printf("\nrho about to be sent: %f\n", rho);
 	cir_sky (np, lpd, psi, rp, &rho, lam, bet, lsn, rsn, op);
 
 	/* compute magnitude and size */
@@ -631,7 +630,6 @@ Obj *op)
 	el = raddeg(el);
 	op->s_elong = (float)el;
 	f = 0.25 * ((rp+ *rho)*(rp+ *rho) - rsn*rsn)/(rp* *rho);
-        printf("\nDEBUG2: *rho=%f\n", *rho);
 	op->s_phase = (float)(f*100.0); /* percent */
 
 	/* set heliocentric long/lat; mean ecliptic and EOD */
