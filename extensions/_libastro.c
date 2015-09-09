@@ -645,7 +645,7 @@ static int parse_angle(PyObject *value, double factor, double *result)
 	  char *s = PyUnicode_AsUTF8(value);
           if (!s) return -1;
           if (f_scansexa(s, &scaled) == -1) {
-               PyErr_Format(PyExc_ValueError, "your angle string %r does not "
+               PyErr_Format(PyExc_ValueError, "your angle string '%s' does not "
                             "have the format [number[:number[:number]]]", s);
                return -1;
 	  }
@@ -690,7 +690,7 @@ static double to_angle(PyObject *value, double efactor, int *status)
           }
           *status = f_scansexa(s, &scaled);
           if (*status == -1) {
-              PyErr_Format(PyExc_ValueError, "your angle string %r does not "
+              PyErr_Format(PyExc_ValueError, "your angle string '%s' does not "
                            "have the format [number[:number[:number]]]", s);
           }
 	  return scaled / efactor;
