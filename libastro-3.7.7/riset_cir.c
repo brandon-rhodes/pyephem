@@ -204,7 +204,7 @@ e_riset_cir (Now *np, Obj *op, double dis, RiseSet *rp)
 		    rp->rs_flags |= RS_NORISE;
 		    return;
 		}
-	    } else if (a0 > 0 && a1 < 0 && !set) {
+	    } else if (a0 > 0 && a1 < 0 && !set && rise) {
 		/* found a setting event -- interate to refine */
 		switch (find_0alt (10./3600., 5./SPD, dis, np, op)) {
 		case 0: /* ok */

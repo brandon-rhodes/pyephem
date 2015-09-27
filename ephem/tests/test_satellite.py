@@ -37,6 +37,21 @@ class SatelliteTests(unittest.TestCase):
         self.assertAlmostEqual(ephem.degrees('192.0'), raz, 1)
         self.assertAlmostEqual(ephem.degrees('16.0'), talt, 1)
         self.assertAlmostEqual(ephem.degrees('64.9'), saz, 1)
+        
+    def test_next_pass_consecutive(self):
+        # Issue #63
+        iss = self.iss
+        # At this time, the ISS is already above the horizon
+        self.atlanta.date = '2009/4/29 15:51:00'
+        rt, raz, tt, talt, st, saz = self.atlanta.next_pass(iss)
+
+        self.assertAlmostEqual(ephem.Date('2009/4/30 5:02:17'), rt, 3)
+        self.assertAlmostEqual(ephem.Date('2009/4/30 5:06:39'), tt, 3)
+        self.assertAlmostEqual(ephem.Date('2009/4/30 5:11:04'), st, 3)
+
+        self.assertAlmostEqual(ephem.degrees('192.0'), raz, 1)
+        self.assertAlmostEqual(ephem.degrees('16.0'), talt, 1)
+        self.assertAlmostEqual(ephem.degrees('64.9'), saz, 1)
 
     def test_more_than_one_year_before_TLE(self):
         self.assertRaises(ValueError, self.iss.compute, '2008/4/28')
