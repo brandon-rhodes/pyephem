@@ -1,6 +1,15 @@
 PyEphem CHANGELOG
 =================
 
+Version 3.7.6.1 (2015 September 29)
+--------------------------------
+
+- GitHub issue #63: Changed behavior of next_pass() so that 
+  rise,culminate,set are consecutive values for a single pass; 
+  unless singlepass=False is passed, in which case it returns
+  the original next_rise,next_culminate,next_set even if
+  next_set < next_rise (i.e. the satellite is already up).
+
 Version 3.7.6.0 (2015 August 19)
 --------------------------------
 

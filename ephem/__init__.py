@@ -5,7 +5,7 @@
 import ephem._libastro as _libastro
 from math import pi
 
-__version__ = '3.7.6.0'
+__version__ = '3.7.6.1'
 
 twopi = pi * 2.
 halfpi = pi / 2.
@@ -497,8 +497,14 @@ class Observer(_libastro.Observer):
         """Search for the given body's next setting"""
         return self._riset_helper(body, start, use_center, False, False)
 
-    def next_pass(self, body):
-        """Return the next rising, culmination, and setting of a satellite."""
+    def next_pass(self, body, singlepass=True):
+        """Return the next rising, culmination, and setting of a satellite.
+        
+        If singlepass is True, return next consecutive set of
+            (rising, culmination, setting).
+        If singlepass is False, return 
+            (next_rising, next_culmination, next_setting)
+        """
 
         if not isinstance(body, EarthSatellite):
             raise TypeError(
@@ -506,7 +512,23 @@ class Observer(_libastro.Observer):
                 ' EarthSatellite objects because of their high speed'
                 )
 
-        return _libastro._next_pass(self, body)
+        result = _libastro._next_pass(self, body)
+        # _libastro behavior is singlepass=False
+        if ((not singlepass)
+                or (None in result) 
+                or (result[4] >= result[0])):
+            return result
+        # retry starting just before next_rising
+        obscopy = self.copy()
+        # Almost always 1 minute before next_rising except
+        # in pathological case where set came immediately before rise
+        obscopy.date = result[0] - min(1.0/1440,
+                            (result[0] - result[4])/2)
+        result = _libastro._next_pass(obscopy, body)
+        if result[0] <= result[2] <= result[4]:
+            return result
+        raise ValueError("this software is having trouble with those satellite parameters")
+        
 
 del describe_riset_search
 
