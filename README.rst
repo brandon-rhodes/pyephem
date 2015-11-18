@@ -46,8 +46,10 @@ in standard astronomical formats::
  >>> import ephem
  >>> mars = ephem.Mars()
  >>> mars.compute('2008/1/1')
- >>> print mars.ra, mars.dec
- 5:59:27.35 26:56:27.4
+ >>> print(mars.ra)
+ 5:59:27.35
+ >>> print(mars.dec)
+ 26:56:27.4
 
 The documentation includes both a `Quick Reference`_ and a `Tutorial`_,
 which are included in text files within the module itself
@@ -95,3 +97,28 @@ The features provided by PyEphem include:
   a particular star should appear.
 
 * Return the Julian Date corresponding to any calendar date.
+
+Developers
+----------
+
+If you are interested in learning about how PyEphem works or in
+exploring its source code, check out this repository from GitHub.  It is
+hosted at:
+
+https://github.com/brandon-rhodes/pyephem
+
+If you lack expertise with version control, you can instead simply
+download a static copy of the most recent source code using this link:
+
+https://github.com/brandon-rhodes/pyephem/archive/master.zip
+
+To run its source code in place, create a `virtual environment
+<http://docs.python-guide.org/en/latest/dev/virtualenvs/>`_, activate
+it, change directory to the root of the PyEphem source code, and run::
+
+    python setup.py build_ext -i
+
+You can then run the PyEphem test suite to see whether all of its
+features are working correctly on your operating system and platform::
+
+    python -m unittest discover ephem

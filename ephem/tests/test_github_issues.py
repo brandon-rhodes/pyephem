@@ -79,6 +79,17 @@ class GitHubIssues(TestCase):
         g.long = ephem.degrees('-35')
         self.assertEqual(str(g.long), '-35:00:00.0')
 
+    def test_github_58(self):
+        t = ephem.readdb("P10frjh,e,7.43269,35.02591,162.97669,"
+                         "0.6897594,1.72051182,0.5475395,"
+                         "195.80709,10/10/2014,2000,H26.4,0.15")
+        t.compute('2014/10/27')
+        self.assertAlmostEqual(t.earth_distance, 0.0296238418669, 10)
+        self.assertAlmostEqual(t.mag, 20.23, 2)
+        self.assertAlmostEqual(t.phase, 91.1195, 2)
+        self.assertAlmostEqual(t.radius, 0, 2)
+        self.assertAlmostEqual(t.size, 0.00103452138137, 12)
+
     def test_github_64(self):
         sun = ephem.Sun()
         pole = ephem.Observer()

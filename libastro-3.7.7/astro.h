@@ -1,6 +1,11 @@
 #ifndef _ASTRO_H
 #define _ASTRO_H
 
+/* for PyEphem: silence Windows complaints about sprintf() */
+#ifdef _MSC_VER
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+
 #include <stdio.h>
 
 #ifndef PI

@@ -265,17 +265,30 @@ class Observer(_libastro.Observer):
     the Earth's surface.  The constructor takes no parameters; instead,
     set its attributes once you have created it.  Defaults:
 
-    `time` - the moment the `Observer` is created
-    `temperature` - 15 degrees Celsius
-    `pressure` - 1010 mBar
-    `elevation` - 0 meters above sea level
+    `date` - the moment the `Observer` is created
     `lat` - zero degrees latitude
-    `long` - zero degrees longitude
+    `lon` - zero degrees longitude
+    `elevation` - 0 meters above sea level
+    `horizon` - 0 degrees
     `epoch` - J2000
+    `temp` - 15 degrees Celsius
+    `pressure` - 1010 mBar
 
     """
     __slots__ = [ 'name' ]
     elev = _libastro.Observer.elevation
+
+    def copy(self):
+        o = self.__class__()
+        o.date = self.date
+        o.lat = self.lat
+        o.lon = self.lon
+        o.elev = self.elev
+        o.horizon = self.horizon
+        o.epoch = self.epoch
+        o.temp = self.temp
+        o.pressure = self.pressure
+        return o
 
     def __repr__(self):
         """Return a useful textual representation of this Observer."""

@@ -1,6 +1,13 @@
 import os
+import sys
 from distutils.core import setup, Extension
 from glob import glob
+
+# Work-around.
+
+if 'bdist_wheel' in sys.argv:
+    del setup, Extension
+    from setuptools import setup, Extension
 
 # Read the current version from ephem/__init__.py itself.
 
@@ -12,7 +19,7 @@ for line in open(path):
 # The 'ephem' module is built from every .c file in the libastro
 # directory plus ...
 
-libastro_version = '3.7.6'
+libastro_version = '3.7.7'
 libastro_files = glob('libastro-%s/*.c' % libastro_version)
 libastro_data = glob('extensions/data/*.c')
 

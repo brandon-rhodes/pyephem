@@ -1,8 +1,8 @@
 PyEphem CHANGELOG
 =================
 
-Next version
-------------
+Version 3.7.6.0 (2015 August 19)
+--------------------------------
 
 - The new ``ephem.cities.lookup()`` function runs a Google geocoding
   search and returns an ``Observer`` object for the top result.
@@ -13,16 +13,19 @@ Next version
 - Upgraded to the ``libastro`` from XEphem 3.7.6, bringing improvements
   to Earth satellite transit calculations.
 
-- Fixed GitHub issue #64: rising and setting routines are now careful to
+- GitHub issue #76: Earth satellite velocity is now calculated with
+  greater accuracy.
+
+- GitHub issue #64: rising and setting routines are now careful to
   restore your ``Observer.date`` even if they die with an exception.
 
-- Fixed GitHub issue #56: Earth satellites now raise an exception for
-  dates a year or more from their TLE epoch, because ``libastro``
-  refuses to process old elements and would return nonsense coordinates.
+- GitHub issue #56: Earth satellites now raise an exception for dates a
+  year or more from their TLE epoch, because ``libastro`` refuses to
+  process old elements and would return nonsense coordinates.
 
-- Fixed GitHub issue #44: a segmentation fault would eventually kill
-  Python 3 if a script called ``Body.copy()`` either directly or via the
-  Standard Library ``copy.copy()`` function.
+- GitHub issue #44: a segmentation fault would eventually kill Python 3
+  if a script called ``Body.copy()`` either directly or via the Standard
+  Library ``copy.copy()`` function.
 
 Version 3.7.5.3 (2014 May 29)
 -----------------------------
@@ -200,12 +203,7 @@ Version 3.7.2.3 (2008 January 8)
 - Added named functions for every solstice and equinox (before, only
   the vernal equinox could be asked for specifically).
 
-- Product tests have been moved inside of the ``ephem`` module itself,
-  and can now be invoked simply by running:
-
-  .. code-block:: bash
-
-     $ python setup.py test
+- Product tests have been moved inside of the ``ephem`` module itself.
 
 - **Bugfix**: ``Angle()`` can no longer be directly instantiated.
 

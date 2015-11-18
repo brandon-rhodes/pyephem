@@ -361,6 +361,7 @@ obj_elliptical (Now *np, Obj *op)
 	    rpd = rp*cpsi;
 	    ll = lpd-lg;
 	    rho = sqrt(rsn*rsn+rp*rp-2*rsn*rp*cpsi*cos(ll));
+            printf("\nrho from sqrt(): %f\n", rho);
 
 	    dt = rho*LTAU/3600.0/24.0;	/* light travel time, in days / AU */
 	}
@@ -378,19 +379,18 @@ obj_elliptical (Now *np, Obj *op)
 	bet = atan(rpd*spsi*sin(lam-lpd)/(cpsi*rsn*sll));
 
 	/* fill in all of op->s_* stuff except s_size and s_mag */
+        rho;
 	cir_sky (np, lpd, psi, rp, &rho, lam, bet, lsn, rsn, op);
 
 	/* compute magnitude and size */
 	if (op->e_mag.whichm == MAG_HG) {
 	    /* the H and G parameters from the Astro. Almanac.
 	     */
+	    hg_mag (op->e_mag.m1, op->e_mag.m2, rp, rho, rsn, &mag);
 	    if (op->e_size)
 		op->s_size = (float)(op->e_size / rho);
-	    else {
-		hg_mag (op->e_mag.m1, op->e_mag.m2, rp, rho, rsn, &mag);
+	    else
 		op->s_size = (float)(h_albsize (op->e_mag.m1)/rho);
-
-	    }
 	} else {
 	    /* the g/k model of comets */
 	    gk_mag (op->e_mag.m1, op->e_mag.m2, rp, rho, &mag);
@@ -624,6 +624,7 @@ Obj *op)
 	double el;		/* elongation */
 	double f;		/* fractional phase from earth */
 
+        printf("\nDEBUG1: *rho=%f\n", *rho);
 	/* compute elongation and phase */
 	elongation (lam, bet, lsn, &el);
 	el = raddeg(el);
@@ -734,6 +735,7 @@ Obj *op)	/* object to set s_ra/dec as per equinox */
 	 */
 	if (pref_get(PREF_EQUATORIAL) == PREF_GEO) {
 	    /* no topo corrections to eq. coords */
+	    dra = ddec = 0.0;
 	} else {
 	    dra = ha_in - ha_out;	/* ra sign is opposite of ha */
 	    ddec = dec_out - dec;

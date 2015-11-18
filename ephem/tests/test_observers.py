@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from ephem import Observer
+from ephem import Observer, city
 from unittest import TestCase
 
 class ObserverTests(TestCase):
@@ -22,3 +22,17 @@ class ObserverTests(TestCase):
         o.elevation = 11e3
         o.compute_pressure()
         assert 226.31 < o.pressure < 226.33
+
+    def test_observer_copy(self):
+        c = city('Boston')
+        c.date = '2015/5/30 10:09'
+        d = c.copy()
+        assert c is not d
+        self.assertEqual(c.date, d.date)
+        self.assertEqual(c.lat, d.lat)
+        self.assertEqual(c.lon, d.lon)
+        self.assertEqual(c.elev, d.elev)
+        self.assertEqual(c.horizon, d.horizon)
+        self.assertEqual(c.epoch, d.epoch)
+        self.assertEqual(c.temp, d.temp)
+        self.assertEqual(c.pressure, d.pressure)
