@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import glob, os.path, re, traceback, unittest
+import glob, os.path, re, traceback, unittest, codecs
 from datetime import datetime
 from time import strptime
 import ephem
@@ -45,7 +45,7 @@ def setup_horizon(observer):
 def standard_parse(line):
     """Read the date, RA, and dec from a USNO data file line."""
 
-    fields = re.split(r'   +', line)
+    fields = re.split(r'   +', str(line))
     datestrfields = fields[0][:-2].split()
     datestrfields[1] = str(month_ints[datestrfields[1]])
     datestr = ' '.join(datestrfields)
@@ -232,7 +232,7 @@ The file looks something like:
                 return None, None
             h, m = [ int(s) for s in timestr.split(':') ]
             date = ephem.Date(midnight + h * ephem.hour + m * ephem.minute)
-            angle = ephem.degrees(anglestr.strip('NS'))
+            angle = ephem.degrees(str(anglestr.strip('NS')))
             return date, angle
 
         datum.rising, datum.rising_az = parse(fields, 4)
@@ -357,7 +357,7 @@ class Rise_Set_Trial(Trial):
 
         def two_digit_compare(event, usno_digits):
             usno_hrmin = usno_digits[:2] + ':' + usno_digits[2:]
-            usno_date = ephem.Date('%s %s' % (usno_datestr, usno_hrmin))
+            usno_date = ephem.Date('%s %s' % (str(usno_datestr), str(usno_hrmin)))
 
             difference = o.date - (usno_date + 5 * ephem.hour)
             if abs(difference) > self.error:
@@ -454,7 +454,7 @@ class Moon_Phases(Trial):
 class Mixin(object):
     def test_usno(self):
 
-        f = open(self.path)
+        f = codecs.open(self.path, encoding='utf-8')
         try:
             content = f.read()
         finally:
