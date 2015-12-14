@@ -129,6 +129,17 @@ Datetime objects
   is why PyEphem exposes its own date type
   instead of returning Python ``datetime`` objects automatically.
 
+  Note that python ``datetime`` objects use local time by default.
+  PyEphem expects UTC ``datetime`` objects. ``datetime.now()`` will
+  give unexpected results. Use ``datetime.utcnow()`` instead:
+    
+    >>> d = datetime.datetime.utcnow()
+    >>> ephem.Date(d)
+    2015/12/14 15:42:14
+    >>> d = datetime.datetime.utcfromtimestamp(1450107734)
+    >>> ephem.Date(d)
+    2015/12/14 15:42:14
+
 Tuples
   PyEphem can return a date as a six-element tuple
   giving the year, month, day, hour, minute, and seconds,
