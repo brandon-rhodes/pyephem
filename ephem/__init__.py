@@ -3,7 +3,7 @@
 # convenient Python types.
 
 import ephem._libastro as _libastro
-from math import pi
+from math import pi, copysign
 
 __version__ = '3.7.6.0'
 
@@ -96,6 +96,15 @@ def newton(f, x0, x1, precision=default_newton_precision):
         x0, x1 = x1, x1 + (x1 - x0) / (f0/f1 - 1)
         f0, f1 = f1, f(x1)
     return x1
+
+# Central difference.
+
+def cdiff(f, x, h, order):
+    """Compute a first or second derivative with central difference."""
+    if order == "first":
+        return (f(x + h) - f(x - h)) / (2 * h)
+    if order == "second":
+        return (f(x + h) - 2 * f(x) + f(x - h)) / (h**2)
 
 # Find equinoxes and solstices.
 
@@ -323,6 +332,135 @@ class Observer(_libastro.Observer):
         result = Date(newton(f, d, d + minute))
         return result
 
+    def _compute_alt(self, body, date):
+        """Internal function to get the altitude of a body."""
+        original_date = self.date
+        self.date = date
+        body.compute(self)
+        alt = body.alt
+        self.date = original_date
+        return alt
+
+    def _compute_alt_concavity(self, body, date):
+        """Internal function to get the concavity of the altitude."""
+
+        def get_alt(date):
+            """Wrap _compute_alt for use in derivative getters."""
+            return self._compute_alt(body, date)
+        
+        concavity = cdiff(get_alt, date, hour, "second")
+        return concavity
+
+    def _compute_culmination(self, body, start, sign):
+        """Internal function used to compute culminations."""
+
+        if isinstance(body, EarthSatellite):
+            raise TypeError(
+                'the next and previous culmination methods do not'
+                ' support earth satellites because of their speed;'
+                ' please use the higher-resolution next_pass() method'
+                )
+
+        def get_alt(date):
+            """Wrap _compute_alt for use in derivative getters."""
+            return self._compute_alt(body, date)
+
+        def get_alt_d(date):
+            """Get the first derivative w/r/t time of the altitude."""
+            alt_d = cdiff(get_alt, date, h, "first")
+            return alt_d
+      
+        if start is not None:
+            self.date = start
+
+        # Start slightly to one side of the start date, to prevent
+        # repeated calls from returning the same solution over and over.
+        if start is not None:
+            self.date = start
+        if abs(cdiff(get_alt, self.date, default_newton_precision, "first")) <= default_newton_precision:
+            self.date += sign * hour
+
+        # Walk in 1-hour increments until we find a sign change in the time derivative of the altitude. Then use Newton's Method to find where the first derivative is zero.
+        h = default_newton_precision
+        thistime = self.date
+        nexttime = self.date + sign * hour
+        thisd = cdiff(get_alt, thistime, h, "first")
+        nextd = cdiff(get_alt, nexttime, h, "first")
+        count = 1
+        while copysign(1, thisd) == copysign(1, nextd):
+            self.date = nexttime
+            thistime = self.date
+            nexttime = self.date + sign * hour
+            thisd = cdiff(get_alt, thistime, h, "first")
+            nextd = cdiff(get_alt, nexttime, h, "first")
+
+        result = Date(newton(get_alt_d, thistime, nexttime))
+        return result
+
+    def _previous_upper_culmination(self, body, start=None):
+        """Find the previous upper culmination of a body."""
+        
+        c = self._compute_culmination(body, start, -1.)
+        while self._compute_alt_concavity(body, c) > 0:
+            c = self._compute_culmination(body, c, -1.)
+        return c
+
+    def _next_upper_culmination(self, body, start=None):
+        """Find the next upper culmination of a body."""
+        
+        c = self._compute_culmination(body, start, +1.)
+        while self._compute_alt_concavity(body, c) > 0:
+            c = self._compute_culmination(body, c, +1.)
+        return c
+
+    def _previous_lower_culmination(self, body, start=None):
+        """Find the previous lower culmination of a body."""
+
+        c = self._compute_culmination(body, start, -1.)
+        while self._compute_alt_concavity(body, c) < 0:
+            c = self._compute_culmination(body, c, -1.)
+        return c
+
+    def _next_lower_culmination(self, body, start=None):
+        """Find the next lower culmination of a body."""
+
+        c = self._compute_culmination(body, start, +1.)
+        while self._compute_alt_concavity(body, c) < 0:
+            c = self._compute_culmination(body, c, +1.)
+        return c
+
+    def previous_upper_culmination(self, body, start=None):
+        """Find the previous upper culmination of a body."""
+
+        original_date = self.date
+        d = self._previous_upper_culmination(body, start)
+        self.date = original_date
+        return d
+
+    def next_upper_culmination(self, body, start=None):
+        """Find the next upper culmination of a body."""
+
+        original_date = self.date
+        d = self._next_upper_culmination(body, start)
+        self.date = original_date
+        return d
+
+    def previous_lower_culmination(self, body, start=None):
+        """Find the previous lower culmination of a body."""
+
+        original_date = self.date
+        d = self._previous_lower_culmination(body, start)
+        self.date = original_date
+        return d
+
+    def next_lower_culmination(self, body, start=None):
+        """Find the next lower culmination of a body."""
+
+        original_date = self.date
+        d = self._next_lower_culmination(body, start)
+        self.date = original_date
+        return d
+
     def _previous_transit(self, body, start=None):
         """Find the previous passage of a body across the meridian."""
 
@@ -402,17 +540,17 @@ class Observer(_libastro.Observer):
                 ' please use the higher-resolution next_pass() method'
                 )
 
-        def visit_transit():
-            d = (previous and self._previous_transit(body)
-                 or self._next_transit(body)) # if-then
+        def visit_upper_culmination():
+            d = (previous and self._previous_upper_culmination(body)
+                 or self._next_upper_culmination(body)) # if-then
             if body.alt + body.radius * use_radius - self.horizon <= 0:
-                raise NeverUpError('%r transits below the horizon at %s'
+                raise NeverUpError('%r culminates below the horizon at %s'
                                    % (body.name, d))
             return d
 
-        def visit_antitransit():
-            d = (previous and self._previous_antitransit(body)
-                 or self._next_antitransit(body)) # if-then
+        def visit_lower_culmination():
+            d = (previous and self._previous_lower_culmination(body)
+                 or self._next_lower_culmination(body)) # if-then
             if body.alt + body.radius * use_radius - self.horizon >= 0:
                 raise AlwaysUpError('%r is still above the horizon at %s'
                                     % (body.name, d))
@@ -448,29 +586,23 @@ class Observer(_libastro.Observer):
             on_lower_cusp = (body.alt + body.radius * use_radius
                              - self.horizon < - tiny)
 
-        az = body.az
-        on_right_side_of_sky = ((rising == (az < pi)) # inverted "xor"
-                                or (az < tiny
-                                    or pi - tiny < az < pi + tiny
-                                    or twopi - tiny < az))
-
         def f(d):
             self.date = d
             body.compute(self)
             return body.alt + body.radius * use_radius - self.horizon
 
         try:
-            if on_lower_cusp and on_right_side_of_sky:
+            if on_lower_cusp:
                 d0 = self.date
             elif heading_downward:
-                d0 = visit_transit()
+                d0 = visit_upper_culmination()
             else:
-                d0 = visit_antitransit()
+                d0 = visit_lower_culmination()
             if heading_downward:
-                d1 = visit_antitransit()
+                d1 = visit_lower_culmination()
             else:
-                d1 = visit_transit()
-
+                d1 = visit_upper_culmination()
+                
             d = (d0 + d1) / 2.
             result = Date(newton(f, d, d + minute))
             return result
