@@ -135,10 +135,10 @@ Datetime objects
   will give unexpected results.
   Instead, use the ``datetime.utcnow()`` constructor:
 
-    >>> d = datetime.datetime.utcnow()
+    >>> d = datetime.utcnow()
     >>> ephem.Date(d)
     2015/12/14 15:42:14
-    >>> d = datetime.datetime.utcfromtimestamp(1450107734)
+    >>> d = datetime.utcfromtimestamp(1450107734)
     >>> ephem.Date(d)
     2015/12/14 15:42:14
 
@@ -199,7 +199,7 @@ Calculating with dates
 PyEphem dates are encoded as the “Dublin Julian Day”,
 which is the number of days (including any fraction)
 that have passed since the last day of 1899, at noon.
-From there, increasing the value by one moves to the next day: 
+From there, increasing the value by one moves to the next day:
 
     >>> print(ephem.Date(0))
     1899/12/31 12:00:00
