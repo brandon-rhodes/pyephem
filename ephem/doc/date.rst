@@ -199,7 +199,7 @@ Calculating with dates
 PyEphem dates are encoded as the “Dublin Julian Day”,
 which is the number of days (including any fraction)
 that have passed since the last day of 1899, at noon.
-From there, increasing the value by one moves to the next day: 
+From there, increasing the value by one moves to the next day:
 
     >>> print(ephem.Date(0))
     1899/12/31 12:00:00
