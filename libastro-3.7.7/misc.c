@@ -3,8 +3,6 @@
  *  4/20/98 now_lst() always just returns apparent time
  */
 
-#include "Python.h"
-
 #include "astro.h"
 
 #include <stdio.h>
