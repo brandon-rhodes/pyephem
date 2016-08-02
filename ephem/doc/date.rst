@@ -61,9 +61,9 @@ and returns a Python ``datetime`` giving your local time.
 
     >>> lt = ephem.localtime(d)
     >>> print(lt)
-    1984-05-30 12:23:45.000002
+    1984-05-30 12:23:45.120000
     >>> print(repr(lt))
-    datetime.datetime(1984, 5, 30, 12, 23, 45, 2)
+    datetime.datetime(1984, 5, 30, 12, 23, 45, 120000)
 
 The output of this code will differ
 depending on the time zone in which you live.
