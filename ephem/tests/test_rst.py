@@ -1,11 +1,19 @@
 #!/usr/bin/env python
 
+import datetime
 import doctest
 import unittest
 import os.path
 import sys
 import time
 from glob import glob
+
+class FakeDatetime(datetime.datetime):
+    @classmethod
+    def utcnow(cls):
+        return cls(2015, 12, 14, 15, 42, 14)
+
+FakeDatetime.__name__ = 'datetime.datetime'
 
 def load_tests(loader, tests, pattern):
 
@@ -17,6 +25,8 @@ def load_tests(loader, tests, pattern):
     # ruin our doctests.
 
     tests = []
+
+    datetime.datetime = FakeDatetime
 
     if sys.version_info >= (2, 7):
         tests.extend([

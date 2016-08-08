@@ -135,11 +135,11 @@ Datetime objects
   will give unexpected results.
   Instead, use the ``datetime.utcnow()`` constructor:
 
-    >>> d = datetime.datetime.utcnow()
-    >>> ephem.Date(d)
+    >>> d = datetime.utcnow()
+    >>> print(ephem.Date(d))
     2015/12/14 15:42:14
-    >>> d = datetime.datetime.utcfromtimestamp(1450107734)
-    >>> ephem.Date(d)
+    >>> d = datetime.utcfromtimestamp(1450107734)
+    >>> print(ephem.Date(d))
     2015/12/14 15:42:14
 
 Tuples
