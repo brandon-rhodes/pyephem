@@ -516,7 +516,10 @@ def localtime(date):
     """Convert a PyEphem date into local time, returning a Python datetime."""
     import calendar, time, datetime
     timetuple = time.localtime(calendar.timegm(date.tuple()))
-    return datetime.datetime(*timetuple[:7])
+    timetuple = list(timetuple[:6])
+    microseconds = int(date.tuple()[5] * 1000000) % 1000000
+    timetuple.append(microseconds)
+    return datetime.datetime(*timetuple)
 
 # Coordinate transformations.
 
