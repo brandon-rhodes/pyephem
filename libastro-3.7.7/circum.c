@@ -361,7 +361,6 @@ obj_elliptical (Now *np, Obj *op)
 	    rpd = rp*cpsi;
 	    ll = lpd-lg;
 	    rho = sqrt(rsn*rsn+rp*rp-2*rsn*rp*cpsi*cos(ll));
-            printf("\nrho from sqrt(): %f\n", rho);
 
 	    dt = rho*LTAU/3600.0/24.0;	/* light travel time, in days / AU */
 	}
@@ -379,7 +378,6 @@ obj_elliptical (Now *np, Obj *op)
 	bet = atan(rpd*spsi*sin(lam-lpd)/(cpsi*rsn*sll));
 
 	/* fill in all of op->s_* stuff except s_size and s_mag */
-        rho;
 	cir_sky (np, lpd, psi, rp, &rho, lam, bet, lsn, rsn, op);
 
 	/* compute magnitude and size */
@@ -624,7 +622,6 @@ Obj *op)
 	double el;		/* elongation */
 	double f;		/* fractional phase from earth */
 
-        printf("\nDEBUG1: *rho=%f\n", *rho);
 	/* compute elongation and phase */
 	elongation (lam, bet, lsn, &el);
 	el = raddeg(el);
