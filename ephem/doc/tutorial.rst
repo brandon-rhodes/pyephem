@@ -239,7 +239,7 @@ which returns a Python ``datetime`` object:
 
 >>> d = ephem.Date('1984/12/21 15:00')
 >>> ephem.localtime(d)
-datetime.datetime(1984, 12, 21, 10, 0, 0, 4)
+datetime.datetime(1984, 12, 21, 10, 0)
 >>> print(ephem.localtime(d).ctime())
 Fri Dec 21 10:00:00 1984
 

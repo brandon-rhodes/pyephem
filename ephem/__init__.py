@@ -3,7 +3,9 @@
 # convenient Python types.
 
 import ephem._libastro as _libastro
+from datetime import datetime as _datetime
 from math import pi
+from time import localtime as _localtime
 
 __version__ = '3.7.6.0'
 
@@ -514,12 +516,11 @@ del describe_riset_search
 
 def localtime(date):
     """Convert a PyEphem date into local time, returning a Python datetime."""
-    import calendar, time, datetime
-    timetuple = time.localtime(calendar.timegm(date.tuple()))
-    timetuple = list(timetuple[:6])
-    microseconds = int(date.tuple()[5] * 1000000) % 1000000
-    timetuple.append(microseconds)
-    return datetime.datetime(*timetuple)
+    microseconds = int(round(24 * 60 * 60 * 1000000 * date))
+    seconds, microseconds = divmod(microseconds, 1000000)
+    seconds -= 2209032000  # difference between epoch 1900 and epoch 1970
+    y, m, d, H, M, S, wday, yday, isdst = _localtime(seconds)
+    return _datetime(y, m, d, H, M, S, microseconds)
 
 # Coordinate transformations.
 

@@ -62,7 +62,7 @@ class DateTests(unittest.TestCase):
     def test_localtime_modern(self):
         if time.timezone == 18000: # test only works in Eastern time zone
             self.assertEqual(localtime(Date('2009/6/23 8:47')),
-                             datetime(2009, 6, 23, 4, 47, 0, 1))
+                             datetime(2009, 6, 23, 4, 47, 0))
 
     # I am commenting this out for now because I am not sure that I can
     # fix it without either writing an entirely new time module for

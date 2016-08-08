@@ -832,9 +832,9 @@ local time
 
  >>> d = ephem.Date('1997/3/9 5:13')
  >>> ephem.localtime(d)
- datetime.datetime(1997, 3, 9, 0, 13, 0, 6)
+ datetime.datetime(1997, 3, 9, 0, 13)
  >>> print(ephem.localtime(d))
- 1997-03-09 00:13:00.000006
+ 1997-03-09 00:13:00
 
  * The ``localtime()`` function converts a PyEphem date
    into a Python ``datetime`` object expressed in your local time zone.
