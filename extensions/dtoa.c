@@ -62,7 +62,13 @@
  *		for 0 <= k <= 22).
  */
 
+#if defined(__s390__) || defined(__s390x__)
+#define IEEE_8087 /* no idea why not IBM */
+#elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
 #define IEEE_8087
+#else
+#define IEEE_MC68k
+#endif
 
 /*
  * #define IEEE_8087 for IEEE-arithmetic machines where the least
