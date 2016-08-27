@@ -309,7 +309,7 @@ bodies with orbital elements
    | ``_g``, ``_k`` — Magnitude model coefficients
    | ``_size`` — Angular size in arcseconds at 1 AU
 
- * ``EarthSatellite`` elements:
+ * ``EarthSatellite`` elements of man-made satellites:
 
    | ``_epoch`` — Reference epoch
    | ``_n`` — Mean motion, in revolutions per day
