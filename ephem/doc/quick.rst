@@ -498,12 +498,13 @@ Observers
    avoid performing any ``lookup()`` more than once —
    instead, print the result to your screen
    and then cut-and-paste the latitude and longitude into your code.
- * A ``ValueError`` signals a non-existent place.
 
  >>> cities.lookup('nonsense string')
  Traceback (most recent call last):
-   ...
+ ...
  ValueError: Google cannot find a place named 'nonsense string'
+
+ * A ``ValueError`` signals a non-existent place.
 
 transit, rising, setting
 ------------------------
@@ -721,12 +722,12 @@ Angles
  180:00:00.0
  >>> a
  3.141592653589793
- >>> print("180° is %f radians" % a)
- 180° is 3.141593 radians
+ >>> print("180 degrees is %f radians" % a)
+ 180 degrees is 3.141593 radians
  >>> h = ephem.hours('1:00:00')
  >>> deg = ephem.degrees(h)
- >>> print("1h right ascension = %s°" % deg)
- 1h right ascension = 15:00:00.0°
+ >>> print("1h right ascension = %s degrees" % deg)
+ 1h right ascension = 15:00:00.0 degrees
 
  * Many ``Body`` and ``Observer`` attributes
    return their value as ``Angle`` objects.
