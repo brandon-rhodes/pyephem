@@ -7,7 +7,7 @@ from datetime import datetime as _datetime
 from math import pi
 from time import localtime as _localtime
 
-__version__ = '3.7.6.0'
+__version__ = '3.7.6.1'
 
 twopi = pi * 2.
 halfpi = pi / 2.
