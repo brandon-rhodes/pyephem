@@ -28,5 +28,10 @@ set_target_properties(astro PROPERTIES
 target_include_directories(astro PRIVATE 
                            ${CMAKE_SOURCE_DIR}/libastro-${ASTRO_VERSION}
                            ${CMAKE_BINARY_DIR})
+
+if (UNIX)
+	target_link_libraries(astro PRIVATE m)
+endif()
+
 include(GenerateExportHeader)
 generate_export_header(astro)
