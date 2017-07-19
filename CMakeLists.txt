@@ -30,7 +30,10 @@ if (UNIX)
 	target_link_libraries(astro PRIVATE m)
 endif()
 
-install(TARGETS astro DESTINATION lib)
+install(TARGETS astro
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib)
 
 include(GenerateExportHeader)
 generate_export_header(astro)
