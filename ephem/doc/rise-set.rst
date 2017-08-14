@@ -52,7 +52,7 @@ latitude for Atlanta (which their web page helpfully printed atop the
 printout shown above) with the :class:`Observer` that we constructed
 above with the correct pressure and horizon settings:
 
-    >>> atlanta.lat, atlanta.lon = '33.8', '-84.4'
+    >>> atlanta.lat, atlanta.lon = '33.8', '-84.4'  # use strings for degrees!
     >>> atlanta.date = '2009/09/06 17:00' # noon EST
     >>> print(atlanta.previous_rising(ephem.Sun()))
     2009/9/6 11:14:57
