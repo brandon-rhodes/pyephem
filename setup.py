@@ -30,7 +30,7 @@ extensions = [
     Extension('ephem._libastro',
               ['extensions/_libastro.c', 'extensions/dtoa.c']
               + libastro_files + libastro_data,
-              include_dirs=['libastro-' + libastro_version],
+              include_dirs=['libastro-' + libastro_version, '.'],
               ),
     ]
 

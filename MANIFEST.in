@@ -7,3 +7,4 @@ include libastro-3.7.7/*.h
 include ephem/doc/*
 include ephem/tests/jpl/*
 include ephem/tests/usno/*
+include astro_export.h
