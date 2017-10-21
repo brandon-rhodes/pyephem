@@ -9,6 +9,29 @@ Data is adapted from the version of the Hipparcos star catalog at:
 ftp://adc.gsfc.nasa.gov/pub/adc/archives/catalogs/1/1239/hip_main.dat.gz
 Of the thousand brighest Hipparcos stars, those with proper names
 registered at http://simbad.u-strasbg.fr/simbad/ were chosen.
+
+Sources of data:
+
+Star names:
+"IAU Catalog of Star Names (IAU-CSN)":
+https://www.iau.org/science/scientific_bodies/working_groups/280/
+Which links to:
+http://www.pas.rochester.edu/~emamajek/WGSN/IAU-CSN.txt
+
+Star names and navigation data:
+Her Majesty's Nautical Almanac Office Publications ('Almanac'):
+    NP314-18 "The Nautical Almanac" (2017).
+    DP330 "NavPac and Compact Data" (2015).
+    NP303(AP3270) "Rapid Sight Reduction Tables for Navigation" (2012).
+
+Star astronomical data ('the catalogue'):
+https://heasarc.gsfc.nasa.gov/cgi-bin/W3Browse/w3hdprods.pl
+ 
+There are some mismatches of star names between the almanacs and this database. In particular:
+    In early digital publications of DP330 'Fomalhaut' is misspelled as 'Formalhaut'.
+    Almanac/IAU-CSN name 'Eltanin' is formally known as 'Gamma Draconis' in the catalogue.
+    Almanac/IAU-CSN name 'Hadar' is formally known as 'Beta Centauri' in the catalogue.
+    Almanac/IAU-CSN name 'Rigil Kentaurus' is formally known as 'Alpha Centauri A' in the catalogue.
 """
 
 db = """\
@@ -106,7 +129,57 @@ Alnair,f|S|B7,22:08:13.9|127.6,-46:57:38|-147.91,1.73,2000,0
 Fomalhaut,f|S|A3,22:57:38.8|329.22,-29:37:19|-164.22,1.17,2000,0
 Scheat,f|S|M2,23:03:46.3|187.76,28:04:57|137.61,2.44,2000,0
 Markab,f|S|B9,23:04:45.6|61.1,15:12:19|-42.56,2.49,2000,0
+Acamar,f|S|A4,02 58 15.7156|-53.53,-40 18 17.046|25.71,2.88,2000,0
+Acrux,f|S|B0,12 26 35.9414|-35.37,-63 05 56.601|-14.73,0.77,2000,0
+Adhara,f|S|B2,06 58 37.5467|2.63,-28 58 19.522|2.29,1.50,2000,0
+Alkaid,f|S|B3,13 47 32.5461|-121.23,+49 18 47.890|-15.56,1.85,2000,0
+Alpheratz,f|S|B9,00 08 23.1680|135.68,+29 05 26.981|-162.95,2.07,2000,0
+Ankaa,f|S|K0,00 26 16.8674|232.76,-42 18 18.439|-353.64,2.40,2000,0
+Atria,f|S|K2,16 48 39.8658|17.85,-69 01 39.486|-32.92,1.91,2000,0
+Avior,f|S|K3,08 22 30.8647|-25.34,-59 30 34.338|22.72,1.86,2000,0
+Diphda,f|S|K0,00 43 35.2283|232.79,-17 59 12.063|32.71,2.04,2000,0
+Eltanin,f|S|K5,17 56 36.3779|-8.52,+51 29 20.224|-23.05,2.24,2000,0
+Formalhaut,f|S|A3,22 57 38.8256|329.22,-29 37 18.613|-164.22,1.17,2000,0
+Gacrux,f|S|M4,12 31 09.9293|27.94,-57 06 45.249|-264.33,1.59,2000,0
+Gienah,f|S|B8,12 15 48.4678|-159.58,-17 32 31.141|22.31,2.58,2000,0
+Hadar,f|S|B1,14 03 49.4446|-33.96,-60 22 22.722|-25.06,0.61,2000,0
+Menkent,f|S|K0,14 06 41.3247|-519.29,-36 22 07.305|-517.87,2.06,2000,0
+Miaplacidus,f|S|A2,09 13 12.2408|-157.66,-69 43 02.901|108.91,1.67,2000,0
+Mirfak,f|S|F5,03 24 19.3485|24.11,+49 51 40.474|-26.01,1.79,2000,0
+Rigil Kentaurus,f|S|G2,14 39 36.4958|-3678.19,-60 50 02.310|481.84,-0.01,2000,0
+Sabik,f|S|A2,17 10 22.6624|41.16,-15 43 30.531|97.65,2.43,2000,0
+Suhail,f|S|K4,09 07 59.7771|-23.21,-43 25 57.447|14.28,2.23,2000,0
+Zubenelgenubi,f|S|A3,14 50 52.7773|-105.69,-16 02 29.798|-69.00,2.75,2000,0
 """
+# Rigil Kentaurus
+# ---------------
+# There is some uncertainty about 'Rigil Kentaurus', presumably because of the
+# high proper motion of this star.
+#
+# Original data from https://heasarc.gsfc.nasa.gov/cgi-bin/W3Browse/w3hdprods.pl
+# is this:
+# |name     |ra           |dec          |pm_ra   |pm_dec  |spect_type|vmag |astrom_ref_dbl|survey_star|_Search_Offset          |
+# |HIP 71683|14 39 40.8985|-60 50 06.529|-3678.19|  481.84|G2V       |-0.01|A             |S          |0.541 (Alpha Centauri A)|
+#
+# This translates into this database line:
+# 'Rigil Kentaurus,f|S|G2,14 39 40.8985|-3678.19,-60 50 06.529|481.84,-0.01,2000,0'
+# But this fails the test when comparing with data in NP314-18 by around
+# 1.1 minutes of arc.
+#
+# Substituting the RA, Dec. of 219.902066, -60.833975 from
+# http://www.pas.rochester.edu/~emamajek/WGSN/IAU-CSN.txt
+# With the database line:
+# 'Rigil Kentaurus,f|S|G2,14 39 36.4958|-3678.19,-60 50 02.310|481.84,-0.01,2000,0'
+# The test then passes against NP314-18 passes.
+#
+# I have added a test from the Nautical Almanac 2002 and that also passes with the
+# second database line but fails with the first.
+#
+# Conclusion:
+# This database line fails tests:
+# Rigil Kentaurus,f|S|G2,14 39 40.8985|-3678.19,-60 50 06.529|481.84,-0.01,2000,0
+# This database line passes tests:
+# Rigil Kentaurus,f|S|G2,14 39 36.4958|-3678.19,-60 50 02.310|481.84,-0.01,2000,0
 
 stars = {}
 
@@ -125,3 +198,71 @@ def star(name, *args, **kwargs):
     if args or kwargs:
         star.compute(*args, **kwargs)
     return star
+
+# The 57 navigational stars by number
+STAR_NUMBER_NAME = {
+    7 : "Acamar",
+    5 : "Achernar",
+    30 : "Acrux",
+    19 : "Adhara",
+    10 : "Aldebaran",
+    32 : "Alioth",
+    34 : "Alkaid",
+    55 : "Alnair",
+    15 : "Alnilam",
+    25 : "Alphard",
+    41 : "Alphecca",
+    1 : "Alpheratz",
+    51 : "Altair",
+    2 : "Ankaa",
+    42 : "Antares",
+    37 : "Arcturus",
+    43 : "Atria",
+    22 : "Avior",
+    13 : "Bellatrix",
+    16 : "Betelgeuse",
+    17 : "Canopus",
+    12 : "Capella",
+    53 : "Deneb",
+    28 : "Denebola",
+    4 : "Diphda",
+    27 : "Dubhe",
+    14 : "Elnath",
+    47 : "Eltanin",
+    54 : "Enif",
+    56 : "Formalhaut",
+    31 : "Gacrux",
+    29 : "Gienah",
+    35 : "Hadar",
+    6 : "Hamal",
+    48 : "Kaus Australis",
+    40 : "Kochab",
+    57 : "Markab",
+    8 : "Menkar",
+    36 : "Menkent",
+    24 : "Miaplacidus",
+    9 : "Mirfak",
+    50 : "Nunki",
+    52 : "Peacock",
+    21 : "Pollux",
+    20 : "Procyon",
+    46 : "Rasalhague",
+    26 : "Regulus",
+    11 : "Rigel",
+    38 : "Rigil Kentaurus",
+    44 : "Sabik",
+    3 : "Schedar",
+    45 : "Shaula",
+    18 : "Sirius",
+    33 : "Spica",
+    23 : "Suhail" ,
+    49 : "Vega",
+    39 : "Zubenelgenubi",
+}
+
+# The 57 navigational stars reverse lookup, {name : number, ...}
+STAR_NAME_NUMBER = {}
+for k, v in STAR_NUMBER_NAME.items():
+    assert v not in STAR_NAME_NUMBER
+    STAR_NAME_NUMBER[v] = k
+
