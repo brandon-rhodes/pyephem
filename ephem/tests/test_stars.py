@@ -55,13 +55,13 @@ class Test57NavigationStars(unittest.TestCase):
         err_sha = math.degrees(2 * ephem.pi - obj.g_ra - exp_sha)
         self.assertTrue(
             abs(err_sha) < self.MAX_ERROR_DEGREES,
-            'SHA fail: {!s:} !< {!s:}'.format(abs(err_sha), self.MAX_ERROR_DEGREES) 
+            'SHA fail: {0!s:} !< {1!s:}'.format(abs(err_sha), self.MAX_ERROR_DEGREES) 
         )
         exp_dec = ephem.degrees(dec)
         err_dec = math.degrees(obj.g_dec - exp_dec)
         self.assertTrue(
             abs(err_dec) < self.MAX_ERROR_DEGREES,
-            'Dec. fail: {!s:} !< {!s:}'.format(abs(err_dec), self.MAX_ERROR_DEGREES) 
+            'Dec. fail: {0!s:} !< {1!s:}'.format(abs(err_dec), self.MAX_ERROR_DEGREES) 
         )
             
     def test_Acamar(self):
