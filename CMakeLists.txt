@@ -30,10 +30,15 @@ if (UNIX)
 	target_link_libraries(astro PRIVATE m)
 endif()
 
+include(GenerateExportHeader)
+generate_export_header(astro)
+
 install(TARGETS astro
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib)
 
-include(GenerateExportHeader)
-generate_export_header(astro)
+install(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/astro_export.h
+    ${CMAKE_SOURCE_DIR}/libastro-${ASTRO_VERSION}/astro.h
+    DESTINATION include)
