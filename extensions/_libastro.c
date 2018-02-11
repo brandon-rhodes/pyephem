@@ -1332,10 +1332,13 @@ static PyObject* Body_writedb(PyObject *self)
 
 static PyObject* Body_copy(PyObject *self)
 {
+     Body *body = (Body *) self;
      Body *newbody = (Body*) self->ob_type->tp_alloc(self->ob_type, 0);
      if (!newbody) return 0;
-     memcpy(newbody, self, self->ob_type->tp_basicsize);
-     newbody->OB_REFCNT = 1;  /* since memcpy will have overwritten it */
+     memcpy ((void *)&newbody->now, (void *)&body->now, sizeof(Now));
+     memcpy ((void *)&newbody->obj, (void *)&body->obj, sizeof(Obj));
+     memcpy ((void *)&newbody->riset, (void *)&body->riset, sizeof(RiseSet));
+     newbody->name = body->name;
      Py_XINCREF(newbody->name);
      return (PyObject*) newbody;
 }
