@@ -21,9 +21,9 @@ class GitHubIssues(TestCase):
         gatech.lon, gatech.lat = '-84.39733', '33.775867'
         gatech.date = '2003/3/23'
         iss.compute(gatech)
-        self.assertEqual(str(iss.a_ra), '8:50:10.99')
+        self.assertEqual(str(iss.a_ra), '8:50:37.05')
         self.assertEqual(str(iss.g_ra), '6:54:40.64')
-        self.assertEqual(str(iss.ra), '8:50:16.76')
+        self.assertEqual(str(iss.ra), '8:50:42.85')
 
     def test_github_24(self):
         boston = ephem.Observer()
