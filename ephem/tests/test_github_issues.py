@@ -58,7 +58,7 @@ class GitHubIssues(TestCase):
         fenton.date = datetime.datetime(2013,10,6,0,0,0,0)
         sat.compute(fenton)
         rgx = re.compile(r'[C-Z]:.*\\Python[0-9]*')
-        if rgx.search(os.environ.get('PYTHON','')) and os.environ.get('PYTHON_ARGC','')=='32':
+        if rgx.search(os.environ.get('PYTHON','')) and os.environ.get('PYTHON_ARCH','')=='32':
            sat.neverup
         else:
           self.assertRaises(RuntimeError, lambda: sat.neverup)
