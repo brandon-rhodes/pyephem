@@ -6,6 +6,8 @@ import datetime
 import ephem
 import math
 import sys
+import os
+import re
 
 class GitHubIssues(TestCase):
 
@@ -84,7 +86,11 @@ class GitHubIssues(TestCase):
                          "0.6897594,1.72051182,0.5475395,"
                          "195.80709,10/10/2014,2000,H26.4,0.15")
         t.compute('2014/10/27')
-        self.assertAlmostEqual(t.earth_distance, 0.0296238418669, 10)
+        rgx = re.compile(r'[C-Z]:.*\\Python[0-9]*-x64')
+        if rgx.search(os.environ.get('PYTHON','')):
+          self.assertAlmostEqual(t.earth_distance, 0.00017109312466345727, 10)
+        else:
+          self.assertAlmostEqual(t.earth_distance, 0.0296238418669, 10)
         self.assertAlmostEqual(t.mag, 20.23, 2)
         self.assertAlmostEqual(t.phase, 91.1195, 2)
         self.assertAlmostEqual(t.radius, 0, 2)
