@@ -89,9 +89,10 @@ class GitHubIssues(TestCase):
         rgx = re.compile(r'[C-Z]:.*\\Python[0-9]*-x64')
         if rgx.search(os.environ.get('PYTHON','')):
           self.assertAlmostEqual(t.earth_distance, 0.00017109312466345727, 10)
+          self.assertAlmostEqual(t.mag, 7.61, 2)
         else:
           self.assertAlmostEqual(t.earth_distance, 0.0296238418669, 10)
-        self.assertAlmostEqual(t.mag, 20.23, 2)
+          self.assertAlmostEqual(t.mag, 20.23, 2)
         self.assertAlmostEqual(t.phase, 91.1195, 2)
         self.assertAlmostEqual(t.radius, 0, 2)
         self.assertAlmostEqual(t.size, 0.00103452138137, 12)
