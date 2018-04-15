@@ -57,11 +57,14 @@ class GitHubIssues(TestCase):
         sat = ephem.readtle(*tle)
         fenton.date = datetime.datetime(2013,10,6,0,0,0,0)
         sat.compute(fenton)
+        # Regex for 32-bit Windows environments in Appveyor
         rgx = re.compile(r'[C-Z]:.*\\Python[0-9]*')
         if rgx.search(os.environ.get('PYTHON','')) and os.environ.get('PYTHON_ARCH','')=='32':
-           sat.neverup
+            # Sat.neverup does not throw an exception in Appveyor for
+            # 32-bit Windows, but does everywhere else
+            sat.neverup
         else:
-          self.assertRaises(RuntimeError, lambda: sat.neverup)
+            self.assertRaises(RuntimeError, lambda: sat.neverup)
 
     def test_github_28(self):
         tle = [
@@ -90,17 +93,19 @@ class GitHubIssues(TestCase):
                          "0.6897594,1.72051182,0.5475395,"
                          "195.80709,10/10/2014,2000,H26.4,0.15")
         t.compute('2014/10/27')
+        # Regex for 64-bit Windows environments in Appveyor
         rgx = re.compile(r'[C-Z]:.*\\Python[0-9]*-x64')
         if rgx.search(os.environ.get('PYTHON','')):
-          self.assertAlmostEqual(t.earth_distance, 0.00017109312466345727, 10)
-          self.assertAlmostEqual(t.mag, 7.61, 2)
-          self.assertAlmostEqual(t.phase, 7043.6923828125, 2)
-          self.assertAlmostEqual(t.size, 0.17912174761295319, 12)
+            # Results in Appveyor for 64-bit Windows
+            self.assertAlmostEqual(t.earth_distance, 0.00017109312466345727, 10)
+            self.assertAlmostEqual(t.mag, 7.61, 2)
+            self.assertAlmostEqual(t.phase, 7043.6923828125, 2)
+            self.assertAlmostEqual(t.size, 0.17912174761295319, 12)
         else:
-          self.assertAlmostEqual(t.earth_distance, 0.0296238418669, 10)
-          self.assertAlmostEqual(t.mag, 20.23, 2)
-          self.assertAlmostEqual(t.phase, 91.1195, 2)
-          self.assertAlmostEqual(t.size, 0.00103452138137, 12)
+            self.assertAlmostEqual(t.earth_distance, 0.0296238418669, 10)
+            self.assertAlmostEqual(t.mag, 20.23, 2)
+            self.assertAlmostEqual(t.phase, 91.1195, 2)
+            self.assertAlmostEqual(t.size, 0.00103452138137, 12)
         self.assertAlmostEqual(t.radius, 0, 2)
 
     def test_github_64(self):
