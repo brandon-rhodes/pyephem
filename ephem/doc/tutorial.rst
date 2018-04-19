@@ -511,7 +511,7 @@ Here are some recent elements for the International Space Station.
 >>> gatech.date = '2003/3/23'
 >>> iss.compute(gatech)
 >>> print("%s %s %s" % (iss.rise_time, iss.transit_time, iss.set_time))
-2003/3/23 00:00:50 2003/3/23 00:03:26 2003/3/23 00:06:01
+2003/3/23 00:00:45 2003/3/23 00:03:23 2003/3/23 00:06:02
 
 The ``transit_time`` for an artificial satellite is actually
 defined in PyEphem as the moment at which it is at highest altitude,
@@ -527,7 +527,7 @@ Repeating the above query eight hours later gives complete different results:
 >>> gatech.date = '2003/3/23 8:00'
 >>> iss.compute(gatech)
 >>> print("%s %s %s" % (iss.rise_time, iss.transit_time, iss.set_time))
-2003/3/23 08:03:40 2003/3/23 08:08:25 2003/3/23 08:13:10
+2003/3/23 08:03:43 2003/3/23 08:08:27 2003/3/23 08:13:10
 
 When calling ``compute()`` for an earth satellite
 you should provide an ``Observer``,
