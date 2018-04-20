@@ -1,15 +1,28 @@
 #!/usr/bin/env python
 
 import unittest, time
-from datetime import datetime
+from datetime import datetime, tzinfo, timedelta
 
-from ephem import Date, localtime
+from ephem import Date, localtime, timezoned_time
 
 millisecond = 1.0 / 24.0 / 60.0 / 60.0 / 1e3
+
+class UTC(tzinfo):
+    def utcoffset(self, dt):
+        return timedelta(0)
+    def dst(self, dt):
+        return timedelta(0)
+
+class CET(tzinfo):
+    """central european time without daylight saving time"""
+    def utcoffset(self, dt):
+        return timedelta(hours=1)
+
 
 # Determine whether dates behave reasonably.
 
 class DateTests(unittest.TestCase):
+
     def setUp(self):
         self.date = Date('2004/09/04 00:17:15.8')
 
@@ -63,6 +76,28 @@ class DateTests(unittest.TestCase):
         if time.timezone == 18000: # test only works in Eastern time zone
             self.assertEqual(localtime(Date('2009/6/23 8:47')),
                              datetime(2009, 6, 23, 4, 47, 0))
+
+    def test_timezone_aware_utc(self):
+        utc = UTC()
+        timezoned_date = timezoned_time(self.date, utc)
+        self.assertEqual(timezoned_date.tzinfo, utc)
+        self.assertEqual(timezoned_date.hour, 0)
+        self.assertEqual(timezoned_date.minute, 17)
+        self.assertEqual(timezoned_date.second, 15)
+        self.assertEqual(timezoned_date.day, 4)
+        self.assertEqual(timezoned_date.month, 9)
+        self.assertEqual(timezoned_date.year, 2004)
+
+    def test_timezone_aware_cet(self):
+        cet = CET()
+        timezoned_date = timezoned_time(self.date, cet)
+        self.assertEqual(timezoned_date.tzinfo, cet)
+        self.assertEqual(timezoned_date.hour, 1)
+        self.assertEqual(timezoned_date.minute, 17)
+        self.assertEqual(timezoned_date.second, 15)
+        self.assertEqual(timezoned_date.day, 4)
+        self.assertEqual(timezoned_date.month, 9)
+        self.assertEqual(timezoned_date.year, 2004)
 
     # I am commenting this out for now because I am not sure that I can
     # fix it without either writing an entirely new time module for
