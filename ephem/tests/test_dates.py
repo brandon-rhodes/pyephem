@@ -16,9 +16,9 @@ class UTC(tzinfo):
 class CET(tzinfo):
     """central european time without daylight saving time"""
     def utcoffset(self, dt):
-        return timedelta(hours=1)
+        return timedelta(hours=1) + self.dst(dt)
     def dst(self, dt):
-        return timedelta(hours=1)
+        return timedelta(0)
 
 # Determine whether dates behave reasonably.
 
