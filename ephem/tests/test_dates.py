@@ -3,15 +3,9 @@
 import unittest, time
 from datetime import datetime, tzinfo, timedelta
 
-from ephem import Date, localtime, timezoned_time
+from ephem import Date, localtime, to_timezone, UTC
 
 millisecond = 1.0 / 24.0 / 60.0 / 60.0 / 1e3
-
-class UTC(tzinfo):
-    def utcoffset(self, dt):
-        return timedelta(0)
-    def dst(self, dt):
-        return timedelta(0)
 
 class CET(tzinfo):
     """central european time without daylight saving time"""
@@ -80,7 +74,7 @@ class DateTests(unittest.TestCase):
 
     def test_timezone_aware_utc(self):
         utc = UTC()
-        timezoned_date = timezoned_time(self.date, utc)
+        timezoned_date = to_timezone(self.date, utc)
         self.assertEqual(timezoned_date.tzinfo, utc)
         self.assertEqual(timezoned_date.hour, 0)
         self.assertEqual(timezoned_date.minute, 17)
@@ -91,7 +85,7 @@ class DateTests(unittest.TestCase):
 
     def test_timezone_aware_cet(self):
         cet = CET()
-        timezoned_date = timezoned_time(self.date, cet)
+        timezoned_date = to_timezone(self.date, cet)
         self.assertEqual(timezoned_date.tzinfo, cet)
         self.assertEqual(timezoned_date.hour, 1)
         self.assertEqual(timezoned_date.minute, 17)

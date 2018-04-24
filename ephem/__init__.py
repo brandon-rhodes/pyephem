@@ -3,7 +3,7 @@
 # convenient Python types.
 
 import ephem._libastro as _libastro
-from datetime import datetime as _datetime
+import datetime as _datetime
 from math import pi
 from time import localtime as _localtime
 
@@ -548,13 +548,21 @@ def localtime(date):
     """Convert a PyEphem date into naive local time, returning a Python datetime."""
     seconds, microseconds = _convert_to_seconds_and_microseconds(date)
     y, m, d, H, M, S, wday, yday, isdst = _localtime(seconds)
-    return _datetime(y, m, d, H, M, S, microseconds)
+    return _datetime.datetime(y, m, d, H, M, S, microseconds)
 
 
-def timezoned_time(date, tzinfo):
+class UTC(_datetime.tzinfo):
+    ZERO = _datetime.timedelta(0)
+    def utcoffset(self, dt):
+        return self.ZERO
+    def dst(self, dt):
+        return self.ZERO
+
+
+def to_timezone(date, tzinfo):
     """"Convert a PyEphem date into a timezone aware Python datetime representation."""
     seconds, microseconds = _convert_to_seconds_and_microseconds(date)
-    date = _datetime.fromtimestamp(seconds, tzinfo)
+    date = _datetime.datetime.fromtimestamp(seconds, tzinfo)
     date = date.replace(microsecond=microseconds)
     return date
 
