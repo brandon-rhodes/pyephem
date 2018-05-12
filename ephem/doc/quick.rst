@@ -131,7 +131,7 @@ body.compute(date)
    |  ``sublat`` — Latitude (+N)
    |  ``sublong`` — Longitude (+E)
    |
-   | ``elevation`` — Height above sea level (m)
+   | ``elevation`` — Geocentric height above sea level (m)
    | ``range`` — Distance from observer to satellite (m)
    | ``range_velocity`` — Range rate of change (m/s)
    | ``eclipsed`` — Whether satellite is in Earth's shadow
