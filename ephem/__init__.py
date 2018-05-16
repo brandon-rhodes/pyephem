@@ -4,6 +4,8 @@
 
 import ephem._libastro as _libastro
 from datetime import datetime as _datetime
+from datetime import timedelta as _timedelta
+from datetime import tzinfo as _tzinfo
 from math import pi
 from time import localtime as _localtime
 
@@ -536,13 +538,35 @@ del describe_riset_search
 
 # Time conversion.
 
-def localtime(date):
-    """Convert a PyEphem date into local time, returning a Python datetime."""
+def _convert_to_seconds_and_microseconds(date):
+    """Converts a PyEphem date into seconds"""
     microseconds = int(round(24 * 60 * 60 * 1000000 * date))
     seconds, microseconds = divmod(microseconds, 1000000)
     seconds -= 2209032000  # difference between epoch 1900 and epoch 1970
+    return seconds, microseconds
+
+
+def localtime(date):
+    """Convert a PyEphem date into naive local time, returning a Python datetime."""
+    seconds, microseconds = _convert_to_seconds_and_microseconds(date)
     y, m, d, H, M, S, wday, yday, isdst = _localtime(seconds)
     return _datetime(y, m, d, H, M, S, microseconds)
+
+
+class UTC(_tzinfo):
+    ZERO = _timedelta(0)
+    def utcoffset(self, dt):
+        return self.ZERO
+    def dst(self, dt):
+        return self.ZERO
+
+
+def to_timezone(date, tzinfo):
+    """"Convert a PyEphem date into a timezone aware Python datetime representation."""
+    seconds, microseconds = _convert_to_seconds_and_microseconds(date)
+    date = _datetime.fromtimestamp(seconds, tzinfo)
+    date = date.replace(microsecond=microseconds)
+    return date
 
 # Coordinate transformations.
 
