@@ -559,6 +559,8 @@ class UTC(_tzinfo):
         return self.ZERO
     def dst(self, dt):
         return self.ZERO
+    def __repr__(self):
+        return "<ephem.UTC>"
 
 
 def to_timezone(date, tzinfo):
