@@ -73,9 +73,8 @@ class DateTests(unittest.TestCase):
                              datetime(2009, 6, 23, 4, 47, 0))
 
     def test_timezone_aware_utc(self):
-        utc = UTC()
-        timezoned_date = to_timezone(self.date, utc)
-        self.assertEqual(timezoned_date.tzinfo, utc)
+        timezoned_date = to_timezone(self.date, UTC)
+        self.assertEqual(timezoned_date.tzinfo, UTC)
         self.assertEqual(timezoned_date.hour, 0)
         self.assertEqual(timezoned_date.minute, 17)
         self.assertEqual(timezoned_date.second, 15)
