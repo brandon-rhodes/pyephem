@@ -846,7 +846,7 @@ to timezone
  >>> d = ephem.Date('1997/3/9 5:13')
  >>> ephem.to_timezone(d, ephem.UTC)
  datetime.datetime(1997, 3, 9, 5, 13, tzinfo=<ephem.UTC>)
- >>> print(ephem.to_timezone(d, ephem.UTC)
+ >>> print(ephem.to_timezone(d, ephem.UTC))
  1997-03-09 05:13:00+00:00
 
  * The ``to_timezone()`` function converts a PyEphem date
