@@ -553,12 +553,17 @@ def localtime(date):
     return _datetime(y, m, d, H, M, S, microseconds)
 
 
-class UTC(_tzinfo):
+class _UTC(_tzinfo):
     ZERO = _timedelta(0)
     def utcoffset(self, dt):
         return self.ZERO
     def dst(self, dt):
         return self.ZERO
+    def __repr__(self):
+        return "<ephem.UTC>"
+
+
+UTC = _UTC()
 
 
 def to_timezone(date, tzinfo):
