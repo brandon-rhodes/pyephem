@@ -122,3 +122,12 @@ You can then run the PyEphem test suite to see whether all of its
 features are working correctly on your operating system and platform::
 
     python -m unittest discover ephem
+
+You can build the documentation to see whether the changes done
+look as expected. The documentation is written in a `Sphinx
+<http://www.sphinx-doc.org/en/master/>`_-conform manner.
+In the folder `pyephem/ephem/doc/` several rst-files are provided
+which can be built with the default command (see sphinx for more
+details):
+
+    sphinx-build -b html pyephem/ephem/doc/ ./my_documentation_directory/
