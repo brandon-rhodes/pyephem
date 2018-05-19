@@ -123,11 +123,13 @@ features are working correctly on your operating system and platform::
 
     python -m unittest discover ephem
 
-You can build the documentation to see whether the changes done
-look as expected. The documentation is written in a `Sphinx
-<http://www.sphinx-doc.org/en/master/>`_-conform manner.
-In the folder `pyephem/ephem/doc/` several rst-files are provided
-which can be built with the default command (see sphinx for more
-details):
+PyEphem’s documentation is organized as a standard `Sphinx
+<http://www.sphinx-doc.org/en/master/>`_ document project.  You can
+build the documentation either with the Sphinx command line::
 
     sphinx-build -b html pyephem/ephem/doc/ ./my_documentation_directory/
+
+— or, more typically, by invoking one of the targets in the
+documentation’s Makefile::
+
+    make -C ephem/doc html
