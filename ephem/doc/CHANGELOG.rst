@@ -2,7 +2,7 @@ PyEphem CHANGELOG
 =================
 
 Version 3.7.6.1 (2015 September 29)
---------------------------------
+-----------------------------------
 
 - GitHub issue #63: Changed behavior of next_pass() so that 
   rise,culminate,set are consecutive values for a single pass; 
