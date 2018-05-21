@@ -57,6 +57,11 @@ class DateTests(unittest.TestCase):
             if type(arg2) is str:
                 construct_and_compare(arg1, '  %s  ' % arg2)
 
+    def test_year_zero(self):
+        # I would have thought the year would be 0, but it looks like
+        # libastro considers 1 BC to be the year -1?
+        self.assertEqual(str(Date('0')), '-1/1/1 00:00:00')
+
     def test_date_string_value(self):
         self.assertEqual(str(self.date), '2004/9/4 00:17:16')
 

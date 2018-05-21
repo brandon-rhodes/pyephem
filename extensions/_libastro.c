@@ -366,7 +366,7 @@ static int parse_mjd_from_string(PyObject *so, double *mjdp)
      PyObject *split_func = PyObject_GetAttrString(so, "split");
      PyObject *pieces = PyObject_Call(split_func, emptytuple, 0);
      Py_ssize_t len = PyObject_Length(pieces);
-     int year, month = 1;
+     int year = 0, month = 1;
      double day = 1.0;
 
      Py_DECREF(emptytuple);
