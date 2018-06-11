@@ -1,5 +1,3 @@
-#include "Python.h"
-
 #include "astro.h"
 #include "preferences.h"
 
