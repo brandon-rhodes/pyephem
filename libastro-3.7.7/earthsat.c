@@ -634,13 +634,7 @@ double *SiteVY, MAT3x3 SiteMatrix)
 	{
 	OldSiteLat = SiteLat;
 	OldSiteElevation = SiteElevation;
-	/* BTCarcich (drbitboy) 2018-04
-	 * Correct coversion to geodetic latitude
-	 * cf. https://github.com/brandon-rhodes/pyephem/issues/136
-	 * cf. Vallado, "Fundamentals of Astrodynamics and
-	 *     Applications," p. 148.
-	 */
-	Lat = atan(SQR(1-EarthFlat)*tan(SiteLat));
+	Lat = atan(1/(1-SQR(EarthFlat))*tan(SiteLat));
 
 	CosLat = cos(Lat);
 	SinLat = sin(Lat);
