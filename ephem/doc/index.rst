@@ -17,19 +17,6 @@
      Installation Guide<br/>
      Documentation<br/>
      Data Sources<br/>
-   </ul>
-
-   <p>
-     <i>Your contribution
-     <br>
-     supports PyEphem
-     <br>
-     development:</i>
-   </p>
-   <p>
-     <iframe style="border: 0; margin: 0; padding: 0;"
-             src="https://www.gittip.com/brandon-rhodes/widget.html"
-             width="48pt" height="20pt"></iframe>
    </p>
 
    </td>

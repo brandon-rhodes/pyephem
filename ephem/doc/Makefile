@@ -12,7 +12,9 @@ PAPEROPT_a4     = -D latex_paper_size=a4
 PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d _build/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 
-.PHONY: help clean html web pickle htmlhelp latex changes linkcheck
+.PHONY: help clean html web pickle htmlhelp latex changes linkcheck default
+
+default: html
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
@@ -79,5 +81,4 @@ diff:
 	colordiff -ur _build/html/ ~/Dropbox/rhodesmill.org/pyephem | less
 
 sync:
-	chmod -R a+rX _build/html
-	rsync -crlv _build/html/ ~/Dropbox/rhodesmill.org/pyephem
+	cp -r _build/html/. ~/rhodesmill.org/pyephem
