@@ -32,13 +32,23 @@ into twenty-four “hours” which are each fifteen degress wide.
     14:12:45.77
 
 As with PyEphem dates,
-doing math with a PyEphem angle results in an unadorned float being returned.
+doing math with a PyEphem angle
+results in an unadorned float in radians being returned.
 
     >>> type(j.dec).__name__
     'Angle'
     >>> a = j.dec + 3.14
     >>> type(a).__name__
     'float'
+
+Setting angles follows the same rules:
+a float is interpreted as radians
+while a string is parsed as degrees or hours, as appropriate.
+
+    >>> print(ephem.degrees('45.0'))
+    45:00:00.0
+    >>> print(ephem.degrees(3.141593))
+    180:00:00.1
 
 If you want to display the result of a computation
 as an attractively formatted angle,

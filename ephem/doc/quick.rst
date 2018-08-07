@@ -717,7 +717,10 @@ Phases of the Moon
 Angles
 ======
 
- >>> a = ephem.degrees('180:00:00')
+ >>> a = ephem.degrees(3.141593)  # float: radians
+ >>> print(a)
+ 180:00:00.1
+ >>> a = ephem.degrees('180:00:00')  # str: degrees
  >>> print(a)
  180:00:00.0
  >>> a

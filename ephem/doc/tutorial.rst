@@ -155,6 +155,16 @@ and examine the results in more detail:
 
 The rule is that angles become strings when printed or given to ``str()``,
 but otherwise act like Python floating point numbers.
+The same thing happens when you set an angle:
+a string is interpreted as degrees or hours
+(hours if you are setting right ascension, degrees everywhere else);
+while a float is interpreted as radians.
+
+>>> print(ephem.degrees('90.0'))
+90:00:00.0
+>>> print(ephem.degrees(3.141593))
+180:00:00.1
+
 Note that the format operator ``%`` can return either value,
 depending on whether you use ``%s`` or one of the numeric formats:
 
