@@ -680,7 +680,7 @@ static double to_angle(PyObject *value, double efactor, int *status)
 	  r = PyFloat_AsDouble(value);
 	  Py_DECREF(value);
 	  *status = 0;
-	  return r;
+	  return r / efactor;
      } else if (PyUnicode_Check3(value)) {
 	  double scaled;
           char *s = PyUnicode_AsUTF8(value);
