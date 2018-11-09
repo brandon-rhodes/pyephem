@@ -106,8 +106,104 @@
 
    </div>
 
-Welcome!
-========
+Alas, PyEphem is deprecated
+===========================
+
+First, **don’t worry** —
+PyEphem isn’t going to disappear!
+
+It will continue to be available on PyPI,
+continue to receive critical bug fixes,
+and continue to run on both Python 2 and Python 3.
+
+But PyEphem’s design has several flaws
+that I did not know to avoid
+back when I started designing it in the late 1990s
+and early 2000s:
+
+* Instead of offering a clear way for the user to specify units
+  of radians or degrees,
+  PyEphem uses the terrible and confusing convention
+  that floats like ``1.23`` mean radians
+  but strings like ``'1.23'`` mean degrees of declination
+  and hours of right ascension.
+  This has wasted many hours of programmer time and confusion over the years,
+  is completely unnatural and at odds with how Python usually works,
+  and can never be fixed
+  because it would break all existing PyEphem programs.
+
+* The API is also awkward because it is not functional.
+  Instead of returning coordinates directly,
+  ``compute()`` updates several fields on its object —
+  reflecting how the underlying C library works, which I didn’t write.
+  This makes a second line of code necessary
+  to go fetch the coordinates from the object.
+
+* PyEphem is difficult to release
+  and difficult for many people to install,
+  because some of its code is written in the C language
+  and so a compiler is needed.
+
+* PyEphem does not interoperate with NumPy
+  and so is awkward to use in a modern IPython Notebook.
+
+For all of these reasons, PyEphem might not be the best choice
+for a new project.
+
+Two Alternatives
+----------------
+
+As the principle author of PyEphem,
+I — `Brandon Rhodes <https://rhodesmill.org/brandon/>`_ —
+had often thought about starting over again
+so I would have a second chance
+to avoid the mistakes I made with PyEphem!
+It was only in 2013 (thirteen years late!)
+that I discovered an excellent excuse:
+back in the year 2000, the IAU (International Astronomical Union)
+had
+`thoroughly upgraded how astronomical positions are measured <https://syrte.obspm.fr/IAU_resolutions/Resol-UAI.htm>`_
+to allow much higher accuracy.
+So a rewrite could serve two purposes!
+Instead of simply rewriting what PyEphem did, but in better Python,
+I could implement the newer standards of measurement
+and deliver much higher precision.
+
+Following the United States Naval Observatory’s free
+“NOVAS” library’s C code as my example
+(for which they
+also maintains a `Python interface <http://aa.usno.navy.mil/software/novas/novas_py/novaspy_intro.php>`_),
+I started writing a new library that I named “Skyfield”
+with the goal of implementing the highest accuracy algorithms,
+using only Python and NumPy,
+behind a beautiful Pythonic API.
+Version 1.0 was released in early 2017
+and both I and a few other contributions continue to add new features:
+
+`The Skyfield astronomy library <https://rhodesmill.org/skyfield/>`_
+
+I recommend using Skyfield instead of PyEphem
+if it’s possible for your new project to do so!
+(The only thing missing at this point is predicting positions
+from Kelperian orbital elements for comets and astroids —
+though I hope to add that by the end of 2018.)
+
+If you are a professional astronomer
+interested in writing programs that interoperate
+with those of other astronomers,
+you will also want to consider Astropy.
+While it is not as sleek as Skyfield —
+it bundles many dependencies written in other languages
+and was not designed for beginners —
+it is a much more comprehensive toolkit
+that is very popular with professional astronomers:
+
+`The Astropy astronomy library <http://www.astropy.org/>`_
+
+But if you want it anyway, PyEphem is still available.
+
+What is PyEphem?
+================
 
 **PyEphem** provides basic astronomical computations
 for the Python_ programming language.
