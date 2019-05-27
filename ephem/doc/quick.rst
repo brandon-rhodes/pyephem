@@ -524,7 +524,9 @@ transit, rising, setting
  -0:00:05.8 111:10:41.6
 
  * Eight ``Observer`` methods are available
-   for finding rising, transit, and setting times::
+   for finding the time that an object rises,
+   transits across the meridian,
+   and sets::
 
     previous_transit()
     next_transit()
