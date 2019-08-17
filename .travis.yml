@@ -19,6 +19,7 @@ script:
   - "pip install -e ."
   - "if [[ $TRAVIS_PYTHON_VERSION == 2.6 ]] ;then pip install unittest2 ;fi"
   - "if [[ $TRAVIS_PYTHON_VERSION == 2.6 ]] ;then unit2 discover ephem ;else python -m unittest discover ephem ;fi"
-  - "pip uninstall --yes pyephem"
+  - "pip uninstall --yes ephem"
+  - "ls -CF"
   - $PIP install cibuildwheel==0.11.1
   - cibuildwheel --output-dir wheelhouse
