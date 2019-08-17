@@ -1,60 +1,6 @@
-environment:
-
-  global:
-    # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
-    # /E:ON and /V:ON options are not enabled in the batch script intepreter
-    # See: http://stackoverflow.com/a/13751649/163740
-    WITH_COMPILER: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_compiler.cmd"
-
-  matrix:
-
-    # Pre-installed Python versions, which Appveyor may upgrade to
-    # a later point release.
-
-    - PYTHON: "C:\\Python27"
-      PYTHON_VERSION: "2.7.x" # currently 2.7.9
-      PYTHON_ARCH: "32"
-
-    - PYTHON: "C:\\Python33"
-      PYTHON_VERSION: "3.3.x" # currently 3.3.5
-      PYTHON_ARCH: "32"
-
-    - PYTHON: "C:\\Python34"
-      PYTHON_VERSION: "3.4.x" # currently 3.4.3
-      PYTHON_ARCH: "32"
-
-    - PYTHON: "C:\\Python27-x64"
-      PYTHON_VERSION: "2.7.x" # currently 2.7.9
-      PYTHON_ARCH: "64"
-      WINDOWS_SDK_VERSION: "v7.0"
-
-    - PYTHON: "C:\\Python33-x64"
-      PYTHON_VERSION: "3.3.x" # currently 3.3.5
-      PYTHON_ARCH: "64"
-      WINDOWS_SDK_VERSION: "v7.1"
-
-    - PYTHON: "C:\\Python34-x64"
-      PYTHON_VERSION: "3.4.x" # currently 3.4.3
-      PYTHON_ARCH: "64"
-      WINDOWS_SDK_VERSION: "v7.1"
-
-init:
-  - "ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%"
-
-install:
-  - "powershell appveyor\\install.ps1"
-
-build: off
-
-test_script:
-  - "%WITH_COMPILER% %PYTHON%/python setup.py build_ext --inplace"
-  - "%WITH_COMPILER% %PYTHON%/python -m unittest ephem.tests.test_github_issues"
-
-after_test:
-  - "%WITH_COMPILER% %PYTHON%/python setup.py bdist_wheel"
-
+build_script:
+  - pip install cibuildwheel==0.11.1
+  - cibuildwheel --output-dir wheelhouse
 artifacts:
-  - path: dist\*
-
-#on_success:
-#  - TODO: upload the content of dist/*.whl to a public wheelhouse
+  - path: "wheelhouse\\*.whl"
+    name: Wheels
