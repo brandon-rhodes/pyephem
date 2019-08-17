@@ -15,6 +15,7 @@ matrix:
       env: PIP=pip2
 
 script:
+  - "pip install -e ."
   - "if [[ $TRAVIS_PYTHON_VERSION == 2.6 ]] ;then pip install unittest2 ;fi"
   - "if [[ $TRAVIS_PYTHON_VERSION == 2.6 ]] ;then unit2 discover ephem ;else python -m unittest discover ephem ;fi"
   - $PIP install cibuildwheel==0.11.1
