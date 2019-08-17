@@ -33,3 +33,5 @@ deploy:
     secure: "IaoloKRARTEbkHW1x8EmnVdcxR2HZyAPI43ldI0uTdea0jgrBQk1QqKzfECgn+lFPc7/TdCMVFFod9kwVTRSbWUb1DMvswvrXlvQu7u2dtcBhw9JAkDFJwjVQw2uBDKPqCBFbQPrUiEsgw+8pBGdeDYlRiCtiGx8bg1EHKLo5L4="
   skip_cleanup: true
   local_dir: wheelhouse
+  on:
+    tags: true
