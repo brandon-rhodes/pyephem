@@ -1,14 +1,21 @@
 # Config file for automatic testing at travis-ci.org
+#
+# python: ["2.6", "2.7", "3.2", "3.3", "3.4", "3.5", "3.6"]
 
-sudo: false
 language: python
-python: ["2.6", "2.7", "3.2", "3.3", "3.4", "3.5", "3.6"]
 
-install:
-  - "if [[ $TRAVIS_PYTHON_VERSION == 2.6 ]] ;then pip install unittest2 ;fi"
-  - "python setup.py sdist"
-  - "cd dist"
-  - "pip install ephem*.tar.gz"
+matrix:
+  include:
+    - sudo: required
+      services:
+        - docker
+      env: PIP=pip
+    - os: osx
+      language: generic
+      env: PIP=pip2
 
 script:
+  - "if [[ $TRAVIS_PYTHON_VERSION == 2.6 ]] ;then pip install unittest2 ;fi"
   - "if [[ $TRAVIS_PYTHON_VERSION == 2.6 ]] ;then unit2 discover ephem ;else python -m unittest discover ephem ;fi"
+  - $PIP install cibuildwheel==0.11.1
+  - cibuildwheel --output-dir wheelhouse
