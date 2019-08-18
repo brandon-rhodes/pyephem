@@ -1,0 +1,56 @@
+diff -uNr xephem-3.7.6/libastro/circum.c xephem-3.7.7/libastro/circum.c
+--- xephem-3.7.6/libastro/circum.c	2006-08-27 15:00:48.000000000 -0400
++++ xephem-3.7.7/libastro/circum.c	2015-04-08 20:12:47.000000000 -0400
+@@ -384,13 +384,11 @@
+ 	if (op->e_mag.whichm == MAG_HG) {
+ 	    /* the H and G parameters from the Astro. Almanac.
+ 	     */
++	    hg_mag (op->e_mag.m1, op->e_mag.m2, rp, rho, rsn, &mag);
+ 	    if (op->e_size)
+ 		op->s_size = (float)(op->e_size / rho);
+-	    else {
+-		hg_mag (op->e_mag.m1, op->e_mag.m2, rp, rho, rsn, &mag);
++	    else
+ 		op->s_size = (float)(h_albsize (op->e_mag.m1)/rho);
+-
+-	    }
+ 	} else {
+ 	    /* the g/k model of comets */
+ 	    gk_mag (op->e_mag.m1, op->e_mag.m2, rp, rho, &mag);
+@@ -860,4 +858,4 @@
+ }
+ 
+ /* For RCS Only -- Do Not Edit */
+-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: circum.c,v $ $Date: 2004/11/25 20:49:44 $ $Revision: 1.18 $ $Name:  $"};
++static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: circum.c,v $ $Date: 2015/04/09 00:12:30 $ $Revision: 1.19 $ $Name:  $"};
+diff -uNr xephem-3.7.6/libastro/earthsat.c xephem-3.7.7/libastro/earthsat.c
+--- xephem-3.7.6/libastro/earthsat.c	2012-09-30 20:05:17.000000000 -0400
++++ xephem-3.7.7/libastro/earthsat.c	2015-07-28 00:45:33.000000000 -0400
+@@ -383,12 +383,15 @@
+ 	if (sd.deep)
+ 	    free (sd.deep);
+ 
+-	*SatX = ERAD*posvec.x/1000;	/* earth radii to km */
+-	*SatY = ERAD*posvec.y/1000;
+-	*SatZ = ERAD*posvec.z/1000;
+-	*SatVX = 100*velvec.x;		/* ?? */
+-	*SatVY = 100*velvec.y;
+-	*SatVZ = 100*velvec.z;
++ 	/* earth radii to km */
++ 	*SatX = (ERAD/1000)*posvec.x;	
++ 	*SatY = (ERAD/1000)*posvec.y;
++ 	*SatZ = (ERAD/1000)*posvec.z;
++ 	/* Minutes per day/Seconds by day = Minutes/Second = 1/60 */
++ 	*SatVX = (ERAD*velvec.x)/(1000*60); 
++ 	*SatVY =(ERAD*velvec.y)/(1000*60);
++ 	*SatVZ = (ERAD*velvec.z)/(1000*60);
++
+ #endif
+ }
+ 
+@@ -786,4 +789,4 @@
+ }
+ 
+ /* For RCS Only -- Do Not Edit */
+-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: earthsat.c,v $ $Date: 2012/10/01 00:05:10 $ $Revision: 1.13 $ $Name:  $"};
++static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: earthsat.c,v $ $Date: 2015/04/08 23:36:35 $ $Revision: 1.14 $ $Name:  $"};
