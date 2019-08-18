@@ -1,14 +1,20 @@
 PyEphem CHANGELOG
 =================
 
-Version 3.7.6.1 (2015 September 29)
------------------------------------
+Version 3.7.7.0 (2019 August 18)
+--------------------------------
 
-- GitHub issue #63: Changed behavior of next_pass() so that 
-  rise,culminate,set are consecutive values for a single pass; 
-  unless singlepass=False is passed, in which case it returns
-  the original next_rise,next_culminate,next_set even if
-  next_set < next_rise (i.e. the satellite is already up).
+- Upgraded libastro to 3.7.7.
+
+- The internal star catalog now includes all 57 navigational stars.
+
+- GitHub issue #63: The rise, culminate, and set returned by
+  ``next_pass()`` are now consecutive values for a single pass.  Pass
+  ``singlepass=False`` to return the original next_rise, next_culminate,
+  next_set even if next_set < next_rise (the satellite is already up).
+
+- GitHub issue #141: ``ephem.delta_t('0')`` now returns the correct
+  value, instead of misbehaving for that particular input.
 
 Version 3.7.6.0 (2015 August 19)
 --------------------------------
