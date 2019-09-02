@@ -90,7 +90,9 @@ body.compute(date)
    |  ``g_ra`` and ``ra`` — `Apparent geocentric`_ right ascension for the epoch-of-date
    |  ``g_dec`` and ``dec`` — `Apparent geocentric`_ declination for the epoch-of-date
 
-   | ``elong`` — Elongation (angle to sun)
+   | ``elong`` — Elongation: the angle between the Sun and the body,
+     but with the sign flipped to negative
+     when the body is on the morning side of the sky.
    | ``mag`` — Magnitude
    | ``size`` — Size (diameter in arcseconds)
    | ``radius`` — Size (radius as an angle)
