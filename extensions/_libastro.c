@@ -1330,7 +1330,7 @@ static PyObject* Body_writedb(PyObject *self)
      return PyUnicode_FromString(line);
 }
 
-void Body__copy_struct(Body *body, Body *newbody);
+void Body__copy_struct(Body *, Body *);
 
 static PyObject* Body_copy(PyObject *self)
 {
