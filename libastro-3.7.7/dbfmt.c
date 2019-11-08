@@ -186,6 +186,7 @@ db_write_line (Obj *op, char lp[])
  * name ends at first '\0', '\r' or '\n'.
  * set startok/endok.
  * if ok return 0 else return -1
+ * (PyEphem enchancement:) else returns -2 for a checksum error
  */
 int
 db_tle (char *name, char *l1, char *l2, Obj *op)
@@ -207,9 +208,9 @@ db_tle (char *name, char *l1, char *l2, Obj *op)
 	if (strncmp (l1+2, l2+2, 5))
 	    return (-1);
 	if (tle_sum (l1) < 0)
-	    return (-1);
+	    return (-2);
 	if (tle_sum (l2) < 0)
-	    return (-1);
+	    return (-2);
 
 	/* assume it's ok from here out */
 

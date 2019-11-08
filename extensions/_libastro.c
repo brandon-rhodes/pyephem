@@ -2691,9 +2691,12 @@ static PyObject* readtle(PyObject *self, PyObject *args)
      l0 = PyUnicode_AsUTF8(name);
      if (!l0)
           return 0;
-     if (db_tle(l0, l1, l2, &obj)) {
+     int result = db_tle(l0, l1, l2, &obj);
+     if (result) {
 	  PyErr_SetString(PyExc_ValueError,
-			  "line does not conform to tle format");
+			  (result == -2) ?
+                          "incorrect TLE checksum at end of line" :
+                          "line does not conform to tle format");
 	  return 0;
      }
      stripped_name = PyObject_CallMethod(name, "strip", 0);

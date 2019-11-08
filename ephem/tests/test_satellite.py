@@ -13,6 +13,12 @@ class SatelliteTests(unittest.TestCase):
         self.iss = ephem.readtle(*tle_lines)
         self.atlanta = ephem.city('Atlanta')
 
+    def test_TLE_checksum(self):
+        lines = list(tle_lines)
+        lines[1] = lines[1][:-1] + '1'
+        expected = 'incorrect TLE checksum at end of line'
+        self.assertRaisesRegex(ValueError, expected, ephem.readtle, *lines)
+
     def test_normal_methods(self):
         for which in ['previous', 'next']:
             for event in ['transit', 'antitransit', 'rising', 'setting']:
@@ -37,7 +43,7 @@ class SatelliteTests(unittest.TestCase):
         self.assertAlmostEqual(ephem.degrees('192.0'), raz, 1)
         self.assertAlmostEqual(ephem.degrees('16.0'), talt, 1)
         self.assertAlmostEqual(ephem.degrees('64.9'), saz, 1)
-        
+
     def test_next_pass_consecutive(self):
         # Issue #63
         iss = self.iss
