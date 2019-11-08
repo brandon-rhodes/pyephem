@@ -2682,6 +2682,7 @@ static PyObject* readdb(PyObject *self, PyObject *args)
 
 static PyObject* readtle(PyObject *self, PyObject *args)
 {
+     int result;
      char *l0, *l1, *l2;
      PyObject *name, *stripped_name, *body, *catalog_number;
      Obj obj;
@@ -2691,7 +2692,7 @@ static PyObject* readtle(PyObject *self, PyObject *args)
      l0 = PyUnicode_AsUTF8(name);
      if (!l0)
           return 0;
-     int result = db_tle(l0, l1, l2, &obj);
+     result = db_tle(l0, l1, l2, &obj);
      if (result) {
 	  PyErr_SetString(PyExc_ValueError,
 			  (result == -2) ?
