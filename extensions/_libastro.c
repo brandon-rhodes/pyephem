@@ -1335,11 +1335,7 @@ static PyObject* Body_copy(PyObject *self)
      Body *body = (Body *) self;
      Body *newbody = (Body*) self->ob_type->tp_alloc(self->ob_type, 0);
      if (!newbody) return 0;
-     memcpy ((void *)&newbody->now, (void *)&body->now, sizeof(Now));
-     memcpy ((void *)&newbody->obj, (void *)&body->obj, sizeof(Obj));
-     memcpy ((void *)&newbody->riset, (void *)&body->riset, sizeof(RiseSet));
-     newbody->name = body->name;
-     Py_XINCREF(newbody->name);
+     Body__copy_struct(body, newbody);
      return (PyObject*) newbody;
 }
 
@@ -3008,6 +3004,46 @@ static PyObject *_next_pass(PyObject *self, PyObject *args)
           return Py_BuildValue(
                "(OOOOOO)", risetm, riseaz, trantm, tranalt, settm, setaz
                );
+     }
+}
+
+/*
+ * Why is this all the way down here?  It needs to refer to the type
+ * objects themselves, which are defined rather late in the file.
+ */
+
+void Body__copy_struct(Body *body, Body *newbody)
+{
+     memcpy((void *)&newbody->now, (void *)&body->now, sizeof(Now));
+     memcpy((void *)&newbody->obj, (void *)&body->obj, sizeof(Obj));
+     memcpy((void *)&newbody->riset, (void *)&body->riset, sizeof(RiseSet));
+
+     newbody->name = body->name;
+     Py_XINCREF(newbody->name);
+
+     if (PyObject_IsInstance(body, &MoonType)) {
+          Moon *a = (Moon *) newbody, *b = (Moon *) body;
+          a->llat = b->llat;
+          a->llon = b->llon;
+          a->c = b->c;
+          a->k = b->k;
+          a->s = b->s;
+     }
+     if (PyObject_IsInstance(body, &JupiterType)) {
+          Jupiter *a = (Jupiter *) newbody, *b = (Jupiter *) body;
+          a->cmlI = a->cmlI;
+          a->cmlII = a->cmlII;
+     }
+     if (PyObject_IsInstance(body, &SaturnType)) {
+          Saturn *a = (Saturn *) newbody, *b = (Saturn *) body;
+          a->etilt = a->etilt;
+          a->stilt = a->stilt;
+     }
+     if (PyObject_IsInstance(body, &EarthSatelliteType)) {
+          EarthSatellite *a = (EarthSatellite *) newbody;
+          EarthSatellite *b = (EarthSatellite *) body;
+          a->catalog_number = b->catalog_number;
+          Py_XINCREF(a->name);
      }
 }
 
