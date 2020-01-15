@@ -50,7 +50,7 @@ and ask where it was on the 13th of March, 1781:
 
 Calling ``compute()`` sets many attributes of a body,
 beyond the right ascension, declination, and magnitude printed here;
-see the `Quick Reference`_
+see the :doc:`quick`
 for other attributes that ``compute()`` sets.
 You see that measurements are formatted as an astronomer would expect:
 dates are expressed as year, month, and day, delimited by slashes;
@@ -59,8 +59,6 @@ and declination as degrees north of the equator.
 The colons between the components of an angle are a compromise —
 the more traditional 21°46′15.66′′ is not possible
 with the symbols on a standard computer keyboard.
-
-.. _Quick Reference: quick
 
 The code above created and used only one instance of ``Uranus``,
 but you can also have several going at once.
@@ -449,10 +447,8 @@ Functions also exist for finding risings, transits, and —
 just for completeness —
 the moment of “anti-transit” when the object lies along the meridian
 directly under your feet.
-See the section on `transit, rising, and setting`_
+See the section on :any:`transit-rising-setting`
 in the Quick Reference for more details.
-
-.. _transit, rising, and setting: quick#transit-rising-setting
 
 Loading Bodies From Catalogues
 ------------------------------
@@ -473,7 +469,7 @@ to describe its orbit as perfect ellipse, parabola, or hyperbola,
 and then issue new orbital parameters as its orbit changes.
 
 The PyEphem home page provides links to several
-`online catalogs`_ of orbital elements.
+:doc:`catalogs` of orbital elements.
 Once you have obtained elements for a particular body,
 simply provide them to PyEphem's ``readdb()`` function
 in `ephem database format`_ and the resulting object is ready to use:
@@ -489,7 +485,6 @@ C/2002 Y1 (Juels-Holvorcem)
 >>> print("%s %s" % (ephem.constellation(yh), yh.mag))
 ('And', 'Andromeda') 5.96
 
-.. _online catalogs: http://rhodesmill.org/pyephem/catalogs
 .. _ephem database format: http://www.clearskyinstitute.com/xephem/help/xephem.html#mozTocId468501
 
 (Unfortunately, the library upon which PyEphem is build
@@ -504,12 +499,10 @@ in this case it has returned an ``EllipticalBody``:
 For objects for which you cannot find an entry in ephem database format,
 you can always create the appropriate kind of object
 and then fill in its orbital parameters yourself;
-see the `Quick Reference`_ for their names and meanings.
+see the :doc:`quick` for their names and meanings.
 By calling the ``writedb()`` function of a PyEphem object,
 you can even get it to generate its own database entry
 for archiving or distribution.
-
-.. _Quick Reference: quick
 
 There is one other database format with which PyEphem is familiar:
 the NORAD Two-Line Element format (TLE) used for earth satellites.
@@ -546,9 +539,7 @@ since its location is entirely dependent
 upon the location from which you are observing.
 PyEphem provides extra information about earth satellites,
 beyond the ones available for other objects;
-again, see the `Quick Reference`_ for details.
-
-.. _Quick Reference: quick
+again, see the :doc:`quick` for details.
 
 Fixed Objects, Precession, and Epochs
 -------------------------------------

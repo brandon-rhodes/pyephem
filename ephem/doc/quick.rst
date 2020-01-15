@@ -508,8 +508,10 @@ Observers
 
  * A ``ValueError`` signals a non-existent place.
 
-transit, rising, setting
-------------------------
+.. _transit-rising-setting:
+
+transit, rising, and setting
+----------------------------
 
  >>> sitka = ephem.Observer()
  >>> sitka.date = '1999/6/27'
