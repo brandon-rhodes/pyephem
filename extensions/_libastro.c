@@ -2642,7 +2642,6 @@ static PyObject *build_body_from_obj(PyObject *name, Obj *op)
 	  Py_DECREF(name);
 	  return 0;
      }
-     //body = PyObject_NEW(Body, type);
      body = (Body*) PyType_GenericNew(type, 0, 0);
      if (!body) {
 	  Py_DECREF(name);
@@ -2652,7 +2651,9 @@ static PyObject *build_body_from_obj(PyObject *name, Obj *op)
      if (Set_name((PyObject*) body, name, 0) == -1) {
           Py_DECREF(body);
           Py_DECREF(name);
+          return 0;
      }
+     Py_DECREF(name);
      return (PyObject*) body;
 }
 
