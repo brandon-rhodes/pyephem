@@ -1,37 +1,14 @@
-# Config file for automatic testing at travis-ci.org
-#
-# python: ["2.6", "2.7", "3.2", "3.3", "3.4", "3.5", "3.6"]
-
 language: python
+python:
+  - "2.7"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+  - "3.7"
+  - "3.8"
 
-matrix:
-  include:
-    - sudo: required
-      services:
-        - docker
-      env: PIP=pip
-    - os: osx
-      language: generic
-      env: PIP=pip2
+install:
+  - pip install -e .
 
 script:
-  - "pip install -e ."
-  - "if [[ $TRAVIS_PYTHON_VERSION == 2.6 ]] ;then pip install unittest2 ;fi"
-  - "if [[ $TRAVIS_PYTHON_VERSION == 2.6 ]] ;then unit2 discover ephem ;else python -m unittest discover ephem ;fi"
-  - "pip uninstall --yes ephem"
-  - "rm -r build"
-  - $PIP install cibuildwheel==0.11.1
-  - cibuildwheel --output-dir wheelhouse
-
-deploy:
-  provider: s3
-  access_key_id:
-    secure: "UMFVnMJ0beiBKCDdNUupPoo++JLIqAjHbC5oXNCF/+DaFEYdteRqzfg0DhQbw654RkfjvSdAvxVE9ITvUyFyozPsiDxNa2bLaFhxXQJGf01Yido2ULiCPNsv11WZJibd0ps64ZR39A4gdeGHn736UJkiis8nFP0frVh1VMVNhGk="
-  secret_access_key:
-    secure: "Eam5NddSwZvGgQ8sHjD99Wxnh6250IvkHeqd/5eGuqr8GJJiwmHoIO/eHwh24K2Oc6XskyCrGULqzqrELbmn3YXVXrl1AWgfC/slL5xic0z4Pt06WR9ztCoV0Tpl7bz8gN+8I3Pym52ygT/e9fi0yKwY88qQArh9ZXcP/3uJxT0="
-  bucket:
-    secure: "IaoloKRARTEbkHW1x8EmnVdcxR2HZyAPI43ldI0uTdea0jgrBQk1QqKzfECgn+lFPc7/TdCMVFFod9kwVTRSbWUb1DMvswvrXlvQu7u2dtcBhw9JAkDFJwjVQw2uBDKPqCBFbQPrUiEsgw+8pBGdeDYlRiCtiGx8bg1EHKLo5L4="
-  skip_cleanup: true
-  local_dir: wheelhouse
-  on:
-    tags: true
+  - python -m unittest discover ephem
