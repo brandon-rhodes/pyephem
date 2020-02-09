@@ -29,4 +29,4 @@ script:
 after_success:
   - ls -l wheelhouse/
   # if the release was tagged, upload them to PyPI
-  - if [[ -n "$TWINE_PASSWORD" ]]; then python -m pip install twine; python -m twine upload wheelhouse/*.whl; fi
+  - if [[ -n "$TWINE_PASSWORD" ]]; then python -m pip install twine; python -m twine upload --skip-existing wheelhouse/*.whl; fi
