@@ -1,6 +1,0 @@
-build_script:
-  - pip install cibuildwheel==0.11.1
-  - cibuildwheel --output-dir wheelhouse
-artifacts:
-  - path: "wheelhouse\\*.whl"
-    name: Wheels
