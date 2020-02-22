@@ -236,7 +236,7 @@ But if you want it anyway, PyEphem is still available.
 Installation
 ------------
 
-Version **3.7.7.0** is the most recent release of PyEphem.
+Version **3.7.7.1** is the most recent release of PyEphem.
 Consult the :doc:`CHANGELOG` to see the new features!
 
 The easiest way to install PyEphem on a Linux or Mac OS machine,
