@@ -406,17 +406,22 @@ class Observer(_libastro.Observer):
                 ' please use the higher-resolution next_pass() method'
                 )
 
+        if previous:
+            find_transit = self._previous_transit
+            find_antitransit = self._previous_antitransit
+        else:
+            find_transit = self._next_transit
+            find_antitransit = self._next_antitransit
+
         def visit_transit():
-            d = (previous and self._previous_transit(body)
-                 or self._next_transit(body)) # if-then
+            d = find_transit(body)
             if body.alt + body.radius * use_radius - self.horizon <= 0:
                 raise NeverUpError('%r transits below the horizon at %s'
                                    % (body.name, d))
             return d
 
         def visit_antitransit():
-            d = (previous and self._previous_antitransit(body)
-                 or self._next_antitransit(body)) # if-then
+            d = find_antitransit(body)
             if body.alt + body.radius * use_radius - self.horizon >= 0:
                 raise AlwaysUpError('%r is still above the horizon at %s'
                                     % (body.name, d))
