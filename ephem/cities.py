@@ -149,25 +149,32 @@ def city(name):
     o.compute_pressure()
     return o
 
-def lookup(address):
-    """Given a string `address`, do a Google lookup and return an Observer.
+def lookup(q, username='<USERNAME>'):
+    """Given a string `q`, do a geonames lookup and return an Observer. 
 
-    Avoid calling this very often, to honor Google's terms of service.
-    Instead you can run it once, print out the result, and cut and paste
-    the Observer back into your code to use as often as you like!
+    Free geonames queries require registration with an email address
+    at this url: https://www.geonames.org/login 
 
+    After registration, you also must enable the free webservices 
+    through your user account 
     """
-    parameters = urlencode({'address': address, 'sensor': 'false'})
-    url = 'http://maps.googleapis.com/maps/api/geocode/json?' + parameters
+    parameters = urlencode({'q': q, 'username': username})
+    url = 'http://api.geonames.org/searchJSON?' + parameters
     data = json.loads(urlopen(url).read().decode('utf-8'))
-    results = data['results']
-    if not results:
-        raise ValueError('Google cannot find a place named %r' % address)
-    address_components = results[0]['address_components']
-    location = results[0]['geometry']['location']
+    if data['totalResultsCount'] == 0:
+        raise ValueError('geonames cannot find a place named %r' % name)
+    location = data['geonames'][0]
+    parameters_elev = urlencode({'lat':location['lat'],
+                                 'lng':location['lng'],
+                                 'username':username})
+    url_elev = 'http://api.geonames.org/srtm1JSON?' + parameters_elev 
+    data_elev = json.loads(urlopen(url_elev).read().decode('utf-8'))
 
     o = ephem.Observer()
-    o.name = ', '.join(c['long_name'] for c in address_components)
-    o.lat = radians(location['lat'])
-    o.lon = radians(location['lng'])
+    o.name = location['toponymName']
+    o.lat = location['lat']
+    o.lon = location['lng']
+    o.elevation = data_elev['srtm1'] 
+    o.compute_pressure() 
     return o
+
