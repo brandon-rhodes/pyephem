@@ -377,7 +377,7 @@ static int parse_mjd_from_string(PyObject *so, double *mjdp)
 
      if (len >= 1) {
 	  int i;
-          char *s = PyUnicode_AsUTF8(PyList_GetItem(pieces, 0));
+          const char *s = PyUnicode_AsUTF8(PyList_GetItem(pieces, 0));
           if (!s) goto fail;
 
 	  /* Make sure all characters are in set '-/.0123456789' */
@@ -389,11 +389,11 @@ static int parse_mjd_from_string(PyObject *so, double *mjdp)
                }
           }
 
-	  f_sscandate(s, PREF_YMD, &month, &day, &year);
+	  f_sscandate((char*) s, PREF_YMD, &month, &day, &year);
      }
 
      if (len >= 2) {
-          char *t = PyUnicode_AsUTF8(PyList_GetItem(pieces, 1));
+          const char *t = PyUnicode_AsUTF8(PyList_GetItem(pieces, 1));
 	  double hours;
           if (!t) goto fail;
 	  if (f_scansexa(t, &hours) == -1) {
@@ -642,7 +642,7 @@ static int parse_angle(PyObject *value, double factor, double *result)
 	  return PyNumber_AsDouble(value, result);
      } else if (PyUnicode_Check3(value)) {
 	  double scaled;
-	  char *s = PyUnicode_AsUTF8(value);
+	  const char *s = PyUnicode_AsUTF8(value);
           if (!s) return -1;
           if (f_scansexa(s, &scaled) == -1) {
                PyErr_Format(PyExc_ValueError, "your angle string '%s' does not "
@@ -683,7 +683,7 @@ static double to_angle(PyObject *value, double efactor, int *status)
 	  return r;
      } else if (PyUnicode_Check3(value)) {
 	  double scaled;
-          char *s = PyUnicode_AsUTF8(value);
+          const char *s = PyUnicode_AsUTF8(value);
           if (!s) {
                *status = -1;
                return 0;
@@ -730,20 +730,6 @@ static int setd_rd(PyObject *self, PyObject *value, void *v)
      return status;
 }
 
-/* Degrees stored as radian float. */
-
-static PyObject* getf_rd(PyObject *self, void *v)
-{
-     return new_Angle(THE_FLOAT, raddeg(1));
-}
-
-static int setf_rd(PyObject *self, PyObject *value, void *v)
-{
-     int status;
-     THE_FLOAT = (float) to_angle(value, raddeg(1), &status);
-     return status;
-}
-
 /* Degrees stored as degrees, but for consistency we return their
    floating point value as radians. */
 
@@ -757,21 +743,6 @@ static int setf_dd(PyObject *self, PyObject *value, void *v)
      int status;
      THE_FLOAT = (float) to_angle(value, raddeg(1), &status);
      return status;
-}
-
-/* MJD stored as float. */
-
-static PyObject* getf_mjd(PyObject *self, void *v)
-{
-     return build_Date(THE_FLOAT);
-}
-
-static int setf_mjd(PyObject *self, PyObject *value, void *v)
-{
-     double result;
-     if (parse_mjd(value, &result)) return -1;
-     THE_FLOAT = (float) result;
-     return 0;
 }
 
 /* MDJ stored as double. */
@@ -810,7 +781,7 @@ static PyObject* get_f_spect(PyObject *self, void *v)
 static int set_f_spect(PyObject *self, PyObject *value, void *v)
 {
      Body *b = (Body*) self;
-     char *s;
+     const char *s;
      if (!PyUnicode_Check3(value)) {
 	  PyErr_SetString(PyExc_ValueError, "spectral code must be a string");
 	  return -1;
@@ -1345,7 +1316,7 @@ static PyObject* Body_repr(PyObject *body_object)
 {
      Body *body = (Body*) body_object;
      if (body->name) {
-	  char *name;
+	  const char *name;
 	  PyObject *repr, *result;
 	  repr = PyObject_Repr(body->name);
 	  if (!repr)
@@ -1677,7 +1648,7 @@ static PyObject *Get_name(PyObject *self, void *v)
 static int Set_name(PyObject *self, PyObject *value, void *v)
 {
      Body *body = (Body*) self;
-     char *name = PyUnicode_AsUTF8(value);
+     const char *name = PyUnicode_AsUTF8(value);
      if (!name)
           return -1;
      strncpy(body->obj.o_name, name, MAXNM);
@@ -2682,7 +2653,7 @@ static PyObject* readdb(PyObject *self, PyObject *args)
 static PyObject* readtle(PyObject *self, PyObject *args)
 {
      int result;
-     char *l0, *l1, *l2;
+     const char *l0, *l1, *l2;
      PyObject *name, *stripped_name, *body, *catalog_number;
      Obj obj;
      if (!PyArg_ParseTuple(args, "O!ss:readtle",
@@ -2691,7 +2662,7 @@ static PyObject* readtle(PyObject *self, PyObject *args)
      l0 = PyUnicode_AsUTF8(name);
      if (!l0)
           return 0;
-     result = db_tle(l0, l1, l2, &obj);
+     result = db_tle((char*) l0, (char*) l1, (char*) l2, &obj);
      if (result) {
 	  PyErr_SetString(PyExc_ValueError,
 			  (result == -2) ?
@@ -3024,7 +2995,7 @@ void Body__copy_struct(Body *body, Body *newbody)
      newbody->name = body->name;
      Py_XINCREF(newbody->name);
 
-     if (PyObject_IsInstance(body, &MoonType)) {
+     if (PyObject_IsInstance((PyObject*) body, (PyObject*) &MoonType)) {
           Moon *a = (Moon *) newbody, *b = (Moon *) body;
           a->llat = b->llat;
           a->llon = b->llon;
@@ -3032,19 +3003,19 @@ void Body__copy_struct(Body *body, Body *newbody)
           a->k = b->k;
           a->s = b->s;
      }
-     if (PyObject_IsInstance(body, &JupiterType)) {
+     if (PyObject_IsInstance((PyObject*) body, (PyObject*) &JupiterType)) {
           Jupiter *a = (Jupiter *) newbody, *b = (Jupiter *) body;
-          a->cmlI = a->cmlI;
-          a->cmlII = a->cmlII;
+          a->cmlI = b->cmlI;
+          a->cmlII = b->cmlII;
      }
-     if (PyObject_IsInstance(body, &SaturnType)) {
+     if (PyObject_IsInstance((PyObject*) body, (PyObject*) &SaturnType)) {
           Saturn *a = (Saturn *) newbody, *b = (Saturn *) body;
-          a->etilt = a->etilt;
-          a->stilt = a->stilt;
+          a->etilt = b->etilt;
+          a->stilt = b->stilt;
      }
-     if (PyObject_IsInstance(body, &EarthSatelliteType)) {
-          EarthSatellite *a = (EarthSatellite *) newbody;
-          EarthSatellite *b = (EarthSatellite *) body;
+     if (PyObject_IsInstance((PyObject*) body, (PyObject*) &EarthSatelliteType)) {
+          EarthSatellite *a = (EarthSatellite*) newbody;
+          EarthSatellite *b = (EarthSatellite*) body;
           a->catalog_number = b->catalog_number;
           Py_XINCREF(a->name);
      }

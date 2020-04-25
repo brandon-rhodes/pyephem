@@ -131,7 +131,7 @@ obj_description (Obj *op)
 	    }
 	    return ("Binary system");
 	case PLANET: {
-	    static char nsstr[16];
+	    static char nsstr[MAXNM + 9];
 	    static Obj *biop;
 
 	    if (op->pl_code == SUN)
