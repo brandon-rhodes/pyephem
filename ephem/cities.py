@@ -171,3 +171,33 @@ def lookup(address):
     o.lat = radians(location['lat'])
     o.lon = radians(location['lng'])
     return o
+
+def lookup_with_geonames(q, username):
+    """Given a string `q`, do a geonames lookup and return an Observer.
+
+    Free geonames queries require registration with an email address
+    at this url: https://www.geonames.org/login
+
+    After registration, you also must enable the free webservices
+    through your user account
+    """
+    parameters = urlencode({'q': q, 'username': username})
+    url = 'http://api.geonames.org/searchJSON?' + parameters
+    data = json.loads(urlopen(url).read().decode('utf-8'))
+    if data['totalResultsCount'] == 0:
+        raise ValueError('geonames cannot find a place named %r' % name)
+    location = data['geonames'][0]
+    parameters_elev = urlencode({'lat':location['lat'],
+                                 'lng':location['lng'],
+                                 'username':username})
+    url_elev = 'http://api.geonames.org/srtm1JSON?' + parameters_elev
+    data_elev = json.loads(urlopen(url_elev).read().decode('utf-8'))
+
+    o = ephem.Observer()
+    o.name = location['toponymName']
+    o.lat = location['lat']
+    o.lon = location['lng']
+    o.elevation = data_elev['srtm1']
+    o.compute_pressure()
+    return o
+
