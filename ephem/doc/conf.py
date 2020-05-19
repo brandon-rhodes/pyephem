@@ -36,7 +36,7 @@ master_doc = 'index'
 
 # General substitutions.
 project = 'PyEphem'
-copyright = '2008, Brandon Craig Rhodes'
+copyright = '2020 Brandon Craig Rhodes'
 
 # The default replacements for |version| and |release|, also used in various
 # other places throughout the built documents.
@@ -170,3 +170,10 @@ latex_documents = [
 
 # If false, no module index is generated.
 #latex_use_modindex = True
+
+html_context = {
+    'html5_doctype': True,
+    'sidebars': [],
+    'theme_nosidebar': True,
+}
+html_use_index = False

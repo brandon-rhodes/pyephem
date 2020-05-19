@@ -4,9 +4,10 @@ PyEphem CHANGELOG
 Next
 ----
 
-- Fixed the body ``copy()`` method to correct copy the extra attributes
-  that some bodies have beyond those of a normal body, like the catalog
-  number of an Earth satellite.  This bug had made core dumps possible.
+- Fixed the body ``copy()`` method to correctly copy the extra
+  attributes that some bodies have beyond those of a normal body, like
+  the catalog number of an Earth satellite.  This bug had in some cases
+  caused segmentation faults.
 
 Version 3.7.7.1 (2020 February 22)
 ----------------------------------

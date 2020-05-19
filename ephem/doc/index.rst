@@ -26,36 +26,23 @@
    directly from the <b>Python Package Index</b>.</p>
    <img src="_static/python.png"/>
    <p>
-     <a href="https://pypi.python.org/pypi/ephem/"
+     <a href="https://pypi.org/project/ephem/"
       >PyPI PyEphem page</a>
      <br/>
      Includes Windows installers!
-     <br/>
-     <br/>
-     <a href="https://pypi.python.org/packages/source/e/ephem/ephem-3.7.6.0.tar.gz#md5=0e33905844e3be5c901c13e5a9c938a3"
-      >Source code</a><br/>
-     As a .tar.gz file
    </p>
 
    </td>
    <td>
 
    <p>
-     Ask questions on <b>Stack Overflow</b>, or use our community support
-     tools on <b>GitHub</b>!
-   </p>
-   <img src="_static/stackoverflow.png"/>
-   <p>
-     <a href="http://stackoverflow.com/questions/tagged/pyephem"
-        >PyEphem Q&amp;A</a><br/>
-     <a href="http://stackoverflow.com/questions/ask?tags=pyephem"
-        >Ask a new question</a><br/>
+     The project source code and issue tracker are hosted on <b>GitHub</b>.
    </p>
    <img src="_static/github.png"/>
    <p>
      <a href="https://github.com/brandon-rhodes/pyephem"
         >Code Repository</a><br/>
-     <a href="https://github.com/brandon-rhodes/pyephem/issues?state=open"
+     <a href="https://github.com/brandon-rhodes/pyephem/issues"
         >Issue Tracker</a><br/>
    </p>
 
