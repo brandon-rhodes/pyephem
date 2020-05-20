@@ -268,7 +268,6 @@ Documentation
    angle
    examples
    newton
-   reference
 
 .. raw:: html
 
