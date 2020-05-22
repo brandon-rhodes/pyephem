@@ -1,3 +1,4 @@
+
 .. raw:: html
 
    <table class="triad" cellspacing="0"> <!-- for IE -->
@@ -10,15 +11,12 @@
 
    <tr class="sites"><td>
 
-   <p>This site is the PyEphem <b>home page</b></p>
+   <p>Welcome to the</p>
    <img src="_static/pyephem-logo-short.png"/>
-   <p>Simply <b>scroll down</b> to find:</p>
+   <p>Home Page!<br>Documentation:</p>
    <p>
-     Installation Guide<br/>
-     Documentation<br/>
-     Data Sources<br/>
+     <a href="toc.html">Table of Contents</a>
    </p>
-
    </td>
    <td>
 
@@ -31,7 +29,6 @@
      <br/>
      Includes Windows installers!
    </p>
-
    </td>
    <td>
 
@@ -45,7 +42,6 @@
      <a href="https://github.com/brandon-rhodes/pyephem/issues"
         >Issue Tracker</a><br/>
    </p>
-
    </td></tr>
 
    <tr class="toe">
@@ -61,175 +57,109 @@
    <tr class="base">
    <td colspan=3>
 
-   <div class="sideexample">
+===================
+ PyEphem Home Page
+===================
+
+Welcome to the home page of the **PyEphem astronomy library** for Python!
 
 >>> import ephem
-
 >>> mars = ephem.Mars()
->>> mars.compute()
+>>> mars.compute('2007/10/02 00:50:22')
 >>> print mars.ra, mars.dec
 6:05:56.34 23:23:40.0
 >>> ephem.constellation(mars)
 ('Gem', 'Gemini')
 
+Since its first release in 1998,
+PyEphem has given Python programmers
+the ability to compute
+**planet, comet, asteroid, and Earth satellite positions**.
+It wraps the “libastro” C library
+that powers the XEphem_ astronomy application for UNIX —
+whose author Elwood Downey generously gave permission
+for PyEphem to use his library with Python.
+PyEphem can also
+compute the angular separation between two objects in the sky,
+determine the constellation in which an object lies,
+and find the times an object rises, transits, and sets.
+
+PyEphem will continue to receive critical bugfixes
+and be ported to each new version of Python.
+But be warned that it has some rough edges!
+
+* The `Skyfield astronomy library <https://rhodesmill.org/skyfield/>`_
+  should be preferred over PyEphem for new projects.
+  Its modern design encourages better Python code,
+  and uses NumPy to accelerate its calculations.
+
+* Because PyEphem includes a C library,
+  installation issues often frustrate users.
+  If the Package Index lacks a wheel for your system,
+  you will need a C compiler and Python development environment
+  to get PyEphem installed.
+
+* Instead of making angular units explicit in your code,
+  PyEphem tried to be clever
+  but only wound up being obscure.
+  An input string ``'1.23'`` is parsed as degrees of declination
+  (or hours, when setting right ascension)
+  but a float ``1.23`` is assumed to be in radians.
+  Angles returned by PyEphem are even more confusing:
+  print them, and they display degrees;
+  but do math with them, and you will find they are radians.
+  This causes substantial confusion and makes code much more difficult to read,
+  but can never be fixed without breaking programs that already use PyEphem.
+
+* The PyEphem ``compute()`` method mutates its object in-place
+  instead of returning results.
+  While this reflects how the underlying C library works,
+  it makes it hard to use ``compute()`` inside a list comprehension —
+  you get a list of ``None`` objects.
+
+* PyEphem generates positions using the 1980s techniques
+  popularized in |Meeus|_,
+  like the IAU 1980 model of Earth nutation
+  and VSOP87 planetary theory.
+  These make PyEphem faster and more compact
+  than modern astronomy libraries,
+  but limit its accuracy to around 1 arcsecond.
+  This is often sufficient for most amateur astronomy,
+  but users needing higher precision should investigate
+  a more modern Python astronomy library like Skyfield or AstroPy.
+
+.. |Meeus| replace::  Jean Meeus’s *Astronomical Algorithms*
+.. _Meeus: https://www.willbell.com/math/mc1.htm
+.. _XEphem: http://www.clearskyinstitute.com/xephem/
+
+Here’s more example code to illustrate how PyEphem works:
+
 >>> boston = ephem.Observer()
 >>> boston.lat = '42.37'
 >>> boston.lon = '-71.03'
+>>> boston.date = '2007/10/02 00:50:22'
 >>> mars.compute(boston)
 >>> print mars.az, mars.alt
 37:55:48.9 -14:23:11.8
 
->>> boston.next_rising(mars)
+>>> print(boston.next_rising(mars))
 2007/10/2 02:31:51
->>> print mars.az
+>>> print mars.az         # degrees when printed
 56:52:52.1
+>>> print mars.az + 0.0   # radians in math
+0.992763221264
 
->>> boston.next_transit(mars)
+>>> print(boston.next_transit(mars))
 2007/10/2 10:07:47
->>> print mars.alt
+>>> print mars.alt        # degrees when printed
 71:02:16.3
+>>> print mars.alt + 0.0  # radians in math
+1.23984456062
 
-.. raw:: html
+Installing PyEphem
+==================
 
-   </div>
-
-PyEphem is in maintenance mode
-==============================
-
-The PyEphem astronomy library
-has helped generations of Python programmers
-locate the stars, planets, and Earth satellites.
-It **will continue to receive bugfixes**
-and **will be ported to new versions of Python**,
-but it no longer stands at the cutting edge of astronomy in Python.
-
-See below for newer alternatives
-that offer a more Pythonic approach to astronomy in Python!
-
-What is PyEphem?
-================
-
-**PyEphem** provides basic astronomical computations
-for the Python_ programming language.
-Given a date and location on the Earth's surface,
-it can compute the positions of the Sun and Moon,
-of the planets and their moons,
-and of any asteroids, comets, or earth satellites
-whose orbital elements the user can provide.
-Additional functions are provided to compute the angular separation
-between two objects in the sky,
-to determine the constellation in which an object lies,
-and to find the times at which
-an object rises, transits, and sets on a particular day.
-
-.. _Python: http://www.python.org/
-
-The numerical routines that lie behind PyEphem
-are those from the wonderful XEphem_ astronomy application,
-whose author, Elwood Downey, generously gave permission
-for us to use them as the basis for PyEphem.
-
-.. _XEphem: http://www.clearskyinstitute.com/xephem/
-
-Awkward edges
-=============
-
-PyEphem’s design has several flaws
-that have been avoided by the newer astronomy libraries
-listed in the next section.
-Among the problems it creates for Python programmers are:
-
-* Instead of offering a clear way for the user to specify units
-  of radians or degrees,
-  PyEphem uses the terrible and confusing convention
-  that floats like ``1.23`` mean radians
-  but strings like ``'1.23'`` mean degrees of declination
-  and hours of right ascension.
-  This has wasted many hours of programmer time and confusion over the years,
-  is completely unnatural and at odds with how Python usually works,
-  and can never be fixed
-  because it would break all existing PyEphem programs.
-
-* The API is also awkward
-  because it mutates objects in-place instead of returning results.
-  Instead of returning coordinates directly,
-  ``compute()`` updates several fields on its object —
-  reflecting how the underlying C library works, which I didn’t write.
-  This makes a second line of code necessary
-  to go fetch the coordinates from the object.
-
-* PyEphem is difficult to release
-  and difficult for many people to install,
-  because some of its code is written in the C language
-  and so a compiler is needed.
-
-* PyEphem does not interoperate with NumPy
-  and so is awkward to use in a modern IPython Notebook.
-
-For all of these reasons, PyEphem might not be the best choice
-for a new project.
-
-Two Alternatives
-----------------
-
-As the principle author of PyEphem,
-I — `Brandon Rhodes <https://rhodesmill.org/brandon/>`_ —
-had often thought about starting over again
-so I would have a second chance
-to avoid the mistakes I made with PyEphem!
-It was only in 2013
-that I discovered an excellent excuse:
-back in the year 2000, the IAU (International Astronomical Union)
-had
-`thoroughly upgraded how astronomical positions are measured <https://syrte.obspm.fr/IAU_resolutions/Resol-UAI.htm>`_
-to allow much higher accuracy.
-So a rewrite could serve two purposes!
-Instead of simply rewriting what PyEphem did, but in better Python,
-I could implement the newer standards of measurement
-and deliver much higher precision.
-
-Following the United States Naval Observatory’s free
-“NOVAS” library’s C code as my example
-(for which they
-also maintain a `Python interface <http://aa.usno.navy.mil/software/novas/novas_py/novaspy_intro.php>`_),
-I started writing a new library that I named “Skyfield”
-with the goal of implementing the highest accuracy algorithms,
-using only Python and NumPy,
-behind a beautiful Pythonic API.
-Version 1.0 was released in early 2017
-and both I and a few other contributions continue to add new features:
-
-`The Skyfield astronomy library <https://rhodesmill.org/skyfield/>`_
-
-I recommend using Skyfield instead of PyEphem
-if it’s possible for your new project to do so!
-(The only thing missing at this point is predicting positions
-from Kelperian orbital elements for comets and asteroids.)
-
-If you are a professional astronomer
-interested in writing programs that interoperate
-with those of other astronomers,
-you will also want to consider Astropy.
-While it is not as sleek as Skyfield —
-it bundles many dependencies written in other languages
-and was not designed for beginners —
-it is a much more comprehensive toolkit
-that is very popular with professional astronomers:
-
-`The Astropy astronomy library <http://www.astropy.org/>`_
-
-But if you want it anyway, PyEphem is still available.
-
-Installation
-------------
-
-Version **3.7.7.1** is the most recent release of PyEphem.
-Consult the :doc:`CHANGELOG` to see the new features!
-
-The easiest way to install PyEphem on a Linux or Mac OS machine,
-after making sure that “Python.h” and the other Python header files
-are installed (which on Ubuntu requires the “python-dev” package),
-is to use the pip_ command, like this:
+You can try installing PyEphem with:
 
 .. _pip: http://pypi.python.org/pypi/pip
 .. code-block:: bash
@@ -250,24 +180,6 @@ or use the links at the top of this page.
 
 .. _PyEphem entry: http://pypi.python.org/pypi/pyephem/
 .. _virtualenv: http://pypi.python.org/pypi/virtualenv
-
-Documentation
--------------
-
-.. toctree::
-   :maxdepth: 2
-
-   quick
-   tutorial
-   catalogs
-   CHANGELOG
-   rise-set
-   radec
-   coordinates
-   date
-   angle
-   examples
-   newton
 
 .. raw:: html
 

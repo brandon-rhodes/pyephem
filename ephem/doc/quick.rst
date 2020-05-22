@@ -195,7 +195,7 @@ body.compute(observer)
 
  * These apparent positions
    include an adjustment to simulate atmospheric refraction
-   for the observer's ``temp`` and ``presure``;
+   for the observer's ``temp`` and ``pressure``;
    set the observer's ``pressure`` to zero to ignore refraction.
 
  * For earth satellite objects,
