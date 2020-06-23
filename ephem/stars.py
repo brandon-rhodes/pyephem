@@ -1,4 +1,4 @@
-"""A Catalog of 94 Bright Stars
+"""A Catalog of 115 Bright Stars
 
 The function star() will create and return a PyEphem Body representing
 the star whose name you provide.
