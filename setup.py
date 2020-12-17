@@ -24,7 +24,8 @@ libastro_files = glob('libastro-%s/*.c' % libastro_version)
 libastro_data = glob('extensions/data/*.c')
 
 def read(*filenames):
-    return open(os.path.join(os.path.dirname(__file__), *filenames)).read()
+    path = os.path.join(os.path.dirname(__file__), *filenames)
+    return open(path, 'rb').read().decode('utf-8')
 
 extensions = [
     Extension('ephem._libastro',
