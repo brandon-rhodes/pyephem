@@ -102,8 +102,8 @@ body.compute(date)
 
  * On Solar System bodies, also sets:
 
-   | ``hlon`` — Heliocentric longitude (see next paragraph)
-   | ``hlat`` — Heliocentric latitude (see next paragraph)
+   | ``hlon`` — Astrometric heliocentric longitude (see next paragraph)
+   | ``hlat`` — Astrometric heliocentric latitude (see next paragraph)
    | ``sun_distance`` — Distance to Sun (AU)
    | ``earth_distance`` — Distance to Earth (AU)
    | ``phase`` — Percent of surface illuminated
