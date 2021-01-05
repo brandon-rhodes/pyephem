@@ -31,6 +31,13 @@ clean:
 html:
 	mkdir -p _build/html _build/doctrees
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) _build/html
+	rm -f \
+		_build/html/.buildinfo \
+		_build/html/_static/jquery-3.2.1.js \
+		_build/html/_static/underscore-1.3.1.js \
+		_build/html/_static/websupport.js \
+		_build/html/objects.inv \
+		_build/html/searchindex.js
 	@echo
 	@echo "Build finished. The HTML pages are in _build/html."
 
@@ -77,8 +84,5 @@ doctest:
 	@echo "Testing of doctests in the sources finished, look at the " \
 	      "results in $(BUILDDIR)/doctest/output.txt."
 
-diff:
-	colordiff -ur _build/html/ ~/Dropbox/rhodesmill.org/pyephem | less
-
-sync:
+sync: html
 	cp -r _build/html/. ~/rhodesmill.org/pyephem
