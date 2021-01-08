@@ -9,5 +9,5 @@ BDLSRCS=$(patsubst %, $D/%.c, $(BDLS))
 
 data: $(BDLSRCS)
 
-$(BDLSRCS): $D/%.c: $G/% $G/satxyz.py
+$(BDLSRCS): $D/%.c: $G/% bin/rebuild-plmoon-data
 	bin/rebuild-plmoon-data $G/$* > $@
