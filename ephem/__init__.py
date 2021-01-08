@@ -261,8 +261,8 @@ class Observer(_libastro.Observer):
     set its attributes once you have created it.  Defaults:
 
     `date` - the moment the `Observer` is created
-    `lat` - zero degrees latitude
-    `lon` - zero degrees longitude
+    `lat` - zero latitude
+    `lon` - zero longitude
     `elevation` - 0 meters above sea level
     `horizon` - 0 degrees
     `epoch` - J2000
