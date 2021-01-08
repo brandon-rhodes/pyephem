@@ -1,21 +1,27 @@
+# -*- coding: utf-8 -*-
+
 from setuptools import setup
 
-version = '3.7.7.0'
-
-long_description = '''
-This package is a stub
-that contains no Python code,
-but lists ``ephem`` as its install requirement
+long_description = '''\
+This distribution is a stub
+that doesn’t install any Python packages,
+but does list ``ephem`` as an install requirement
 in case any old projects depend on this ``pyephem`` package name.
 New projects are encouraged to directly require the main package,
 which can be found at:
 
 `https://pypi.org/project/ephem/ <https://pypi.org/project/ephem/>`_
+
+This package’s version 9.99 is merely a placeholder value.
+This package does not pin any particular PyEphem version,
+but simply installs the latest version of the library.
+Switch your project to depending on ``ephem`` directly
+if you want to be able to pin a specific version.
 '''
 
 setup(
     name = 'pyephem',
-    version = version,
+    version = '9.99',
     description = 'Empty package that depends on "ephem"',
     long_description = long_description,
     long_description_content_type = 'text/x-rst',
@@ -37,5 +43,5 @@ setup(
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
     ],
-    install_requires=['ephem==' + version],
+    install_requires=['ephem'],
 )
