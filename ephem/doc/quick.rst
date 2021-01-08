@@ -912,3 +912,22 @@ Other Constants
  * PyEphem provides the speed of light in meters per second::
 
     ephem.c
+
+----
+
+Attributes to avoid
+===================
+
+ * To avoid breaking old scripts,
+   PyEphem still supports several deprecated body attributes.
+   They invoke old C routines
+   that have not proven very reliable.
+   Instead, try using the routines described above
+   in the “transit, rising, and setting” section.
+
+   - ``rise_time``
+   - ``rise_az``
+   - ``transit_time``
+   - ``transit_alt``
+   - ``set_time``
+   - ``set_az``

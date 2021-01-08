@@ -1414,9 +1414,6 @@ static int Body_obj_cir(Body *body, char *fieldname, unsigned topocentric)
 
 static int Body_riset_cir(Body *body, char *fieldname)
 {
-     /* This warning was added in November 2007; to ensure more than
-        six months of warning, the rise/set attributes themselves
-        should therefore not be removed until July of 2008. */
      static char *warning =
           "the ephem.Body attributes 'rise_time', 'rise_az',"
           " 'transit_time', 'transit_alt', 'set_time', 'set_az',"
