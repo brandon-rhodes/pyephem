@@ -1,0 +1,53 @@
+xephemdbd, xephemdbd.html, start-xephemdbd.pl and xephemdbd.pl (with
+cgi-lib.pl), together with the xephem *.edb, gsc and ppm.xe database files,
+form a complete package for operating an astronomical database web service.
+The service is useful enough just from the sample html form interface. But
+providing the data via the web access mechanism reduces firewall issues and
+provides access from several interface options without the need to invent and
+support dedicated tcp/ip services. The data become available to any form of
+web clients, such as java apps, perl scripts, etc.
+
+To install as a web service:
+
+    1) build xephemdbd (see README and Makefile).
+
+    2) edit start-xephemdbd.pl so the variable "dbdir" is an absolute path to
+       the directory containing your collection of *.edb, ppm.xe and gsc
+       catalogs. This is expected to be the same directory as XEphem refers to
+       as ShareDir/catalogs.
+       
+    3) make a fresh directory named xephemdbd off your cgi-bin root
+       directory, for example /home/httpd/cgi-bin/xephemdbd. then copy
+       xephemdbd, start-xephemdbd.pl, xephemdbd.pl and cgi-bin.pl there. Make
+       sure permissions are such as to allow these files to be executed by
+       whatever uid your web server runs as, and also so the server can
+       create new files in the xephemdbd directory. Usually the easiest way
+       is to do the work as root, then chown -R to the effective uid of
+       the server, often `nobody'. The files xephemdbd.log and xephemdbd.trace 
+       will accumulate information over time; take a look at them occasionally
+       and clean out as desired.
+
+    4) Edit xephemdbd.html so the "<FORM ACTION" path will find xephemdbd.pl.
+       Then copy it to where you put html files, for example /home/httpd/html.
+
+That should do it. Point your browser to
+
+    http://<yoursite>/xephemdbd.html.
+    
+Fill in the form, press Submit. xephemdbd.pl should start xephemdbd running.
+This might take a little time depending on your hardware and the number of *.edb
+files. Having a lot of memory helps; figure about 100 bytes per object. Once
+xephemdbd gets going, it will fork a child process to service each request which
+then exits when complete. Eventually you will get back the results on your
+browser. Subsequent requests will go faster. The sample xephemdbd.html form
+provided is just an example to of how a client accesses the GET service. The
+same service can be accessed from any web client, such as XEphem once the
+Field Stars setup form is set up to point to your site.
+
+Let me know how it goes,
+
+Elwood Downey
+ecdowney@ClearSkyInstitute.com
+
+! For RCS Only -- Do Not Edit
+! @(#) $RCSfile: INSTALL,v $ $Date: 2003/12/05 06:27:38 $ $Revision: 1.4 $ $Name:  $

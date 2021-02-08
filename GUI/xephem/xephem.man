@@ -1,0 +1,159 @@
+.TH XEphem 1X
+.SH Name
+XEphem 3.7 \- an interactive astronomical ephemeris for X11
+.SH Syntax
+\fBxephem [-prfb] [-install {yes|no|guess}] [-resfile <resourcefile>] [-[no]splash]\fP
+.SH Description
+.na
+.nh
+.PP
+XEphem is an interactive astronomical ephemeris program for the X Window System.
+It provides many graphical views as well as quantitative heliocentric,
+geocentric and topocentric information for Earth satellites, solar system
+and celestial objects.
+
+XEphem primarily uses two directories at runtime. One is referred to as the
+Shared directory, the other as the Private directory. Shared is read-only and
+holds supporting files that can be shared among all users on a system. Private
+is writable and one is expected to exist for each user. See the section
+below on X Resources for more information about defining these directories.
+
+XEphem contains extensive context-sensitive on-line help. Virtually none of
+that help is duplicated here so go ahead and run XEphem to learn more. The first
+thing to do once XEphem is up is configure the browser interface. All of
+XEphem help is written in html and stored in a file named xephem.html. The
+first entry in the Help menu brings up a table of browsers and defines a command
+for each that will invoke the browser and pass it the URL and anchor of the
+text to display. XEphem comes configured to support several different
+browsers. If yours is listed, just click the button to its left and your help
+system should be working. If your browser is not listed, please check the FAQ
+for the latest news.
+
+Note that if you are running XEphem under cygwin on Windows, before starting
+XEphem set an environment variable XEHELPURL to the full path of the
+xephem.html file on your system using Windows path syntax (not cygwin paths).
+This file is in the 
+.I help
+directory within the source directory of the master distribution.
+After this is in the place, run xephem and it can use MS IE to display help.
+
+The XEphem
+.I Main window
+is the master panel for setting up observing circumstances, time looping, and
+for accessing all the additional tools and displays.
+Observing circumstances includes location, date, time, local magnetic deviation
+and atmospheric conditions (used for the refraction model).
+Looping provides the ability to
+set up XEphem so that it automatically increments time at a desired step size
+and rate. Additional displays provide all of the graphical and quantitative
+information available, which are always computed with respect to the
+circumstances defined in the Main menu. Tools provide access to plotting,
+searching, AAVSO and much more.
+
+.SH Command line Options
+.B -prfb
+displays all the built-in default resources, then exits. Some of them are
+described here.
+
+.B -install
+controls whether XEphem will install a private colormap. Without this option
+XEphem will try to decide automatically whether it is necessary. To force
+using a private colormap, use 
+.I -install yes.
+To prevent it, use
+.I -install no.
+The default automatic behavior is equivalent to
+.I -install guess.
+
+.B -resfile <resourcefile>
+tells XEphem to use an alternate file for initial resource settings. See below
+for the default situation.
+
+.B -splash
+or
+.B -nosplash
+controls whether XEphem will display a progress window front and center while it is
+coming up. The choice is yours because this can be a useful sign of life on a
+slow system, or be the source of an annoying flash on a fast system. The setting
+is persistent so it will remain until changed.
+
+.SH Menu Tour
+.B File
+
+This menu controls access to the System log;
+setting up network access; accessing the gallery;
+displaying a progress meter; controlling time and location information
+remotely; and keyboard accelerators for time stepping.
+
+.B View
+
+This menu offers several graphical displays if the Sun, Earth, Moon and several
+planets; a user configurable data table; and Sky and Solar System views.
+
+.B Tools
+
+This menu gives access to tools which can plot any XEphem
+data items; save any data items to text files for easy export to other
+programs; enter an arbitrary function to evaluate and solve using any 
+XEphem data items; access AAVSO online; show the Night at a glance; find close
+pairs of objects; convert among various astonomical coordinate systems; and a
+handy log for taking observing notes.
+
+.B Data
+
+This menu gives control over which objects XEphem will work with.
+Objects may be created on the fly, read from catalog files, downloaded
+from the Internet, deleted or searched. A special category of objects known as
+.I Field Stars
+may be configured, which are very large catalogs of objects whose access
+has been optimized. Any number of
+.I Favorite
+objects may be defined for especially
+easy access in several other places throughout XEphem.
+
+.B Preferences
+
+This menu offers several configuration choices and tools for changing fonts
+and colors used throughout XEphem.
+These choices can be changed at runtime and saved to disk to become the new defaults.
+
+.B Help
+
+This menu offers overall information about XEphem;
+context sensitive help;
+references; version number and the Copyright statement.
+
+.SH X Resources
+When first started, XEphem looks for a file named
+.B .xephemrc
+in your $HOME directory. It should contain one line of the form:
+
+XEphem.PrivateDir: ~/.xephem
+
+This defines the Private directory, where XEphem will store your personal
+settings. The example line shown here, which is also the assumption if the
+file is not present, means XEphem will create and use a directory named
+.B .xephem
+for this purpose in your home directory.
+
+Within this directory a text file named
+.B XEphem
+will contain all the Preferences that differ from those built in. One
+important entry defines the Shared directory. This is in intended for
+multi-user installations. XEphem looks here for support files. Unless
+defined otherwise, the Shared directory is ".", that is, the current 
+directory.
+
+.SH Author
+.PP
+Elwood C. Downey, email ecdowney@ClearSkyInstitute.com.
+
+.SH References
+.PP
+The Web homepage, including the FAQ, is maintained at
+.I http://www.clearskyinstitute.com/xephem
+.PP
+The online Help entry
+.I on Credits
+lists many of the references, individuals and organizations which have
+contributed to XEphem.

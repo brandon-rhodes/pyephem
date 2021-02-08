@@ -1,0 +1,4 @@
+Minimal zlib for XEphem. No code files were changed from the original except
+to simpilfy the Makefile and add a little standalone test program.
+
+See the original README for more info.

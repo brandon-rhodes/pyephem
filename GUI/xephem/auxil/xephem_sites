@@ -1,0 +1,552 @@
+# xephem sites file.
+#
+# The format of this file is extended from that with the xsat program and many
+# cities included here are from the sample included therewith. Xsat included
+# the following notice:
+#
+#   Copyright 1992 by David A. Curry
+#
+#   Permission to use, copy, modify, distribute, and sell this software and its
+#   documentation for any purpose is hereby granted without fee, provided that
+#   the above copyright notice appear in all copies and that both that copyright
+#   notice and this permission notice appear in supporting documentation.  The
+#   author makes no representations about the suitability of this software for
+#   any purpose.  It is provided "as is" without express or implied warranty.
+#
+# Many of the observatory sites are transcribed, with permission, from the table
+# beginning on page 28 in the July 1993 issue of Sky and Telescope. Any 
+# descrepencies or unfaithful interpretations of the information provided
+# therein are strictly the fault of the author of xephem.
+#
+# City, State or Country, or site name  ; Latitude      ; Longitude     ; Elev  ; TZ
+
+AAO Coonabarabran, NSW, Australia       ;  31 16 38 S   ; 149  3 58 E   ;  1164 ; EST-10EDT,M10.5.0,M3.5.0
+ATCA Mopra, Australia    		;  31 16 10 S  	; 149 05 54 E   ;  837.9; EST-10EDT,M10.5.0,M3.5.0
+ATCA Narrabri, Australia                ;  30 18 52 S   ; 149 34  1 E   ; 210.8 ; EST-10EDT,M10.5.0,M3.5.0
+Aachen, Germany                         ;  50 46  0 N   ;   6  6  0 E   ; 285.0 ; CET-1CEST,M3.5.0,M10.5.0
+Aberdeen, Scotland                      ;  57 12 25 N   ;  02 11 92 W   ;  -1.0 ; GMT0BST,M3.5.0,M10.5.0
+Abilene, Texas                          ;  32 27  5 N   ;  99 43 51 W   ; 521.2 ; CST6CDT
+Adelaide SA, Australia                  ;  34 55  0 S   ; 138 35  0 E   ;    72 ; CST-9:30CDT,M10.5.0,M3.5.0
+Akron, Ohio                             ;  41  5  0 N   ;  81 30 44 W   ; 266.4 ; EST5EDT
+Albany, New York                        ;  42 39  1 N   ;  73 45  1 W   ;   6.1 ; EST5EDT
+Albuquerque, New Mexico                 ;  35  5  1 N   ; 106 39  5 W   ;1507.2 ; MST7MDT
+Alice Springs, NT, Australia            ;  23 48 30 S   ; 133 54  3 E   ;   609 ; CST-9:30
+Allegheny Observatory                   ;  40 29  0 N   ;  80  1  0 W   ;   380 ; EST5EDT
+Allentown, Pennsylvania                 ;  40 36 11 N   ;  75 28  6 W   ;  77.7 ; EST5EDT
+Altoona, Pennsylvania                   ;  40 30 55 N   ;  78 24  3 W   ; 359.7 ; EST5EDT
+Amarillo, Texas                         ;  35 12 27 N   ; 101 50  4 W   ;1123.2 ; CST6CDT
+Amsterdam, Netherlands                  ;  52 22  0 N   ;  04 54  0 E   ;  -1.0 ; CET-1CEST,M3.5.0,M10.5.0
+Anchorage, Alaska                       ;  61 10  0 N   ; 149 59  0 W   ;  36.0 ; YST9YDT
+Ann Arbor, Michigan                     ;  42 16 59 N   ;  83 44 52 W   ; 268.2 ; EST5EDT
+Antwerp, Belgium                        ;  51 10 16 N   ;  04 24 21 E   ;  -1.0 ; CET-1CEST,M3.5.0,M10.5.0
+Apache Point Observatory, New Mexico    ;  32 46 49 N   ; 105 49 13 W   ;  2788 ; MST7MDT
+Archenhold-Sternwarte                   ;  52 29  0 N   ;  13 29  0 E   ;    41 ; CET-1CEST,M3.5.0,M10.5.0
+Arecibo Radiotelescope, Puerto Rico     ;  18 21 14 N   ;  66 45 19 W   ;   496 ; AST4
+Argus Radio Telescope (NAAPO)           ;  40 00 09 N   ;  83 02 41 W   ; 248.5 ; EST5EDT4,M4.1.0,M10.5.0
+Arlington, Virginia                     ;  38 52  0 N   ;  77  7  0 W   ;   9.1 ; EST5EDT
+Asheville, North Carolina               ;  35 35 42 N   ;  82 33 26 W   ; 605.0 ; EST5EDT
+Ashland, Kentucky                       ;  38 28 36 N   ;  82 38 23 W   ; 163.4 ; EST5EDT
+Astronomisches Inst. Univ. Obs.         ;  48 14  0 N   ;  16 20  0 E   ;   241 ; CET-1CEST,M3.5.0,M10.5.0
+Astrophys. Research Consortium (ARC)    ;  32 46 49 N   ; 105 49 13 W   ;  2788 ; MST7MDT
+Athens, Greece                          ;  37 58  0 N   ;  23 44  0 E   ;  91.4 ; EET-2EETDST,M3.5.0,M10.5.0
+Atlanta, Georgia                        ;  33 45 10 N   ;  84 23 37 W   ; 320.0 ; EST5EDT
+Atlantic City, New Jersey               ;  39 21 32 N   ;  74 25 53 W   ;   3.0 ; EST5EDT
+Augusta, Georgia                        ;  33 28 20 N   ;  81 58  0 W   ;  43.6 ; EST5EDT
+Augusta, Maine                          ;  44 18 53 N   ;  69 46 29 W   ;  13.7 ; EST5EDT
+Austin, Texas                           ;  30 16  9 N   ;  97 44 37 W   ; 153.9 ; CST6CDT
+BIMA, Hat Creek, California             ;  40 49 00 N   ; 121 28 00 W   ; 1043.0; PST8PDT
+Bakersfield, California                 ;  35 22 31 N   ; 119  1 18 W   ; 121.9 ; PST8PDT
+Baltimore, Maryland                     ;  39 17 36 N   ;  76 36 45 W   ;   6.1 ; EST5EDT
+Bangkok, Thailand                       ;  13 44  0 N   ; 100 30  0 E   ;  -1.0 ; TST-7
+Bangor, Maine                           ;  44 48 13 N   ;  68 46 18 W   ;   6.1 ; EST5EDT
+Barcelona, Spain                        ;  41 23  0 N   ;  02  9  0 E   ;  -1.0 ; CET-1CEST,M3.5.0,M10.5.0
+Barcelona, Venezuela                    ;  10 08 06 N   ;  64 10 07 W   ;   4.1 ; VET4
+Barquisimeto, Venezuela                 ;  10 03 57 N   ;  69 18 46 W   ; 596.9 ; VET4 
+Baton Rouge, Louisiana                  ;  30 26 58 N   ;  91 11  0 W   ;  17.4 ; CST6CDT
+Battle Creek, Michigan                  ;  42 18 58 N   ;  85 10 48 W   ; 249.9 ; EST5EDT
+Batumi, Georgia                         ;  43 40  0 N   ;  40  0  0 E   ;  -1.0 ; EST-5EDT
+Bay City, Michigan                      ;  43 36  4 N   ;  83 53 15 W   ; 181.4 ; EST5EDT
+Beaumont, Texas                         ;  30  5 20 N   ;  94  6  9 W   ;   6.1 ; CST6CDT
+Beijing, China                          ;  39 54  0 N   ; 116 28  0 E   ; 182.9 ; CST-8
+Beirut, Lebanon                         ;  33 54  0 N   ;  35 28  0 E   ;  -1.0 ; CET-2CDT,M3.5.0,M10.5.0
+Belfast, Northern Ireland               ;  54 35  0 N   ;  05 50  0 W   ;  -1.0 ; GMT0BST,M3.5.0,M10.5.0
+Bellingham, Washington                  ;  48 45 34 N   ; 122 28 36 W   ;  18.3 ; PST8PDT
+Bentley WA, Australia                   ;  31 58 43 S   ; 115 48 55 E   ;    76 ; WST-8
+Berkeley, California                    ;  37 52 10 N   ; 122 16 17 W   ;  12.2 ; PST8PDT
+Berlin, Germany                         ;  52 31  0 N   ;  13 25  0 E   ;  81.0 ; CET-1CEST,M3.5.0,M10.5.0
+Bethlehem, Pennsylvania                 ;  40 37 16 N   ;  75 22 34 W   ;  71.6 ; EST5EDT
+Billings, Montana                       ;  45 47  0 N   ; 108 30  4 W   ; 951.0 ; MST7MDT
+Biloxi, Mississippi                     ;  30 23 48 N   ;  88 53  0 W   ;   6.1 ; CST6CDT
+Binghamton, New York                    ;  42  6  3 N   ;  75 54 47 W   ; 263.7 ; EST5EDT
+Birmingham, Alabama                     ;  33 31  1 N   ;  86 48 36 W   ; 182.9 ; CST6CDT
+Bisei Spaceguard Center                 ;  34 40 20 N   ; 133 32 40 E   ; 400   ; JST-9
+Bismarck, North Dakota                  ;  46 48 23 N   ; 100 47 17 W   ; 510.2 ; CST6CDT
+Bloomington, Illinois                   ;  40 28 58 N   ;  88 59 36 W   ; 243.8 ; CST6CDT
+Bogota, Colombia                        ;  04 38  0 N   ;  74  5  0 W   ;  -1.0 ; WBT5
+Boise, Idaho                            ;  43 37  7 N   ; 116 11 58 W   ; 824.2 ; MST7MDT
+Bombay, India                           ;  19  5  3 N   ;  72 51  3 E   ;  -1.0 ; IST-5:30
+Bonn, Germany                           ;  50 44  0 N   ;   7  6  0 E   ;  60.0 ; CET-1CEST,M3.5.0,M10.5.0
+Bordeaux, France                        ;  44 50  0 N   ;   0 35  0 W   ;  -1.0 ; CET-1CEST,M3.5.0,M10.5.0
+Boston, Massachusetts                   ;  42 21 24 N   ;  71  3 25 W   ;   6.4 ; EST5EDT
+Bowling Green, Kentucky                 ;  36 59 41 N   ;  86 26 33 W   ; 155.4 ; CST6CDT
+Bratislava, Slovak Republic             ;  48 10  0 N   ;  17  7  0 E   ;  -1.0 ; CET-2CDT,M3.5.0,M10.5.0
+Brattleboro, Vermont                    ;  42 51  6 N   ;  72 33 48 W   ;  91.4 ; EST5EDT
+Bremen, Germany                         ;  53  4 33 N   ;   8 48 26 E   ;  11.0 ; CET-1CEST,M3.5.0,M10.5.0
+Brest, France                           ;  48 23  0 N   ;   4 29  0 W   ;  -1.0 ; CET-1CEST,M3.5.0,M10.5.0
+Bridgeport, Connecticut                 ;  41 10 49 N   ;  73 11 22 W   ;   3.0 ; EST5EDT
+Brisbane Qld, Australia                 ;  27 30  0 S   ; 153  0  0 E   ;    24 ; EST-10
+Brockton, Massachusetts                 ;  42  5  2 N   ;  71  1 25 W   ;  39.6 ; EST5EDT
+Broken Hill NSW, Australia              ;  31 57  0 S   ; 141 26  0 E   ;    72 ; CST-9:30CDT,M10.5.0,M3.5.0
+Brownsville, Texas                      ;  25 54  7 N   ;  97 29 58 W   ;  10.7 ; CST6CDT
+Brussels, Belgium                       ;  50 50 20 N   ;  04 38 12 E   ;  -1.0 ; CET-1CEST,M3.5.0,M10.5.0
+Bucharest, Romania                      ;  44 25 50 N   ;  26  6 50 E   ;  75.0 ; EET-2EETDST,M3.5.0,M10.5.0
+Budapest, Hungary                       ;  47 30  0 N   ;  19  5  0 E   ;  -1.0 ; CET-2CDT,M3.5.0,M10.5.0
+Buenos Aires, Argentina                 ;  34 34  0 S   ;  58  3  0 W   ;  -1.0 ; AST3
+Buffalo, New York                       ;  42 52 52 N   ;  78 52 21 W   ; 178.3 ; EST5EDT
+Burlington, Vermont                     ;  44 28 34 N   ;  73 12 46 W   ;  33.5 ; EST5EDT
+Butte, Montana                          ;  46  1  6 N   ; 112 32 11 W   ;1757.2 ; MST7MDT
+Buxton, North Carolina                  ;  35 15 45 N   ;  75 33 40 W   ;   2.0 ; EST5EDT
+Byurakan Observatory                    ;  40 20  0 N   ;  44 18  0 E   ;  1500 ; MSK-3MSD,M3.5.0,M10.5.0
+Cairns Qld , Australia                  ;  16 55  0 S   ; 145 46  0 E   ;     0 ; EST-10
+Cairo, Egypt                            ;  31 15  0 N   ;  31  3  0 E   ;  -1.0 ; EST-2EDT1,121,274
+Calar Alto Observatory                  ;  37 13  0 N   ;   2 32  0 W   ;  2168 ; CET-1CEST,M3.5.0,M10.5.0
+Cambridge, England                      ;  52 10  0 N   ;  00  6  0 E   ;  -1.0 ; GMT0BST,M3.5.0,M10.5.0
+Cambridge, Massachusetts                ;  42 22  1 N   ;  71  6 22 W   ;   6.1 ; EST5EDT
+Camden, New Jersey                      ;  39 56 41 N   ;  75  7 14 W   ;   9.1 ; EST5EDT
+Canada-France-Hawaii Tel. (CFHT)        ;  19 49 36 N   ; 155 28 18 W   ;  4200 ; HST10
+Canberra ACT, Australia                 ;  35 14 24 S   ; 149  7 12 E   ;   609 ; EST-10EDT,M10.5.0,M3.5.0
+Canton, Ohio                            ;  40 47 50 N   ;  81 22 37 W   ; 313.9 ; EST5EDT
+Capetown, South Africa                  ;  33 56  0 S   ;  18 22 15 E   ;  -1.0 ; SAT-2
+Caracas, Venezuela                      ;  10 30 24 N   ;  66 55 40 W   ; 914.4 ; VET4  
+Carmel-by-the-Sea, California           ;  36 33 32 N   ; 121 55 79 W   ;   5.0 ; PST8PDT
+Carson City, Nevada                     ;  39 10  0 N   ; 119 46  0 W   ;1426.5 ; PST8PDT
+Casey Observatory, AAT                  ;  66 12  0 S   ; 110 21  0 E   ;    -1 ; WST-8
+Catalina Observatory, Mt. Bigelow       ;  32 25  0 N   ; 110 43 54 W   ;  2510 ; PST8PDT
+Cedar Rapids, Iowa                      ;  41 58  1 N   ;  91 39 53 W   ; 222.5 ; CST6CDT
+Central Coast (Erina) NSW, Australia    ;  33 26  0 S   ; 151 23  0 E   ;     6 ; EST-10EDT,M10.5.0,M3.5.0
+Central Islip, New York                 ;  40 47 24 N   ;  73 12  0 W   ;  24.4 ; EST5EDT
+Cerro Tololo Inter-American Obs.        ;  30  9 54 S   ;  70 48 54 W   ;  2215 ; WST4WDT,M9.5.0,M3.2.0
+Champaign, Illinois                     ;  40  7  5 N   ;  88 14 48 W   ; 225.6 ; CST6CDT
+Charleston, South Carolina              ;  32 46 35 N   ;  79 55 53 W   ;   2.7 ; EST5EDT
+Charleston, West Virginia               ;  38 21  1 N   ;  81 37 52 W   ; 183.2 ; EST5EDT
+Charlotte, North Carolina               ;  35 13 44 N   ;  80 50 45 W   ; 219.5 ; EST5EDT
+Chattanooga, Tennessee                  ;  35  2 41 N   ;  85 18 32 W   ; 205.7 ; EST5EDT
+Cheyenne, Wyoming                       ;  41  8  9 N   ; 104 49  7 W   ;1859.3 ; MST7MDT
+Chicago, Illinois                       ;  41 52 28 N   ;  87 38 22 W   ; 181.4 ; CST6CDT
+Cincinnatti, Ohio                       ;  39  6  7 N   ;  84 30 35 W   ; 271.6 ; EST5EDT
+Cleveland, Ohio                         ;  41 29 51 N   ;  81 41 50 W   ; 201.2 ; EST5EDT
+Cologne, Germany                        ;  50 57  0 N   ;   6 57  0 E   ;  81.0 ; CET-1CEST,M3.5.0,M10.5.0
+Colorado Springs, Colorado              ;  38 50  7 N   ; 104 49 16 W   ;1822.7 ; MST7MDT
+Columbia, Missouri                      ;  38 57  3 N   ;  92 19 46 W   ; 222.5 ; CST6CDT
+Columbia, South Carolina                ;  34  0  2 N   ;  81  2  0 W   ;  57.9 ; EST5EDT
+Columbus Project                        ;  32 42  0 N   ; 109 51  0 W   ;  3170 ; PST8PDT
+Columbus, Georgia                       ;  32 28  7 N   ;  84 59 24 W   ;  80.8 ; EST5EDT
+Columbus, Ohio                          ;  39 57 47 N   ;  83  0 17 W   ; 237.8 ; EST5EDT
+Concord, New Hampshire                  ;  43 12 22 N   ;  71 32 25 W   ;  88.4 ; EST5EDT
+# Entry for Copenhagen is the old Round Tower Observatory.
+Copenhagen, Denmark                     ;  55 40 55 N   ;  12 34 37 E   ;  40.0 ; CET-1CEST,M3.5.0,M10.5.0
+Corpus Christi, Texas                   ;  27 47 51 N   ;  97 23 45 W   ;  10.7 ; CST6CDT
+Crete, Greece                           ;  35 20  0 N   ;  25  9  0 E   ;  -1.0 ; EET-2EETDST,M3.5.0,M10.5.0
+Crimean Astrophysical Obs.              ;  44 44  0 N   ;  34  0  0 E   ;    -1 ; CET-2CDT,M3.5.0,M10.5.0
+Dallas, Texas                           ;  32 47  9 N   ;  96 47 37 W   ; 132.6 ; CST6CDT
+Darwin, NT, Australia                   ;  12 24 58 S   ; 130 52 53 E   ;     0 ; CST-9:30
+Davenport, Iowa                         ;  41 31 19 N   ;  90 34 33 W   ; 179.8 ; CST6CDT
+Davis Observatory, AAT                  ;  68 35  0 S   ;  77 58  0 E   ;    -1 ; AAT-6
+Dayton, Ohio                            ;  39 45 32 N   ;  84 11 43 W   ; 307.6 ; EST5EDT
+Daytona Beach, Florida                  ;  29 12 44 N   ;  81  1 10 W   ;   2.1 ; EST5EDT
+Decatur, Illinois                       ;  39 50 42 N   ;  88 56 47 W   ; 207.9 ; CST6CDT
+Denver, Colorado                        ;  39 44 58 N   ; 104 59 22 W   ;1609.3 ; MST7MDT
+Des Moines, Iowa                        ;  41 35 14 N   ;  93 37  0 W   ; 245.4 ; CST6CDT
+Detroit, Michigan                       ;  42 19 48 N   ;  83  2 57 W   ; 211.3 ; EST5EDT
+Dodge City, Kansas                      ;  37 45 17 N   ; 100  1  9 W   ; 755.9 ; CST6CDT
+Dominion Astrophysical Observatory      ;  48 31 18 N   ; 123 25  0 W   ;   229 ; PST8PDT
+Dominion Radio Astro. Observatory       ;  49 20  0 N   ; 119 36  0 W   ;   545 ; PST8PDT
+Dortmund, Germany                       ;  51 31  0 N   ;   7 28  0 E   ;  76.0 ; CET-1CEST,M3.5.0,M10.5.0
+Dublin, Ireland                         ;  53 18 56 N   ;  06 14 21 W   ;  -1.0 ; GMT0BST,M3.5.0,M10.5.0
+Dubuque, Iowa                           ;  42 29 55 N   ;  90 40  8 W   ; 189.0 ; CST6CDT
+Duluth, Minnesota                       ;  46 46 56 N   ;  92  6 24 W   ; 185.9 ; CST6CDT
+Durham, North Carolina                  ;  36  0  0 N   ;  78 54 45 W   ; 123.4 ; EST5EDT
+Dusseldorf, Germany                     ;  51 13 32 N   ;   6 46 58 E   ;  38.0 ; CET-1CEST,M3.5.0,M10.5.0
+ESO 1-meter Schmidt Telescope           ;  29 15  0 S   ;  70 44  0 W   ;  2318 ; WST4WDT,M9.5.0,M3.2.0
+Eau Claire, Wisconsin                   ;  44 48 31 N   ;  91 29 49 W   ; 240.8 ; CST6CDT
+Edinburgh, Scotland                     ;  55 55  0 N   ;  03 10  0 W   ;  -1.0 ; GMT0BST,M3.5.0,M10.5.0
+Edmonton Alberta, Canada                ;  53 33 47 N   ; 113 36 48 W   ;  -1.0 ; MST7MDT
+Effelsberg 100m Radiotelescope          ;  50 31 36 N   ;  06 51 18 E   ;   369 ; CET-1CEST,M3.5.0,M10.5.0
+El Manzano, Venezuela                   ;  10 02 26 N   ;  69 17 58 W   ; 604.0 ; VET4 
+El Paso, Texas                          ;  31 45 36 N   ; 106 29 11 W   ;1126.2 ; MST7MDT
+Elizabeth, New Jersey                   ;  40 39 43 N   ;  74 12 59 W   ;   6.4 ; EST5EDT
+Enid, Oklahoma                          ;  36 23 40 N   ;  97 52 35 W   ; 378.0 ; CST6CDT
+Erie, Pennsylvania                      ;  42  7 15 N   ;  80  4 57 W   ; 208.8 ; EST5EDT
+Essen, Germany                          ;  51 27  0 N   ;   7  1  0 E   ; 116.0 ; CET-1CEST,M3.5.0,M10.5.0
+Etscorn Campus Observatory              ;  34  4 22 N   ; 106 54 50 W   ;1423.7 ; MST7MDT
+Eugene, Oregon                          ;  44  3 16 N   ; 123  5 30 W   ; 128.6 ; PST8PDT
+Eureka, California                      ;  40 48  8 N   ; 124  9 46 W   ;  13.7 ; PST8PDT
+European Southern Observatory (NTT)     ;  29 15 24 S   ;  70 43 48 W   ;  2347 ; CLT4CLST3,M10.5.0,M3.5.0
+European Southern Observatory (VLT)     ;  24 37 38 S   ;  70 24 15 W   ; 2653.0; CLT4CLST3,M10.5.0,M3.5.0
+Evansville, Indiana                     ;  37 58 20 N   ;  87 34 21 W   ; 117.3 ; CST6CDT
+Fabra-ROA at Montsec, Spain             ;  42 03  6 N   ;  0  43 46 W   ; 1570.0 ; CET-1CEST,M3.5.0,M10.5.0
+Fall River, Massachusetts               ;  41 42  6 N   ;  71  9 18 W   ;  12.2 ; EST5EDT
+Fargo, North Dakota                     ;  46 52 30 N   ;  96 47 18 W   ; 274.3 ; CST6CDT
+Flagstaff, Arizona                      ;  35 11 36 N   ; 111 39  6 W   ;2103.1 ; MST7
+Flint, Michigan                         ;  43  0 50 N   ;  83 41 33 W   ; 228.6 ; EST5EDT
+Fort Smith, Arkansas                    ;  35 23 10 N   ;  94 25 36 W   ; 134.1 ; CST6CDT
+Fort Wayne, Indiana                     ;  41  4 21 N   ;  85  8 26 W   ; 240.8 ; EST5
+Fort Worth, Texas                       ;  32 44 55 N   ;  97 19 44 W   ; 204.2 ; CST6CDT
+Frankfurt, Germany                      ;  50  7  0 N   ;  08 41  0 E   ; 112.0 ; CET-1CEST,M3.5.0,M10.5.0
+Fremont Peak Observatory, CA, USA       ;  36 45 37 N   ; 121 29 55 W   ; 838   ; PST8PDT
+Fresno, California                      ;  36 44 12 N   ; 119 47 11 W   ;  86.9 ; PST8PDT
+Gadsden, Alabama                        ;  34  0 57 N   ;  86  0 41 W   ; 169.2 ; CST6CDT
+Gainesville, Florida                    ;  29 38 56 N   ;  82 19 19 W   ;  53.3 ; EST5EDT
+Gallup, New Mexico                      ;  35 31 30 N   ; 108 44 30 W   ;1993.4 ; MST7MDT
+Galveston, Texas                        ;  29 18 10 N   ;  94 47 43 W   ;   1.5 ; CST6CDT
+Gary, Indiana                           ;  41 36 12 N   ;  87 20 19 W   ; 179.8 ; CST6CDT
+Gemini Telescope (north)                ;  19 49  0 N   ; 155 28  0 W   ;  4100 ; HST10
+Gemini Telescope (south)                ;  30 21  0 S   ;  70 49  0 W   ;  2725 ; WST4WDT,M9.5.0,M3.2.0
+Geneva, Switzerland                     ;  46 14  0 N   ;  06  6  0 E   ;  -1.0 ; CET-1CEST,M3.5.0,M10.5.0
+Gillam Manitoba, Canada                 ;  56 22 48 N   ;  94 38 24 W   ; 145.0 ; CST6CDT
+Grand Junction, Colorado                ;  39  4  6 N   ; 108 33 54 W   ;1399.0 ; MST7MDT
+Grand Rapids, Michigan                  ;  42 58  3 N   ;  85 40 13 W   ; 185.9 ; EST5EDT
+Graz, Austria                           ;  47  4  1 N   ;  15 27  0 E   ; 357.0 ; CET-1CEST,M3.5.0,M10.5.0
+Great Falls, Montana                    ;  47 29 33 N   ; 111 18 23 W   ;1018.0 ; MST7MDT
+Green Bay, Wisconsin                    ;  44 30 48 N   ;  88  0 50 W   ; 179.8 ; CST6CDT
+Greensboro, North Carolina              ;  36  4 17 N   ;  79 47 25 W   ; 255.7 ; EST5EDT
+Greenville, South Carolina              ;  34 50 50 N   ;  82 24  1 W   ; 294.4 ; EST5EDT
+Greenwich, England                      ;  51 30  0 N   ;  00  0  0 W   ;  74.7 ; GMT0BST,M3.5.0,M10.5.0
+Groton, New York                        ;  42 35 26 N   ;  72 33 20 W   ; 250.0 ; EST5EDT
+Guatemala City, Guatemala               ;  14 38  0 N   ;  90 22  0 W   ;  -1.0 ; CST6CDT
+Gulfport, Mississippi                   ;  30 22  4 N   ;  89  5 36 W   ;   6.1 ; CST6CDT
+Halifax Nova Scotia, Canada             ;  44 38 55 N   ;  63 34 25 W   ;  -1.0 ; AST5ADT
+Hamburg, Germany                        ;  53 33  0 N   ;   9 59  0 E   ;   6.0 ; CET-1CEST,M3.5.0,M10.5.0
+Hamilton, Ohio                          ;  39 23 59 N   ;  84 33 47 W   ; 182.9 ; EST5EDT
+Hanging Rock, Victoria, Australia       ;  37 19 81 S   ; 144 35 66 E   ;  1143 ; EST-10EDT,M10.5.0,M3.5.0
+Hannover, Germany                       ;  52 22 28 N   ;   9 44 19 E   ;  55.0 ; CET-1CEST,M3.5.0,M10.5.0
+Harare, Zimbabwe                        ;  17 50  0 S   ;  31  3  0 E   ;  -1.0 ; SAT-2
+Harrisburg, Pennsylvania                ;  40 15 43 N   ;  76 52 59 W   ; 111.3 ; EST5EDT
+Hartford, Connecticut                   ;  41 46 12 N   ;  72 40 49 W   ;  12.2 ; EST5EDT
+Helena, Montana                         ;  46 35 33 N   ; 112  2 24 W   ;1266.4 ; MST7MDT
+Helsinki, Finland                       ;  60 10  0 N   ;  24 50  0 E   ;  -1.0 ; EET-2EETDST,M3.5.0,M10.5.0
+Hobart Tas, Australia                   ;  42 50  0 S   ; 147 20  0 E   ;   151 ; EST-10EDT,M10.1.0,M3.5.0
+Holyoke, Massachusetts                  ;  42 12 29 N   ;  72 36 36 W   ;  35.1 ; EST5EDT
+Honolulu, Hawaii                        ;  21 18 22 N   ; 157 51 35 W   ;   6.4 ; HST10
+Houston, Texas                          ;  29 45 26 N   ;  95 21 37 W   ;  12.2 ; CST6CDT
+Huntington, West Virginia               ;  38 25 12 N   ;  82 26 33 W   ; 172.2 ; EST5EDT
+Huntsville, Alabama                     ;  34 44 18 N   ;  86 35 19 W   ; 195.1 ; CST6CDT
+Ilford NSW, Australia                   ;  32 58  0 S   ; 149 52  0 E   ;   825 ; EST-10EDT,M10.5.0,M3.5.0
+Indianapolis, Indiana                   ;  39 46  7 N   ;  86  9 46 W   ; 216.4 ; EST5
+Iowa City, Iowa                         ;  41 39 37 N   ;  91 31 53 W   ; 208.8 ; CST6CDT
+Isaac Newton Telescope (98-inch)        ;  28 46  0 N   ;  17 53  0 W   ;  2336 ; AST1ADT,M3.5.0,M10.5.0
+Jackson, Michigan                       ;  42 14 43 N   ;  84 24 22 W   ; 286.5 ; EST5EDT
+Jackson, Mississippi                    ;  32 17 56 N   ;  90 11  6 W   ;  90.8 ; CST6CDT
+Jacksonville, Florida                   ;  30 19 44 N   ;  81 39 42 W   ;   6.1 ; EST5EDT
+Jakarta, Indonesia                      ;  06 11  0 S   ; 106 50  0 E   ;  -1.0 ; PST-7
+Jersey City, New Jersey                 ;  40 43 50 N   ;  74  3 56 W   ;   6.1 ; EST5EDT
+Jerusalem, Israel                       ;  31 47  0 N   ;  35 13  0 E   ; 762.0 ; IST-2IDT,M3.5.0,M9.1.0
+Johannesburg, South Africa              ;  26 10  0 S   ;  28  2  0 E   ; 234.7 ; SAT-2
+Johnstown, Pennsylvania                 ;  40 19 35 N   ;  78 55  3 W   ; 361.2 ; EST5EDT
+Joplin, Missouri                        ;  37  5 26 N   ;  94 30  0 W   ; 301.8 ; CST6CDT
+Juneau, Alaska                          ;  58 18 12 N   ; 134 24 30 W   ;  15.2 ; YST9YDT
+KHBI, Saipan, MI                        ;  15  7 20 N   ; 145 41 37 E   ;    -1 ; PST-9
+Kalamazoo, Michigan                     ;  42 17 29 N   ;  85 35 14 W   ; 230.1 ; EST5EDT
+Kansas City, Kansas                     ;  39  7  4 N   ;  94 38 24 W   ; 228.6 ; CST6CDT
+Kansas City, Missouri                   ;  39  7 56 N   ;  94 35 20 W   ; 228.6 ; CST6CDT
+Karl Schwarzschild Observatorium        ;  50 59  0 N   ;  11 43  0 E   ;   331 ; CET-1CEST,M3.5.0,M10.5.0
+Kenosha, Wisconsin                      ;  42 35 43 N   ;  87 50 11 W   ; 185.9 ; CST6CDT
+Kensington NSW, Australia               ;  33 52  0 S   ; 151 13  0 E   ;     6 ; EST-10EDT,M10.5.0,M3.5.0
+Key West, Florida                       ;  24 33 30 N   ;  81 48 12 W   ;   1.5 ; EST5EDT
+Kiso Observatory                        ;  35 48  0 N   ; 137 38  0 E   ;  1130 ; JST-9
+Kitt Peak National Obs.                 ;  31 58 48 N   ; 111 36  0 W   ;  2120 ; MST7
+Knoxville, Tennessee                    ;  35 57 39 N   ;  83 55  7 W   ; 271.3 ; EST5EDT
+Kuala Lumpur, Malaysia                  ;  03  8  0 N   ; 101 42  0 E   ;  -1.0 ; MYT-8
+Lafayette, Indiana                      ;  40 25 11 N   ;  86 53 39 W   ; 167.6 ; EST5
+Lancaster, Pennsylvania                 ;  40  2 25 N   ;  76 18 29 W   ; 108.2 ; EST5EDT
+Lansing, Michigan                       ;  42 44  1 N   ;  84 33 15 W   ; 253.0 ; EST5EDT
+Laredo, Texas                           ;  27 30 22 N   ;  99 30 30 W   ; 134.1 ; CST6CDT
+Large Binocular Telescope               ;  32 42 05 N   ; 109 53 21 W   ; 3221  ; MST7
+Large Earth-based Solar Tel. (LEST)     ;  28 46  0 N   ;  17 53  0 W   ;  2400 ; AST1ADT,M3.5.0,M10.5.0
+Las Campanas Observatory                ;  29  0 12 S   ;  70 42  6 W   ;  2282 ; WST4WDT,M9.5.0,M3.2.0
+Las Vegas, Nevada                       ;  36 10 20 N   ; 115  8 37 W   ; 618.7 ; PST8PDT
+Lawrence, Massachusetts                 ;  42 42 16 N   ;  71 10  8 W   ;  19.8 ; EST5EDT
+Leander McCormick Observatory           ;  38  2  0 N   ;  78 31  0 W   ;   264 ; EST5EDT
+Learmonth Solar Observatory             ;  22 14  0 S   ; 114  5  0 E   ;    20 ; WST-8
+Lexington, Kentucky                     ;  38  2 50 N   ;  84 29 46 W   ; 291.1 ; EST5EDT
+Lick Observatory                        ;  37 21  0 N   ; 121 38  0 W   ;  1290 ; PST8PDT
+Lille, France                           ;  50 38  0 N   ;   3  4  0 E   ;    -1 ; CET-1CEST,M3.5.0,M10.5.0
+Lima, Ohio                              ;  40 44 35 N   ;  84  6 20 W   ; 263.7 ; EST5EDT
+Lincoln, Nebraska                       ;  40 48 59 N   ;  96 42 15 W   ; 350.5 ; CST6CDT
+Lisbon, Portugal                        ;  38 43  0 N   ;  09  8  0 W   ;  -1.0 ; WET0WETDST,M3.5.0,M10.5.0
+Little Rock, Arkansas                   ;  34 44 42 N   ;  92 16 37 W   ;  87.2 ; CST6CDT
+London, England                         ;  51 30 30 N   ;  00 11  0 W   ;  -1.0 ; GMT0BST,M3.5.0,M10.5.0
+Long Beach, California                  ;  33 46 14 N   ; 118 11 18 W   ;  10.7 ; PST8PDT
+Longyearbyen, Norway                    ;  78 12 09 N   ;  15 49 44 E   ;  13.0 ; MET-1MET(DST),M3.5.0,M10.5.0
+Lorain, Ohio                            ;  41 28  5 N   ;  82 10 49 W   ; 185.9 ; EST5EDT
+Los Angeles, California                 ;  34  3 15 N   ; 118 14 28 W   ; 103.6 ; PST8PDT
+Louisville, Kentucky                    ;  38 14 47 N   ;  85 45 49 W   ; 137.2 ; EST5EDT
+Lowell, Massachusetts                   ;  42 38 25 N   ;  71 19 14 W   ;  30.5 ; EST5EDT
+Lubbock, Texas                          ;  33 35  5 N   ; 101 50 33 W   ; 973.8 ; CST6CDT
+Lund, Sweden                            ;  55 69  0 N   ;  13 18  0 E   ;  -1.0 ; CET-1CEST,M3.5.0,M10.5.0
+Luxembourg, Luxembourg                  ;  49 37  0 N   ;  06  9  0 E   ;  -1.0 ; CET-1CEST,M3.5.0,M10.5.0
+MMT                                     ;  31 41  0 N   ; 110 53  0 W   ;  2608 ; MST7
+Macon, Georgia                          ;  32 50 12 N   ;  83 37 36 W   ; 102.1 ; EST5EDT
+Macquarie Island, AAT                   ;  54 30  0 S   ; 158 57  0 E   ;    -1 ; NZT-12NZS,M10.1.0,M3.2.0
+Madison, Wisconsin                      ;  43  4 23 N   ;  89 22 55 W   ; 262.1 ; CST6CDT
+Madrid, Spain                           ;  40 25  0 N   ;  03 42  0 W   ;  -1.0 ; CET-1CEST,M3.5.0,M10.5.0
+Magdalena Ridge Obs, NM, USA            ;  33 59  6 N   ; 107 11 21 W   ; 3235  ; MST7MDT
+Managua, Nicaragua                      ;  13 16  0 N   ;  87 40  0 W   ;  -1.0 ; CST6
+Manchester, New Hampshire               ;  42 59 26 N   ;  71 27 41 W   ;  53.3 ; EST5EDT
+Marseille, France                       ;  43 17  0 N   ;   5 22  0 E   ;    -1 ; CET-1CEST,M3.5.0,M10.5.0
+Marshall, Texas                         ;  32 33  0 N   ;  94 23  0 W   ; 125.0 ; CST6CDT
+Mauna Kea Observatory (NASA IRTF)       ;  19 50  0 N   ; 155 28  0 W   ;  4208 ; HST10
+Mawson Observatory, AAT                 ;  67 36  0 S   ;  62 53  0 E   ;    -1 ; AAT-6
+McDonald Observatory                    ;  30 40 18 N   ; 104  1 18 W   ;  2075 ; CST6CDT
+Melbourne Vic, Australia                ;  37 48  0 S   ; 144 58  0 E   ;     9 ; EST-10EDT,M10.5.0,M3.5.0
+Memphis, Tennessee                      ;  35  8 46 N   ;  90  3 13 W   ;  83.8 ; CST6CDT
+Menville, France                        ;  43 40 41 N   ;   1 11 40 E   ; 135.0 ; CET-1CEST,M3.5.0,M10.5.0
+Merida, Venezuela                       ;  08 35 56 N   ;  71 09 12 W   ; 1603. ; VET4
+Meriden, Connecticut                    ;  41 32  6 N   ;  72 47 30 W   ;  57.9 ; EST5EDT
+Metepec, Puebla, Mexico                 ;  18 55 93 N   ;  98 28 01 W   ;  1956 ; CST6CDT
+Miami, Florida                          ;  25 46 37 N   ;  80 11 32 W   ;   3.0 ; EST5EDT
+Michigan-Dartmouth-MIT Obs.             ;  31 57  0 N   ; 111 37  0 W   ;  1938 ; MST7
+Milano, Italy                           ;  45 26 35 N   ;  09 11  9 E   ;  -1.0 ; CET-1CEST,M3.5.0,M10.5.0
+Milwaukee, Wisconsin                    ;  43  2 19 N   ;  87 54 15 W   ; 193.5 ; CST6CDT
+Minneapolis, Minnesota                  ;  44 58 57 N   ;  93 15 43 W   ; 248.4 ; CST6CDT
+Minot, North Dakota                     ;  48 14  9 N   ; 101 17 38 W   ; 472.4 ; CST6CDT
+Mobile, Alabama                         ;  30 41 36 N   ;  88  2 33 W   ;   1.5 ; CST6CDT
+Moline, Illinois                        ;  41 30 31 N   ;  90 30 49 W   ; 178.3 ; CST6CDT
+Monte Alban, Oaxaca, Mexico             ;  17 02 67 N   ;  96 46 13 W   ;  1700 ; CST6CDT
+Monterey, California                    ;  36 37 46 N   ; 121 50 50 W   ;   5.0 ; PST8PDT
+Montgomery, Alabama                     ;  32 22 33 N   ;  86 18 31 W   ;  48.8 ; CST6CDT
+Montpelier, Vermont                     ;  44 15 36 N   ;  72 34 41 W   ; 147.8 ; EST5EDT
+Montreal Quebec, Canada                 ;  45 30 24 N   ;  73 34  2 W   ;  -1.0 ; EST5EDT
+Moratuwa, Sri Lanka                     ;  06 45  0 N   ;  79 55  0 E   ;  -1.0 ; IST-5:30
+Moscow, Russia                          ;  55 45  0 N   ;  37 42  0 E   ; 120.1 ; MSK-3MSD,M3.5.0,M10.5.0
+Mount Wilson Observatory                ;  34 13  0 N   ; 118  3  0 W   ;  1742 ; PST8PDT
+Mt. Stromlo Observatory                 ;  35 19 15 S   ; 149  1 28 E   ;   767 ; EST-10EDT,M10.5.0,M3.5.0
+Mudgee NSW, Australia                   ;  32 36  0 S   ; 150 52 12 E   ;   582 ; EST-10EDT,M10.5.0,M3.5.0
+Muncie, Indiana                         ;  40 11 28 N   ;  85 23 16 W   ; 289.6 ; CST6
+Munich, Germany                         ;  48  8  0 N   ;  11 34  0 E   ;   519 ; CET-1CEST,M3.5.0,M10.5.0
+Nancay Radiotelescope, France           ;  47 22 48 N   ;  02 11 48 E   ;   150 ; CET-1CEST,M3.5.0,M10.5.0
+Naples, Italy                           ;  40 51 46 N   ;  14 15 18 E   ;   150 ; CET-1CEST,M3.5.0,M10.5.0
+Nashville, Tennessee                    ;  36  9 33 N   ;  86 46 55 W   ; 137.2 ; CST6CDT
+Natchez, Mississippi                    ;  31 33 48 N   ;  91 23 30 W   ;  64.0 ; CST6CDT
+National Astronomy Obs. (Japan)         ;  19 49  0 N   ; 155 28  0 W   ;  4215 ; HST10
+New Bedford, Massachusetts              ;  41 38 13 N   ;  70 55 41 W   ;   4.6 ; EST5EDT
+New Britain, Connecticut                ;  41 40  8 N   ;  72 46 59 W   ;  61.0 ; EST5EDT
+New Delhi, India                        ;  28 38  0 N   ;  77 12  0 E   ; 234.7 ; IST-5:30
+New Haven, Connecticut                  ;  41 18 25 N   ;  72 55 30 W   ;  12.2 ; EST5EDT
+New Orleans, Louisiana                  ;  29 56 53 N   ;  90  4 10 W   ;   1.5 ; CST6CDT
+New York, New York                      ;  40 45  6 N   ;  73 59 39 W   ;  16.8 ; EST5EDT
+Newark, New Jersey                      ;  40 44 14 N   ;  74 10 19 W   ;  16.8 ; EST5EDT
+Newcastle NSW, Australia                ;  32 52  0 S   ; 151 49  0 E   ;     1 ; EST-10EDT,M10.5.0,M3.5.0
+Niagara Falls, New York                 ;  43  5 34 N   ;  79  3 26 W   ; 173.7 ; EST5EDT
+Nordic Optical Telescope                ;  28 45  0 N   ;  17 53  0 W   ;  2382 ; AST1ADT,M3.5.0,M10.5.0
+Norfolk, Virginia                       ;  36 51 10 N   ;  76 17 21 W   ;   3.0 ; EST5EDT
+North Liberty Radio Observatory         ;  41 46 17 N   ;  91 34 26 W   ; 240.0 ; CST6CDT
+OAB, Brera  (MI), Italy                 ;  45 27 59 N   ;   9 11 30 E   ;   147 ; CET-1CEST,M3.5.0,M10.5.0
+OAB, Merate (LC), Italy                 ;  45 41 54 N   ;   9 25 45 E   ;   334 ; CET-1CEST,M3.5.0,M10.5.0
+Oakland, California                     ;  37 48  3 N   ; 122 15 54 W   ;   7.6 ; PST8PDT
+Oaxaca, Oaxaca, Mexico                  ;  17 03 45 N   ;  96 43 85 W   ;  1625 ; CST6CDT
+Obs. Astro. Nacional, San Pedro Martir  ;  31  1 45 N   ; 115 29 12 W   ;  2830 ; PST8PDT
+Obs. Astro. Nacional, Tonantzintla      ;  19  1 58 N   ;  98 18 50 W   ;    -1 ; CST6CDT
+Observatoire Royal de Belgique          ;  50 48  0 N   ;   4 21  0 E   ;   105 ; CET-1CEST,M3.5.0,M10.5.0
+Observatoire de Besancon                ;  47 14 50 N   ;   5 59 23 E   ;   360 ; CET-1CEST,M3.5.0,M10.5.0
+Observatoire de Calern                  ;  43 45 18 N   ;   6 56 18 E   ;  1270 ; CET-1CEST,M3.5.0,M10.5.0
+Observatoire de Nice                    ;  43 43  0 N   ;   7 18  0 E   ;   372 ; CET-1CEST,M3.5.0,M10.5.0
+Observatoire de Paris                   ;  48 48  0 N   ;   2 14  0 E   ;   162 ; CET-1CEST,M3.5.0,M10.5.0
+Ogden, Utah                             ;  41 13 31 N   ; 111 58 21 W   ;1309.1 ; MST7MDT
+Oklahoma City, Oklahoma                 ;  35 28 26 N   ;  97 31  4 W   ; 364.2 ; CST6CDT
+Old Royal Observatory                   ;  51 29  0 N   ;   0  0  0 W   ;    47 ; GMT0BST,M3.5.0,M10.5.0
+Omaha, Nebraska                         ;  41 15 42 N   ;  95 56 14 W   ; 317.0 ; CST6CDT
+Orlando, Florida                        ;  28 32 42 N   ;  81 22 38 W   ;  21.3 ; EST5EDT
+Oschin 48-inch Telescope                ;  33 21  0 N   ; 116 51  0 W   ;  1706 ; PST8PDT
+Oslo, Norway                            ;  59 55  0 N   ;  10 45  0 E   ;  -1.0 ; CET-1CEST,M3.5.0,M10.5.0
+Ottawa, Ontario, Canada                 ;  45 24  0 N   ;  75 39  0 W   ;  -1.0 ; EST5EDT
+Paducah, Kentucky                       ;  37  5 13 N   ;  88 25 56 W   ; 105.2 ; CST6CDT
+Palomar Observatory (200 inch)          ;  33 21  0 N   ; 116 52  0 W   ;  1706 ; PST8PDT
+Paris, France                           ;  48 50 14 N   ;  02 20 14 E   ;  91.4 ; CET-1CEST,M3.5.0,M10.5.0
+Parkes Radiotelescope, Australia        ;  33  0  0 S   ; 148 15 42 E   ;   392 ; EST-10EDT,M10.5.0,M3.5.0
+Pasadena, California                    ;  34  8 44 N   ; 118  8 41 W   ; 253.0 ; PST8PDT
+Paterson, New Jersey                    ;  40 55  1 N   ;  74 10 21 W   ;  30.5 ; EST5EDT
+Pensacola, Florida                      ;  30 24 51 N   ;  87 12 56 W   ;   4.6 ; CST6CDT
+Peoria, Illinois                        ;  40 41 42 N   ;  89 35 33 W   ; 143.3 ; CST6CDT
+Perth, WA, Australia                    ;  31 56 29 S   ; 115 57 55 E   ;    67 ; WST-8
+Philadelphia, Pennsylvania              ;  39 56 58 N   ;  75  9 21 W   ;  30.5 ; EST5EDT
+Phoenix, Arizona                        ;  33 27 12 N   ; 112  4 28 W   ; 332.2 ; MST7
+Pierre, South Dakota                    ;  44 22 18 N   ; 100 20 54 W   ; 451.1 ; CST6CDT
+Pittsburgh, Pennsylvania                ;  40 29 19 N   ;  80  0  0 W   ; 227.1 ; EST5EDT
+Pittsfield, Massachusetts               ;  42 26 53 N   ;  73 15 14 W   ; 309.4 ; EST5EDT
+Pocatello, Idaho                        ;  42 51 38 N   ; 112 27  1 W   ;1359.4 ; MST7MDT
+Port Arthur, Texas                      ;  29 52 30 N   ;  93 56 15 W   ;   3.0 ; CST6CDT
+Portland, Maine                         ;  43 39 33 N   ;  70 15 19 W   ;   7.6 ; EST5EDT
+Portland, Oregon                        ;  45 31  6 N   ; 122 40 35 W   ;  23.5 ; PST8PDT
+Portsmouth, New Hampshire               ;  43  4 30 N   ;  70 45 24 W   ;   6.1 ; EST5EDT
+Portsmouth, Virginia                    ;  36 50  7 N   ;  76 18 14 W   ;   3.0 ; EST5EDT
+Prague, Czech Republic                  ;  50  5  0 N   ;  14 24  0 E   ;  -1.0 ; CET-1CEST,M3.5.0,M10.5.0
+Pretoria, South Africa                  ;  26 10  0 S   ;  28  2  0 E   ;  -1.0 ; SAT-2
+Providence, Rhode Island                ;  41 49 32 N   ;  71 24 41 W   ;  24.4 ; EST5EDT
+Provo, Utah                             ;  40 14  6 N   ; 111 39 24 W   ;1386.8 ; MST7MDT
+Prude Ranch, Fort Davis, TX             ;  30 36 38 N   ; 103 57 07 W   ;1539.2 ; CST6CDT
+Puebla, Puebla, Mexico                  ;  19 02 43 N   ;  98 11 83 W   ;  2195 ; CST6CDT
+Pueblo, Colorado                        ;  38 16 17 N   ; 104 36 33 W   ;1429.5 ; MST7MDT
+Racine, Wisconsin                       ;  42 43 49 N   ;  87 47 12 W   ; 192.0 ; CST6CDT
+Radioastrophysical Observatory          ;  56 47  0 N   ;  24 24  0 E   ;    75 ; CET-1CEST,M3.5.0,M10.5.0
+Rainwater Observatory, French Camp, MS  ;  33 17 15 N   ;  89 23 05 W   ; 120.0 ; CST6CDT
+Raleigh, North Carolina                 ;  35 46 38 N   ;  78 38 21 W   ; 111.3 ; EST5EDT
+Rankin Inlet Nunavut, Canada            ;  62 49 12 N   ;  92 06 36 W   ;  19.0 ; CST6CDT
+Rapid City, South Dakota                ;  44  4 52 N   ; 103 13 11 W   ; 984.5 ; MST7MDT
+Reading, Pennsylvania                   ;  40 20  9 N   ;  75 55 40 W   ;  80.8 ; EST5EDT
+Real Observario de la Armada, Spain     ;  36 27 52 N   ;   6 12 18 W   ;  30.0 ; CET-1CEST,M3.5.0,M10.5.0
+Reno, Nevada                            ;  39 31 27 N   ; 119 48 40 W   ;1368.6 ; PST8PDT
+Reykjavik, Iceland                      ;  64  7 47 N   ;  21 56 13 W   ;  -1.0 ; GMT0
+Richmond, Virginia                      ;  37 32 15 N   ;  77 26  9 W   ;  48.8 ; EST5EDT
+Rio de Janeiro, Brazil                  ;  22 53 43 S   ;  43 13 22 W   ;   9.1 ; EBT3EDT,M10.2.0,M2.1.0
+Roanoke, Virginia                       ;  37 16 13 N   ;  79 56 44 W   ; 275.8 ; EST5EDT
+Rochester, Minnesota                    ;  44  1 21 N   ;  92 28  3 W   ; 301.8 ; CST6CDT
+Rochester, New York                     ;  43  9 41 N   ;  77 36 21 W   ; 157.0 ; EST5EDT
+Rockford, Illinois                      ;  42 16  7 N   ;  89  5 48 W   ; 217.9 ; CST6CDT
+Rome, Italy                             ;  41 53  0 N   ;  12 30  0 E   ;  29.0 ; CET-1CEST,M3.5.0,M10.5.0
+Roque de los Muchachos, La Palma        ;  28 45 30 N   ;  17 52 48 W   ;  2327 ; AST1ADT,M3.5.0,M10.5.0
+Royal Greenwich Observatory             ;  50 52  0 N   ;     20  0 E   ;    34 ; GMT0BST,M3.5.0,M10.5.0
+Sacramento, California                  ;  38 34 57 N   ; 121 29 41 W   ;   9.1 ; PST8PDT
+Saginaw, Michigan                       ;  43 25 52 N   ;  83 56  5 W   ; 181.4 ; EST5EDT
+Saint Cloud, Minnesota                  ;  45 34  0 N   ;  94 10 24 W   ; 317.0 ; CST6CDT
+Saint Joseph, Missouri                  ;  39 45 57 N   ;  94 51  2 W   ; 259.1 ; CST6CDT
+Saint Louis, Missouri                   ;  38 37 45 N   ;  90 12 22 W   ; 138.7 ; CST6CDT
+Saint Lucia Qld, Australia              ;  27 30  2 S   ; 153  0 41 E   ;    24 ; EST-10
+Saint Paul, Minnesota                   ;  44 57 19 N   ;  93  6  7 W   ; 237.7 ; CST6CDT
+Saint Petersburg, Florida               ;  27 46 18 N   ;  82 38 19 W   ;   6.1 ; EST5EDT
+Salem, Oregon                           ;  44 56 24 N   ; 123  1 59 W   ;  47.2 ; PST8PDT
+Salina, Kansas                          ;  38 50 36 N   ;  97 36 46 W   ; 374.6 ; CST6CDT
+Salt Lake City, Utah                    ;  40 45 23 N   ; 111 53 26 W   ;1338.1 ; MST7MDT
+Salzburg, Austria                       ;  47 47 44 N   ;  13 03 16 E   ; 424.0 ; CET-1CEST,M3.5.0,M10.5.0
+San Angelo, Texas                       ;  31 27 39 N   ; 100 26  3 W   ; 562.4 ; CST6CDT
+San Antonio, Texas                      ;  29 25 37 N   ;  98 29  6 W   ; 198.1 ; CST6CDT
+San Bernardino, California              ;  34  6 30 N   ; 117 17 28 W   ; 329.2 ; PST8PDT
+San Diego, California                   ;  32 42 53 N   ; 117  9 21 W   ;   6.1 ; PST8PDT
+San Francisco, California               ;  37 46 39 N   ; 122 24 40 W   ;  19.8 ; PST8PDT
+San Jose, California                    ;  37 20 16 N   ; 121 53 24 W   ;  27.4 ; PST8PDT
+San Juan, Puerto Rico                   ;  18 28  0 N   ;  66  7  0 W   ;  -1.0 ; AST4
+Santa Barbara, California               ;  34 25 18 N   ; 119 41 55 W   ;  30.5 ; PST8PDT
+Santa Cruz, California                  ;  36 58 18 N   ; 122  1 18 W   ;   6.1 ; PST8PDT
+Santa Fe, New Mexico                    ;  35 41 11 N   ; 105 56 10 W   ;2118.4 ; MST7MDT
+Santiago, Chile                         ;  33 27  0 S   ;  70 33  0 W   ;  -1.0 ; WST4WDT,M9.5.0,M3.2.0
+Santo Domingo, Dominican Republic       ;  18 30  0 N   ;  69 57  0 W   ;  -1.0 ; DRT4
+Sapporo, Japan                          ;  43  4  0 N   ; 141 20  0 E   ;  -1.0 ; JST-9
+Sarasota, Florida                       ;  27 20  5 N   ;  82 32 30 W   ;   6.1 ; EST5EDT
+Savannah, Georgia                       ;  32  4 42 N   ;  81  5 37 W   ;   6.1 ; EST5EDT
+Schenectady, New York                   ;  42 48 42 N   ;  73 55 42 W   ;  74.7 ; EST5EDT
+Scranton, Pennsylvania                  ;  41 24 32 N   ;  75 39 46 W   ; 221.0 ; EST5EDT
+Seattle, Washington                     ;  47 36 32 N   ; 122 20 12 W   ;   3.0 ; PST8PDT
+Sheboygan, Wisconsin                    ;  43 45  3 N   ;  87 42 52 W   ; 192.0 ; CST6CDT
+Sheridan, Wyoming                       ;  44 47 55 N   ; 106 57 10 W   ;1140.0 ; MST7MDT
+Shreveport, Louisiana                   ;  32 30 46 N   ;  93 44 58 W   ;  62.2 ; CST6CDT
+Siding Spring Observatory               ;  31 16 24 S   ; 149  3 41 E   ;  1149 ; EST-10EDT,M10.5.0,M3.5.0
+Singapore, Singapore                    ;  01 25  0 N   ; 103 50  0 E   ;  -1.0 ; SST-8
+Sioux City, Iowa                        ;  42 29 46 N   ;  96 24 30 W   ; 338.3 ; CST6CDT
+Sioux Falls, South Dakota               ;  43 32 35 N   ;  96 43 35 W   ; 425.2 ; CST6CDT
+Socorro, NM                             ;  34  3 11 N   ; 106 53 28 W   ;  1420 ; MST7MDT
+Sofia, Bulgaria                         ;  42 40  0 N   ;  23 18  0 E   ;  -1.0 ; EET-3EDT,M3.5.0,M10.5.0
+Somerville, Massachusetts               ;  42 23 15 N   ;  71  6  7 W   ;   4.0 ; EST5EDT
+South Bend, Indiana                     ;  41 40 33 N   ;  86 15  1 W   ; 216.4 ; EST5
+Space Telescope Science Inst.           ;  39 18  0 N   ;  76 37  0 W   ;   6.1 ; EST5EDT
+Spartanburg, South Carolina             ;  34 57  3 N   ;  81 56  6 W   ; 266.7 ; EST5EDT
+Special Astrophysical Obs.              ;  43 39  0 N   ;  41 26  0 E   ;  2100 ; MSK-3MSD,M3.5.0,M10.5.0
+Spokane, Washington                     ;  47 39 32 N   ; 117 25 33 W   ; 576.1 ; PST8PDT
+Springfield, Illinois                   ;  39 47 58 N   ;  89 38 51 W   ; 185.9 ; CST6CDT
+Springfield, Massachusetts              ;  42  6 21 N   ;  72 35 32 W   ;  25.9 ; EST5EDT
+Springfield, Missouri                   ;  37 13  3 N   ;  93 17 32 W   ; 396.2 ; CST6CDT
+Springfield, Ohio                       ;  39 55 38 N   ;  83 48 29 W   ; 298.7 ; EST5EDT
+St. Petersburg, Russia                  ;  59 55  0 N   ;  30 15  0 E   ;  -1.0 ; MSK-3MSD,M3.5.0,M10.5.0
+Stamford, Connecticut                   ;  41  3  9 N   ;  73 32 24 W   ;  10.7 ; EST5EDT
+Steubenville, Ohio                      ;  40 21 42 N   ;  80 36 53 W   ; 201.2 ; EST5EDT
+Stockholm, Sweden                       ;  59 35  0 N   ;  18  6  0 E   ;  -1.0 ; CET-1CEST,M3.5.0,M10.5.0
+Stockton, California                    ;  37 57 30 N   ; 121 17 16 W   ;   6.1 ; PST8PDT
+Strasbourg, France                      ;  48 35  0 N   ;   7 45  0 E   ;    -1 ; CET-1CEST,M3.5.0,M10.5.0
+Stuttgart, Germany                      ;  48 47  0 N   ;   9 11  0 E   ; 245.0 ; CET-1CEST,M3.5.0,M10.5.0
+Superior, Wisconsin                     ;  46 43 14 N   ;  92  6  7 W   ; 192.0 ; CST6CDT
+Surfers Paradise Qld, Australia         ;  28 00  2 S   ; 153 26  0 E   ;     0 ; EST-10
+Sydney NSW, Australia                   ;  33 52  0 S   ; 151 12  0 E   ;    60 ; EST-10EDT,M10.5.0,M3.5.0
+Syracuse, New York                      ;  43  3  4 N   ;  76  9 14 W   ; 121.9 ; EST5EDT
+Tacoma, Washington                      ;  47 14 59 N   ; 122 26 15 W   ;  33.5 ; PST8PDT
+Taipei, Taiwan                          ;  25  2  0 N   ; 121 31  0 E   ;  -1.0 ; TST-8
+Tallahassee, Florida                    ;  30 26 30 N   ;  84 16 56 W   ;  45.7 ; EST5EDT
+Tallinn, Estonia                        ;  59 27  0 N   ;  24 45  0 E   ;  -1.0 ; EET-2EETDST,M3.5.0,M10.5.0
+Tampa, Florida                          ;  27 56 58 N   ;  82 27 25 W   ;   4.6 ; EST5EDT
+Telescopio Nazionale Galileo            ;  28 46  0 N   ;  17 53  0 W   ;  2400 ; AST1ADT,M3.5.0,M10.5.0
+Terre Haute, Indiana                    ;  39 28  3 N   ;  87 24 26 W   ; 151.2 ; EST5
+Texarkana, Texas                        ;  33 25 48 N   ;  94  2 30 W   ;  98.8 ; CST6CDT
+Tokyo, Japan                            ;  35 45  0 N   ; 139 45  0 E   ;   9.1 ; JST-9
+Toledo, Ohio                            ;  41 39 14 N   ;  83 32 39 W   ; 208.5 ; EST5EDT
+Topeka, Kansas                          ;  39  3 16 N   ;  95 40 23 W   ; 283.5 ; CST6CDT
+Toronto Ontario, Canada                 ;  43 39 10 N   ;  79 23  0 W   ;  91.4 ; EST5EDT
+Torun Radiotelescope, Poland            ;  52 54 38 N   ;  18 33 50 E   ; 127.7 ; CET-2/CEST-2,M3.5.0,M10.5.0
+Torus Observatory                       ;  47 10 58 N   ; 122  7 57 W   ;   250 ; PST8PDT
+Trenton, New Jersey                     ;  40 13 14 N   ;  74 46 13 W   ;  10.7 ; EST5EDT
+Tromso, Norway                          ;  69 41  0 N   ;  18 95  0 E   ;  -1.0 ; CET-1CEST,M3.5.0,M10.5.0
+Troy, New York                          ;  42 43 45 N   ;  73 40 58 W   ;  10.7 ; EST5EDT
+Tucson, Arizona                         ;  32 13 15 N   ; 110 58  8 W   ; 728.5 ; MST7
+Tulsa, Oklahoma                         ;  36  9 12 N   ;  95 59 34 W   ; 245.1 ; CST6CDT
+U. S. Naval Observatory                 ;  38 55  0 N   ;  77  4  0 W   ;    92 ; MST7
+United Kingdom Infrared Tel. (UKIRT)    ;  19 50  0 N   ; 155 28  0 W   ;  4194 ; HST10
+United Kingdom Schmidt Tel. Unit        ;  31 16  0 S   ; 149  4  0 E   ;  1145 ; EST-10EDT,M10.5.0,M3.5.0
+Univ. of BC and Laval Univ.             ;  49  7  0 N   ; 122 35  0 W   ;    50 ; PST8PDT
+Uppsala University Observatory          ;  59 30  0 N   ;  17 36  0 E   ;    33 ; CET-1CEST,M3.5.0,M10.5.0
+Urbana, Illinois                        ;  40  6 42 N   ;  88 12  6 W   ; 221.0 ; CST6CDT
+Utica, New York                         ;  43  6 12 N   ;  75 13 33 W   ; 126.5 ; EST5EDT
+Vatican Advanced Technology Telescope   ;  32 42  5 N   ; 109 53 33 W   ; 3178  ; MST7
+VLA, New Mexico                         ;  34 04 44 N   ; 107 37 04 W   ; 2124.0; MST7MDT
+VLBA, Brewster, WA                      ;  48 07 52 N   ; 119 40 55 W   ;  255  ; PST8PDT
+VLBA, Fort Davis, TX                    ;  30 38 05 N   ; 103 56 39 W   ; 1615  ; CST6CDT
+VLBA, Hancock, NH                       ;  42 56 00 N   ;  71 59 11 W   ;  309  ; EST5EDT
+VLBA, Kitt Peak, AZ                     ;  31 57 22 N   ; 111 36 42 W   ; 1916  ; MST7
+VLBA, Los Alamos, NM                    ;  35 46 30 N   ; 106 14 42 W   ; 1967  ; MST7MDT
+VLBA, Mauna Kea, HI                     ;  19 48 15 N   ; 155 27 28 W   ; 3720  ; HST10
+VLBA, N. Liberty, IA                    ;  41 46 17 N   ;  91 34 26 W   ;  241  ; CST6CDT
+VLBA, Owens Vly., CA                    ;  37 13 54 N   ; 118 16 33 W   ; 1207  ; PST8PDT
+VLBA, Pie Town, NM                      ;  34 18 03 N   ; 108 07 07 W   ; 2371  ; MST7MDT
+VLBA, St. Croix, VI                     ;  17 45 30 N   ;  64 35 02 W   ;   16  ; AST4
+Vainu Bappu Observatory                 ;  12 35  0 N   ;  78 50  0 E   ;   725 ; IST-5:30
+Vancouver British Columbia, Canada      ;  49 16 32 N   ; 123  8 31 W   ;   -1.0; PST8PDT
+Varna, Bulgaria                         ;  43 12  0 N   ;  27 57  0 E   ;  -1.0 ; CET-2CDT,M3.5.0,M10.5.0
+Venezuela 1-meter Schmidt               ;   8 47  0 N   ;  70 52  0 W   ;  3610 ; AST4
+Victoria British Columbia, Canada       ;  48 30  0 N   ; 123 25  0 W   ;  -1.0 ; PST8PDT
+Vienna, Austria                         ;  48 12  0 N   ;  16 22  0 E   ;  -1.0 ; CET-1CEST,M3.5.0,M10.5.0
+W. M. Keck Observatory                  ;  19 49  0 N   ; 155 28  0 W   ;  4150 ; HST10
+WIYN Observatory                        ;  31 57  0 N   ; 111 36  0 W   ;  2089 ; MST7
+WSHB, Cyprus Creek, South Carolina      ;  32 41  2 N   ;  81  7 51 W   ;    -1 ; EST5EDT
+Waco, Texas                             ;  31 33 12 N   ;  97  8  0 W   ; 123.4 ; CST6CDT
+Walla Walla, Washington                 ;  46  4  8 N   ; 118 20 24 W   ; 285.3 ; PST8PDT
+Warsaw, Poland                          ;  52 15  0 N   ;  21  0  0 E   ; 109.7 ; CET-2/CEST-2,M3.5.0,M10.5.0
+Washington, DC                          ;  38 53 51 N   ;  77  0 33 W   ;   7.6 ; EST5EDT
+Waterbury, Connecticut                  ;  41 33 13 N   ;  73  2 31 W   ;  79.2 ; EST5EDT
+Waterloo, Iowa                          ;  42 29 40 N   ;  92 20 20 W   ; 259.1 ; CST6CDT
+Wellington, New Zealand                 ;  41 17 25 S   ; 174 46  7 E   ;  -1.0 ; NZT-12NZD,M10.1.0,M3.2.0
+West Palm Beach, Florida                ;  26 42 36 N   ;  80  3  7 W   ;   4.6 ; EST5EDT
+Wheeling, West Virginia                 ;  40  4  3 N   ;  80 43 20 W   ; 198.1 ; EST5EDT
+White Plains, New York                  ;  41  2  0 N   ;  73 45 48 W   ;  67.1 ; EST5EDT
+Wichita Falls, Texas                    ;  33 54 34 N   ;  98 29 28 W   ; 288.0 ; CST6CDT
+Wichita, Kansas                         ;  37 41 30 N   ;  97 20 16 W   ; 393.2 ; CST6CDT
+Wilkes-Barre, Pennsylvania              ;  41 14 32 N   ;  75 53 17 W   ; 195.1 ; EST5EDT
+William Herschel Telescope              ;  28 46  0 N   ;  17 53  0 W   ;  2332 ; AST1ADT,M3.5.0,M10.5.0
+Wilmington, Delaware                    ;  39 44 46 N   ;  75 32 51 W   ;  41.1 ; EST5EDT
+Wilmington, North Carolina              ;  34 14 14 N   ;  77 56 58 W   ;  10.7 ; EST5EDT
+Winer Mobile Observatory                ;  31 39 56 N   ; 110 36 06 W   ;  1479 ; MST7
+Winnipeg Manitoba, Canada               ;  49 50  0 N   ;  97  7  0 W   ;  -1.0 ; CST6CDT
+Winston-Salem, North Carolina           ;  36  5 52 N   ;  80 14 42 W   ; 262.1 ; EST5EDT
+Wodonga Vic, Australia                  ;  36 10  0 S   ; 146 50  0 E   ;   153 ; EST-10EDT,M10.5.0,M3.5.0
+Wollongong NSW, Australia               ;  34 24  0 S   ; 150 54  0 E   ;    20 ; EST-10EDT,M10.5.0,M3.5.0
+Worcester, Massachusetts                ;  42 15 37 N   ;  71 48 17 W   ; 144.8 ; EST5EDT
+Wyoming Infrared Observatory            ;  41  5 54 N   ; 105 58 36 W   ;  2943 ; MST7MDT
+Yakima, Washington                      ;  46 36  9 N   ; 120 30 39 W   ; 323.1 ; PST8PDT
+Yerkes Observatory                      ;  42 34  0 N   ;  88 33  0 W   ;   334 ; CST6CDT
+Yonkers, New York                       ;  40 55 55 N   ;  73 53 54 W   ;   3.0 ; EST5EDT
+York, Pennsylvania                      ;  39 57 35 N   ;  76 43 36 W   ; 112.8 ; EST5EDT
+Youngstown, Ohio                        ;  41  5 57 N   ;  80 39  2 W   ; 256.0 ; EST5EDT
+Yuma, Arizona                           ;  32 42 54 N   ; 114 37 24 W   ;  48.8 ; MST7
+Zagreb, Croatia                         ;  45 48 43 N   ;  15 58 52 E   ;   135 ; CET-1CEST,M3.5.0,M10.5.0
+Zanesville, Ohio                        ;  39 56 18 N   ;  82  0 30 W   ; 219.5 ; EST5EDT
+Zentralinstitut fur Astrophysik         ;  52 23  0 N   ;  13  4  0 E   ;   107 ; CET-1CEST,M3.5.0,M10.5.0
+Zurich, Switzerland                     ;  47 22 40 N   ;  08 33  4 E   ;  -1.0 ; CET-1CEST,M3.5.0,M10.5.0
+
+# For RCS Only -- Do Not Edit
+# @(#) $RCSfile: xephem_sites,v $ $Date: 2013/01/14 04:25:47 $ $Revision: 1.46 $ $Name:  $
+

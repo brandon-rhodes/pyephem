@@ -1,0 +1,1131 @@
+# This is an XEphem constellation figure definition file. It must contain
+# exactly one figure for each of the 89 constellations. Leading white space,
+# blank lines and lines beginning with # are ignored. Each figure definition
+# begins with a line containing just its name followed by one or more lines 
+# of the form:
+#   drawcode ra dec [comment]
+# where
+#   drawcode is a numeric value indicating a drawing instruction as follows:
+#     0 move to ra dec
+#     1 draw solid line to ra dec
+#     2 draw dashed line to ra dec
+#   ra is decimal hours or sexigesimal h:m:s
+#   dec is decimal degrees or sexigesimal d:m:s
+#   the remainder of the line is ignored and may be any comments, typical is
+#     the name of a star being drawn to.
+
+
+Andromeda
+ 0      2.065    42.3167   move gamma 1 
+ 1    1.16167    35.6167   draw beta 
+ 1      0.655      30.85   draw delta 
+ 1   0.139444    29.0833   draw alpha 
+ 0   0.953333    23.4167   move eta 
+ 1   0.788889    24.2667   draw zeta 
+ 1   0.642222       29.3   draw epsilon 
+ 1      0.655      30.85   draw delta 
+ 1   0.614444    33.7167   draw pi 
+ 1   0.284444    38.6667   draw theta 
+ 1    23.6356    43.2667   draw iota 
+ 1    23.6733    44.3333   draw kappa 
+ 1    23.6256      46.45   draw lambda 
+ 0    23.6356    43.2667   move iota 
+ 1    23.0317    42.3167   draw omicron 
+ 0   0.614444    33.7167   move pi 
+ 1    1.16167    35.6167   draw beta 
+ 1   0.945556    38.4833   draw mu 
+ 1       0.83    41.0667   draw nu 
+ 1    1.15833    47.2333   draw phi 
+ 1    1.63278    48.6167   draw 51 
+
+Antlia
+ 0    9.48722     -35.95   move epsilon 
+ 2    10.4522   -31.0667   dotted alpha 
+ 2     10.945   -37.1333   dotted iota 
+
+Apus
+ 0    14.7972   -79.0333   move alpha 
+ 2    16.5572   -78.8833   dotted gamma 
+ 2    16.7178   -77.5167   dotted beta 
+ 2    16.3389   -78.6833   dotted delta 1 
+ 2    16.5572   -78.8833   dotted gamma 
+
+Aquarius
+ 0    20.7944   -9.48333   move epsilon 
+ 1    21.5256   -5.56667   draw beta 
+ 1    22.0961  -0.316667   draw alpha 
+ 1    22.3606   -1.38333   draw gamma 
+ 1      22.48 -0.0166667   draw zeta 1 
+ 1    22.4211    1.36667   draw pi 
+ 1    22.0961  -0.316667   draw alpha 
+ 0      22.48 -0.0166667   move zeta 1 
+ 1    22.5889  -0.116667   draw eta 
+ 0    21.5256   -5.56667   move beta 
+ 1    22.1072   -13.8667   draw iota 
+ 0    22.0961  -0.316667   move alpha 
+ 1    22.2806   -7.78333   draw theta 
+ 1    22.8767   -7.56667   draw lambda 
+ 1    23.2383   -6.03333   draw phi 
+ 1    23.2983   -9.16667   draw psi 2 
+ 1    22.9106   -15.8167   draw delta 
+ 1    22.8261   -13.5833   draw tau 2 
+ 1    22.8767   -7.56667   draw lambda 
+ 0    23.3828      -20.1   move 98 
+ 1    23.2983   -9.16667   draw psi 2 
+ 1    23.1572   -21.1667   draw 88 
+
+Aquila
+ 0    19.9217        6.4   move beta 
+ 1    19.8461    8.86667   draw alpha 
+ 1    19.7706       10.6   draw gamma 
+ 1    19.4244        3.1   draw delta 
+ 1    19.1039   -4.86667   draw lambda 
+ 1      19.09      13.85   draw zeta 
+ 1    19.4244        3.1   draw delta 
+ 1    19.8744          1   draw eta 
+ 1    20.1883  -0.816667   draw theta 
+ 1    19.6117   -1.28333   draw iota 
+ 1    19.1039   -4.86667   draw lambda 
+
+Ara
+ 0    17.6728      -49.4   move lambda 
+ 1    17.5306   -49.8667   draw alpha 
+ 1    17.4217   -55.5167   draw beta 
+ 1    17.4228   -56.3667   draw gamma 
+ 1    17.5178   -60.6833   draw delta 
+ 1    16.8294   -59.0333   draw eta 
+ 1    16.9767   -55.9833   draw zeta 
+ 1    16.9928     -53.15   draw epsilon 1 
+ 1    17.5306   -49.8667   draw alpha 
+
+Aries
+ 0    1.89167    19.2833   move gamma 
+ 1    1.91056       20.8   draw beta 
+ 1    2.11944      23.45   draw alpha 
+ 1    2.83278      27.25   draw 41 
+
+Auriga
+ 0    5.27778    45.9833   move capella 
+ 1    5.99167    44.9333   draw beta 
+ 1      5.995       37.2   draw theta 
+ 1    5.43778       28.6   draw beta tau 
+ 1    4.94944      33.15   draw iota 
+ 1    5.27778    45.9833   draw capella 
+ 1    5.99167    54.2833   draw delta 
+ 1    5.99167    44.9333   draw beta 
+ 0    5.27778    45.9833   move capella 
+ 1    5.03278    43.8167   draw epsilon 
+ 1    5.04111    41.0667   draw zeta 
+
+Bootes
+ 0    14.6856    13.7167   move zeta 
+ 1    14.2606    19.1667   draw arcturus 
+ 1    14.7494    27.0667   draw epsilon 
+ 1    15.2583       33.3   draw delta 
+ 1    15.0322    40.3833   draw beta 
+ 1    14.5344       38.3   draw gamma 
+ 1      14.53    30.3667   draw rho 
+ 1    14.2606    19.1667   draw arcturus 
+ 1    13.9111    18.3833   draw eta 
+ 1    13.7872      17.45   draw tau 
+ 0    14.5344       38.3   move gamma 
+ 1    14.2728    46.0833   draw lambda 
+ 1    14.2244    51.7833   draw kappa 2 
+ 1    14.4194      51.85   draw theta 
+ 1    14.2728    46.0833   draw lambda 
+
+Caelum
+ 0    5.07333   -35.4833   move gamma 
+ 2    4.70056   -37.1333   dotted beta 
+ 2    4.67556     -41.85   dotted alpha 
+ 2    4.51389     -44.95   dotted delta 
+
+Camelopardalis
+ 0    4.95444      53.75   move 7 
+ 2    5.05667    60.4333   dotted beta 
+ 2    4.90056    66.3333   dotted alpha 
+ 2    3.83889    71.3167   dotted gamma 
+ 2      3.825    65.5167   dotted 3:49:31 65:31:34 
+ 2    3.48444    59.9333   dotted 6272 3596 
+ 0    4.90056    66.3333   move alpha 
+ 2    6.31389    69.3167   dotted 6:18:51 69:19:11 
+ 2    7.00111    76.9667   dotted 7:00:04 76:58:39 
+
+Cancer
+ 0    8.77778      28.75   move iota1 
+ 2    8.72111    21.4667   dotted gamma 
+ 2    8.74444      18.15   dotted delta 
+ 2    8.97444      11.85   dotted alpha 
+ 0    8.74444      18.15   move delta 
+ 2      8.275    9.18333   dotted beta 
+
+Canes Venatici
+ 0    12.9333    38.3167   move alpha2 
+ 2    12.5622      41.35   dotted beta 
+
+Canis Major
+ 0    7.40111      -29.3   move eta 
+ 1    7.13944   -26.3833   draw delta 
+ 1       7.05   -23.8333   draw omicron2 
+ 1    6.75222      -16.7   draw alpha 
+ 1    6.37833     -17.95   draw beta 
+ 1    6.61111     -19.25   draw nu2 
+ 1    6.90167   -24.1833   draw omicron1 
+ 1    6.97667   -28.9667   draw epsilon 
+ 1    7.02833   -27.9333   draw sigma 
+ 1    7.13944   -26.3833   draw delta 
+ 0    6.75222      -16.7   move alpha 
+ 2    6.93556     -17.05   dotted iota 
+ 2    7.06222   -15.6333   dotted gamma 
+ 2      6.935   -14.0333   dotted mu 
+ 2    6.93556     -17.05   dotted iota 
+
+Canis Minor
+ 0      7.655    5.21667   move alpha 
+ 1    7.45222    8.28333   draw beta 
+
+Capricornus
+ 0    20.2939      -12.5   move alpha1 
+ 1      20.35   -14.7667   draw beta 
+ 1    20.7678   -25.2667   draw psi 
+ 1    20.8633   -26.9167   draw omega 
+ 1    21.1183        -25   draw 24 
+ 1    21.4444      -22.4   draw zeta 
+ 1    21.6178     -19.45   draw epsilon 
+ 1    21.7839   -16.1167   draw delta 
+ 1    21.6678     -16.65   draw gamma 
+ 1    21.3706   -16.8333   draw iota 
+ 1    21.0989   -17.2167   draw theta 
+ 1    20.2939      -12.5   draw alpha1 
+
+Carina
+ 0    6.39889   -52.6833   move canopus 
+ 1       9.22   -69.7167   draw beta 
+ 1    10.2289   -70.0333   draw omega 
+ 1    10.7156   -64.3833   draw theta 
+ 1    11.1089   -62.4167   draw 11:06:32 -62:25:27 
+ 1      11.21   -60.3167   draw 11:12:36 -60:19:03 
+ 1    11.1428   -58.9667   draw 11:08:35 -58:58:30 
+ 1    10.8917     -58.85   draw 10:53:30 -58:51:12 
+ 1    10.7506   -59.6833   draw eta 
+ 1    10.5333   -61.6833   draw 10:32:01 -61:41:07 
+ 1    10.7156   -64.3833   draw theta 
+ 0    10.5333   -61.6833   move 10:32:01 -61:41:07 
+ 1    10.2844   -61.3167   draw 10:17:05 -61:19:56 
+ 1    9.28444   -59.2667   draw iota 
+ 1      8.745      -54.7   draw delta vel 
+ 0    9.28444   -59.2667   move iota 
+ 1      8.375      -59.5   draw epsilon 
+ 1    7.94611   -52.9667   draw chi 
+ 1    8.15889   -47.3333   draw gamma2 vel 
+
+Cassiopeia
+ 0   0.152778    59.1333   move beta 
+ 1      0.675    56.5333   draw alpha 
+ 1      0.945    60.7167   draw gamma 
+ 1       1.43    60.2333   draw delta 
+ 1    1.90611    63.6667   draw epsilon 
+
+Centaurus
+ 0    14.6594   -60.8333   move alpha1 
+ 1    14.0633   -60.3667   draw hadar (agena) 
+ 1    13.6644     -53.45   draw epsilon 
+ 1    13.9256   -47.2833   draw zeta 
+ 1    14.0283      -45.6   draw upsilon2 
+ 1    13.9778      -44.8   draw upsilon1 
+ 1    13.9711      -42.1   draw phi 
+ 1    14.5917     -42.15   draw eta 
+ 1    14.9856      -42.1   draw kappa 
+ 0    13.9711      -42.1   move phi 
+ 1    14.1006   -41.1667   draw chi 
+ 1    14.3422   -37.8833   draw psi 
+ 1    14.1111   -36.3667   draw theta 
+ 1     13.825   -41.6833   draw nu 
+ 1    13.5172      -39.4   draw 24331 -2364 
+ 1    13.3428      -36.7   draw iota 
+ 1    12.8906   -40.1667   draw 23203 -2410 
+ 0     13.825   -41.6833   move nu 
+ 1    13.8267   -42.4667   draw mu 
+ 1    13.9256   -47.2833   draw zeta 
+ 1    12.6917     -48.95   draw gamma 
+ 1    13.6644     -53.45   draw epsilon 
+ 0    12.6917     -48.95   move gamma 
+ 1    12.4672   -50.2167   draw sigma 
+ 1    12.1939   -52.3667   draw rho 
+ 1     11.775   -61.1667   draw 21195 -3670 
+ 1    11.5961   -63.0167   draw lambda 
+ 0    12.4672   -50.2167   move sigma 
+ 1    12.1389   -50.7167   draw delta 
+ 1      11.35   -54.4833   draw pi 
+
+Cepheus
+ 0    21.3094    62.5833   move alpha 
+ 1    21.4772      70.55   draw beta 
+ 1    23.6556    77.6167   draw gamma 
+ 1    22.8278       66.2   draw iota 
+ 1    23.6556    77.6167   draw gamma 
+ 0    22.8278       66.2   move iota 
+ 1    22.1806       58.2   draw zeta 
+ 1    21.7572    61.1167   draw nu 
+ 1     21.725    58.7667   draw mu 
+ 1    21.3094    62.5833   draw alpha 
+ 1    20.7544    61.8333   draw eta 
+ 1    20.4928    62.9833   draw theta 
+
+Cetus
+ 0    2.72167    3.23333   move gamma 
+ 1    3.03778    4.08333   draw alpha 
+ 1      2.995        8.9   draw lambda 
+ 1    2.74889       10.1   draw mu 
+ 1    2.46889       8.45   draw xi2 
+ 1    2.59778    5.58333   draw nu 
+ 1    2.72167    3.23333   draw gamma 
+ 1    2.65778   0.316667   draw delta 
+ 1    2.32222   -2.96667   draw mira 
+ 1    1.85722   -10.3333   draw zeta 
+ 1        1.4   -8.18333   draw theta 
+ 1    1.14278   -10.1667   draw eta 
+ 1   0.323333   -8.81667   draw iota 
+ 1   0.726111   -17.9833   draw beta 
+ 1    1.73444   -15.9333   draw tau 
+ 1    1.85722   -10.3333   draw zeta 
+
+Chamaeleon
+ 0    8.30833   -76.9167   move alpha 
+ 1    8.34389   -77.4833   draw theta 
+ 1    10.5911      -78.6   draw gamma 
+ 1    11.9933   -78.2167   draw epsilon 
+ 1    12.3056      -79.3   draw beta 
+ 1    10.7539   -80.4667   draw delta1 
+ 1    10.5911      -78.6   draw gamma 
+
+Circinus
+ 0    15.2917      -58.8   move beta 
+ 1    14.7083   -64.9667   draw alpha 
+ 1    15.3894   -59.3167   draw gamma 
+
+Columba
+ 0       5.52   -35.4667   move epsilon 
+ 1    5.66056   -34.0667   draw alpha 
+ 1    5.84889   -35.7667   draw beta 
+ 1    5.95889   -35.2833   draw gamma 
+ 1    6.36833   -33.4333   draw delta 
+ 0    5.84889   -35.7667   move beta 
+ 1    5.98556      -42.8   draw eta 
+
+Coma Berenices
+ 0    13.1661    17.5167   move alpha 
+ 2    13.1978    27.8667   dotted beta 
+ 2    12.4489    28.2667   dotted gamma 
+
+Corona Australis
+ 0    19.1067     -37.05   move gamma 
+ 1    19.1578      -37.9   draw alpha 
+ 1    19.1667   -39.3333   draw beta 
+ 1    19.1389   -40.4833   draw delta 
+ 1    18.5583      -42.3   draw theta 
+
+Corona Borealis
+ 0    15.5483      31.35   move theta 
+ 1    15.4633       29.1   draw beta 
+ 1    15.5778       26.7   draw alpha 
+ 1    15.7122    26.2833   draw gamma 
+ 1    15.8261    26.0667   draw delta 
+ 1    15.9594    26.8667   draw epsilon 
+ 1    16.0239      29.85   draw iota 
+
+Corvus
+ 0      12.14   -24.7167   move alpha 
+ 1    12.1683   -22.6167   draw epsilon 
+ 1    12.5728   -23.3833   draw beta 
+ 1    12.4972      -16.5   draw delta 
+ 1    12.2633   -17.5333   draw gamma 
+ 1    12.1683   -22.6167   draw epsilon 
+
+Crater
+ 0    11.9333     -17.15   move eta 
+ 1    11.7456     -18.35   draw zeta 
+ 1    11.4144   -17.6833   draw gamma 
+ 1    11.3889   -18.7667   draw lambda 
+ 1    11.1939   -22.8167   draw beta 
+ 1    10.9961   -18.2833   draw alpha 
+ 1    11.3222   -14.7667   draw delta 
+ 1    11.4144   -17.6833   draw gamma 
+ 0    11.3222   -14.7667   move delta 
+ 1      11.41     -10.85   draw epsilon 
+ 1    11.6111       -9.8   draw theta 
+
+Crux
+ 0    12.4428   -63.0833   move alpha1 
+ 1    12.5189      -57.1   draw gamma 
+ 0     12.795   -59.6833   move beta 
+ 1    12.2522   -58.7333   draw delta 
+
+Cygnus
+ 0    19.5117      27.95   move beta1 
+ 1    19.8422       32.9   draw chi 
+ 1    19.9383    35.0833   draw eta 
+ 1      20.37      40.25   draw gamma 
+ 1      20.77    33.9667   draw epsilon 
+ 2    21.2156    30.2167   dotted zeta 
+ 2    20.9528    41.1667   dotted nu 
+ 2      20.69    45.2667   dotted deneb 
+ 1      20.37      40.25   draw gamma 
+ 1    19.7494    45.1167   draw delta 
+ 2     19.495    51.7167   dotted iota 
+ 2     19.285    53.3667   dotted kappa 
+ 0     19.495    51.7167   move iota 
+ 2    20.2578       47.7   dotted 32 
+ 2      20.69    45.2667   dotted deneb 
+
+Delphinus
+ 0    20.5533       11.3   move epsilon 
+ 1    20.5656    13.0167   draw eta 
+ 1    20.6256    14.5833   draw beta 
+ 1    20.7239    15.0667   draw delta 
+ 1    20.7772    16.1167   draw gamma1 
+ 1    20.6606       15.9   draw alpha 
+ 1    20.6256    14.5833   draw beta 
+
+Dorado
+ 0    4.26667   -51.4833   move gamma 
+ 1    4.56611   -55.0333   draw alpha 
+ 1       5.56   -62.4833   draw beta 
+ 1    5.74611   -65.7333   draw delta 
+ 1    5.90167   -63.0833   draw 5:54:06 -63:05:23 
+ 1       5.56   -62.4833   draw beta 
+ 1    5.09167   -57.4667   draw zeta 
+ 1    4.56611   -55.0333   draw alpha 
+
+Draco
+ 0    11.5233    69.3167   move lambda 
+ 1    12.5578    69.7833   draw kappa 
+ 1    14.0728    64.3667   draw alpha 
+ 1     15.415      58.95   draw iota 
+ 1    16.0311      58.55   draw theta 
+ 1    16.3994       61.5   draw eta 
+ 1    17.1461       65.7   draw zeta 
+ 1    18.3456    71.3333   draw phi 
+ 1    18.3506    72.7167   draw chi 
+ 0    18.3456    71.3333   move phi 
+ 1    19.2089      67.65   draw delta 
+ 1    19.8028    70.2667   draw epsilon 
+ 0    19.2089      67.65   move delta 
+ 1    17.8917    56.8667   draw xi 
+ 1    17.5361    55.1833   draw nu1 
+ 1    17.5072       52.3   draw beta 
+ 1    17.9433    51.4833   draw gamma 
+ 1    17.8917    56.8667   draw xi 
+
+Equuleus
+ 0    21.1722    10.1167   move gamma 
+ 2    21.2411         10   dotted delta 
+ 2    21.2633    5.23333   dotted alpha 
+
+Eridanus
+ 0    5.13056   -5.08333   move beta 
+ 1    4.88111      -5.45   draw omega 
+ 1    4.75833      -3.25   draw mu 
+ 1      4.605      -3.35   draw nu 
+ 1    4.19722   -6.83333   draw omicron1 
+ 1    3.96667      -13.5   draw gamma 
+ 1    3.76889      -12.1   draw pi 
+ 1    3.72056      -9.75   draw delta 
+ 1    3.54833      -9.45   draw epsilon 
+ 1       2.94   -8.88333   draw eta 
+ 1      2.735     -13.85   draw cet pi 
+ 1    2.75167   -18.5667   draw tau1 
+ 1    3.03944   -23.6167   draw tau3 
+ 1      3.325     -21.75   draw tau4 
+ 1    3.56278   -21.6167   draw tau5 
+ 1    3.78056   -23.2333   draw tau6 
+ 1      3.895      -24.6   draw tau8 
+ 1    3.99833        -24   draw tau9 
+ 1    4.55833   -29.7667   draw upsilon1 
+ 1    4.59222     -30.55   draw upsilon2 
+ 1    4.40056   -34.0167   draw 43 
+ 1    4.29778   -33.7833   draw upsilon4 
+ 1    3.82389      -36.2   draw 3:49:27 -36:12:01 
+ 1    3.71389      -37.3   draw 3:42:50 -37:18:49 
+ 1    3.61833   -40.2667   draw 3:37:06 -40:16:29 
+ 1    3.33222   -43.0667   draw 3:19:56 -43:04:11 
+ 1    2.97111      -40.3   draw theta2 
+ 1    2.67778     -39.85   draw iota 
+ 1    2.66333   -42.8833   draw 4794 -2573 
+ 1    2.44944      -47.7   draw kappa 
+ 1      2.275      -51.5   draw phi 
+ 1    1.93222      -51.6   draw chi 
+ 1    1.62833   -57.2333   draw achernar 
+
+Fornax
+ 0    3.20111   -28.9833   move alpha 
+ 1    2.81778      -32.4   draw beta 
+ 1    2.07444   -29.2833   draw nu 
+
+Gemini
+ 0    6.06833      23.25   move gem 1 
+ 1    6.24778       22.5   draw gem eta 
+ 1    6.38222       22.5   draw gem mu 
+ 1    6.73167    25.1167   draw gem epsilon 
+ 1    7.18556    30.2333   draw gem tau 
+ 1      7.485    31.7833   draw gem rho 
+ 1    7.57667    31.8833   draw castor 
+ 0      7.755    28.0167   move pollux 
+ 1    7.59833    26.8833   draw gem upsilon 
+ 1      7.335    21.9667   draw gem delta 
+ 1    7.06833    20.5667   draw gem zeta 
+ 1    6.62833    16.3833   draw gem gamma 
+ 0    6.87944      33.95   move gem theta 
+ 1    7.18556    30.2333   draw gem tau 
+ 1    7.40889    27.6333   draw gem 59 
+ 1    7.59833    26.8833   draw gem upsilon 
+ 1    7.74056    24.3833   draw gem kappa 
+ 0      7.335    21.9667   move gem delta 
+ 1    7.30111    16.5333   draw gem lambda 
+ 1    7.22278      16.15   draw gem 51 
+ 1    7.22278      16.15   draw gem 51 
+ 1    6.75444    12.8833   draw gem xi 
+ 0    6.73167    25.1167   move gem epsilon 
+ 1    6.48222       20.2   draw gem nu 
+
+Grus
+ 0    21.8983     -37.35   move gamma 
+ 1    22.1017   -39.5333   draw lambda 
+ 1    22.4878   -43.4833   draw delta1 
+ 1    22.7111   -46.8833   draw beta 
+ 1    22.8089   -51.3167   draw epsilon 
+ 1    23.0144     -52.75   draw zeta 
+ 0    22.7111   -46.8833   move beta 
+ 1    22.1372     -46.95   draw alpha 
+ 1    22.4878   -43.4833   draw delta1 
+
+Hercules
+ 0    15.8778      42.45   move chi 
+ 1    16.1461    44.9333   draw phi 
+ 1    16.3289       46.3   draw tau 
+ 1    16.5683    42.4333   draw sigma 
+ 1    16.7144    38.9167   draw eta 
+ 1    16.6878       31.6   draw zeta 
+ 1    16.5033    21.4833   draw beta 
+ 1     16.365      19.15   draw gamma 
+ 1    16.4233    14.0333   draw omega 
+ 1    16.5433    11.4833   draw 29 
+ 0    16.5033    21.4833   move beta 
+ 1    17.2439    14.3833   draw alpha 
+ 1      17.25    24.8333   draw delta 
+ 1    17.0044    30.9167   draw epsilon 
+ 1    16.6878       31.6   draw zeta 
+ 0      17.25    24.8333   move delta 
+ 1    17.5122       26.1   draw lambda 
+ 1    17.7739    27.7167   draw mu 
+ 1    17.9622    29.2333   draw xi 
+ 1    18.1256      28.75   draw omicron 
+ 0    17.0044    30.9167   move epsilon 
+ 1    17.2506       36.8   draw pi 
+ 1    16.7144    38.9167   draw eta 
+ 0    17.2506       36.8   move pi 
+ 1    17.9372      37.25   draw theta 
+ 1    17.6572         46   draw iota 
+
+Horologium
+ 0    4.23333   -42.2833   move alpha 
+ 1    2.70889      -50.8   draw iota 
+ 1    2.62333   -52.5333   draw eta 
+ 1    2.67722     -54.55   draw zeta 
+ 1       3.06   -59.7333   draw mu 
+ 1    2.97944   -64.0667   draw beta 
+
+Hydra
+ 0    14.8378     -27.95   move 58 
+ 1    14.1061   -26.6667   draw pi 
+ 1     13.315   -23.1667   draw gamma 
+ 1    11.8817      -33.9   draw beta 
+ 1      11.55     -31.85   draw xi 
+ 1    11.1939   -22.8167   draw crt beta 
+ 1    10.9961   -18.2833   draw crt alpha 
+ 1    10.8267   -16.1833   draw nu 
+ 1    10.4344   -16.8333   draw mu 
+ 1    10.1761     -12.35   draw lambda 
+ 1     10.085     -13.05   draw upsilon2 
+ 1    9.85778   -14.8333   draw upsilon1 
+ 1    9.45944      -8.65   draw alpha 
+ 1    9.66389   -1.13333   draw iota 
+ 1    9.23889        2.3   draw theta 
+ 1    8.92278    5.93333   draw zeta 
+ 1    8.77944    6.41667   draw epsilon 
+ 1    8.62722        5.7   draw delta 
+ 1    8.64556    3.33333   draw sigma 
+ 1       8.72    3.38333   draw eta 
+ 1    8.80722    5.83333   draw rho 
+ 1    8.77944    6.41667   draw epsilon 
+
+Hydrus
+ 0    3.78722   -74.2333   move gamma 
+ 1   0.428889     -77.25   draw beta 
+ 1    1.97944   -61.5667   draw alpha 
+ 1    3.78722   -74.2333   draw gamma 
+
+Indus
+ 0    20.9133     -58.45   move beta 
+ 2    20.7339   -51.9167   dotted eta 
+ 2    20.6261   -47.2833   dotted alpha 
+ 2    21.3311   -53.4333   dotted theta 
+ 2     21.965   -54.9833   dotted delta 
+
+Lacerta
+ 0    22.2661    37.7333   move 1 
+ 2    22.2311       39.7   dotted 22:13:53 39:42:53 
+ 2    22.5078    43.1167   dotted 6 
+ 2     22.675    44.2667   dotted 11 
+ 2    22.4917       47.7   dotted 5 
+ 2    22.5211    50.2667   dotted alpha 
+ 2    22.3922    52.2167   dotted beta 
+ 2    22.4083    49.4667   dotted 4 
+ 2    22.4917       47.7   dotted 5 
+ 2      22.35    46.5333   dotted 2 
+ 2    22.5078    43.1167   dotted 6 
+
+Leo
+ 0    10.1394    11.9667   move regulus 
+ 1    10.1222      16.75   draw eta 
+ 1    10.3328    19.8333   draw gamma1 
+ 1    10.2778    23.4167   draw zeta 
+ 1    9.87889         26   draw mu 
+ 1    9.41056    26.1667   draw kappa 
+ 1    9.52833    22.9667   draw lambda 
+ 1    9.76389    23.7667   draw epsilon 
+ 1    9.87889         26   draw mu 
+ 0    9.76389    23.7667   move epsilon 
+ 1    10.1222      16.75   draw eta 
+ 1    11.2372    15.4167   draw theta 
+ 1    11.3983    10.5167   draw iota 
+ 1    11.3522    6.01667   draw sigma 
+ 0    11.2372    15.4167   move theta 
+ 1    11.8172    14.5667   draw beta 
+ 1     11.235    20.5167   draw delta 
+ 1    11.2372    15.4167   draw theta 
+ 0     11.235    20.5167   move delta 
+ 1    10.3328    19.8333   draw gamma1 
+
+Leo Minor
+ 0       9.57    36.3833   move 10 
+ 2    10.1233    35.2333   dotted 21 
+ 2    10.4317    33.7833   dotted 30 
+ 2    10.8883       34.2   dotted 46 
+ 2    10.4644       36.7   dotted beta 
+ 2    10.1233    35.2333   dotted 21 
+
+Lepus
+ 0       5.22   -12.9333   move kappa 
+ 1      5.215      -16.2   draw mu 
+ 1    5.32611   -13.1667   draw lambda 
+ 0      5.545   -17.8167   move alpha 
+ 1    5.47056     -20.75   draw beta 
+ 1    5.74056   -22.4333   draw gamma 
+ 1      5.855   -20.8667   draw delta 
+ 1    6.10222   -14.9333   draw theta 
+ 1       5.94   -14.1667   draw eta 
+ 1    5.78222   -14.8167   draw zeta 
+ 1      5.545   -17.8167   draw alpha 
+ 1      5.215      -16.2   draw mu 
+ 1    5.09056   -22.3667   draw epsilon 
+ 1    5.47056     -20.75   draw beta 
+
+Libra
+ 0    15.0678   -25.2667   move sigma 
+ 1    14.8478   -16.0333   draw alpha2 
+ 1    15.2833   -9.36667   draw beta 
+ 1    15.5917   -14.7833   draw gamma 
+ 1    14.8478   -16.0333   draw alpha2 
+ 0    15.5917   -14.7833   move gamma 
+ 1    15.6167   -28.1333   draw upsilon 
+ 1    15.6439   -29.7667   draw tau 
+
+Lupus
+ 0     14.975   -43.1333   move beta 
+ 1    15.3561   -40.6333   draw delta 
+ 1    15.5856   -41.1667   draw gamma 
+ 1    16.0017   -38.3833   draw eta 
+ 1    15.8489   -33.6167   draw chi 
+ 1    15.3633     -36.25   draw phi1 
+ 1    16.0017   -38.3833   draw eta 
+ 1    15.2044   -52.0833   draw zeta 
+ 1    14.6983   -47.3833   draw alpha 
+ 0    15.2044   -52.0833   move zeta 
+ 1    15.3089   -47.8667   draw mu 
+ 1    15.3778   -44.6833   draw epsilon 
+ 1    15.5856   -41.1667   draw gamma 
+
+Lynx
+ 0    9.35056    34.3833   move alpha 
+ 2    9.31389       36.8   dotted 38 
+ 2    9.10889      38.45   dotted 9:06:32 38:27:08 
+ 2    9.01056    41.7667   dotted 9:00:38 41:46:58 
+ 2    8.38056    43.1833   dotted 31 
+ 2      7.445       49.2   dotted 21 
+ 2    6.95444    58.4167   dotted 15 
+ 2    6.32667         59   dotted 2 
+
+Lyra
+ 0    18.7461       37.6   move zeta1 
+ 1    18.7389    39.6667   draw epsilon1 
+ 1    18.6156    38.7833   draw vega 
+ 1    18.7461       37.6   draw zeta1 
+ 1    18.8344      33.35   draw beta 
+ 1    18.9822    32.6833   draw gamma 
+ 1    18.9083    36.8833   draw delta2 
+ 1    18.7461       37.6   draw zeta1 
+
+Mensa
+ 0    6.17056     -74.75   move alpha 
+ 2    5.53111   -76.3333   dotted gamma 
+ 2    4.91944   -74.9333   dotted eta 
+ 2      5.045      -71.3   dotted beta 
+
+Microscopium
+ 0    21.3456      -40.8   move theta1 
+ 2    21.2989   -32.1667   dotted epsilon 
+ 2    21.0211     -32.25   dotted gamma 
+ 2    20.8328   -33.7667   dotted alpha 
+
+Monoceros
+ 0    6.68278    9.88333   move 15 
+ 2    6.54833    7.31667   dotted 13 
+ 2    6.39611    4.58333   dotted epsilon 
+ 2    6.79722        2.4   dotted 18 
+ 2    6.54833    7.31667   dotted 13 
+ 0    6.79722        2.4   move 18 
+ 2    7.19722  -0.483333   dotted delta 
+ 2       6.48   -7.03333   dotted beta 
+ 1    6.24722   -6.26667   draw gamma 
+ 0    7.19722  -0.483333   move delta 
+ 2    7.68722      -9.55   dotted alpha 
+ 2    8.14278   -2.98333   dotted zeta 
+
+Musca
+ 0      11.76   -66.7167   move lambda 
+ 1    12.2928     -67.95   draw epsilon 
+ 1    12.6194   -69.1333   draw alpha 
+ 1    12.5411   -72.1167   draw gamma 
+ 1    13.0378   -71.5333   draw delta 
+ 1    12.7711      -68.1   draw beta 
+
+Norma
+ 0    16.4528     -47.55   move epsilon 
+ 1    16.2833   -50.0667   draw gamma1 
+ 1    16.3306     -50.15   draw gamma2 
+ 1    16.0533   -49.2167   draw eta 
+ 1    16.1078   -45.1667   draw delta 
+ 1    16.4528     -47.55   draw epsilon 
+
+Octans
+ 0    14.4483   -83.6667   move delta 
+ 1    21.6911   -77.3833   draw nu 
+ 1    22.3333   -80.4333   draw epsilon 
+ 1    22.7672   -81.3667   draw beta 
+ 1    14.4483   -83.6667   draw delta 
+
+Ophiuchus
+ 0    17.4556   -29.8667   move 45 
+ 1    17.3667   -24.9833   draw theta 
+ 1    17.1728   -15.7167   draw eta 
+ 1    16.6189   -10.5667   draw zeta 
+ 1    16.5189      -16.6   draw phi 
+ 1      16.45     -18.45   draw chi 
+ 1    16.4017   -20.0333   draw psi 
+ 1    16.4261   -23.4333   draw rho 
+ 0    16.6189   -10.5667   move zeta 
+ 1    16.4633   -8.36667   draw upsilon 
+ 1     16.305   -4.68333   draw epsilon 
+ 1    16.2389   -3.68333   draw delta 
+ 1     16.515    1.98333   draw lambda 
+ 1    16.9611    9.36667   draw kappa 
+ 1    16.6189   -10.5667   draw zeta 
+ 0    16.9611    9.36667   move kappa 
+ 1    17.5822      12.55   draw alpha 
+ 1    17.7244    4.56667   draw beta 
+ 1    17.1728   -15.7167   draw eta 
+ 0    17.7244    4.56667   move beta 
+ 1    17.7978        2.7   draw gamma 
+ 1    17.9833   -9.76667   draw nu 
+
+Orion
+ 0    6.19889       14.2   move xi 
+ 1    6.12611    14.7667   draw nu 
+ 1    5.90611    20.2667   draw chi1 
+ 1      6.065    20.1333   draw chi2 
+ 1    6.19889       14.2   draw xi 
+ 1    6.03944    9.63333   draw mu 
+ 1    5.91944        7.4   draw betelgeuse 
+ 1    5.41833    6.33333   draw gamma 
+ 1    5.58556    9.93333   draw lambda 
+ 1    5.91944        7.4   draw betelgeuse 
+ 1    5.67889   -1.93333   draw zeta 
+ 1    5.79556   -9.66667   draw kappa 
+ 0    5.67889   -1.93333   move zeta 
+ 1    5.60333       -1.2   draw epsilon 
+ 1    5.53333  -0.283333   draw delta 
+ 1    5.40778   -2.38333   draw eta 
+ 1    5.24222       -8.2   draw rigel 
+ 0    5.53333  -0.283333   move delta 
+ 1    5.41833    6.33333   draw gamma 
+ 1    4.83056       6.95   draw pi3 
+ 1    4.85333        5.6   draw pi4 
+ 1    4.90389    2.43333   draw pi5 
+ 1    4.97556        1.7   draw pi6 
+ 0    4.83056       6.95   move pi3 
+ 1    4.84333        8.9   draw pi2 
+ 1    4.91444      10.15   draw pi1 
+ 1    4.93944       13.5   draw omicron2 
+ 1    5.07611       15.4   draw 11 
+
+Pavo
+ 0    20.0094      -72.9   move epsilon 
+ 1     20.145   -66.1667   draw delta 
+ 1    18.7172   -71.4167   draw zeta 
+ 0    17.7617   -64.7167   move eta 
+ 1    18.1428   -63.6667   draw pi 
+ 1    18.3867   -61.4833   draw xi 
+ 1      18.87   -62.1833   draw lambda 
+ 1     20.145   -66.1667   draw delta 
+ 1    20.4272   -56.7333   draw alpha 
+ 1    21.4406     -65.35   draw gamma 
+ 1    20.7489      -66.2   draw beta 
+ 1     20.145   -66.1667   draw delta 
+ 1    18.9489   -67.2333   draw kappa 
+ 1    18.1428   -63.6667   draw pi 
+
+Pegasus
+ 0    21.7361    9.86667   move epsilon 
+ 1      22.17    6.18333   draw theta 
+ 1    22.6906    10.8167   draw zeta 
+ 1    23.0789       15.2   draw alpha 
+ 1   0.220556    15.1833   draw gamma 
+ 1   0.139444    29.0833   draw and alpha 
+ 1    23.0628    28.0667   draw beta 
+ 1    23.0789       15.2   draw alpha 
+ 0    22.1661    33.1667   move pi2 
+ 1    22.7167    30.2167   draw eta 
+ 1    23.0628    28.0667   draw beta 
+ 1    22.8333       24.6   draw mu 
+ 1     22.775      23.55   draw lambda 
+ 1    22.1167    25.3333   draw iota 
+ 1    21.7439    25.6333   draw kappa 
+
+Perseus
+ 0    1.72722    50.6833   move phi 
+ 1    2.73667    49.2167   draw theta 
+ 1    3.15111       49.6   draw iota 
+ 1    3.15778      44.85   draw kappa 
+ 1    3.13611      40.95   draw algol 
+ 1    3.08611    38.8333   draw rho 
+ 0    3.13611      40.95   move algol 
+ 1    3.96389         40   draw epsilon 
+ 1    3.98222    35.7833   draw xi 
+ 1    3.90167    31.8833   draw zeta 
+ 1    3.73833    32.2833   draw omicron 
+ 0    3.96389         40   move epsilon 
+ 1      3.715    47.7833   draw delta 
+ 1    4.14389       47.7   draw 48 
+ 1    4.24778       48.4   draw mu 
+ 1    4.30389    50.2833   draw 4:18:15 50:17:44 
+ 1    4.10944      50.35   draw lambda 
+ 0      3.715    47.7833   move delta 
+ 1      3.405      49.85   draw alpha 
+ 1    3.07944       53.5   draw gamma 
+ 1    2.84444    55.8833   draw eta 
+ 1    2.90389      52.75   draw tau 
+ 1    3.15111       49.6   draw iota 
+ 1      3.405      49.85   draw alpha 
+
+Phoenix
+ 0    1.10111   -46.7167   move beta 
+ 1   0.156667   -45.7333   draw epsilon 
+ 1   0.437778      -42.3   draw alpha 
+ 1    1.10111   -46.7167   draw beta 
+ 1    1.47222   -43.3167   draw gamma 
+ 1    1.52056   -49.0667   draw delta 
+ 1    1.13944   -55.2333   draw zeta 
+ 1    1.10111   -46.7167   draw beta 
+
+Pictor
+ 0    6.80278   -61.9333   move alpha 
+ 2       5.83   -56.1667   dotted gamma 
+ 2    5.78778     -51.05   dotted beta 
+
+Pisces
+ 0    1.09444    21.4667   move psi1 
+ 1    1.32444      27.25   draw upsilon 
+ 1    1.19389    30.0833   draw tau 
+ 1    1.09444    21.4667   draw psi1 
+ 1    1.19056    21.0333   draw chi 
+ 1    1.52444    15.3333   draw eta 
+ 1    1.75611       9.15   draw omicron 
+ 1    2.03389       2.75   draw alpha 
+ 1    1.89222    3.18333   draw xi 
+ 1       1.69    5.48333   draw nu 
+ 1    1.50278    6.13333   draw mu 
+ 1    1.04889    7.88333   draw epsilon 
+ 1   0.811111    7.58333   draw delta 
+ 1    23.9883       6.85   draw omega 
+ 1    23.6656    5.61667   draw iota 
+ 1    23.4661    6.36667   draw theta 
+ 1    23.2856    3.26667   draw gamma 
+ 1    23.4489       1.25   draw kappa 
+ 1    23.7006    1.76667   draw lambda 
+ 1    23.6656    5.61667   draw iota 
+
+Piscis Austrinus
+ 0    22.9606   -29.6167   move fomalhaut 
+ 1    22.6772   -27.0333   draw epsilon 
+ 1    22.1394   -32.9833   draw mu 
+ 1    21.7956   -30.8833   draw theta 
+ 1    21.7489   -33.0167   draw iota 
+ 1    22.1394   -32.9833   draw mu 
+ 1     22.525   -32.3333   draw beta 
+ 1     22.875   -32.8667   draw gamma 
+ 1    22.9322   -32.5333   draw delta 
+ 1    22.9606   -29.6167   draw fomalhaut 
+
+Puppis
+ 0    6.39889   -52.6833   move canopus 
+ 1    6.62889   -43.1833   draw nu 
+ 1    7.28556   -37.0833   draw pi 
+ 1    7.72556      -28.4   draw 1 
+ 1       7.73     -28.95   draw 3 
+ 1    7.82111     -24.85   draw xi 
+ 1    7.64667      -26.8   draw 7:38:49 -26:48:06 
+ 1    7.72556      -28.4   draw 1 
+ 0    7.82111     -24.85   move xi 
+ 1    8.12556      -24.3   draw rho 
+ 1    8.05944        -40   draw zeta 
+ 1    8.15889   -47.3333   draw vel gamma2 
+
+Pyxis
+ 0    8.84167      -27.7   move gamma 
+ 1    8.72611   -33.1833   draw alpha 
+ 1    8.66833      -35.3   draw beta 
+ 1    8.05944        -40   draw pup zeta 
+
+Reticulum
+ 0       4.24   -62.4667   move alpha 
+ 1    3.73667      -64.8   draw beta 
+ 1    3.97889      -61.4   draw delta 
+ 1    4.27444      -59.3   draw epsilon 
+ 1       4.24   -62.4667   draw alpha 
+
+Sagitta
+ 0    19.6678         18   move alpha 
+ 1    19.7894    18.5333   draw delta 
+ 1    19.9789    19.4833   draw gamma 
+ 0    19.7894    18.5333   move delta 
+ 1    19.6839    17.4667   draw beta 
+
+Sagittarius
+ 0    18.2933     -36.75   move eta 
+ 2    18.4028   -34.3833   dotted epsilon 
+ 1    18.0967   -30.4167   draw gamma 
+ 1    18.3494   -29.8167   draw delta 
+ 1    18.4028   -34.3833   draw epsilon 
+ 1    19.0433   -29.8667   draw zeta 
+ 1    19.1156   -27.6667   draw tau 
+ 1    18.9206   -26.2833   draw sigma 
+ 1    18.7606   -26.9833   draw phi 
+ 1    19.0433   -29.8667   draw zeta 
+ 0    18.4661   -25.4167   move lambda 
+ 1    18.7606   -26.9833   draw phi 
+ 1    18.3494   -29.8167   draw delta 
+ 1    18.4661   -25.4167   draw lambda 
+ 2    18.2289     -21.05   dotted mu 
+ 0    19.3611   -17.8333   move rho1 
+ 2    19.1622   -21.0167   dotted pi 
+ 2    19.0778   -21.7333   dotted omicron 
+ 2    18.9617      -21.1   dotted xi2 
+ 2    19.1622   -21.0167   dotted pi 
+
+Scorpius
+ 0    17.8306   -37.0333   move 17:49:52 -37:02:36 
+ 1      17.56      -37.1   draw lambda 
+ 1    17.5122   -37.2833   draw upsilon 
+ 1    17.7078   -39.0167   draw kappa 
+ 1    17.7928   -40.1167   draw iota1 
+ 1    17.6217   -42.9833   draw theta 
+ 1    17.2022   -43.2333   draw eta 
+ 1    16.9094     -42.35   draw zeta 2 
+ 1    16.8644   -38.0333   draw mu 1 
+ 1    16.8356   -34.2833   draw epsilon 
+ 1    16.5978      -28.2   draw tau 
+ 1      16.49   -26.4167   draw antares 
+ 1    16.3528   -25.5833   draw sigma 
+ 1    16.0056   -22.6167   draw delta 
+ 1    15.9806      -26.1   draw pi 
+ 1    15.9478      -29.2   draw rho 
+ 0    16.0056   -22.6167   move delta 
+ 1    16.0906      -19.8   draw beta1 
+ 1    16.1994   -19.4333   draw nu 
+
+Sculptor
+ 0   0.976667     -29.35   move alpha 
+ 1     23.815   -28.1167   draw delta 
+ 1    23.3133   -32.5167   draw gamma 
+ 1    23.5494   -37.8167   draw beta 
+
+Scutum
+ 0    18.5867   -8.23333   move alpha 
+ 1    18.7861   -4.73333   draw beta 
+ 1    18.7044      -9.05   draw delta 
+ 1    18.4861     -14.55   draw gamma 
+ 1    18.5867   -8.23333   draw alpha 
+
+Serpens Caput
+ 0    15.7694    15.4167   move ser beta 
+ 1    15.9406      15.65   draw ser gamma 
+ 1    15.8122    18.1333   draw ser kappa 
+ 1    15.6922    19.6667   draw ser iota 
+ 1    15.7694    15.4167   draw ser beta 
+ 1      15.58    10.5333   draw ser delta 
+ 1    15.7378    6.41667   draw ser alpha 
+ 1    15.8467    4.46667   draw ser epsilon 
+ 1    15.8267   -3.41667   draw ser mu 
+ 1    16.2389   -3.68333   draw oph delta 
+
+Serpens Cauda
+ 0    18.9367        4.2   move ser theta1 
+ 1     18.355   -2.88333   draw ser eta 
+ 1    17.9833   -9.76667   draw oph nu 
+ 1    17.6261   -15.3833   draw ser xi 
+ 1    17.1728   -15.7167   draw oph eta 
+
+Sextans
+ 0    10.4911   -2.73333   move delta 
+ 2    10.5044  -0.633333   dotted beta 
+ 2    10.1322  -0.366667   dotted alpha 
+ 2      9.875       -8.1   dotted gamma 
+
+Taurus
+ 0    3.61444        0.4   move 10 
+ 1    3.41333    9.01667   draw omicron 
+ 1    3.45278    9.71667   draw xi 
+ 1    4.05222    5.98333   draw nu 
+ 0    3.45278    9.71667   move xi 
+ 1    4.01111    12.4833   draw lambda 
+ 1    4.32944    15.6167   draw gamma 
+ 1    4.47611      15.95   draw theta1 
+ 1    4.59833       16.5   draw aldebaran 
+ 1    5.62722    21.1333   draw zeta 
+ 0    4.32944    15.6167   move gamma 
+ 1    4.38222    17.5333   draw delta1 
+ 1    4.42444    17.9167   draw delta3 
+ 1    4.47667    19.1667   draw epsilon 
+ 1    5.43778       28.6   draw beta 
+
+Telescopium
+ 0    18.1867     -45.95   move epsilon 
+ 1    18.4494   -45.9667   draw alpha 
+ 1      18.48   -49.0667   draw zeta 
+
+Triangulum
+ 0    1.88444    29.5667   move alpha 
+ 1    2.15889    34.9833   draw beta 
+ 1    2.28833    33.8333   draw gamma 
+ 1    1.88444    29.5667   draw alpha 
+
+Triangulum Australe
+ 0    16.8106   -69.0167   move alpha 
+ 1    15.9189   -63.4167   draw beta 
+ 1    15.6117   -66.3167   draw epsilon 
+ 1     15.315   -68.6667   draw gamma 
+ 1    16.8106   -69.0167   draw alpha 
+
+Tucana
+ 0    22.4556     -64.95   move delta 
+ 1    22.3083     -60.25   draw alpha 
+ 1      23.29   -58.2333   draw gamma 
+ 1   0.525556     -62.95   draw beta1 
+ 1   0.334444   -64.8667   draw zeta 
+ 1    23.9983   -65.5667   draw epsilon 
+ 1    22.4556     -64.95   draw delta 
+
+Ursa Major
+ 0    13.7922       49.3   move eta 
+ 1    13.3983    54.9167   draw mizar a 
+ 1       12.9      55.95   draw epsilon 
+ 1    12.2567    57.0167   draw delta 
+ 1    11.8967    53.6833   draw gamma 
+ 1    11.0306    56.3667   draw beta 
+ 1    11.0617      61.75   draw alpha 
+ 1    12.2567    57.0167   draw delta 
+ 0    11.8967    53.6833   move gamma 
+ 2    11.7672    47.7667   dotted chi 
+ 2    11.3078    33.0833   dotted nu 
+ 2    11.3028    31.5167   dotted xi 
+ 0    11.7672    47.7667   move chi 
+ 2    11.1606    44.4833   dotted psi 
+ 2    10.3717    41.4833   dotted mu 
+ 2    10.2844       42.9   dotted lambda 
+ 0    11.0306    56.3667   move beta 
+ 2    9.84944    59.0333   dotted upsilon 
+ 2    8.50389    60.7167   dotted omicron 
+ 2      9.525      63.05   dotted 23 
+ 2    11.0617      61.75   dotted alpha 
+ 0      9.525      63.05   move 23 
+ 2    9.84944    59.0333   dotted upsilon 
+ 2    9.54722    51.6667   dotted theta 
+ 2       9.06      47.15   dotted kappa 
+ 2    8.98667    48.0333   dotted iota 
+
+Ursa Minor
+ 0       2.53      89.25   move polaris 
+ 1    17.5367    86.5833   draw umi delta 
+ 1    16.7661    82.0333   draw umi epsilon 
+ 1    15.7339    77.7833   draw umi zeta 
+ 1     14.845      74.15   draw umi beta 
+ 1     15.345    71.8333   draw umi gamma 
+ 1    16.2917      75.75   draw umi eta 
+ 1    15.7339    77.7833   draw umi zeta 
+
+Vela
+ 0      8.745      -54.7   move delta 
+ 1    9.36833        -55   draw kappa 
+ 1    9.94722   -54.5667   draw phi 
+ 1    10.7794   -49.4167   draw mu 
+ 1    10.2456   -42.1167   draw 10:14:44 -42:07:20 
+ 1    9.51167   -40.4667   draw psi 
+ 1    9.13278   -43.4167   draw lambda 
+ 1    8.15778   -47.3333   draw gamma1 
+ 1      8.745      -54.7   draw delta 
+
+Virgo
+ 0    14.7172      -5.65   move mu 
+ 1    14.2667         -6   draw iota 
+ 1    13.4194     -11.15   draw spica 
+ 1    12.6939   -1.43333   draw gamma 
+ 1    12.3317  -0.666667   draw eta 
+ 1    11.8444       1.75   draw beta 
+ 1    11.7639    6.51667   draw nu 
+ 1    12.0867    8.71667   draw omicron 
+ 1    12.6939   -1.43333   draw gamma 
+ 1    12.9267    3.38333   draw delta 
+ 1    13.0361      10.95   draw epsilon 
+ 0    12.9267    3.38333   move delta 
+ 1    13.5778  -0.583333   draw zeta 
+ 1    13.4194     -11.15   draw spica 
+ 0    13.5778  -0.583333   move zeta 
+ 1    14.0272    1.53333   draw tau 
+ 1    14.2667         -6   draw iota 
+ 0    14.0272    1.53333   move tau 
+ 1    14.7706    1.88333   draw 109 
+
+Volans
+ 0    9.04056   -66.3833   move alpha 
+ 1       8.33      -71.5   draw kappa1 
+ 1    7.69667      -72.6   draw zeta 
+ 1      7.145   -70.4833   draw gamma1 
+ 1       7.28     -67.95   draw delta 
+ 1    8.13167   -68.6167   draw epsilon 
+ 1    8.42889   -66.1333   draw beta 
+ 1    9.04056   -66.3833   draw alpha 
+
+Vulpecula
+ 0    19.8906    24.0667   move 13 
+ 2    19.4783      24.65   dotted alpha 

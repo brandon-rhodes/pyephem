@@ -1,0 +1,13 @@
+! XEphem (v3.2.3) Linker Options list for VMS DEC C
+! This assumes Motif v1.2-3
+[-.-.LibAstro]LibAstro.olb/Library        
+[-.-.libip]libip.olb/Library
+[-.-.liblilxml]liblilxml.olb/Library
+[-.-.libjpegd]libjpegd.olb/Library
+[-.-.libpng]libpng.olb/Library
+[-.-.libz]libz.olb/Library
+Sys$Share:DECW$XMLibShr12.exe /Share
+SYS$SHARE:DECW$XMuLibShrR5.EXE/SHARE
+SYS$SHARE:DECW$XExtLibShr.EXE/SHARE
+Sys$Share:DECW$XTLibShrR5.exe /Share
+Sys$Share:DECW$XLibShr.exe /Share

@@ -1,0 +1,67 @@
+xedb is a command line program that reads lines of sources in .edb format on
+stdin and writes ephemeris data for each source on stdout. The output format
+is the same as xephemdbd; please see it's README for details.
+
+Several operating parameters are extracted from the same resource file
+used by XEphem. Although not linked with X libraries, xedb looks for this
+file using the same rules as XEphem and should make sharing these parameters
+between programs easy. The resources used, and defaults if not found for those
+which are optional, are:
+
+XEphem.Lat       d:m:s north, required
+XEphem.Long      d:m:s west, required
+XEphem.Elevation m above mean sea level, required
+XEphem.Pressure  1010 hPa, optional
+XEphem.Temp      10 C, optional
+XEphem.TZone     0 hours behind UTC, optional
+XEphem.Equinox   2000.0, optional
+
+xedb also has a few command line arguments as follows:
+
+  -j j : set time to JD j, else use current host
+  -r f : use XEphem resource file f, else round up the usual suspects
+  -t   : generate topocentric, else geocentric
+  -v   : verbose
+
+To build xedb, put the source in tools/xedb below the XEphem source code
+directory and type make. The libastro library is required and should be
+in ../../../../libastro.
+
+After building xedb, run a quick sanity test as follows:
+
+1. set up a trial reource file, sample.res, containing this:
+
+XEphem.Lat:       42:29:40
+XEphem.Long:      92:20:20
+XEphem.Elevation: 259.1
+XEphem.Pressure:  1010
+XEphem.Temp:      10
+XEphem.TZone:     6:00:00
+XEphem.Equinox:   2000
+
+2. run this:
+
+echo 'C/2002 C1 (Ikeya-Zhan,e,28.1206,93.3718,34.6666,51.27566,,0.9901111,0, 3/18.9784/2002, 1/01/2000,g7.5,4,0' | xedb -j 2452330.50000 -v -t -r sample.res
+
+3. the output should be this:
+
+Using resource file sample.res
+  mjd    2002.15068 AD
+  lat      42.49444 °
+  lng     -92.33889 °
+ temp      10.00000 °C
+press    1010.00000 hPa
+ elev     259.10000 m
+   tz       6.00000 hrs behind UTC
+epoch    2000.00000 AD
+  equ          Topo
+Processing: C/2002 C1 (Ikeya-Zhan,e,28.1206,93.3718,34.6666,51.27566,,0.9901111,0, 3/18.9784/2002, 1/01/2000,g7.5,4,0
+
+C/2002 C1 (Ikeya-Zhan e      0:53:18.09  -3:11:56.8   6.52    0  65:12:36 -14:10:09  1.233  0.719  80   3:15:59.8  26:28:51 237:18:40 14:54  94:11 20:44 44:13  2:35 266:18
+
+
+Elwood Downey
+ecdowney@clearskyinstitute.com
+
+# For RCS Only -- Do Not Edit
+# @(#) $RCSfile: README,v $ $Date: 2002/04/12 22:20:24 $ $Revision: 1.4 $ $Name:  $

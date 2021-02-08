@@ -1,0 +1,174 @@
+XEphemdbd is a filter to find astronomical objects within a given field of
+view. All files accessable to XEphem are searched. It can also be used as a
+deamon to feed other processes, or from a cgi-bin script (see sample
+xephemdbd.html and xephemdbd.pl).
+
+To build xephemdbd, first build XEphem then just type 'make' here.
+
+To install on a web server, see INSTALL.
+
+As a filter, xephemdbd reads lines of input from stdin until EOF. Each line
+defines a center RA and Dec, field of view and observing circumstances. Each
+request yields lines of output of all objects falling within the field on
+stdout. The search may be restricted to various classes of objects, may be
+topocentric or geocentric, astrometric or apparent. The output format may be
+in .edb format or in a column-based text format.
+
+As a daemon, input may come from a file designated with the -i command
+argument. This file is opened R/W in anticipation of it being a fifo to
+prevent xephemdbd from seeing EOF as clients using the fifo come and go.
+xephemdbd will exit if no more requests appear within 30 minutes (or a time
+as set using -t). Xephemdbd reads all *.edb files into memory one time at
+start-up, then forks a process to perform each search which includes a
+separate output file specification. If the underlying system supports COW,
+copy-on-write, this forking scheme allows the data files to only be read
+into memory one time and never copied.
+
+Usage: xephemdbd [options]:
+ -c <dir>    alternate catalogs directory;
+             default is /usr/local/xephem/catalogs
+ -d          do not fork/exit as a daemon process
+ -f          do not try to use field star catalogs
+ -i <file>   open file R/W for input; default is stdin
+ -l <file>   lock file; default is /tmp/xephemdbd.pid
+ -m <file>   dir of moon models; default is /usr/local/xephem/auxil
+ -t <secs>   max idle minutes, 0=forever. default is 30
+ -v          verbose to stderr
+
+
+
+Each input request is one line of text, read from stdin (or where ever -i
+is set). Args are separated by commas, formatted as follows:
+
+[>file,]outputmode,types,year,RA,Dec,FOV,Mag[,lat,long,elev]
+
+    >file: 
+
+	Optional. If the first argument begins with '>', it names an output
+	file. xephemdbd will fork a child process to handle this request,
+	write the output to this file, and the child will exit.
+
+	if this argument is missing, the output goes to stdout
+
+    outputmode: sum of:
+
+	    1	columnar text (see below),
+		    else edb format
+	    2	topocentric (requires lat/long/elev),
+		    else geocentric
+	    4	apparent@year (requires lat/long/elev),
+		    else astrometric@2000
+	    8   include header detail
+
+    object types: sum of:
+
+	    1	planets
+	    2	elliptical
+	    4	parabolic
+	    8	hyperbolic
+	    16	stars
+	    32	clusters
+	    64	galaxies
+	    128	other deep sky
+	    256	PPM/SAO/HD
+	    512	GSC
+    
+    year:
+    
+	the desired time for the ephemerides to be calculated, as decimal year.
+
+    RA, Dec:
+
+	center of the field of view, radians
+
+    FOV:
+    	
+	diameter of field of view, radians
+
+    Mag:
+
+    	limiting magnitude, that is, only report object at least this bright
+
+    lat, long, elev;
+
+    	latitude and longitude of observing site, in radians. longitude is 
+	+eastwards. elev is the height abov sea level, in meters. These
+
+	fields are only necessary if outputmode specified topocentric or
+	apparent place coordinates.
+
+
+The .edb output format is for feeding XEphem. Therefore for non-fixed objects
+the values are the orbital elements, not ephemerides.
+
+The .txt format is for feeding web pages or some other application. It is a
+true ephemerides and is intended primarily to be easy to parse and be
+*fairly* human readable.
+
+    The format assignes fixed columns to each field as follows, depending on
+    the basic type. Beware that fields unique to a subset of objects can
+    overlap fields from a different type, so key off the Type field when
+    parsing.
+
+	Name		Col  N Value			Format
+	--------	---  - -----------		------
+	Name	  	  1 13 Name			left justified
+	Type	     	 15  1 P			type planet
+	Cns		 17  3 Constellation		3-char IAU Abbreviation
+	RA		 21 11 Right Ascension		hh:mm:ss.ss
+	Dec		 33 11 Declination		(-)dd:mm:ss.s
+	Mag	 	 45  6 Magnitude		mmm.mm
+	Size	 	 52  4 Size, arcseconds		ssss
+	HeLong	 	 57  9 Heliocentric Long	ddd:mm:ss
+	HeLat	 	 67  9 Heliocentric Lat		(-)dd:mm:ss
+	EaDst	 	 77  6 Earth distance, AU	%6.3f
+	SnDst	 	 84  6 Sun distance, AU		%6.3f
+	Phs	 	 91  3 % illumination		percent 0..100
+	*HA		 95 11 Hour Angle		(-)hh:mm:ss.s
+	*Alt	 	107  9 Altitude			(-)dd:mm:ss
+	*Az         	117  9 Azimuth, E of N		ddd:mm:ss
+	*RiseTm     	127  5 Rise time, UTC		hh:mm
+	*RiseAz		133  6 Rise Azimuth		ddd:mm
+	*TransTm	140  5 Transit Time		hh:mm
+	*TransAlt	146  5 Transit Altitude		dd:mm
+	*SetTm      	152  5 Set Time			hh:mm
+	*SetAz		158  6 Set Azimuth		ddd:mm
+
+	Name	  	  1 13 Name			left justified
+	Type	     	 15  1 p			type parabolic
+	[remaining same as P]
+
+	Name	  	  1 13 Name			left justified
+	Type	     	 15  1 e			type elliptical
+	[remaining same as P]
+
+	Name	  	  1 13 Name			left justified
+	Type	     	 15  1 h			type hyperbolic
+	[remaining same as P]
+
+	Name	  	  1 13 Name			left justified
+	Type	     	 15  1 f			type fixed
+	Cns		 17  3 Constellation		3-char IAU Abbreviation
+	RA		 21 11 Right Ascension		hh:mm:ss.ss
+	Dec		 33 11 Declination		(-)dd:mm:ss.s
+	Mag	 	 45  6 Magnitude		mmm.mm
+	Size	 	 52  4 Size, arcseconds		ssss
+	C		 57  1 Classification code	A
+	Sp		 59  2 Spectral classification	A2
+	^MnAx		 86  4 Minor axis diam, asecs	ssss
+	^PA		 91  3 Pstn angle, degs E of N	0..360
+	*HA		 95 11 Hour Angle		(-)hh:mm:ss.s
+	*Alt	 	107  9 Altitude			(-)dd:mm:ss
+	*Az         	117  9 Azimuth, E of N		ddd:mm:ss
+	*RiseTm     	127  5 Rise time, UTC		hh:mm
+	*RiseAz		133  6 Rise Azimuth		ddd:mm
+	*TransTm	140  5 Transit Time		hh:mm
+	*TransAlt	146  5 Transit Altitude		dd:mm
+	*SetTm      	152  5 Set Time			hh:mm
+	*SetAz		158  6 Set Azimuth		ddd:mm
+
+* Only if outputmode includes 2 or 4 (requires lat/long/elev with input)
+^ Blank unless Class is G or H for galaxy.
+
+For RCS Only -- Do Not Edit
+@(#) $RCSfile: README,v $ $Date: 2003/12/05 06:27:38 $ $Revision: 1.6 $ $Name:  $

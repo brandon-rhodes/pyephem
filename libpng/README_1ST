@@ -1,0 +1,4 @@
+Minimal png library for XEphem. No code files were changed from the original
+except to simplify the Makefile.
+
+See the original README for more info.

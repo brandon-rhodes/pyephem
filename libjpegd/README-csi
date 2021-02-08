@@ -1,0 +1,6 @@
+Clear Sky Institute greatfully acknowledges using this software from the
+Independent JPEG Group to make the source distribution of XEphem as portable
+as possible. This directory contains only those files from the original
+distribution required to build a library that supports decompression. We have
+not made any substantive changes, so if you have your own libjpeg and prefer
+to use it by all means go for it.

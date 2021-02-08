@@ -1,0 +1,39 @@
+This directory contains support files that are used by xephem. These files are
+only ever read by xephem and so may be shared by all users.
+
+HAReyfigs.csf	H. A. Rey constellation figures
+README		this file
+SOHO_512_20030809_0719_eit_304.gif	sample SOHO image
+analemma.plt	sample plot
+annotation.ano	sample annotation file
+astorb2edb.pl	script to convert Lowell asteroids format to edb
+classicfigs.csf	classic constellation figures
+dearth.gif	daytime earth image
+eyepieces.epl	sample eyepiece placement file
+eyepieces.eyp	sample eyepiece definition file
+favorites.fav	sample favorite objects file
+jupiter.9910	BDL Jupiter moon model, 1999-2010
+jupitermap.gif	Jupiter image
+logo.gif	banner logo image
+mars.9910	BDL Mars moon model, 1999-2010
+mars_db		Martian surface features
+marsmap.jpg	Mars image
+moon.fts	Full moon image
+mpcorb2edb.pl	script to convert Harvard MPC asteroid format to .edb
+nearth.gif	nighttime Earth image
+sample.hzn	default horizon map
+saturn00.gif	Saturn image with rings tilted 0 degrees
+saturn04.gif	Saturn image with rings tilted 4 degrees
+saturn10.gif	Saturn image with rings tilted 10 degrees
+saturn16.gif	Saturn image with rings tilted 16 degrees
+saturn20.gif	Saturn image with rings tilted 20 degrees
+saturn24.gif	Saturn image with rings tilted 24 degrees
+saturne.9910	BDL Saturn moon model, 1999-2010
+starcensus.txt	AAVSO star names list
+uranus.9910	BDL Uranus moon model, 1999-2010
+wmm.cof		magnetic declination model
+xephem_sites	Earth sites table
+xephem_skyhist	sample sky view history
+
+! For RCS Only -- Do Not Edit
+! @(#) $RCSfile: README,v $ $Date: 2005/08/02 02:04:09 $ $Revision: 1.8 $ $Name:  $

@@ -1,0 +1,855 @@
+# Mars features database built  9 Jan 2004 from
+# http://planetarynames.wr.usgs.gov/mars/marsTOC.html
+# Planetographic Latitude with West Longitudes.
+# Features with diameter < 50 km are removed.
+
+# Name  | Latitude, degs +N | Longitude, degs +W | Diameter, km | Feature Type
+
+# Lander sites from various Web maps.
+Pathfinder         |    19 |     33 |      0 | Landing site
+Viking 1           |    20 |     46 |      0 | Landing site
+Viking 2           |    48 |    226 |      0 | Landing site
+Mars Polar Lander  |   -76 |    195 |      0 | Landing site
+Beagle 2           |    11 |    270 |      0 | Landing site
+Spirit             | -14.7 |    185 |      0 | Landing site
+Opportunity        |    -2 |      6 |      0 | Landing site
+Phoenix		   |    68 |   -234 |      0 | Landing site
+Curiosity          |  -4.5895 | 222.5583 | 0 | Landing site
+
+Aeolis             |  -5.0 |  215.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Aeria              |  10.0 |  310.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Aetheria           |  40.0 |  230.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Aethiopis          |  10.0 |  230.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Amazonis           |   0.0 |  140.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Amenthes           |   5.0 |  250.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Aonium Sinus       | -45.0 |  105.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Arabia             |  20.0 |  330.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Arcadia            |  45.0 |  100.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Argyre             | -45.0 |   25.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Arnon              |  48.0 |  335.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Aurorae Sinus      | -15.0 |   50.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Ausonia            | -40.0 |  250.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Baltia             |  60.0 |   50.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Boreosyrtis        |  55.0 |  290.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Candor             |   3.0 |   75.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Casius             |  40.0 |  260.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Cebrenia           |  50.0 |  210.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Cecropia           |  60.0 |  320.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Ceraunius          |  20.0 |   93.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Cerberus           |  15.0 |  205.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Chalce             | -50.0 |    0.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Chersonesus        | -50.0 |  260.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Chryse             |  10.0 |   30.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Chrysokeras        | -50.0 |  110.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Claritas           | -35.0 |  110.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Copais Palus       |  55.0 |  280.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Coprates           | -15.0 |   65.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Cyclopia           |  -5.0 |  230.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Cydonia            |  40.0 |    0.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Deltoton Sinus     |  -4.0 |  305.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Depressio          | -60.0 |  340.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Deucalionis        | -15.0 |  340.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Deuteronilus       |  35.0 |    0.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Diacria            |  50.0 |  180.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Dioscuria          |  50.0 |  320.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Edom               |   0.0 |  345.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Electris           | -45.0 |  190.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Elysium            |  25.0 |  210.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Eridania           | -45.0 |  220.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Eunostos           |  22.0 |  120.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Euphrates          |  20.0 |  335.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Gehon              |  15.0 |    0.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Hellas             | -40.0 |  290.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Hellespontus       | -50.0 |  325.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Hesperia           | -20.0 |  240.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Hiddekel           |  15.0 |  345.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Hyperboreus        |  75.0 |   60.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Iapygia            | -20.0 |  295.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Icaria             | -40.0 |  130.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+II Thyle I         | -70.0 |  180.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Ismenius Lacus     |  40.0 |  330.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Jamuna             |  10.0 |   40.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Juventae Fons      |  -5.0 |   63.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Laestrygon         |   0.0 |  200.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Lemuria            |  70.0 |  200.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Libya              |   0.0 |  270.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Lunae Palus        |  15.0 |   65.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Mare Acidalium     |  45.0 |   30.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Mare Australe      | -60.0 |   10.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Mare Boreum        |  60.0 |  180.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Mare Chronium      | -58.0 |  210.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Mare Cimmerium     | -20.0 |  220.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Mare Erythraeum    | -25.0 |   40.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Mare Hadriacum     | -40.0 |  270.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Mare Serpentis     | -30.0 |  320.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Mare Sirenum       | -30.0 |  155.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Mare Tyrrhenum     | -20.0 |  255.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Margaritifer       | -10.0 |   25.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Memnonia           | -20.0 |  150.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Meroe              |  35.0 |  285.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Moab               |  20.0 |  350.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Moeris Lacus       |   8.0 |  270.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Nectar             | -28.0 |   72.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Neith Regio        |  38.0 |  272.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Nepenthes          |  20.0 |  260.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Nereidum Fretum    | -45.0 |   55.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Niliacus Lacus     |  30.0 |   30.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Nilokeras          |  30.0 |   55.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Nilosyrtis         |  42.0 |  290.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Nix Olympica       |  20.0 |  130.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Noachis            | -45.0 |  330.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Ogygis Regio       | -45.0 |   65.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Olympia            |  80.0 |  200.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Ophir              | -10.0 |   65.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Ortygia            |  60.0 |    0.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Oxia Palus         |   8.0 |   18.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Oxus               |  20.0 |   12.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Panchaia           |  60.0 |  200.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Pandorae Fretum    | -25.0 |  316.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Phaethontis        | -50.0 |  155.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Phison             |  20.0 |  320.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Phlegra            |  31.3 |  187.8 |  134.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Phoenicis Lacus    | -12.0 |  110.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Phrixi Regio       | -40.0 |   70.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Promethei Sinus    | -65.0 |  280.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Propontis          |  45.0 |  185.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Protei Regio       | -23.0 |   50.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Protonilus         |  42.0 |  315.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Pyrrhae Regio      | -15.0 |   38.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Scandia            |  60.5 |  147.9 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Sinai              | -20.0 |   70.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Sinus Meridiani    |  -5.0 |    0.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Sinus Sabaeus      |  -8.0 |  340.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Sithonius Lacus    |  45.0 |  245.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Solis Lacus        | -28.0 |   90.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Styx               |  30.0 |  200.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Syria              | -20.0 |  100.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Syrtis Major       |  10.0 |  290.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Tanais             |  50.0 |   70.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Tempe              |  40.0 |   70.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Tharsis            |   0.0 |    0.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Thaumasia          | -35.0 |   85.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Thoth              |  30.0 |  255.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Thymiamata         |  10.0 |   10.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Tithonius Lacus    |  -5.0 |   85.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Tractus Albus      |  30.0 |   80.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Trinacria          | -25.0 |  268.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Trivium            |  20.0 |  198.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Uchronia           |  70.0 |  260.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Umbra              |  50.0 |  290.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Utopia             |  50.0 |  250.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Vulcani Pelagus    | -35.0 |   15.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Xanthe             |  10.0 |   50.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Yaonis Regio       | -40.0 |  320.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Zephyria           |   0.0 |  195.0 |    0.0 | Albedo Feature -- Geographic area distinguished by amount of reflected light
+Acheron Catena     |  37.6 |  101.0 |  491.0 | Catena, catenae -- Chain of craters
+Alba Catena        |  35.3 |  114.7 |  144.0 | Catena, catenae -- Chain of craters
+Artynia Catena     |  47.9 |  119.6 |  263.0 | Catena, catenae -- Chain of craters
+Baphyras Catena    |  39.1 |   84.3 |   95.0 | Catena, catenae -- Chain of craters
+Ceraunius          |  37.4 |  108.2 |   50.0 | Catena, catenae -- Chain of craters
+Coprates Catena    | -15.1 |   62.2 |  511.0 | Catena, catenae -- Chain of craters
+Cyane Catena       |  36.6 |  118.4 |  203.0 | Catena, catenae -- Chain of craters
+Ganges Catena      |  -2.8 |   68.7 |  284.0 | Catena, catenae -- Chain of craters
+Labeatis           |  19.7 |   93.3 |  214.0 | Catena, catenae -- Chain of craters
+Ophir Catenae      |  -9.6 |   59.4 |  577.0 | Catena, catenae -- Chain of craters
+Phlegethon         |  39.2 |  103.3 |  391.0 | Catena, catenae -- Chain of craters
+Stygis Catena      |  23.5 |  209.5 |   66.0 | Catena, catenae -- Chain of craters
+Tithoniae          |  -5.4 |   82.4 |  567.0 | Catena, catenae -- Chain of craters
+Tractus Catena     |  28.1 |  102.7 |  897.0 | Catena, catenae -- Chain of craters
+Argyre Cavi        | -48.8 |   40.3 |   60.0 | Cavus, cavi -- Hollows, irregular steep-sided depressions usually in arrays or clusters
+Ausonia Cavus      | -32.2 |  263.6 |   50.0 | Cavus, cavi -- Hollows, irregular steep-sided depressions usually in arrays or clusters
+Avernus Cavi       |  -3.6 |  187.5 |   93.4 | Cavus, cavi -- Hollows, irregular steep-sided depressions usually in arrays or clusters
+Cavi Angusti       | -78.6 |   76.8 |  675.0 | Cavus, cavi -- Hollows, irregular steep-sided depressions usually in arrays or clusters
+Hyperborei Cavi    |  80.0 |   50.3 |   75.0 | Cavus, cavi -- Hollows, irregular steep-sided depressions usually in arrays or clusters
+Octantis Cavi      | -53.0 |   46.1 |   65.0 | Cavus, cavi -- Hollows, irregular steep-sided depressions usually in arrays or clusters
+Peraea Cavus       | -29.9 |  264.8 |   55.2 | Cavus, cavi -- Hollows, irregular steep-sided depressions usually in arrays or clusters
+Scandia Cavi       |  77.3 |  150.3 |  425.0 | Cavus, cavi -- Hollows, irregular steep-sided depressions usually in arrays or clusters
+Sisyphi Cavi       | -73.1 |    6.2 |  430.0 | Cavus, cavi -- Hollows, irregular steep-sided depressions usually in arrays or clusters
+Aram Chaos         |   2.6 |   21.5 |  277.0 | Chaos -- Distinctive area of broken terrain
+Aromatum Chaos     |  -1.1 |   43.0 |   91.5 | Chaos -- Distinctive area of broken terrain
+Arsinoes Chaos     |  -7.7 |   28.0 |  230.0 | Chaos -- Distinctive area of broken terrain
+Atlantis Chaos     | -34.7 |  177.6 |  162.0 | Chaos -- Distinctive area of broken terrain
+Aureum Chaos       |  -4.4 |   27.0 |  368.0 | Chaos -- Distinctive area of broken terrain
+Aurorae Chaos      |  -9.0 |   35.3 |  750.0 | Chaos -- Distinctive area of broken terrain
+Candor Chaos       |  -7.0 |   72.6 |   97.0 | Chaos -- Distinctive area of broken terrain
+Echus Chaos        |  10.9 |   74.8 |  473.0 | Chaos -- Distinctive area of broken terrain
+Eos Chaos          | -16.8 |   46.9 |  490.0 | Chaos -- Distinctive area of broken terrain
+Galaxias Chaos     |  34.1 |  213.6 |  234.0 | Chaos -- Distinctive area of broken terrain
+Gorgonum Chaos     | -37.5 |  170.9 |  149.0 | Chaos -- Distinctive area of broken terrain
+Hellas Chaos       | -47.8 |  296.0 |  595.0 | Chaos -- Distinctive area of broken terrain
+Hydaspis Chaos     |   3.2 |   27.1 |  355.0 | Chaos -- Distinctive area of broken terrain
+Hydraotes Chaos    |   0.8 |   35.4 |  417.5 | Chaos -- Distinctive area of broken terrain
+Iani Chaos         |  -2.8 |   17.5 |  434.0 | Chaos -- Distinctive area of broken terrain
+Ister Chaos        |  13.0 |   56.4 |  103.4 | Chaos -- Distinctive area of broken terrain
+Margaritifer       |  -8.7 |   21.6 |  390.0 | Chaos -- Distinctive area of broken terrain
+Nilus Chaos        |  25.6 |   77.2 |  283.0 | Chaos -- Distinctive area of broken terrain
+Pyrrhae Chaos      | -10.5 |   28.5 |  189.0 | Chaos -- Distinctive area of broken terrain
+Arsia Chasmata     |  -7.6 |  119.3 |   81.0 | Chasma, chasmata -- A deep, elongated, steep-sided depression
+Ascraeus           |   8.8 |  105.7 |  110.0 | Chasma, chasmata -- A deep, elongated, steep-sided depression
+Baetis Chasma      |  -4.4 |   65.0 |   93.0 | Chasma, chasmata -- A deep, elongated, steep-sided depression
+Candor Chasma      |  -6.6 |   70.9 |  813.0 | Chasma, chasmata -- A deep, elongated, steep-sided depression
+Capri Chasma       |  -9.9 |   43.3 | 1275.0 | Chasma, chasmata -- A deep, elongated, steep-sided depression
+Chasma Australe    | -82.3 |  265.6 |  380.0 | Chasma, chasmata -- A deep, elongated, steep-sided depression
+Chasma Boreale     |  83.0 |   47.1 |  560.0 | Chasma, chasmata -- A deep, elongated, steep-sided depression
+Coprates Chasma    | -13.4 |   61.4 |  966.0 | Chasma, chasmata -- A deep, elongated, steep-sided depression
+Echus Chasma       |   2.7 |   80.2 |  413.0 | Chasma, chasmata -- A deep, elongated, steep-sided depression
+Elysium Chasma     |  22.5 |  218.5 |  129.0 | Chasma, chasmata -- A deep, elongated, steep-sided depression
+Eos Chasma         | -12.1 |   39.7 | 1413.0 | Chasma, chasmata -- A deep, elongated, steep-sided depression
+Ganges Chasma      |  -8.0 |   48.1 |  584.0 | Chasma, chasmata -- A deep, elongated, steep-sided depression
+Hebes Chasma       |  -1.1 |   76.2 |  319.0 | Chasma, chasmata -- A deep, elongated, steep-sided depression
+Hyblaeus Chasma    |  22.2 |  218.8 |   58.5 | Chasma, chasmata -- A deep, elongated, steep-sided depression
+Hydrae Chasma      |  -6.9 |   62.1 |   59.0 | Chasma, chasmata -- A deep, elongated, steep-sided depression
+Ius Chasma         |  -7.0 |   85.8 |  938.0 | Chasma, chasmata -- A deep, elongated, steep-sided depression
+Juventae Chasma    |  -3.5 |   61.4 |  320.0 | Chasma, chasmata -- A deep, elongated, steep-sided depression
+Melas Chasma       | -10.4 |   72.7 |  547.0 | Chasma, chasmata -- A deep, elongated, steep-sided depression
+Ophir Chasma       |  -4.0 |   72.5 |  317.0 | Chasma, chasmata -- A deep, elongated, steep-sided depression
+Tithonium          |  -4.6 |   84.7 |  810.0 | Chasma, chasmata -- A deep, elongated, steep-sided depression
+Abalos Colles      |  77.0 |   72.0 |  245.0 | Colles -- Small hills or knobs
+Acidalia Colles    |  50.9 |   23.1 |  360.0 | Colles -- Small hills or knobs
+Alpheus Colles     | -40.0 |  300.3 |  628.0 | Colles -- Small hills or knobs
+Arena Colles       |  25.5 |  277.5 |  580.0 | Colles -- Small hills or knobs
+Ariadnes Colles    | -34.8 |  187.6 |  182.0 | Colles -- Small hills or knobs
+Astapus Colles     |  35.5 |  272.3 |  580.0 | Colles -- Small hills or knobs
+Avernus Colles     |  -1.6 |  189.0 |  244.0 | Colles -- Small hills or knobs
+Colles Nili        |  39.0 |  297.1 |  645.0 | Colles -- Small hills or knobs
+Cydonia Colles     |  39.4 |   12.2 |  365.0 | Colles -- Small hills or knobs
+Deuteronilus       |  42.3 |  338.3 |   62.0 | Colles -- Small hills or knobs
+Galaxias Colles    |  37.2 |  214.3 |  613.0 | Colles -- Small hills or knobs
+Ortygia Colles     |  54.1 |    9.6 |  268.0 | Colles -- Small hills or knobs
+Oxia Colles        |  21.7 |   26.7 |  569.0 | Colles -- Small hills or knobs
+Scandia Colles     |  66.4 |  137.2 | 1365.0 | Colles -- Small hills or knobs
+Tartarus Colles    |  20.0 |  187.0 | 1750.0 | Colles -- Small hills or knobs
+Adams              |  31.1 |  197.0 |   94.9 | Crater, craters -- A circular depression
+Agassiz            | -70.1 |   89.0 |  117.7 | Crater, craters -- A circular depression
+Alexey Tolstoy     | -47.8 |  234.8 |   95.0 | Crater, craters -- A circular depression
+Alitus             | -35.2 |   38.2 |   50.0 | Crater, craters -- A circular depression
+Aniak              | -32.2 |   69.6 |   51.0 | Crater, craters -- A circular depression
+Antoniadi          |  21.5 |  299.2 |  394.0 | Crater, craters -- A circular depression
+Arago              |  10.2 |  330.2 |  154.0 | Crater, craters -- A circular depression
+Arkhangelsky       | -41.4 |   24.8 |  125.0 | Crater, craters -- A circular depression
+Arrhenius          | -40.3 |  237.4 |  129.0 | Crater, craters -- A circular depression
+Babakin            | -36.4 |   71.6 |   78.0 | Crater, craters -- A circular depression
+Bakhuysen          | -23.3 |  344.4 |  161.0 | Crater, craters -- A circular depression
+Baldet             |  23.0 |  294.6 |  180.0 | Crater, craters -- A circular depression
+Baltisk            | -42.7 |   54.7 |   52.0 | Crater, craters -- A circular depression
+Bamberg            |  40.0 |    3.2 |   58.3 | Crater, craters -- A circular depression
+Barabashov         |  47.7 |   68.8 |  125.6 | Crater, craters -- A circular depression
+Barnard            | -61.4 |  298.4 |  125.0 | Crater, craters -- A circular depression
+Barsukov           |   8.0 |   29.1 |   71.7 | Crater, craters -- A circular depression
+Becquerel          |  22.3 |    8.0 |  171.2 | Crater, craters -- A circular depression
+Beer               | -14.6 |    8.2 |   89.8 | Crater, craters -- A circular depression
+Bernard            | -23.6 |  154.3 |  131.0 | Crater, craters -- A circular depression
+Bianchini          | -64.2 |   95.4 |   76.0 | Crater, craters -- A circular depression
+Bjerknes           | -43.4 |  188.6 |   94.0 | Crater, craters -- A circular depression
+Boeddicker         | -15.0 |  197.7 |  109.0 | Crater, craters -- A circular depression
+Bond               | -33.2 |   36.0 |  110.6 | Crater, craters -- A circular depression
+Bouguer            | -18.7 |  332.8 |  107.0 | Crater, craters -- A circular depression
+Bozkir             | -44.5 |   32.2 |   84.0 | Crater, craters -- A circular depression
+Brashear           | -54.2 |  119.2 |   79.0 | Crater, craters -- A circular depression
+Briault            | -10.2 |  270.4 |   96.6 | Crater, craters -- A circular depression
+Bunge              | -34.2 |   48.7 |   73.7 | Crater, craters -- A circular depression
+Burroughs          | -72.4 |  243.0 |  125.7 | Crater, craters -- A circular depression
+Burton             | -14.1 |  156.4 |  123.0 | Crater, craters -- A circular depression
+Byrd               | -65.5 |  232.2 |  126.8 | Crater, craters -- A circular depression
+Campbell           | -54.7 |  194.6 |  129.0 | Crater, craters -- A circular depression
+Cantoura           |  15.0 |   51.8 |   51.4 | Crater, craters -- A circular depression
+Cassini            |  23.8 |  328.2 |  412.0 | Crater, craters -- A circular depression
+Cerulli            |  32.5 |  337.9 |  130.0 | Crater, craters -- A circular depression
+Chamberlin         | -66.1 |  124.5 |  120.4 | Crater, craters -- A circular depression
+Charlier           | -68.7 |  168.7 |  113.1 | Crater, craters -- A circular depression
+Chekalin           | -24.5 |   26.9 |   89.3 | Crater, craters -- A circular depression
+Chia               |   1.6 |   59.8 |   96.0 | Crater, craters -- A circular depression
+Chimbote           |  -1.5 |   39.8 |   67.2 | Crater, craters -- A circular depression
+Chinju             |  -4.6 |   42.2 |   66.6 | Crater, craters -- A circular depression
+Clark              | -55.6 |  133.4 |   98.0 | Crater, craters -- A circular depression
+Coblentz           | -55.3 |   90.3 |  112.0 | Crater, craters -- A circular depression
+Cobres             | -11.8 |  153.8 |   94.0 | Crater, craters -- A circular depression
+Columbus           | -29.8 |  166.1 |  119.0 | Crater, craters -- A circular depression
+Comas Sola         | -19.9 |  158.5 |  127.0 | Crater, craters -- A circular depression
+Copernicus         | -49.2 |  169.2 |  294.0 | Crater, craters -- A circular depression
+Crommelin          |   5.1 |   10.2 |  113.9 | Crater, craters -- A circular depression
+Cruls              | -43.3 |  197.1 |   88.0 | Crater, craters -- A circular depression
+Curie              |  29.1 |    4.8 |  114.1 | Crater, craters -- A circular depression
+Da Vinci           |   1.4 |   39.4 |  100.2 | Crater, craters -- A circular depression
+Daly               | -66.5 |   23.1 |   90.5 | Crater, craters -- A circular depression
+Dana               | -72.7 |   32.8 |   91.7 | Crater, craters -- A circular depression
+Darwin             | -57.3 |   19.5 |  178.0 | Crater, craters -- A circular depression
+Dawes              |  -9.3 |  322.0 |  191.0 | Crater, craters -- A circular depression
+de Vaucouleurs     | -13.5 |  189.1 |  293.0 | Crater, craters -- A circular depression
+Dejnev             | -25.5 |  164.8 |  156.0 | Crater, craters -- A circular depression
+Denning            | -17.7 |  326.6 |  165.0 | Crater, craters -- A circular depression
+Dinorwic           | -30.4 |  101.6 |   55.8 | Crater, craters -- A circular depression
+Dokuchaev          | -61.0 |  127.2 |   78.0 | Crater, craters -- A circular depression
+Douglass           | -51.8 |   70.6 |   94.0 | Crater, craters -- A circular depression
+Du Martheray       |   5.5 |  266.5 |  102.0 | Crater, craters -- A circular depression
+Du Toit            | -71.8 |   49.6 |   83.0 | Crater, craters -- A circular depression
+Eddie              |  12.4 |  217.9 |   89.0 | Crater, craters -- A circular depression
+Escalante          |   0.2 |  244.7 |   79.3 | Crater, craters -- A circular depression
+Eudoxus            | -44.9 |  147.5 |   98.0 | Crater, craters -- A circular depression
+Fesenkov           |  21.8 |   86.7 |   87.0 | Crater, craters -- A circular depression
+Flammarion         |  25.4 |  311.8 |  173.0 | Crater, craters -- A circular depression
+Flaugergues        | -17.0 |  340.8 |  245.0 | Crater, craters -- A circular depression
+Focas              |  33.9 |  347.3 |   76.5 | Crater, craters -- A circular depression
+Fontana            | -63.2 |   72.2 |   80.0 | Crater, craters -- A circular depression
+Fournier           |  -4.4 |  287.4 |  118.0 | Crater, craters -- A circular depression
+Gale               |  -5.5 |  222.3 |  155.3 | Crater, craters -- A circular depression
+Galilaei           |   5.7 |   27.0 |  137.3 | Crater, craters -- A circular depression
+Galle              | -51.2 |   30.9 |  230.0 | Crater, craters -- A circular depression
+Gandzani           |  34.5 |   91.0 |   54.8 | Crater, craters -- A circular depression
+Gilbert            | -68.2 |  273.7 |  126.4 | Crater, craters -- A circular depression
+Gill               |  15.9 |  354.6 |   83.0 | Crater, craters -- A circular depression
+Gledhill           | -53.5 |  273.0 |   82.5 | Crater, craters -- A circular depression
+Globe              | -23.9 |   27.4 |   51.7 | Crater, craters -- A circular depression
+Graff              | -21.4 |  206.3 |  158.0 | Crater, craters -- A circular depression
+Green              | -52.7 |    8.4 |  184.0 | Crater, craters -- A circular depression
+Gusev              | -14.7 |  184.6 |  166.0 | Crater, craters -- A circular depression
+Hadley             | -19.5 |  203.1 |  119.0 | Crater, craters -- A circular depression
+Haldane            | -53.1 |  230.9 |   78.7 | Crater, craters -- A circular depression
+Hale               | -36.1 |   36.5 |  149.0 | Crater, craters -- A circular depression
+Halley             | -48.7 |   59.3 |   84.5 | Crater, craters -- A circular depression
+Hartwig            | -39.0 |   16.0 |  105.0 | Crater, craters -- A circular depression
+Heaviside          | -70.7 |   95.3 |   87.4 | Crater, craters -- A circular depression
+Heinlein           | -64.8 |  243.8 |   88.0 | Crater, craters -- A circular depression
+Helmholtz          | -45.8 |   21.3 |  111.5 | Crater, craters -- A circular depression
+Henry              |  10.9 |  336.7 |  171.0 | Crater, craters -- A circular depression
+Herschel           | -14.9 |  230.3 |  304.5 | Crater, craters -- A circular depression
+Hipparchus         | -44.8 |  151.4 |   93.0 | Crater, craters -- A circular depression
+Holden             | -26.4 |   34.0 |  153.8 | Crater, craters -- A circular depression
+Holmes             | -75.0 |  293.2 |  122.0 | Crater, craters -- A circular depression
+Hooke              | -45.2 |   44.4 |  139.0 | Crater, craters -- A circular depression
+Huggins            | -49.4 |  204.4 |   90.0 | Crater, craters -- A circular depression
+Hussey             | -53.8 |  126.7 |   99.0 | Crater, craters -- A circular depression
+Hutton             | -71.8 |  255.4 |   99.0 | Crater, craters -- A circular depression
+Huxley             | -63.0 |  259.2 |  107.0 | Crater, craters -- A circular depression
+Huygens            | -14.3 |  304.6 |  470.0 | Crater, craters -- A circular depression
+Ibragimov          | -25.7 |   59.7 |   86.0 | Crater, craters -- A circular depression
+Innsbruck          |  -6.5 |   40.0 |   61.1 | Crater, craters -- A circular depression
+Isil               | -27.3 |  272.2 |   82.0 | Crater, craters -- A circular depression
+Janssen            |   2.7 |  322.5 |  158.0 | Crater, craters -- A circular depression
+Jarry-Desloges     |  -9.5 |  276.3 |   92.0 | Crater, craters -- A circular depression
+Jeans              | -69.8 |  205.9 |   80.2 | Crater, craters -- A circular depression
+Joly               | -74.7 |   42.7 |   79.9 | Crater, craters -- A circular depression
+Jones              | -19.1 |   19.9 |   94.0 | Crater, craters -- A circular depression
+Kaiser             | -46.6 |  340.9 |  207.0 | Crater, craters -- A circular depression
+Kamativi           | -20.7 |  260.1 |   59.0 | Crater, craters -- A circular depression
+Kamloops           | -53.8 |   32.6 |   65.0 | Crater, craters -- A circular depression
+Kantang            | -24.7 |   17.6 |   54.8 | Crater, craters -- A circular depression
+Kashira            | -27.3 |   18.4 |   68.5 | Crater, craters -- A circular depression
+Kasimov            | -24.9 |   23.0 |   91.3 | Crater, craters -- A circular depression
+Keeler             | -61.0 |  151.3 |   95.0 | Crater, craters -- A circular depression
+Kepler             | -47.1 |  219.1 |  233.0 | Crater, craters -- A circular depression
+Kinkora            | -25.2 |  247.2 |   54.3 | Crater, craters -- A circular depression
+Kipini             |  26.1 |   31.6 |   73.6 | Crater, craters -- A circular depression
+Knobel             |  -6.7 |  226.8 |  128.6 | Crater, craters -- A circular depression
+Korolev            |  73.0 |  195.5 |   84.2 | Crater, craters -- A circular depression
+Koval'sky          | -30.2 |  141.5 |  309.0 | Crater, craters -- A circular depression
+Krishtofovich      | -48.5 |  262.8 |  112.0 | Crater, craters -- A circular depression
+Kuiper             | -57.4 |  157.3 |   87.0 | Crater, craters -- A circular depression
+Kunowsky           |  57.1 |    9.7 |   67.4 | Crater, craters -- A circular depression
+Labria             | -35.3 |   48.1 |   54.0 | Crater, craters -- A circular depression
+Lambert            | -20.2 |  334.7 |   92.0 | Crater, craters -- A circular depression
+Lamont             | -58.6 |  113.6 |   76.0 | Crater, craters -- A circular depression
+Lampland           | -35.9 |   79.6 |   79.0 | Crater, craters -- A circular depression
+Lassell            | -20.9 |   62.5 |   92.0 | Crater, craters -- A circular depression
+Lasswitz           |  -9.4 |  221.8 |  111.0 | Crater, craters -- A circular depression
+Lau                | -74.4 |  107.8 |  104.9 | Crater, craters -- A circular depression
+Le Verrier         | -38.0 |  342.9 |  140.0 | Crater, craters -- A circular depression
+Li Fan             | -47.2 |  153.2 |  104.8 | Crater, craters -- A circular depression
+Liais              | -75.4 |  252.8 |  132.0 | Crater, craters -- A circular depression
+Liu Hsin           | -53.6 |  171.6 |  137.0 | Crater, craters -- A circular depression
+Lockyer            |  28.0 |  199.5 |   71.0 | Crater, craters -- A circular depression
+Lohse              | -43.7 |   16.8 |  155.5 | Crater, craters -- A circular depression
+Lomonosov          |  65.2 |    9.2 |  153.0 | Crater, craters -- A circular depression
+Lorica             | -20.0 |   28.4 |   67.6 | Crater, craters -- A circular depression
+Lowell             | -52.3 |   81.4 |  203.0 | Crater, craters -- A circular depression
+Luzin              |  27.3 |  328.8 |   97.0 | Crater, craters -- A circular depression
+Lyell              | -70.1 |   15.6 |  131.0 | Crater, craters -- A circular depression
+Lyot               |  50.8 |  330.7 |  236.0 | Crater, craters -- A circular depression
+Magadi             | -34.9 |   46.2 |   53.0 | Crater, craters -- A circular depression
+Magelhaens         | -32.7 |  174.8 |  105.0 | Crater, craters -- A circular depression
+Maggini            |  28.0 |  350.6 |  143.0 | Crater, craters -- A circular depression
+Main               | -76.6 |  310.9 |  109.0 | Crater, craters -- A circular depression
+Mandora            |  12.3 |   53.7 |   59.4 | Crater, craters -- A circular depression
+Maraldi            | -62.2 |   32.0 |  124.0 | Crater, craters -- A circular depression
+Marca              | -10.1 |  158.3 |   81.0 | Crater, craters -- A circular depression
+Mariner            | -35.1 |  164.5 |  170.0 | Crater, craters -- A circular depression
+Marth              |  13.0 |    3.5 |   98.4 | Crater, craters -- A circular depression
+Martz              | -35.3 |  215.9 |   97.0 | Crater, craters -- A circular depression
+Masursky           |  12.1 |   32.4 |  117.9 | Crater, craters -- A circular depression
+Maunder            | -50.0 |  358.5 |  107.5 | Crater, craters -- A circular depression
+McLaughlin         |  22.1 |   22.5 |   96.2 | Crater, craters -- A circular depression
+Mellish            | -72.8 |   24.0 |  101.7 | Crater, craters -- A circular depression
+Mendel             | -59.1 |  199.0 |   78.6 | Crater, craters -- A circular depression
+Mie                |  48.5 |  220.4 |  104.0 | Crater, craters -- A circular depression
+Millman            | -54.3 |  149.8 |   75.0 | Crater, craters -- A circular depression
+Millochau          | -21.4 |  275.0 |  115.0 | Crater, craters -- A circular depression
+Mitchel            | -67.7 |  283.9 |  138.4 | Crater, craters -- A circular depression
+Molesworth         | -27.7 |  210.9 |  181.0 | Crater, craters -- A circular depression
+Montevallo         |  15.4 |   54.4 |   51.9 | Crater, craters -- A circular depression
+Morella            |  -9.7 |   51.5 |   78.9 | Crater, craters -- A circular depression
+Moreux             |  42.1 |  315.6 |  138.0 | Crater, craters -- A circular depression
+Mutch              |   0.6 |   55.3 |  211.0 | Crater, craters -- A circular depression
+Nansen             | -50.3 |  140.6 |   81.0 | Crater, craters -- A circular depression
+Newcomb            | -24.4 |  359.0 |  252.0 | Crater, craters -- A circular depression
+Newton             | -40.8 |  158.1 |  298.0 | Crater, craters -- A circular depression
+Nicholson          |   0.2 |  164.6 |  102.5 | Crater, craters -- A circular depression
+Niesten            | -28.3 |  302.3 |  115.0 | Crater, craters -- A circular depression
+Novara             | -25.1 |   10.7 |   86.9 | Crater, craters -- A circular depression
+Orson Welles       |  -0.2 |   45.9 |  124.5 | Crater, craters -- A circular depression
+Ostrov             | -26.8 |   28.2 |   73.0 | Crater, craters -- A circular depression
+Ottumwa            |  24.8 |   55.8 |   53.2 | Crater, craters -- A circular depression
+Oudemans           | -10.0 |   91.9 |  124.0 | Crater, craters -- A circular depression
+Palos              |  -2.7 |  249.2 |   55.1 | Crater, craters -- A circular depression
+Pasteur            |  19.4 |  335.5 |  113.0 | Crater, craters -- A circular depression
+Perepelkin         |  52.8 |   64.6 |  112.0 | Crater, craters -- A circular depression
+Peridier           |  25.7 |  276.2 |  100.0 | Crater, craters -- A circular depression
+Perrotin           |  -2.9 |   78.0 |   84.0 | Crater, craters -- A circular depression
+Peta               | -21.5 |    9.2 |   80.5 | Crater, craters -- A circular depression
+Pettit             |  12.3 |  174.0 |   98.1 | Crater, craters -- A circular depression
+Phillips           | -66.7 |   45.1 |  190.2 | Crater, craters -- A circular depression
+Pickering          | -33.9 |  132.8 |  115.0 | Crater, craters -- A circular depression
+Playfair           | -78.1 |  126.2 |   64.2 | Crater, craters -- A circular depression
+Pollack            |  -7.9 |  334.8 |   96.0 | Crater, craters -- A circular depression
+Porter             | -50.8 |  113.9 |  105.0 | Crater, craters -- A circular depression
+Poynting           |   8.4 |  112.9 |   74.0 | Crater, craters -- A circular depression
+Proctor            | -48.0 |  330.5 |  168.2 | Crater, craters -- A circular depression
+Ptolemaeus         | -46.2 |  157.6 |  185.0 | Crater, craters -- A circular depression
+Pulawy             | -36.8 |   76.7 |   51.5 | Crater, craters -- A circular depression
+Quenisset          |  34.6 |  319.4 |  138.0 | Crater, craters -- A circular depression
+Rabe               | -43.9 |  325.1 |  108.0 | Crater, craters -- A circular depression
+Radau              |  17.1 |    4.8 |  114.5 | Crater, craters -- A circular depression
+Rayleigh           | -75.6 |  240.9 |  148.7 | Crater, craters -- A circular depression
+Redi               | -60.6 |  267.3 |   62.0 | Crater, craters -- A circular depression
+Renaudot           |  42.4 |  297.4 |   64.0 | Crater, craters -- A circular depression
+Reuyl              |  -9.8 |  193.2 |   85.9 | Crater, craters -- A circular depression
+Reykholt           |  40.8 |   86.3 |   53.2 | Crater, craters -- A circular depression
+Reynolds           | -75.1 |  157.9 |   97.5 | Crater, craters -- A circular depression
+Richardson         | -72.6 |  180.4 |   95.9 | Crater, craters -- A circular depression
+Ritchey            | -28.8 |   51.0 |   79.0 | Crater, craters -- A circular depression
+Roddenberry        | -49.8 |    4.6 |  141.0 | Crater, craters -- A circular depression
+Ross               | -57.8 |  108.0 |   85.0 | Crater, craters -- A circular depression
+Rossby             | -47.9 |  192.2 |   82.5 | Crater, craters -- A circular depression
+Rudaux             |  38.3 |  309.1 |  107.0 | Crater, craters -- A circular depression
+Russell            | -54.9 |  347.6 |  139.7 | Crater, craters -- A circular depression
+Rutherford         |  19.2 |   10.7 |  110.5 | Crater, craters -- A circular depression
+Sagan              |  10.8 |   30.7 |   98.1 | Crater, craters -- A circular depression
+Savich             | -27.8 |  264.0 |  188.3 | Crater, craters -- A circular depression
+Schaeberle         | -24.7 |  309.9 |  160.0 | Crater, craters -- A circular depression
+Schiaparelli       |  -2.7 |  343.3 |  471.0 | Crater, craters -- A circular depression
+Schmidt            | -72.3 |   78.1 |  212.5 | Crater, craters -- A circular depression
+Schroeter          |  -1.9 |  304.4 |  292.0 | Crater, craters -- A circular depression
+Sebec              | -39.9 |  260.7 |   64.0 | Crater, craters -- A circular depression
+Secchi             | -58.3 |  258.1 |  234.0 | Crater, craters -- A circular depression
+Semeykin           |  41.8 |  351.4 |   76.0 | Crater, craters -- A circular depression
+Sharonov           |  27.3 |   58.6 |  102.0 | Crater, craters -- A circular depression
+Shatskiy           | -32.7 |   14.9 |   72.5 | Crater, craters -- A circular depression
+Sklodowska         |  33.7 |    2.9 |  124.0 | Crater, craters -- A circular depression
+Slipher            | -47.8 |   84.6 |  127.0 | Crater, craters -- A circular depression
+Smith              | -66.1 |  102.9 |   75.5 | Crater, craters -- A circular depression
+South              | -77.1 |  338.0 |  107.1 | Crater, craters -- A circular depression
+Spallanzani        | -58.3 |  273.7 |   72.5 | Crater, craters -- A circular depression
+Stege              |   3.8 |   59.6 |   77.5 | Crater, craters -- A circular depression
+Steno              | -68.0 |  115.6 |  106.9 | Crater, craters -- A circular depression
+Stokes             |  55.9 |  188.8 |   66.0 | Crater, craters -- A circular depression
+Stoney             | -69.8 |  138.6 |  171.0 | Crater, craters -- A circular depression
+Suess              | -67.1 |  178.6 |   79.2 | Crater, craters -- A circular depression
+Sumgin             | -37.0 |   48.8 |   85.0 | Crater, craters -- A circular depression
+Sytinskaya         |  42.7 |   53.1 |   93.2 | Crater, craters -- A circular depression
+Tecolote           | -24.8 |  106.9 |   51.0 | Crater, craters -- A circular depression
+Teisserenc de      |   0.4 |  315.0 |  119.0 | Crater, craters -- A circular depression
+Terby              | -28.3 |  285.9 |  174.0 | Crater, craters -- A circular depression
+Tibrikot           |  12.6 |   55.0 |   61.9 | Crater, craters -- A circular depression
+Tikhonravov        |  13.5 |  324.2 |  386.0 | Crater, craters -- A circular depression
+Tikhov             | -51.1 |  254.3 |  111.0 | Crater, craters -- A circular depression
+Timbuktu           |  -5.7 |   37.6 |   73.0 | Crater, craters -- A circular depression
+Timoshenko         |  42.0 |   64.1 |   88.5 | Crater, craters -- A circular depression
+Trouvelot          |  16.2 |   13.1 |  154.7 | Crater, craters -- A circular depression
+Trumpler           | -61.8 |  150.8 |   78.0 | Crater, craters -- A circular depression
+Tuscaloosa         |   0.0 |  331.3 |   60.0 | Crater, craters -- A circular depression
+Tuskegee           |  -2.9 |   36.2 |   66.7 | Crater, craters -- A circular depression
+Tycho Brahe        | -49.8 |  213.9 |  106.0 | Crater, craters -- A circular depression
+Tyndall            |  40.0 |  190.1 |   86.8 | Crater, craters -- A circular depression
+Very               | -49.6 |  177.1 |  114.0 | Crater, craters -- A circular depression
+Vinogradov         | -20.2 |   37.7 |  223.5 | Crater, craters -- A circular depression
+Vinogradsky        | -56.5 |  216.2 |   64.0 | Crater, craters -- A circular depression
+Virrat             | -31.1 |  103.0 |   53.6 | Crater, craters -- A circular depression
+Vishniac           | -76.7 |  276.1 |   86.1 | Crater, craters -- A circular depression
+Voeykov            | -32.4 |   76.2 |   76.0 | Crater, craters -- A circular depression
+Vogel              | -37.1 |   13.4 |  121.0 | Crater, craters -- A circular depression
+Wahoo              |  23.5 |   33.8 |   67.2 | Crater, craters -- A circular depression
+Wallace            | -52.9 |  249.4 |  173.0 | Crater, craters -- A circular depression
+Wegener            | -64.6 |    4.0 |   76.8 | Crater, craters -- A circular depression
+Weinbaum           | -65.7 |  245.5 |   89.4 | Crater, craters -- A circular depression
+Wells              | -60.2 |  237.9 |  103.0 | Crater, craters -- A circular depression
+Wien               | -10.8 |  220.4 |  120.4 | Crater, craters -- A circular depression
+Williams           | -18.7 |  164.3 |  126.0 | Crater, craters -- A circular depression
+Wirtz              | -48.6 |   26.0 |  129.0 | Crater, craters -- A circular depression
+Wislicenus         | -18.4 |  348.6 |  139.0 | Crater, craters -- A circular depression
+Wright             | -58.9 |  151.0 |  115.0 | Crater, craters -- A circular depression
+Aesacus Dorsum     |  37.2 |  206.9 |  264.0 | Dorsum, dorsa -- Ridge
+Arcadia Dorsa      |  55.0 |  140.0 | 1900.0 | Dorsum, dorsa -- Ridge
+Arena Dorsum       |  12.8 |  291.1 |  360.0 | Dorsum, dorsa -- Ridge
+Auxo Dorsum        | -56.0 |   41.8 |   70.0 | Dorsum, dorsa -- Ridge
+Avernus Dorsa      |  -6.9 |  189.3 |  383.0 | Dorsum, dorsa -- Ridge
+Cerberus Dorsa     | -13.8 |  254.6 |  604.0 | Dorsum, dorsa -- Ridge
+Charis Dorsum      | -56.2 |   41.6 |  230.0 | Dorsum, dorsa -- Ridge
+Cleia Dorsum       | -55.5 |   45.7 |   78.0 | Dorsum, dorsa -- Ridge
+Dorsa Argentea     | -77.9 |   33.2 |  360.0 | Dorsum, dorsa -- Ridge
+Dorsa Brevia       | -71.3 |  297.1 |  670.0 | Dorsum, dorsa -- Ridge
+Eumenides          |   4.5 |  156.5 |  566.0 | Dorsum, dorsa -- Ridge
+Felis Dorsa        | -22.1 |   65.9 |  783.0 | Dorsum, dorsa -- Ridge
+Gordii Dorsum      |   4.5 |  144.1 |  493.5 | Dorsum, dorsa -- Ridge
+Hegemone Dorsum    | -55.1 |   45.2 |  155.0 | Dorsum, dorsa -- Ridge
+Hesperia Dorsa     | -23.4 |  246.9 |  817.2 | Dorsum, dorsa -- Ridge
+Hyblaeus Dorsa     |  11.0 |  231.0 |  875.0 | Dorsum, dorsa -- Ridge
+Isidis Dorsa       |  12.2 |  271.8 | 1100.0 | Dorsum, dorsa -- Ridge
+Juventae Dorsa     |  -0.1 |   71.4 |  519.0 | Dorsum, dorsa -- Ridge
+Melas Dorsa        | -18.5 |   71.7 |  560.0 | Dorsum, dorsa -- Ridge
+Nilus Dorsa        |  20.5 |   79.3 |  272.0 | Dorsum, dorsa -- Ridge
+Pasithea Dorsum    | -55.5 |   41.9 |  250.0 | Dorsum, dorsa -- Ridge
+Phaenna Dorsum     | -54.3 |   43.1 |  151.0 | Dorsum, dorsa -- Ridge
+Phlegra Dorsa      |  23.0 |  184.0 | 3250.0 | Dorsum, dorsa -- Ridge
+Sacra Dorsa        |   9.9 |   66.3 | 1630.0 | Dorsum, dorsa -- Ridge
+Sinai Dorsa        | -13.6 |   79.6 |  473.0 | Dorsum, dorsa -- Ridge
+Solis Dorsa        | -23.3 |   79.8 |  878.0 | Dorsum, dorsa -- Ridge
+Styx Dorsum        |  31.1 |  208.2 |   83.0 | Dorsum, dorsa -- Ridge
+Tyrrhena Dorsa     | -24.0 |  244.4 |  762.7 | Dorsum, dorsa -- Ridge
+Uranius Dorsum     |  24.1 |   75.0 |  503.0 | Dorsum, dorsa -- Ridge
+Xanthe Dorsa       |  30.0 |   35.0 | 2700.0 | Dorsum, dorsa -- Ridge
+Zea Dorsa          | -48.9 |  279.5 |  265.0 | Dorsum, dorsa -- Ridge
+Galaxias           |  31.2 |  216.6 |  600.0 | Fluctus -- Flow terrain
+Tantalus           |  36.0 |   96.0 |  860.0 | Fluctus -- Flow terrain
+Acheron Fossae     |  37.6 |  135.8 |  718.0 | Fossa, fossae -- Long, narrow, shallow depression
+Aganippe Fossa     |  -8.3 |  126.2 |  532.0 | Fossa, fossae -- Long, narrow, shallow depression
+Alba Fossae        |  54.2 |  104.8 | 2080.0 | Fossa, fossae -- Long, narrow, shallow depression
+Albor Fossae       |  18.2 |  209.3 |  131.0 | Fossa, fossae -- Long, narrow, shallow depression
+Amenthes Fossae    |   8.8 |  258.2 |  889.0 | Fossa, fossae -- Long, narrow, shallow depression
+Calydon Fossa      |  -7.5 |   88.1 |  352.0 | Fossa, fossae -- Long, narrow, shallow depression
+Ceraunius          |  29.5 |  109.0 | 1137.0 | Fossa, fossae -- Long, narrow, shallow depression
+Cerberus Fossae    |   8.5 |  196.0 | 1215.0 | Fossa, fossae -- Long, narrow, shallow depression
+Claritas Fossae    | -31.5 |  104.1 | 2050.0 | Fossa, fossae -- Long, narrow, shallow depression
+Coloe Fossae       |  36.5 |  302.9 |  590.0 | Fossa, fossae -- Long, narrow, shallow depression
+Coracis Fossae     | -35.9 |   80.6 |  780.0 | Fossa, fossae -- Long, narrow, shallow depression
+Cyane Fossae       |  32.5 |  120.1 |  938.0 | Fossa, fossae -- Long, narrow, shallow depression
+Echus Fossae       |   2.9 |   76.9 |  400.0 | Fossa, fossae -- Long, narrow, shallow depression
+Elysium Fossae     |  24.8 |  213.7 | 1175.0 | Fossa, fossae -- Long, narrow, shallow depression
+Erythraea Fossa    | -27.5 |   31.0 |  152.0 | Fossa, fossae -- Long, narrow, shallow depression
+Fortuna Fossae     |   4.2 |   93.1 |  330.0 | Fossa, fossae -- Long, narrow, shallow depression
+Galaxias Fossae    |  36.6 |  218.2 |  532.0 | Fossa, fossae -- Long, narrow, shallow depression
+Gigas Fossae       |   3.2 |  129.8 |  191.0 | Fossa, fossae -- Long, narrow, shallow depression
+Gordii Fossae      |  15.0 |  127.6 |  339.0 | Fossa, fossae -- Long, narrow, shallow depression
+Halex Fossae       |  27.4 |  126.4 |  137.0 | Fossa, fossae -- Long, narrow, shallow depression
+Hephaestus         |  21.1 |  237.5 |  604.0 | Fossa, fossae -- Long, narrow, shallow depression
+Hyblaeus Fossae    |  21.4 |  222.7 |  400.0 | Fossa, fossae -- Long, narrow, shallow depression
+Icaria Fossae      | -46.4 |  123.8 | 2280.0 | Fossa, fossae -- Long, narrow, shallow depression
+Ismeniae Fossae    |  41.6 |  322.3 |  270.0 | Fossa, fossae -- Long, narrow, shallow depression
+Jovis Fossae       |  19.9 |  116.6 |  332.0 | Fossa, fossae -- Long, narrow, shallow depression
+Labeatis Fossae    |  25.5 |   84.1 | 1560.0 | Fossa, fossae -- Long, narrow, shallow depression
+Mangala Fossa      | -17.5 |  146.0 |  688.0 | Fossa, fossae -- Long, narrow, shallow depression
+Mareotis Fossae    |  44.0 |   75.3 | 1860.0 | Fossa, fossae -- Long, narrow, shallow depression
+Medusae Fossae     |  -3.2 |  163.0 |  333.0 | Fossa, fossae -- Long, narrow, shallow depression
+Melas Fossae       | -26.8 |   72.3 |  600.0 | Fossa, fossae -- Long, narrow, shallow depression
+Memnonia Fossae    | -23.6 |  154.4 | 1597.0 | Fossa, fossae -- Long, narrow, shallow depression
+Nectaris Fossae    | -24.5 |   57.4 |  650.0 | Fossa, fossae -- Long, narrow, shallow depression
+Nia Fossae         | -14.9 |   72.3 |  384.0 | Fossa, fossae -- Long, narrow, shallow depression
+Nili Fossae        |  22.8 |  283.2 |  667.0 | Fossa, fossae -- Long, narrow, shallow depression
+Nilokeras Fossa    |  25.0 |   57.8 |  265.0 | Fossa, fossae -- Long, narrow, shallow depression
+Noctis Fossae      |  -2.8 |   98.7 |  725.0 | Fossa, fossae -- Long, narrow, shallow depression
+Oceanidum Fossa    | -62.0 |   29.4 |  153.0 | Fossa, fossae -- Long, narrow, shallow depression
+Olympica Fossae    |  25.0 |  114.1 |  420.0 | Fossa, fossae -- Long, narrow, shallow depression
+Oti Fossae         |  -9.3 |  116.8 |  370.0 | Fossa, fossae -- Long, narrow, shallow depression
+Pavonis Fossae     |   4.1 |  111.5 |  168.0 | Fossa, fossae -- Long, narrow, shallow depression
+Pyramus Fossae     |  51.0 |  294.2 |  270.0 | Fossa, fossae -- Long, narrow, shallow depression
+Sacra Fossae       |  21.7 |   68.5 |  950.0 | Fossa, fossae -- Long, narrow, shallow depression
+Sirenum Fossae     | -34.9 |  160.9 | 2735.0 | Fossa, fossae -- Long, narrow, shallow depression
+Stygis Fossae      |  26.9 |  210.3 |  370.0 | Fossa, fossae -- Long, narrow, shallow depression
+Tanais Fossae      |  39.2 |   86.6 |  165.5 | Fossa, fossae -- Long, narrow, shallow depression
+Tantalus Fossae    |  50.9 |   97.5 | 2400.0 | Fossa, fossae -- Long, narrow, shallow depression
+Tempe Fossae       |  40.2 |   71.4 | 2000.0 | Fossa, fossae -- Long, narrow, shallow depression
+Thaumasia          | -47.5 |   92.7 | 1028.0 | Fossa, fossae -- Long, narrow, shallow depression
+Tithoniae          |  -3.5 |   82.0 |  820.0 | Fossa, fossae -- Long, narrow, shallow depression
+Tractus Fossae     |  26.0 |  101.4 |  390.0 | Fossa, fossae -- Long, narrow, shallow depression
+Tyrrhena Fossae    | -22.5 |  254.3 |  287.0 | Fossa, fossae -- Long, narrow, shallow depression
+Ulysses Fossae     |  10.2 |  123.4 |  851.4 | Fossa, fossae -- Long, narrow, shallow depression
+Uranius Fossae     |  25.7 |   90.1 |  394.0 | Fossa, fossae -- Long, narrow, shallow depression
+Zephyrus Fossae    |  24.2 |  216.3 |  295.0 | Fossa, fossae -- Long, narrow, shallow depression
+Candor Labes       |  -4.8 |   76.2 |  130.0 | Labes -- Landslide
+Ius Labes          |  -7.6 |   78.6 |   53.0 | Labes -- Landslide
+Melas Labes        |  -8.6 |   71.7 |   90.0 | Labes -- Landslide
+Ophir Labes        | -11.1 |   68.5 |   89.0 | Labes -- Landslide
+Adamas             |  35.7 |  254.3 |  750.0 | Labyrinthus, labyrinthi -- Complex of intersecting valleys
+Cydonia            |  41.5 |   12.0 |  356.0 | Labyrinthus, labyrinthi -- Complex of intersecting valleys
+Hyperboreus        |  80.2 |   60.2 |  115.0 | Labyrinthus, labyrinthi -- Complex of intersecting valleys
+Noctis             |  -7.0 |  102.2 | 1263.0 | Labyrinthus, labyrinthi -- Complex of intersecting valleys
+Acidalia Mensa     |  47.0 |   25.4 |  233.0 | Mensa, mensae -- A flat-topped prominence with cliff-like edges
+Aeolis Mensae      |  -2.9 |  219.6 |  820.0 | Mensa, mensae -- A flat-topped prominence with cliff-like edges
+Amazonis Mensa     |  -2.0 |  147.5 |  500.0 | Mensa, mensae -- A flat-topped prominence with cliff-like edges
+Ausonia Mensa      | -30.3 |  262.3 |  103.0 | Mensa, mensae -- A flat-topped prominence with cliff-like edges
+Baetis Mensa       |  -5.2 |   72.6 |  187.0 | Mensa, mensae -- A flat-topped prominence with cliff-like edges
+Candor Mensa       |  -6.3 |   73.6 |  120.0 | Mensa, mensae -- A flat-topped prominence with cliff-like edges
+Capri Mensa        | -14.0 |   47.4 |  275.0 | Mensa, mensae -- A flat-topped prominence with cliff-like edges
+Cydonia Mensae     |  34.0 |   13.0 |  800.0 | Mensa, mensae -- A flat-topped prominence with cliff-like edges
+Deuteronilus       |  43.9 |  337.4 |  937.0 | Mensa, mensae -- A flat-topped prominence with cliff-like edges
+Eos Mensa          | -11.0 |   42.2 |  390.0 | Mensa, mensae -- A flat-topped prominence with cliff-like edges
+Hebes Mensa        |  -1.1 |   76.8 |  109.0 | Mensa, mensae -- A flat-topped prominence with cliff-like edges
+Labeatis Mensa     |  25.7 |   74.6 |  120.8 | Mensa, mensae -- A flat-topped prominence with cliff-like edges
+Lunae Mensa        |  24.2 |   62.6 |  117.0 | Mensa, mensae -- A flat-topped prominence with cliff-like edges
+Nepenthes          |   8.8 |  240.9 | 2170.0 | Mensa, mensae -- A flat-topped prominence with cliff-like edges
+Nilokeras          |  31.3 |   52.0 |  463.0 | Mensa, mensae -- A flat-topped prominence with cliff-like edges
+Nilosyrtis         |  35.0 |  292.1 |  705.0 | Mensa, mensae -- A flat-topped prominence with cliff-like edges
+Nilus Mensae       |  22.5 |   72.1 |  210.0 | Mensa, mensae -- A flat-topped prominence with cliff-like edges
+Protonilus         |  44.2 |  310.6 | 1050.0 | Mensa, mensae -- A flat-topped prominence with cliff-like edges
+Sacra Mensa        |  24.7 |   68.1 |  580.0 | Mensa, mensae -- A flat-topped prominence with cliff-like edges
+Tempe Mensa        |  28.1 |   71.7 |   58.0 | Mensa, mensae -- A flat-topped prominence with cliff-like edges
+Zephyria Mensae    | -11.5 |  187.9 |  330.0 | Mensa, mensae -- A flat-topped prominence with cliff-like edges
+Anseris Mons       | -30.1 |  273.4 |   58.0 | Mons, montes -- Mountain
+Arsia Mons         |  -8.4 |  121.1 |  475.0 | Mons, montes -- Mountain
+Ascraeus Mons      |  11.9 |  104.5 |  460.0 | Mons, montes -- Mountain
+Ausonia Montes     | -27.7 |  261.2 |  158.0 | Mons, montes -- Mountain
+Australe Montes    | -80.3 |  345.9 |  387.0 | Mons, montes -- Mountain
+Centauri Montes    | -38.9 |  264.8 |  270.0 | Mons, montes -- Mountain
+Chalce Montes      | -54.0 |   37.9 |   95.0 | Mons, montes -- Mountain
+Charitum Montes    | -58.3 |   40.2 |  850.0 | Mons, montes -- Mountain
+Coronae Montes     | -34.9 |  273.6 |  236.0 | Mons, montes -- Mountain
+Echus Montes       |   8.2 |   78.0 |  395.0 | Mons, montes -- Mountain
+Elysium Mons       |  25.0 |  213.1 |  410.0 | Mons, montes -- Mountain
+Erebus Montes      |  36.0 |  175.0 |  785.0 | Mons, montes -- Mountain
+Euripus Mons       | -45.1 |  255.0 |   91.0 | Mons, montes -- Mountain
+Geryon Montes      |  -7.8 |   82.0 |  359.0 | Mons, montes -- Mountain
+Gonnus Mons        |  41.6 |   91.0 |   57.0 | Mons, montes -- Mountain
+Hellas Montes      | -37.9 |  262.3 |  153.0 | Mons, montes -- Mountain
+Hellespontus       | -44.7 |  317.2 |  729.6 | Mons, montes -- Mountain
+Hibes Montes       |   3.7 |  188.7 |  137.0 | Mons, montes -- Mountain
+Libya Montes       |   2.8 |  271.1 | 1170.0 | Mons, montes -- Mountain
+Nereidum Montes    | -38.9 |   44.0 | 1130.0 | Mons, montes -- Mountain
+Olympus Mons       |  18.6 |  134.0 |  648.0 | Mons, montes -- Mountain
+Pavonis Mons       |   0.8 |  113.4 |  375.0 | Mons, montes -- Mountain
+Phlegra Montes     |  41.1 |  194.8 | 1352.0 | Mons, montes -- Mountain
+Sisyphi Montes     | -69.9 |  346.1 |  200.0 | Mons, montes -- Mountain
+Tanaica Montes     |  39.8 |   91.1 |  177.0 | Mons, montes -- Mountain
+Tartarus Montes    |  16.0 |  193.0 | 1070.0 | Mons, montes -- Mountain
+Tharsis Montes     |   1.2 |  112.5 | 1840.0 | Mons, montes -- Mountain
+Tyrrhena Mons      | -24.4 |  258.9 |  107.1 | Mons, montes -- Mountain
+Alba Patera        |  40.8 |  109.6 |  530.0 | Patera, paterae -- An irregular crater, or a complex one with scalloped edges
+Amphitrites        | -59.0 |  299.1 |  135.0 | Patera, paterae -- An irregular crater, or a complex one with scalloped edges
+Apollinaris        |  -9.4 |  185.6 |  296.0 | Patera, paterae -- An irregular crater, or a complex one with scalloped edges
+Biblis Patera      |   2.7 |  124.6 |  171.5 | Patera, paterae -- An irregular crater, or a complex one with scalloped edges
+Diacria Patera     |  34.9 |  132.6 |   65.5 | Patera, paterae -- An irregular crater, or a complex one with scalloped edges
+Hadriaca Patera    | -32.4 |  268.2 |  575.0 | Patera, paterae -- An irregular crater, or a complex one with scalloped edges
+Issedon Paterae    |  38.6 |   90.5 |   58.0 | Patera, paterae -- An irregular crater, or a complex one with scalloped edges
+Malea Patera       | -63.7 |  308.1 |  242.0 | Patera, paterae -- An irregular crater, or a complex one with scalloped edges
+Meroe Patera       |   7.0 |  291.4 |   50.0 | Patera, paterae -- An irregular crater, or a complex one with scalloped edges
+Nili Patera        |   9.0 |  293.0 |   70.0 | Patera, paterae -- An irregular crater, or a complex one with scalloped edges
+Orcus Patera       |  14.3 |  181.5 |  375.0 | Patera, paterae -- An irregular crater, or a complex one with scalloped edges
+Peneus Patera      | -58.1 |  307.5 |  133.6 | Patera, paterae -- An irregular crater, or a complex one with scalloped edges
+Pityusa Patera     | -67.0 |  323.1 |  230.0 | Patera, paterae -- An irregular crater, or a complex one with scalloped edges
+Tyrrhena Patera    | -21.6 |  253.5 |  473.4 | Patera, paterae -- An irregular crater, or a complex one with scalloped edges
+Ulysses Patera     |   2.9 |  121.6 |  101.7 | Patera, paterae -- An irregular crater, or a complex one with scalloped edges
+Uranius Patera     |  27.1 |   92.2 |  274.0 | Patera, paterae -- An irregular crater, or a complex one with scalloped edges
+Aonia Planum       | -58.0 |   79.0 |  650.0 | Planum, plana -- Plateau or high plain
+Argentea Planum    | -70.0 |   68.0 | 1500.0 | Planum, plana -- Plateau or high plain
+Ascuris Planum     |  40.7 |   80.8 |  500.0 | Planum, plana -- Plateau or high plain
+Aurorae Planum     | -10.5 |   49.2 |  600.0 | Planum, plana -- Plateau or high plain
+Bosporos Planum    | -34.5 |   64.9 |  700.0 | Planum, plana -- Plateau or high plain
+Daedalia Planum    | -22.0 |  128.0 | 1800.0 | Planum, plana -- Plateau or high plain
+Hesperia Planum    | -22.5 |  250.0 | 1700.0 | Planum, plana -- Plateau or high plain
+Icaria Planum      | -43.5 |  106.5 |  650.0 | Planum, plana -- Plateau or high plain
+Lucus Planum       |  -4.0 |  178.0 |  864.0 | Planum, plana -- Plateau or high plain
+Lunae Planum       |  10.5 |   66.0 | 1800.0 | Planum, plana -- Plateau or high plain
+Malea Planum       | -65.0 |  295.0 |  900.0 | Planum, plana -- Plateau or high plain
+Meridiani          |   0.2 |    2.5 | 1100.0 | Planum, plana -- Plateau or high plain
+Ophir Planum       |  -8.8 |   57.5 |  650.0 | Planum, plana -- Plateau or high plain
+Parva Planum       | -76.0 |  103.0 |  750.0 | Planum, plana -- Plateau or high plain
+Planum Angustum    | -79.8 |   83.5 |  200.0 | Planum, plana -- Plateau or high plain
+Planum Australe    | -84.0 |  200.0 | 1450.0 | Planum, plana -- Plateau or high plain
+Planum Boreum      |  88.0 |  345.0 | 1100.0 | Planum, plana -- Plateau or high plain
+Planum Chronium    | -60.0 |  220.0 |  550.0 | Planum, plana -- Plateau or high plain
+Promethei          | -79.0 |  270.0 |  850.0 | Planum, plana -- Plateau or high plain
+Sinai Planum       | -13.5 |   88.0 |  900.0 | Planum, plana -- Plateau or high plain
+Sisyphi Planum     | -70.0 |  355.0 | 1100.0 | Planum, plana -- Plateau or high plain
+Solis Planum       | -25.5 |   86.5 | 1700.0 | Planum, plana -- Plateau or high plain
+Syria Planum       | -13.2 |  103.9 |  740.0 | Planum, plana -- Plateau or high plain
+Syrtis Major       |   8.5 |  290.5 | 1350.0 | Planum, plana -- Plateau or high plain
+Thaumasia          | -24.7 |   64.3 |  650.0 | Planum, plana -- Plateau or high plain
+Acidalia           |  47.0 |   22.0 | 2300.0 | Planitia, planitiae -- Low plain
+Amazonis           |  25.0 |  164.0 | 2800.0 | Planitia, planitiae -- Low plain
+Arcadia            |  47.0 |  168.0 | 2200.0 | Planitia, planitiae -- Low plain
+Argyre Planitia    | -50.0 |   44.0 |  800.0 | Planitia, planitiae -- Low plain
+Chryse Planitia    |  27.0 |   40.0 | 1700.0 | Planitia, planitiae -- Low plain
+Elysium            |   2.0 |  205.0 | 3000.0 | Planitia, planitiae -- Low plain
+Hellas Planitia    | -43.0 |  290.0 | 2200.0 | Planitia, planitiae -- Low plain
+Isidis Planitia    |  13.0 |  273.0 | 1200.0 | Planitia, planitiae -- Low plain
+Utopia Planitia    |  50.0 |  242.0 | 3200.0 | Planitia, planitiae -- Low plain
+Amenthes Rupes     |   1.6 |  249.5 |  331.0 | Rupes -- Scarp
+Argyre Rupes       | -62.7 |   68.2 |  267.0 | Rupes -- Scarp
+Arimanes Rupes     |  -9.7 |  147.9 |  181.0 | Rupes -- Scarp
+Avernus Rupes      |  -9.6 |  187.1 |  212.0 | Rupes -- Scarp
+Bosporos Rupes     | -43.2 |   57.6 |  507.0 | Rupes -- Scarp
+Chalcoporos        | -55.7 |  339.5 |  401.0 | Rupes -- Scarp
+Claritas Rupes     | -26.0 |  105.4 |  924.0 | Rupes -- Scarp
+Cydnus Rupes       |  56.0 |  244.0 | 1600.0 | Rupes -- Scarp
+Elysium Rupes      |  25.4 |  212.0 |  130.0 | Rupes -- Scarp
+Hephaestus         |  22.0 |  243.0 | 1750.0 | Rupes -- Scarp
+Morpheos Rupes     | -36.4 |  234.5 |  353.0 | Rupes -- Scarp
+Ogygis Rupes       | -33.4 |   54.5 |  255.0 | Rupes -- Scarp
+Olympus Rupes      |  18.6 |  134.0 | 1800.0 | Rupes -- Scarp
+Panchaia Rupes     |  64.0 |  230.0 | 1500.0 | Rupes -- Scarp
+Phison Rupes       |  26.7 |  309.6 |  177.0 | Rupes -- Scarp
+Pityusa Rupes      | -64.4 |  330.6 |  390.0 | Rupes -- Scarp
+Promethei Rupes    | -75.5 |  269.4 | 1248.0 | Rupes -- Scarp
+Rupes Tenuis       |  81.0 |   65.0 |  185.0 | Rupes -- Scarp
+Tartarus Rupes     |  -6.6 |  184.4 |   89.7 | Rupes -- Scarp
+Thyles Rupes       | -69.8 |  229.1 |  675.0 | Rupes -- Scarp
+Ulyxis Rupes       | -68.6 |  200.1 |  390.0 | Rupes -- Scarp
+Utopia Rupes       |  40.0 |  270.0 | 2550.0 | Rupes -- Scarp
+Charybdis          | -24.8 |  340.0 |  552.0 | Scopulus, scopuli -- Lobate or irregular scarp
+Coronae            | -33.8 |  295.2 |  253.5 | Scopulus, scopuli -- Lobate or irregular scarp
+Eridania           | -53.8 |  221.0 |  939.0 | Scopulus, scopuli -- Lobate or irregular scarp
+Nilokeras          |  31.9 |   56.2 |  765.0 | Scopulus, scopuli -- Lobate or irregular scarp
+Oenotria           | -11.1 |  283.1 | 1360.0 | Scopulus, scopuli -- Lobate or irregular scarp
+Scylla Scopulus    | -25.4 |  341.7 |  445.0 | Scopulus, scopuli -- Lobate or irregular scarp
+Tartarus           |  -4.3 |  182.8 |  219.0 | Scopulus, scopuli -- Lobate or irregular scarp
+Xanthe Scopulus    |  19.5 |   52.6 |   57.0 | Scopulus, scopuli -- Lobate or irregular scarp
+Amazonis Sulci     |  -2.8 |  145.4 |  250.0 | Sulcus, sulci -- Subparallel furrows and ridges
+Apollinaris        | -11.5 |  182.6 |  178.0 | Sulcus, sulci -- Subparallel furrows and ridges
+Arsia Sulci        |  -6.1 |  128.9 |  475.0 | Sulcus, sulci -- Subparallel furrows and ridges
+Ascraeus Sulci     |  12.1 |  108.8 |  102.0 | Sulcus, sulci -- Subparallel furrows and ridges
+Cyane Sulci        |  25.7 |  128.7 |  340.0 | Sulcus, sulci -- Subparallel furrows and ridges
+Gigas Sulci        |  10.0 |  127.8 |  398.0 | Sulcus, sulci -- Subparallel furrows and ridges
+Lycus Sulci        |  24.6 |  141.1 | 1350.0 | Sulcus, sulci -- Subparallel furrows and ridges
+Medusae Sulci      |  -5.0 |  160.1 |  190.0 | Sulcus, sulci -- Subparallel furrows and ridges
+Memnonia Sulci     |  -6.8 |  175.3 |  450.0 | Sulcus, sulci -- Subparallel furrows and ridges
+Pavonis Sulci      |   4.0 |  116.5 |  429.0 | Sulcus, sulci -- Subparallel furrows and ridges
+Sacra Sulci        |  22.4 |   74.7 |  900.0 | Sulcus, sulci -- Subparallel furrows and ridges
+Sulci Gordii       |  18.9 |  125.5 |  400.0 | Sulcus, sulci -- Subparallel furrows and ridges
+Aonia Terra        | -62.0 |  100.0 | 4000.0 | Terra, terrae -- Extensive land mass
+Arabia Terra       |  23.0 |  355.0 | 5100.0 | Terra, terrae -- Extensive land mass
+Margaritifer       |  -5.0 |   25.0 | 2600.0 | Terra, terrae -- Extensive land mass
+Noachis Terra      | -45.0 |  350.0 | 4800.0 | Terra, terrae -- Extensive land mass
+Promethei Terra    | -58.0 |  260.0 | 3300.0 | Terra, terrae -- Extensive land mass
+Tempe Terra        |  40.0 |   71.0 | 2573.0 | Terra, terrae -- Extensive land mass
+Terra Cimmeria     | -35.0 |  215.0 | 5400.0 | Terra, terrae -- Extensive land mass
+Terra Sabaea       |   2.0 |  318.0 | 4700.0 | Terra, terrae -- Extensive land mass
+Terra Sirenum      | -40.0 |  150.0 | 3900.0 | Terra, terrae -- Extensive land mass
+Tyrrhena Terra     | -15.0 |  270.0 | 2300.0 | Terra, terrae -- Extensive land mass
+Xanthe Terra       |   3.0 |   48.0 | 2465.0 | Terra, terrae -- Extensive land mass
+Albor Tholus       |  19.0 |  209.6 |  170.0 | Tholus, tholi -- Small domical mountain or hill
+Ceraunius          |  24.2 |   97.4 |  130.0 | Tholus, tholi -- Small domical mountain or hill
+Hecates Tholus     |  32.4 |  209.8 |  183.0 | Tholus, tholi -- Small domical mountain or hill
+Issedon Tholus     |  36.3 |   95.0 |   52.0 | Tholus, tholi -- Small domical mountain or hill
+Jovis Tholus       |  18.4 |  117.5 |   58.0 | Tholus, tholi -- Small domical mountain or hill
+Scandia Tholi      |  74.0 |  162.0 |  480.0 | Tholus, tholi -- Small domical mountain or hill
+Tharsis Tholus     |  13.5 |   90.8 |  158.0 | Tholus, tholi -- Small domical mountain or hill
+Uranius Tholus     |  26.4 |   97.7 |   62.0 | Tholus, tholi -- Small domical mountain or hill
+Abalos Undae       |  78.4 |   88.2 |  455.0 | Undae -- Dunes
+Hyperboreae        |  81.9 |   48.6 |  500.0 | Undae -- Dunes
+Olympia Undae      |  81.5 |  180.0 | 1100.0 | Undae -- Dunes
+Abus Vallis        |  -5.6 |  147.3 |   58.0 | Vallis, valles -- Valley
+Allegheny          |  -9.2 |   54.0 |  200.0 | Vallis, valles -- Valley
+Al-Qahira          | -18.4 |  197.5 |  555.0 | Vallis, valles -- Valley
+Apsus Vallis       |  35.1 |  225.0 |  120.0 | Vallis, valles -- Valley
+Arda Valles        | -20.8 |   32.3 |  186.0 | Vallis, valles -- Valley
+Ares Vallis        |  10.4 |   25.8 | 1700.0 | Vallis, valles -- Valley
+Arnus Vallis       |  14.1 |  289.5 |  280.0 | Vallis, valles -- Valley
+Athabasca          |   8.6 |  205.0 |  285.0 | Vallis, valles -- Valley
+Auqakuh Vallis     |  30.4 |  299.9 |  312.0 | Vallis, valles -- Valley
+Axius Valles       | -56.0 |  289.9 |  349.0 | Vallis, valles -- Valley
+Bahram Vallis      |  20.7 |   57.5 |  302.0 | Vallis, valles -- Valley
+Brazos Valles      |  -6.3 |  341.1 |  458.0 | Vallis, valles -- Valley
+Buvinda Vallis     |  33.4 |  208.1 |  119.6 | Vallis, valles -- Valley
+Chico Valles       | -67.0 |  153.5 |  450.0 | Vallis, valles -- Valley
+Clanis Valles      |  33.5 |  301.6 |   58.0 | Vallis, valles -- Valley
+Clasia Vallis      |  34.1 |  303.1 |  125.0 | Vallis, valles -- Valley
+Clota Vallis       | -25.8 |   20.6 |  112.0 | Vallis, valles -- Valley
+Cusus Valles       |  14.5 |  309.5 |  249.0 | Vallis, valles -- Valley
+Dao Vallis         | -38.7 |  272.1 |  816.0 | Vallis, valles -- Valley
+Dittaino Valles    |  -1.5 |   67.0 |  138.0 | Vallis, valles -- Valley
+Doanus Vallis      | -63.3 |   25.6 |  131.0 | Vallis, valles -- Valley
+Drava Valles       | -49.0 |  193.7 |  150.0 | Vallis, valles -- Valley
+Drilon Vallis      |   7.3 |   52.4 |   94.0 | Vallis, valles -- Valley
+Durius Valles      | -17.6 |  187.9 |  223.0 | Vallis, valles -- Valley
+Dzigai Vallis      | -58.8 |   36.6 |  326.0 | Vallis, valles -- Valley
+Elaver Vallis      |  -9.5 |   49.5 |  160.0 | Vallis, valles -- Valley
+Enipeus Vallis     |  37.0 |   93.1 |  357.0 | Vallis, valles -- Valley
+Evros Vallis       | -12.7 |  346.1 |  335.0 | Vallis, valles -- Valley
+Frento Vallis      | -50.3 |   14.5 |  277.0 | Vallis, valles -- Valley
+Granicus Valles    |  30.0 |  229.0 |  750.0 | Vallis, valles -- Valley
+Harmakhis          | -40.8 |  269.6 |  475.0 | Vallis, valles -- Valley
+Hebrus Valles      |  20.2 |  233.4 |  317.0 | Vallis, valles -- Valley
+Her Desher         | -25.4 |   48.0 |  107.0 | Vallis, valles -- Valley
+Himera Valles      | -21.6 |   22.8 |  160.0 | Vallis, valles -- Valley
+Hrad Vallis        |  38.7 |  224.7 |  825.0 | Vallis, valles -- Valley
+Huo Hsing          |  30.5 |  293.4 |  318.0 | Vallis, valles -- Valley
+Hypanis Valles     |   9.6 |   46.7 |  231.0 | Vallis, valles -- Valley
+Iberus Vallis      |  21.5 |  208.0 |   80.2 | Vallis, valles -- Valley
+Indus Vallis       |  19.3 |  321.3 |  307.0 | Vallis, valles -- Valley
+Ituxi Vallis       |  25.4 |  207.0 |   62.0 | Vallis, valles -- Valley
+Kasei Valles       |  24.6 |   65.0 | 1780.0 | Vallis, valles -- Valley
+Labou Vallis       |  -8.7 |  154.5 |  222.0 | Vallis, valles -- Valley
+Ladon Valles       | -22.6 |   28.7 |  278.0 | Vallis, valles -- Valley
+Licus Vallis       |  -2.9 |  233.9 |  219.1 | Vallis, valles -- Valley
+Liris Valles       | -10.7 |  302.1 |  613.0 | Vallis, valles -- Valley
+Lobo Vallis        |  27.2 |   61.2 |  102.0 | Vallis, valles -- Valley
+Locras Valles      |   8.7 |  312.3 |  314.0 | Vallis, valles -- Valley
+Loire Valles       | -18.3 |   16.7 |  720.0 | Vallis, valles -- Valley
+Louros Valles      |  -8.5 |   82.0 |  517.0 | Vallis, valles -- Valley
+Ma'adim Vallis     | -21.8 |  182.7 |  825.0 | Vallis, valles -- Valley
+Mad Vallis         | -56.5 |  283.9 |  524.0 | Vallis, valles -- Valley
+Maja Valles        |  12.6 |   58.3 | 1516.0 | Vallis, valles -- Valley
+Mamers Valles      |  40.3 |  342.2 | 1020.0 | Vallis, valles -- Valley
+Mangala Valles     | -11.6 |  151.0 |  828.0 | Vallis, valles -- Valley
+Marte Vallis       |  15.0 |  176.5 | 1185.0 | Vallis, valles -- Valley
+Matrona Vallis     |  -7.7 |  183.9 |   51.0 | Vallis, valles -- Valley
+Maumee Valles      |  19.7 |   53.2 |  350.0 | Vallis, valles -- Valley
+Mawrth Vallis      |  22.6 |   16.5 |  636.0 | Vallis, valles -- Valley
+Minio Vallis       |  -4.3 |  151.8 |   88.0 | Vallis, valles -- Valley
+Mosa Vallis        | -14.9 |  337.8 |  171.0 | Vallis, valles -- Valley
+Naktong Vallis     |   5.3 |  327.1 |  494.0 | Vallis, valles -- Valley
+Nanedi Valles      |   4.9 |   49.0 |  508.0 | Vallis, valles -- Valley
+Naro Vallis        |  -4.0 |  299.4 |  393.0 | Vallis, valles -- Valley
+Nia Vallis         | -54.1 |   34.7 |  133.0 | Vallis, valles -- Valley
+Nicer Vallis       |  -7.3 |  158.2 |   54.0 | Vallis, valles -- Valley
+Niger Vallis       | -35.4 |  267.8 |  333.0 | Vallis, valles -- Valley
+Nirgal Vallis      | -28.4 |   42.0 |  496.0 | Vallis, valles -- Valley
+Ochus Valles       |   7.2 |   45.1 |  104.0 | Vallis, valles -- Valley
+Oltis Valles       | -23.9 |   21.7 |  173.0 | Vallis, valles -- Valley
+Osuga Valles       | -15.3 |   38.6 |  185.0 | Vallis, valles -- Valley
+Pallacopas         | -55.3 |   21.0 |  660.0 | Vallis, valles -- Valley
+Patapsco Vallis    |  24.0 |  207.5 |  153.0 | Vallis, valles -- Valley
+Protva Valles      | -29.2 |   60.6 |  260.0 | Vallis, valles -- Valley
+Ravi Vallis        |  -0.2 |   40.7 |  205.5 | Vallis, valles -- Valley
+Ravius Valles      |  46.5 |  111.3 |  233.0 | Vallis, valles -- Valley
+Reull Vallis       | -42.6 |  255.9 |  945.0 | Vallis, valles -- Valley
+Rhabon Valles      |  21.4 |   91.5 |  247.0 | Vallis, valles -- Valley
+Rubicon Valles     |  45.0 |  117.0 |  240.0 | Vallis, valles -- Valley
+Sabis Vallis       |  -5.3 |  152.5 |  206.0 | Vallis, valles -- Valley
+Sabrina Vallis     |  11.2 |   49.0 |  237.0 | Vallis, valles -- Valley
+Samara Valles      | -25.1 |   19.1 |  615.0 | Vallis, valles -- Valley
+Scamander          |  16.0 |  331.5 |  204.0 | Vallis, valles -- Valley
+Sepik Vallis       |  -0.9 |   65.8 |   56.0 | Vallis, valles -- Valley
+Shalbatana         |   7.8 |   42.1 |  963.0 | Vallis, valles -- Valley
+Simud Vallis       |  10.2 |   37.5 |  775.0 | Vallis, valles -- Valley
+Stura Vallis       |  22.9 |  217.6 |   75.0 | Vallis, valles -- Valley
+Surinda Valles     | -29.2 |   35.1 |   95.0 | Vallis, valles -- Valley
+Surius Vallis      | -61.8 |   48.4 |  570.0 | Vallis, valles -- Valley
+Tader Valles       | -49.1 |  152.5 |  200.0 | Vallis, valles -- Valley
+Tagus Valles       |  -6.8 |  245.6 |  155.4 | Vallis, valles -- Valley
+Teviot Vallis      | -43.7 |  257.9 |  140.0 | Vallis, valles -- Valley
+Tinjar Valles      |  38.0 |  235.8 |  425.0 | Vallis, valles -- Valley
+Tinto Vallis       |  -4.0 |  248.6 |  146.5 | Vallis, valles -- Valley
+Tisia Valles       | -11.9 |  314.3 |  399.0 | Vallis, valles -- Valley
+Tiu Valles         |  15.9 |   35.7 | 1720.0 | Vallis, valles -- Valley
+Trebia Valles      |  32.4 |  210.0 |  183.0 | Vallis, valles -- Valley
+Tyras Vallis       |   8.4 |   50.2 |   68.0 | Vallis, valles -- Valley
+Uzboi Vallis       | -29.8 |   37.1 |  366.0 | Vallis, valles -- Valley
+Valles             | -13.9 |   59.2 | 3769.0 | Vallis, valles -- Valley
+Varus Valles       |  -8.7 |  156.2 |   92.0 | Vallis, valles -- Valley
+Vedra Valles       |  19.4 |   55.6 |  115.0 | Vallis, valles -- Valley
+Verde Vallis       |  -0.5 |  330.2 |   95.0 | Vallis, valles -- Valley
+Vichada Valles     | -19.6 |  271.9 |  430.0 | Vallis, valles -- Valley
+Vistula Valles     |  13.7 |   51.9 |  190.0 | Vallis, valles -- Valley
+Warrego Valles     | -42.2 |   93.0 |  188.0 | Vallis, valles -- Valley
+Vastitas           |  67.5 |  180.0 | 4100.0 | Vastitas, vastitates -- Extensive plain
+
+# For RCS Only -- Do Not Edit
+# @(#) $RCSfile: mars_db,v $ $Date: 2012/08/17 01:57:20 $ $Revision: 1.12 $ $Name:  $

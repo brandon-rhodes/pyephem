@@ -1,0 +1,122 @@
+<HTML>
+
+<! Form to test xephemdbd. >
+<! (c) 2000 Elwood Downey >
+
+<HEAD>
+<TITLE>XEphemdbd Sky Request</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFEE" TEXT="#000000" LINK="#0000EE" VLINK="#551A8B" ALINK="#FF0000">
+
+
+<H1>
+XEphemdbd Sky Request</font><br>
+</H1>
+
+<blockquote>
+
+<P>
+Retrieve celestial objects in any region of the sky. Fill in the
+form below then press Submit.
+
+<! set ACTION to the server's path for xephemdbd.pl >
+<FORM METHOD="GET" ACTION="/cgi-bin/xephemdbd/xephemdbd.pl">
+
+<INPUT TYPE="hidden" NAME="VERSION" VALUE="3">
+
+<P>
+<table>
+<th align="left">Set basic processing options: </th>
+    <tr>
+    <td>
+    <INPUT CHECKED TYPE="radio" NAME="FMT" VALUE="TXT"> Columnar text format, or
+    <td>
+    <INPUT TYPE="radio" NAME="FMT" VALUE="EDB"> ephem.edb format
+
+    <tr>
+    <td>
+    <INPUT CHECKED TYPE="radio" NAME="CENTRIC" VALUE="GEO"> Geocentric, or
+    <td>
+    <INPUT TYPE="radio" NAME="CENTRIC" VALUE="TOPO"> Topocentric (Requires Lat/Long/Elev, below)
+
+    <tr>
+    <td>
+    <INPUT CHECKED TYPE="radio" NAME="PRECES" VALUE="ASTRO"> Astrometric precessed to 2000, or
+    <td>
+    <INPUT TYPE="radio" NAME="PRECES" VALUE="APP"> Apparent @ EOD (Requires Lat/Long/Elev, below)
+
+</table>
+
+<P>
+<table>
+<th align="left">Select desired object types: </th>
+    <tr><td><INPUT CHECKED TYPE="checkbox" NAME="PL"> Major planets
+    <tr><td><INPUT CHECKED TYPE="checkbox" NAME="SS"> Minor planets and comets
+    <tr><td><INPUT CHECKED TYPE="checkbox" NAME="BS"> Bright stars
+    <tr><td><INPUT CHECKED TYPE="checkbox" NAME="DS"> Deep sky objects
+    <tr><td><INPUT CHECKED TYPE="checkbox" NAME="PP"> PPM, HD, SAO stars
+<tr><td><INPUT CHECKED TYPE="checkbox" NAME="GS"> GSC stars
+</table>
+
+<P>
+<table>
+<th align="left"> Set Date and Time (UTC): </th>
+    <tr>
+    <em>To indicate the current time, set the </em><b>Date</b><em> to
+	</em>Now</em> and leave the </em><b>Time</b><em> blank</em>.
+    <tr>
+    <td><INPUT VALUE="Now" TYPE="text" NAME="DATE" SIZE=10> Date, M D Y
+    <tr>
+    <td><INPUT TYPE="text" NAME="TIME" SIZE=10> Time, H M S
+</table>
+
+<P>
+<table>
+<th align="left">Set Center (J2000) and Size of field:</th>
+    <tr><td><INPUT VALUE="0 0 0" TYPE="text" NAME="RA" SIZE=10> RA, H M S.S
+    <tr><td><INPUT VALUE="0 0 0" TYPE="text" NAME="DEC" SIZE=10> Dec, (-)D M S
+    <tr><td><INPUT VALUE=".5" TYPE="text" NAME="FOV" SIZE=10> Size, degrees
+    <tr><td><INPUT VALUE="20" TYPE="text" NAME="MAG" SIZE=10> Limiting magnitude
+</table>
+
+<P>
+<table>
+<th align="left">Set Location, if requesting Topocentric or Apparent coordinates: </th>
+    <tr><td><INPUT VALUE="0 0 0" TYPE="text" NAME="LAT" SIZE=10> Latitude, (-)D M S, +North
+    <tr><td><INPUT VALUE="0 0 0" TYPE="text" NAME="LONG" SIZE=10> Longitude, (-)D M S, +East
+    <tr><td><INPUT VALUE="0" TYPE="text" NAME="ELEV" SIZE=10> Elevation, m above sea level
+</table>
+
+<p>
+<INPUT TYPE="submit" VALUE="Submit">
+<INPUT TYPE="reset" VALUE="Reset the Form">
+
+</blockquote>
+<HR>
+
+<P>
+&#169; 2000 Elwood Charles Downey. All rights reserved.
+<P>
+For more astronomy software and services, see <A HREF="http://www.ClearSkyInstitute.com"> www.ClearSkyInstitute.com </A>
+
+</FORM>
+
+</BODY>
+
+</HTML>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<! For RCS Only -- Do Not Edit >
+<! @(#) $RCSfile: xephemdbd.html,v $ $Date: 2000/08/29 18:40:12 $ $Revision: 1.3 $ $Name:  $ >

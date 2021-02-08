@@ -1,0 +1,111 @@
+How to install XEphem Version 4.0.0, either for just yourself or system-wide:
+
+1) Build the executable:
+
+    Explode xephem-4.0.0.tar.gz and change to the build directory:
+
+	$ tar xfz xephem-4.0.0.tar.gz
+	$ cd xephem-4.0.0/GUI/xephem
+
+    On Intel x86_32 linux just do this:
+
+	$ make MOTIF=../../libXm/linux86
+
+    On Mac OS X just do this:
+
+	$ make MOTIF=../../libXm/osx
+
+    On OpenVMS just do this (from this directory):
+
+	$@build
+	$set def [.GUI.XEPHEM]
+	$run xephem
+
+    Otherwise edit Makefile to set the MOTIFI and MOTIFL macros for
+    your system then make. If you can not find Motif on your system try
+    using your package manager to search for it, for exampe:
+        $ yum search openmotif
+        $ zypper search openmotif
+	$ apt-file search openmotif
+    or look for binary kits at http://motif.ics.com/motif or build from
+    source from http://sourceforge.net/projects/motif. You'll also need
+    a bunch of supporting X11 Windows stuff too, but decent package
+    managers will bring those dependencies in for you also automatically.
+    In all cases, you'll want the development versions so you can use them
+    to build new programs, not just run existing ones.
+
+2) For a sneak peek, run it now; then click File->Quit and go to the next step:
+
+	$ ./xephem
+
+	If you get a message "X Resources out of date" you have installed
+	XEphem before and must locate and remove the old resource file.
+
+Next do either 3a or 3b, not both:
+
+3a) Installing XEphem for just yourself without root permission (see
+    next step for system-wide multiuser installation):
+
+    3a.1 Copy the executable where you keep your private programs:
+
+	$ cp xephem $HOME/bin			# or where ever
+
+    3a.2 Create a directory off your HOME called .xephem for all per-user files
+
+	$ mkdir $HOME/.xephem
+
+    3a.3 Create an initial resource file called $HOME/.xephem/XEphem with
+    just one line in it as follows:
+
+	XEphem.ShareDir: <dir>
+    
+    where <dir> is the full path of the directory containing the directories
+    auxil, catalogs, fifos, fits, gallery, help, and lo. These are in the
+    source directory of the original tar kit which is where you are now, if
+    you have been following along. You can leave them here if you like or move
+    them, just set <dir> to where ever they end up.
+
+3b) Installing XEphem for multiple users (requires root permission) (skip if
+    installing just for yourself):
+
+    3b.1 Copy the executable where everyone can find it:
+
+	$ cp xephem /usr/bin			# or elsewhere in your PATH
+
+    3b.2 Create a directory for system-wide read-only files to be shared by all
+    XEphem users and fill with the defaults included in this kit:
+
+	$ mkdir /usr/local/xephem		# or where ever
+	$ cp -R auxil /usr/local/xephem		# copy auxil dir and contents
+	$ cp -R catalogs /usr/local/xephem	# copy catalogs dir and contents
+	$ cp -R fifos /usr/local/xephem		# copy fifos dir and contents
+	$ cp -R fits /usr/local/xephem		# copy fits dir and contents
+	$ cp -R gallery /usr/local/xephem	# copy gallery images
+	$ cp -R help /usr/local/xephem		# copy help files
+	$ cp -R lo /usr/local/xephem		# copy lunar db
+    
+    3b.3 Do the same as step 3a.3 above but create the new file in a place
+    where XEphem can find it from anywhere:
+
+	/etc/XEphem
+
+    3b.4 Copy the man page:
+
+	$ cp xephem.1 /usr/local/man/man1	# or where ever
+
+4) XEphem uses your browser to display Help. Open Help->Configure and select
+   your browser of choice. Use %s where ever the real URL should go. If your
+   browser is not listed, figure out the command line to tell it to display a
+   local URL, add it to the list and send it to me so I can add it to the FAQ.
+
+5) Done at least, now just run and go:
+
+	$ xephem
+
+
+Thanks for using XEphem!
+
+
+Elwood Downey
+ecdowney@ClearSkyInstitute.com
+http://www.ClearSkyInstitute.com
