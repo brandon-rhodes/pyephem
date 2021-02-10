@@ -25,15 +25,14 @@ setup(
     description = 'Empty package that depends on "ephem"',
     long_description = long_description,
     long_description_content_type = 'text/x-rst',
-    license = 'LGPL',
+    license = 'MIT',
     author = 'Brandon Rhodes',
     author_email = 'brandon@rhodesmill.org',
     url = 'http://rhodesmill.org/pyephem/',
     classifiers = [
         'Development Status :: 6 - Mature',
         'Intended Audience :: Science/Research',
-        'License :: OSI Approved ::'
-        ' GNU Library or Lesser General Public License (LGPL)',
+        'License :: OSI Approved :: MIT License',
         'Topic :: Scientific/Engineering :: Astronomy',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.6',
