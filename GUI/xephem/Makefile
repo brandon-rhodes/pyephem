@@ -34,7 +34,7 @@ CLDFLAGS = -g
 CFLAGS = $(LIBINC) $(CLDFLAGS) -O2 -Wall -I$(MOTIFI) -I/opt/X11/include
 LDFLAGS = $(LIBLNK) $(CLDFLAGS) -L$(MOTIFL) -L/opt/X11/lib
 XLIBS = -lXm -lXt -lXext -lXmu -lX11
-LIBS = $(XLIBS) $(LIBLIB) -lm
+LIBS = $(XLIBS) $(LIBLIB) -lm -lssl
 
 # static linking on Apple using X11 libs from ports
 # CC = gcc

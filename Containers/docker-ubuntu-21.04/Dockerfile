@@ -11,6 +11,7 @@ RUN apt install -y -y \
     build-essential \
     groff-base \
     libmotif-dev \
+    libssl-dev \
     libxext-dev \
     libxmu-dev \
     libxt-dev
