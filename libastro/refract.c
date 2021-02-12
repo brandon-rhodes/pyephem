@@ -62,6 +62,11 @@ refract (double pr, double tr, double ta, double *aa)
 
 	double d, t, t0, a;
 
+	if (isnan (ta)) {
+	    *aa = ta;
+	    return;
+	}
+
 	/* first guess of error is to go backwards.
 	 * make use that we know delta-apparent is always < delta-true.
 	 */
