@@ -23,6 +23,13 @@ which you can view by using ``repr()``::
 
     print repr(j.dec)  # => -0.21219402907256785
 
+Since its numeric value is in radians,
+printing the angle as degrees requires an extra step to convert the units.
+
+    >>> from math import pi
+    >>> print('Degrees: {:.4f}'.format(j.dec / pi * 180.0))
+    Degrees: -12.1578
+
 The only kind of angle which does not use degrees for display
 is right ascension,
 which instead traditionally breaks the celestial equator
