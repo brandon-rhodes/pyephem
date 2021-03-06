@@ -29,6 +29,9 @@ More screenshots are shown below.
   It’s documented
   [in this README file](https://github.com/XEphem/XEphem/blob/docker/container/README.md).
 
+* The repository also includes a `.tito` directory
+  and `xephem.spec` file for building an XEphem RPM package.
+
 * Otherwise,
   if you want to tackle XEphem development on another platform,
   start with the
