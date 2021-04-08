@@ -1,0 +1,3 @@
+#!/bin/bash
+python setup.py build_ext --inplace &&
+    exec python -m unittest discover "$@" ephem
