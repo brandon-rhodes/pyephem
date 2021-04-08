@@ -22,7 +22,3 @@ jobs:
         env:
           CIBW_SKIP: pp*
           CIBW_TEST_COMMAND: python -m unittest discover ephem
-
-      # - uses: actions/upload-artifact@v2
-      #   with:
-      #     path: ./wheelhouse/*.whl
