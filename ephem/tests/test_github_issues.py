@@ -39,8 +39,6 @@ class GitHubIssues(TestCase):
         self.assertEqual('%.2f' % (pa / ephem.degree), '-13.62')
 
     def test_github_25(self):
-        if sys.maxsize > 2147483647:  # breaks under 64 bits, as on Travis-CI
-            return
         tle=[
       "OBJECT L",
       "1 39276U 13055L   13275.56815576  .28471697  00000-0  53764+0 0    92",
@@ -55,7 +53,15 @@ class GitHubIssues(TestCase):
         sat = ephem.readtle(*tle)
         fenton.date = datetime.datetime(2013,10,6,0,0,0,0)
         sat.compute(fenton)
-        self.assertRaises(RuntimeError, lambda: sat.neverup)
+
+        # The issue was that this calculation froze, so we are happy
+        # either with an exception or the right answer.
+        try:
+            result = sat.neverup
+        except RuntimeError:
+            pass
+        else:
+            self.assertEqual(result, False)
 
     def test_github_28(self):
         tle = [
