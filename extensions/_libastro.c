@@ -1173,6 +1173,9 @@ static int NAME##_init(PyObject* self, PyObject* args, PyObject *kw) \
 static int FixedBody_init(PyObject* self, PyObject* args, PyObject *kw)
 {
      Body *body = (Body*) self;
+     static char *kwlist[] = {0};
+     if (!PyArg_ParseTupleAndKeywords(args, kw, ":FixedBody", kwlist))
+         return -1;
      Body_setup(body);
      body->name = Py_None;
      Py_INCREF(Py_None);

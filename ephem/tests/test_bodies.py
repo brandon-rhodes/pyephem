@@ -210,6 +210,14 @@ class BodyTests(unittest.TestCase):
                         'mag': 0.46, '_epoch': '2000',
                         })
 
+    def test_FixedBody_does_not_ignore_arguments(self):
+        with self.assertRaises(TypeError) as e:
+            FixedBody(10)
+        self.assertEqual(
+            str(e.exception),
+            'FixedBody() takes at most 0 arguments (1 given)',
+        )
+
     def test_EllipticalBody(self):
         self.build(
             bodytype=EllipticalBody,
