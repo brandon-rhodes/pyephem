@@ -358,7 +358,7 @@ double *mp)
 double
 atod (char *buf)
 {
-     if (*buf == '\0') return nan("");
+     if (*buf == '\0') return 0.0 / 0.0;  // return NaN
      return (ascii_strtod(buf, NULL));
 }
 

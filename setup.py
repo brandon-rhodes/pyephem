@@ -29,6 +29,8 @@ def read(*filenames):
 
 libraries = []
 if os.name != 'nt':
+    # Linking against library "m" on Windows results in the error:
+    # LINK : fatal error LNK1181: cannot open input file 'm.lib'
     libraries.append('m')  # Needed for Android; see GitHub issue #114.
 
 extensions = [
