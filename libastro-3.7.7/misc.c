@@ -10,6 +10,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+static union {
+    unsigned char bytes[sizeof(double)];
+    double value;
+} _little_endian_nan = {
+    {0, 0, 0, 0, 0, 0, 0xf8, 0x7f}
+};
+
 double ascii_strtod(const char *s00, char **se);  /* for PyEphem */
 
 /* zero from loc for len bytes */
@@ -358,7 +365,7 @@ double *mp)
 double
 atod (char *buf)
 {
-     if (*buf == '\0') return 0.0 / 0.0;  // return NaN
+     if (*buf == '\0') return _little_endian_nan.value;
      return (ascii_strtod(buf, NULL));
 }
 
