@@ -412,7 +412,8 @@ fail:
 	  PyObject *repr = PyObject_Repr(so);
           PyObject *complaint = PyUnicode_FromFormat(
 	       "your date string %s does not look like a year/month/day"
-	       " optionally followed by hours:minutes:seconds", repr);
+	       " optionally followed by hours:minutes:seconds",
+               PyUnicode_AsUTF8(repr));
 	  PyErr_SetObject(PyExc_ValueError, complaint);
 	  Py_DECREF(repr);
 	  Py_DECREF(complaint);

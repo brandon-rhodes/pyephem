@@ -57,6 +57,16 @@ class DateTests(unittest.TestCase):
             if type(arg2) is str:
                 construct_and_compare(arg1, '  %s  ' % arg2)
 
+    def test_date_parser_error_message(self):
+        with self.assertRaises(ValueError) as e:
+            Date('bad string')
+        self.assertEqual(
+            str(e.exception),
+            "your date string 'bad string' does"
+            " not look like a year/month/day optionally"
+            " followed by hours:minutes:seconds",
+        )
+
     def test_year_zero(self):
         # I would have thought the year would be 0, but it looks like
         # libastro considers 1 BC to be the year -1?
