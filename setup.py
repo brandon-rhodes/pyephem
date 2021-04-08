@@ -34,13 +34,15 @@ if os.name != 'nt':
     libraries.append('m')  # Needed for Android; see GitHub issue #114.
 
 extensions = [
-    Extension('ephem._libastro',
-              ['extensions/_libastro.c', 'extensions/dtoa.c']
-              + libastro_files + libastro_data,
-              include_dirs=['libastro-' + libastro_version, '.'],
-              libraries = libraries,
-              ),
-    ]
+    Extension(
+        'ephem._libastro',
+        ['extensions/_libastro.c', 'extensions/dtoa.c']
+        + libastro_files + libastro_data,
+        extra_compile_args=['-ffloat-store'],
+        include_dirs=['libastro-' + libastro_version, '.'],
+        libraries = libraries,
+    ),
+]
 
 setup(name = 'ephem',
       version = __version__,
