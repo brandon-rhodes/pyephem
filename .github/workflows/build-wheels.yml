@@ -20,6 +20,7 @@ jobs:
       - name: Build wheels
         uses: joerick/cibuildwheel@v1.10.0
         env:
+          CIBW_SKIP: pp*
           CIBW_TEST_COMMAND: python -m unittest discover ephem
 
       # - uses: actions/upload-artifact@v2

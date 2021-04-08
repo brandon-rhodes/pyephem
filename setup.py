@@ -27,12 +27,16 @@ def read(*filenames):
     path = os.path.join(os.path.dirname(__file__), *filenames)
     return open(path, 'rb').read().decode('utf-8')
 
+libraries = []
+if os.name != 'nt':
+    libraries.append('m')  # Needed for Android; see GitHub issue #114.
+
 extensions = [
     Extension('ephem._libastro',
               ['extensions/_libastro.c', 'extensions/dtoa.c']
               + libastro_files + libastro_data,
               include_dirs=['libastro-' + libastro_version, '.'],
-              libraries = ['m'],  # see GitHub issue #114
+              libraries = libraries,
               ),
     ]
 
