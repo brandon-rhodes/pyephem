@@ -79,6 +79,9 @@ class GitHubIssues(TestCase):
         g.long = ephem.degrees('-35')
         self.assertEqual(str(g.long), '-35:00:00.0')
 
+    # On Windows, the following test reports:
+    # AssertionError: 0.00017109312466345727 != 0.0296238418669 within 10 places
+
     def test_github_58(self):
         t = ephem.readdb("P10frjh,e,7.43269,35.02591,162.97669,"
                          "0.6897594,1.72051182,0.5475395,"
