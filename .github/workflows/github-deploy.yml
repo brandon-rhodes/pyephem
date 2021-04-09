@@ -16,6 +16,23 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: actions/setup-python@v2
+        name: Install Python
+        with:
+          python-version: '3.8'
+
+      - name: Install Visual C++ for Python 2.7
+        if: runner.os == 'Windows'
+        run: choco install vcpython27 -f -y
+
+      # https://cibuildwheel.readthedocs.io/en/stable/faq/#emulation
+      # offers this stanza plus “CIBW_ARCHS_LINUX” below:
+      - name: Set up QEMU
+        if: runner.os == 'Linux'
+        uses: docker/setup-qemu-action@v1
+        with:
+          platforms: all
+
       - name: Build wheels
         uses: pypa/cibuildwheel@v1.11.1.post1
         env:
