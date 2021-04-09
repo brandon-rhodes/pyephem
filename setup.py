@@ -23,9 +23,9 @@ libastro_version = '3.7.7'
 libastro_files = glob('libastro-%s/*.c' % libastro_version)
 libastro_data = glob('extensions/data/*.c')
 
-def read(*filenames):
-    path = os.path.join(os.path.dirname(__file__), *filenames)
-    return open(path, 'rb').read().decode('utf-8')
+here = os.path.dirname(__file__)
+with open(os.path.join(here, 'README.rst')) as f:
+    README = f.read()
 
 libraries = []
 if os.name != 'nt':
@@ -47,7 +47,8 @@ extensions = [
 setup(name = 'ephem',
       version = __version__,
       description = 'Compute positions of the planets and stars',
-      long_description = read('README.rst'),
+      long_description = README,
+      #long_description_content_type = 'text/x-rst',
       license = 'MIT',
       author = 'Brandon Rhodes',
       author_email = 'brandon@rhodesmill.org',

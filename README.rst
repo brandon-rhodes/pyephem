@@ -2,9 +2,6 @@
 PyEphem README
 ==============
 
-.. image:: https://travis-ci.org/brandon-rhodes/pyephem.png
-   :target: https://travis-ci.org/brandon-rhodes/pyephem
-
 .. _ephem: http://pypi.python.org/pypi/ephem/
 .. _pyephem: http://pypi.python.org/pypi/pyephem/
 .. _XEphem: http://www.clearskyinstitute.com/xephem/
