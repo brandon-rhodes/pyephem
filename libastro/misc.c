@@ -13,8 +13,12 @@
 static union {
     unsigned char bytes[sizeof(double)];
     double value;
-} _little_endian_nan = {
+} _nan = {
+#if (defined(__s390__) || defined(__s390x__) || defined(__zarch__))
+    {0x7f, 0xf8, 0, 0, 0, 0, 0, 0}
+#else
     {0, 0, 0, 0, 0, 0, 0xf8, 0x7f}
+#endif
 };
 
 double ascii_strtod(const char *s00, char **se);  /* for PyEphem */
@@ -365,7 +369,7 @@ double *mp)
 double
 atod (char *buf)
 {
-     if (*buf == '\0') return _little_endian_nan.value;
+     if (*buf == '\0') return _nan.value;
      return (ascii_strtod(buf, NULL));
 }
 
