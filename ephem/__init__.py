@@ -88,16 +88,23 @@ Moon = _libastro.Moon
 
 # Newton's method.
 
-def newton(f, x0, x1, precision=default_newton_precision):
-    """Return an x-value at which the given function reaches zero.
+def newton(f, x0, x1, precision=default_newton_precision, period=float("inf")):
+    """Return an x-value at which the given periodic function reaches zero.
 
     Stops and declares victory once the x-value is within ``precision``
     of the solution, which defaults to a half-second of clock time.
 
     """
     f0, f1 = f(x0), f(x1)
+    maxstep = 0.5 * period
     while f1 and abs(x1 - x0) > precision and f1 != f0:
-        x0, x1 = x1, x1 + (x1 - x0) / (f0/f1 - 1)
+        delta = (x1 - x0) / (f0/f1 - 1)
+        if abs(delta) > maxstep:
+            delta %= period
+            if delta > maxstep:
+                delta -= period
+                
+        x0, x1 = x1, x1 + delta
         f0, f1 = f1, f(x1)
     return x1
 
@@ -481,7 +488,8 @@ class Observer(_libastro.Observer):
                 d1 = visit_transit()
 
             d = (d0 + d1) / 2.
-            result = Date(newton(f, d, d + minute))
+            siderial_day = (23.0 + (56.0 + 4.1/60.0)/60.0)/24.0
+            result = Date(newton(f, d, d + minute, period=siderialday))
             return result
         finally:
             self.date = original_date
