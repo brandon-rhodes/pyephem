@@ -98,7 +98,7 @@ body.compute(date)
    | ``radius`` — Size (radius as an angle)
 
    | ``circumpolar`` — whether it stays above the horizon
-   | ``neverup`` — whether is stays below the horizon
+   | ``neverup`` — whether it stays below the horizon
 
  * On Solar System bodies, also sets:
 
