@@ -1,0 +1,174 @@
+#!/usr/bin/perl
+#
+# xeseds2.pl version 2.1
+#
+# Original program by unknown author 
+# cleaned up and fixed for xephem 3.5 and konq by twalker@bigpond.net.au 
+# It now forks a new konqueror window with each "goto"
+# Treat as GPL unless 'unknown author' has complaints :)
+#
+# UPDATED: 20020425
+# 
+# added comet, asteroid, planet, and satellite links. We are now pulling out a lot more info :)
+# Some of the links mightn't be the best resource and if you know of better ones and
+# could be bothered to figure out their syntax then sent me back an edited copy.
+# 
+# We have caching support!. When you access a messier object or an NGC object from seds
+# we are pulling the object down with wget and then loading up that html page in konqueror
+# .. using this method you can pull pages down before you go out and access them again in the
+# field.
+#
+# bloody hell, this script is really starting to need documentation!
+#
+# Okay you can revert to original behaviour by setting caching=0. This means you have to be 
+# online to access anything. i
+#
+# When using caching, set your cache dir to wherever..  ~/.xeseds might work for you,
+# it might not, I found it simpler just to give an absolute. 
+# 
+# wget is required for caching support.
+#
+# Beyond that I'm really interested in finding a 1/2 decesnt comet resource.
+# thessd.jpl.nasa.gov supports comets but not in anyway I could figure out on the command line.
+# Seems to only like POST requests. The planet resource is quite dull :) A new one there
+# might be useful. Finally there may be some comet/asteriods name's I haven't come up with.
+# I'm basically looking at whatever output the xephem fifo dishes up and then searching
+# for an online resource that takes that kind of input... I found 3 ways of dishing up
+# a comet so far, so if there are any other let me know.
+#
+# p.s. when you are using seds caching konq is going to take a while to come up as wget
+# does it's run before loading konq on the local file. I could do them both in tandem but it'
+# going to require downloading double the info, which doesn't make sense :)
+#
+# Tim Walker, twalker@bigpond.net.au
+
+$| = 1;
+
+$caching = 1;
+
+$browser = "konqueror";
+$cachedir = "/home/ecdowney/.xeseds";
+$wget = "/usr/bin/wget";
+
+# ---------------------------
+
+$messierurl = "http://www.seds.org/messier/m/";
+$ngcurl = "http://www.seds.org/~spider/ngc/ngc.cgi?";
+#$ngcurl = "http://www.seds.org/messier/xtra/ngc/n";
+$cometurl = "http://cfa-www.harvard.edu/iau/Ephemerides/Comets/";
+$asteroidurl = "http://ssd.jpl.nasa.gov/cgi-bin/da?";
+$planeturl = "http://maps.jpl.nasa.gov/";
+$saturl = "https://www.TBS-satellite.com/cgi-bin/wwwwais?keywords=";
+
+$args = @ARGV;
+$port = 0;
+$loc_fifo = 0;
+$in_fifo = 0;
+
+for ($i = 0; $i < $args; $i++) {
+	$switch = $ARGV[$i];
+	$i++;
+	if ($switch eq "-m") {
+		$in_fifo = $ARGV[$i];
+	} elsif ($switch eq "-g") {
+		$loc_fifo = $ARGV[$i];
+	} elsif ($switch eq "-t") {
+		$port = $ARGV[$i];
+	}
+}
+
+mkdir ($cachedir) if ( ! -e $cachedir && $caching);
+chdir ($cachedir) if ($caching);
+
+
+open FIFO, "+<$loc_fifo" or die "$loc_fifo: $!\n";
+
+while (true) {
+	$data=0;
+	$url=0;
+	sysread (FIFO, $data, 1024);
+	print "DATA: $data\n";
+
+
+	if ($data =~ /,E, /) { 
+		print "Got EarthSat!\n";
+		($fullname, @therest) = split(/,/, $data);
+		($keyword, @therest) = split(/\s+/, $fullname);
+		print " -> URL: $saturl$keyword\n";
+		$url = "$saturl$keyword";
+	} elsif ($data =~ /,f/) {
+		print "Got Seds!\n";
+	    	($name, @stuff) = split /,\s*/, $data;
+	       	if ($name =~ /M(\d+)/) {
+		        $url = $messierurl . sprintf("m%03d.html", $1);
+		}
+		if ($name =~ /NGC (\d+)/) {
+					$url = $ngcurl . "ngc$1";
+		}
+		if ($name =~ /IC (\d+)/) {
+			$url = $ngcurl . "ic$1";
+		}
+		if ($caching) {
+			#$command = "(cd $cachedir && $wget -c -E -k -K -p $url)";
+			$command = "(cd $cachedir && $wget -p -E  -K -k -c $url)";
+			print " -> $command\n";
+			$filename = $url;
+			$filename =~ s/~/\%7E/g;
+			if ($filename !~ /.html$/) { $filename .= ".html"; }
+			$filename = $cachedir."/".substr($filename, 7);
+			# $filename =~ s/\?/\\?/g;
+			print "Checking for $filename...\n";
+			if ( -e $filename) {
+				print " -> found it\n";
+			} else {
+				print " -> NOT Found\n";
+			}
+			system($command) if ( ! -e $filename );
+			print " -> Loading file $filename\n";
+			$url = $filename;
+		}
+		
+	} elsif ($data =~ /,e,/ || $data =~ /,p,/) {
+		print "Got Comet!\n";
+		if ($data =~ /^C\// || $data =~ /^P\//) {
+			($junkyear, $desig, @therest) = split(/\s+/, $data);
+			($junk, $year) = split(/\//, $junkyear);
+			print " -> URL: $cometurl$year$desig.html";
+			$url = "$cometurl$year$desig.html";
+		} elsif ($data =~ /P\//) {
+			($comet, @therest) = split(/\//, $data);
+			($cometnum, $junk) = split(/P/, $comet,2);
+			if ($cometnum < 10) {
+				$zeroes = "000";
+			} elsif ($cometnum < 100) {
+				$zeroes = "00";
+			} elsif ($cometnum < 1000) {
+				$zeroes = "0";
+			}
+			print " -> URL: $cometurl$zeroes$comet.html";
+			$url = "$cometurl$zeroes$comet.html";
+		} else { 
+			print " -> Must be an asteroid\n";
+			($asternumber, @therest) = split(/\s+/, $data);
+			print " -> URL: $asteroidurl$asternumber\n";
+			$url = "$asteroidurl$asternumber";
+		}
+
+
+	} elsif ($data =~ /,P/) {
+		print "Got Planet!\n";
+		($planet, $junk) = split(/,/, $data);
+		$planet =~ tr/[A-Z]/[a-z]/;
+		print " -> $planeturl$planet.html";
+		$url = "$planeturl$planet.html";
+
+
+	} else {
+		print "Unknown!\n";
+	}
+	if ($url) {
+		$cmd = "$browser $url";
+		$pid = fork(); 
+		exec($cmd) if (!$pid);
+	}
+}

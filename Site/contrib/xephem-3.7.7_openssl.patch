@@ -1,0 +1,671 @@
+diff -Naur ./orig/xephem-3.7.7/GUI/xephem/auxil/mpcorb2edb.pl ./patched/xephem-3.7.7/GUI/xephem/auxil/mpcorb2edb.pl
+--- ./orig/xephem-3.7.7/GUI/xephem/auxil/mpcorb2edb.pl	2014-07-11 04:46:35.000000000 +0200
++++ ./patched/xephem-3.7.7/GUI/xephem/auxil/mpcorb2edb.pl	2018-01-08 02:54:53.603935652 +0100
+@@ -78,7 +78,7 @@
+ # setup cutoff mag
+ my $dimmag = 13;			# dimmest mag to be saved in "bright" file
+ # set site and file in case of -f
+-my $MPCSITE = "http://www.minorplanetcenter.net";
++my $MPCSITE = "https://www.minorplanetcenter.net";
+ my $MPCFTPDIR = "/iau/MPCORB";
+ my $MPCFILE = "MPCORB.DAT";
+ my $MPCZIPFILE = "MPCORB.DAT.gz";
+diff -Naur ./orig/xephem-3.7.7/GUI/xephem/fallbacks.c ./patched/xephem-3.7.7/GUI/xephem/fallbacks.c
+--- ./orig/xephem-3.7.7/GUI/xephem/fallbacks.c	2015-04-09 02:20:19.000000000 +0200
++++ ./patched/xephem-3.7.7/GUI/xephem/fallbacks.c	2018-01-08 21:26:23.529915768 +0100
+@@ -747,10 +747,10 @@
+     "XEphem*WebDB*URL1.value: http://celestrak.com/NORAD/elements/science.txt",
+     "XEphem*WebDB*URL2.value: http://celestrak.com/NORAD/elements/tle-new.txt",
+     "XEphem*WebDB*URL3.value: http://celestrak.com/NORAD/elements/amateur.txt",
+-    "XEphem*WebDB*URL4.value: http://www.minorplanetcenter.org/iau/Ephemerides/Comets/Soft03Cmt.txt",
+-    "XEphem*WebDB*URL5.value: http://www.minorplanetcenter.org/iau/Ephemerides/CritList/Soft03CritList.txt",
+-    "XEphem*WebDB*URL6.value: http://www.minorplanetcenter.org/iau/Ephemerides/Distant/Soft03Distant.txt",
+-    "XEphem*WebDB*URL7.value: http://www.minorplanetcenter.org/iau/Ephemerides/Unusual/Soft03Unusual.txt",
++    "XEphem*WebDB*URL4.value: https://www.minorplanetcenter.org/iau/Ephemerides/Comets/Soft03Cmt.txt",
++    "XEphem*WebDB*URL5.value: https://www.minorplanetcenter.org/iau/Ephemerides/CritList/Soft03CritList.txt",
++    "XEphem*WebDB*URL6.value: https://www.minorplanetcenter.org/iau/Ephemerides/Distant/Soft03Distant.txt",
++    "XEphem*WebDB*URL7.value: https://www.minorplanetcenter.org/iau/Ephemerides/Unusual/Soft03Unusual.txt",
+     "XEphem*WebDB.x: 200",
+     "XEphem*WebDB.y: 200",
+     "XEphem*WeekStart.Monday.set: False",
+diff -Naur ./orig/xephem-3.7.7/GUI/xephem/Makefile ./patched/xephem-3.7.7/GUI/xephem/Makefile
+--- ./orig/xephem-3.7.7/GUI/xephem/Makefile	2015-08-09 23:36:50.000000000 +0200
++++ ./patched/xephem-3.7.7/GUI/xephem/Makefile	2018-01-08 21:20:45.200717791 +0100
+@@ -35,7 +35,7 @@
+ CFLAGS = $(LIBINC) $(CLDFLAGS) -O2 -Wall -I$(MOTIFI) -I/opt/X11/include
+ LDFLAGS = $(LIBLNK) $(CLDFLAGS) -L$(MOTIFL) -L/opt/X11/lib
+ XLIBS = -lXm -lXp -lXt -lXext -lXmu -lX11
+-LIBS = $(XLIBS) $(LIBLIB) -lm
++LIBS = $(XLIBS) $(LIBLIB) -lm -lssl
+ 
+ # static linking on Apple using X11 libs from ports
+ # CC = gcc
+diff -Naur ./orig/xephem-3.7.7/GUI/xephem/net.h ./patched/xephem-3.7.7/GUI/xephem/net.h
+--- ./orig/xephem-3.7.7/GUI/xephem/net.h	2005-03-20 12:04:50.000000000 +0100
++++ ./patched/xephem-3.7.7/GUI/xephem/net.h	2018-01-08 19:45:27.561208366 +0100
+@@ -20,6 +20,13 @@
+ #include <sys/select.h>
+ #endif
+ 
++#include <openssl/ssl.h>
++
++typedef struct {
++	int fd;		//file desciptor for the underlying connection socket
++	SSL *ssl;	//ssl connection for use with SSL_read( )and SSL_write()
++} XE_SSL_FD;
++
+ /* support functions */
+ 
+ extern int httpGET (char *host, char *GETcmd, char msg[]);
+@@ -29,8 +36,11 @@
+ extern int recvline (int fd, char buf[], int max);
+ extern int recvlineb (int sock, char *buf, int size);
+ extern int sendbytes (int fd, unsigned char buf[], int n);
+-
+-
++extern int httpsGET (char *host, char *GETcmd, char msg[], XE_SSL_FD *ssl_fd);
++extern int ssl_recvbytes (XE_SSL_FD *ssl_fd, unsigned char buf[], int n);
++extern int ssl_readbytes (XE_SSL_FD *ssl_fd, unsigned char buf[], int n);
++extern int ssl_recvline (XE_SSL_FD *ssl_fd, char buf[], int max);
++extern int ssl_recvlineb (XE_SSL_FD *ssl_fd, char *buf, int size);
+ 
+ /* For RCS Only -- Do Not Edit
+  * @(#) $RCSfile: net.h,v $ $Date: 2003/03/17 07:26:21 $ $Revision: 1.3 $ $Name:  $
+diff -Naur ./orig/xephem-3.7.7/GUI/xephem/netmenu.c ./patched/xephem-3.7.7/GUI/xephem/netmenu.c
+--- ./orig/xephem-3.7.7/GUI/xephem/netmenu.c	2010-10-06 23:12:40.000000000 +0200
++++ ./patched/xephem-3.7.7/GUI/xephem/netmenu.c	2018-01-08 22:02:16.090940142 +0100
+@@ -9,6 +9,8 @@
+ #include <string.h>
+ #include <unistd.h>
+ 
++#include <openssl/ssl.h>
++
+ #include <Xm/Form.h>
+ #include <Xm/Label.h>
+ #include <Xm/PushB.h>
+@@ -70,12 +72,24 @@
+ 
+ static char netcategory[] = "Network";	/* Save category */
+ 
++static SSL_METHOD *ssl_method;	/* global ssl dispatch structure for creating a ssl context */
++static SSL_CTX *ssl_ctx;	/* global ssl context structure for creating ssl connections */
++
+ /* call to set up without actually bringing up the menus.
+  */
+ void
+ net_create()
+ {
+ 	if (!netshell_w) {
++	    if (SSL_library_init() < 0) {
++		fprintf (stderr, "Could not initialize the OpenSSL library !\n");
++	    } else {
++		ssl_method = SSLv23_client_method();	/* deprecated since openssl 1.1.x */
++//		ssl_method = TLS_client_method();	/* since openssl 1.1.x */
++		ssl_ctx = SSL_CTX_new (ssl_method);
++		SSL_CTX_set_options (ssl_ctx, SSL_OP_NO_SSLv2);
++	    };
++
+ 	    net_create_form();
+ 	    (void) net_save();	/* confirming here is just annoying */
+ 	}
+@@ -251,8 +265,8 @@
+             struct {
+ 		unsigned char  VN;	/* version number */
+ 		unsigned char  CD;	/* command code */
+-		unsigned short DSTPORT;	/* destination port */
+-		unsigned long  DSTIP;	/* destination IP addres */
++		uint16_t       DSTPORT;	/* destination port */
++		uint32_t       DSTIP;	/* destination IP address */
+ 	    } SocksPacket;
+ 
+ 	    struct hostent *hs = gethostbyname (socks_host);
+@@ -390,7 +404,7 @@
+ 
+ /* read up to and including the next '\n' from socket fd into buf[max].
+  * we silently ignore all '\r'. we add a trailing '\0'.
+- * return line lenth (not counting \0) if all ok, else -1.
++ * return line length (not counting \0) if all ok, else -1.
+  * N.B. this never reads ahead -- if that's ok, recvlineb() is better
+  */
+ int
+@@ -445,6 +459,216 @@
+ 		if (nr <= 0) {
+ 		    ok = nr;
+ 		    rb_next = 0;
++		    rb_unk = 0;
++		    break;
++		}
++		rb_next = 0;
++		rb_unk = nr;
++	    }
++
++	    if ((c = rb_linebuf[rb_next++]) != '\r')
++		*buf++ = c;
++
++	} while (buf-origbuf < size && c != '\n');
++
++	/* always give back a real line regardless, else status */
++	if (ok > 0) {
++	    *buf = '\0';
++	    ok = buf - origbuf;
++	}
++
++	return (ok);
++}
++
++/* open the host, do the given GET cmd, and return a socket fd for the result.
++ * on success it fills the XE_SSL_FD structure for later use by SSL_read() and necessary cleanup.
++ * return -1 and with excuse in msg[], else 0 if ok.
++ * N.B. can be called before we are created if net set in app defaults.
++ */
++int
++httpsGET (char *host, char *GETcmd, char msg[], XE_SSL_FD *ssl_fd)
++{
++	char buf[2048];
++	int fd;
++	int connected;
++	SSL *ssl;
++	int n;
++	int ret;
++	int httpsport = 443;
++
++	/* open connection */
++	if (proxy_on) {
++	    fd = mkconnection (proxy_host, proxy_port, msg);
++	    if (fd < 0)
++		return (-1);
++
++	    /* fill buf with CONNECT */
++	    (void) sprintf (buf, "CONNECT %1$s:%2$d HTTP/1.0\r\nUser-Agent: xephem/%3$s\r\nHost: %1$s:%2$d\r\n\r\n", host, httpsport, PATCHLEVEL);
++
++	    /* add proxy auth if enabled */
++	    if (!auth_w)
++		net_create_form();
++	    if (XmToggleButtonGetState (auth_w))
++		addAuth(buf);
++
++	    /* log it */
++	    xe_msg (0, "https proxy connect: %s", buf);
++
++	    /* send it */
++	    n = strlen (buf);
++	    if (sendbytes(fd, (unsigned char *)buf, n) < 0) {
++		(void) sprintf (msg, "%s: send error: %s", proxy_host, syserrstr());
++		(void) close (fd);
++		return (-1);
++	    }
++
++	    connected = 0;
++	    while (recvline (fd, buf, sizeof(buf)) > 1) {
++		xe_msg (0, "Rcv: %s", buf);
++		if (strstr (buf, "200 "))
++		    connected = 1;
++	    }
++	    if (!connected) {
++		(void) sprintf (msg, "%s: connect error: %s", proxy_host, syserrstr());
++		(void) close (fd);
++		return (-1);
++	    }
++	} else {
++	    /* SOCKS or direct are both handled by mkconnection() */
++	    fd = mkconnection (host, httpsport, msg);
++	    if (fd < 0)
++		return (-1);
++	}
++
++	/* fill buf with GETcmd */
++	(void) sprintf (buf, "%s", GETcmd);
++
++	/* start ssl connection */
++	ssl = SSL_new (ssl_ctx);
++	SSL_set_fd (ssl, fd);
++	SSL_connect (ssl);
++
++	/* log it */
++	xe_msg (0, "https: %s", buf);
++
++	/* send it */
++	n = strlen (buf);
++	ret = SSL_write (ssl, (unsigned char *)buf, n);
++	if (ret <= 0) {
++	    (void) sprintf (msg, "%s: ssl send error code: %d", host, SSL_get_error (ssl, ret));
++	    (void) SSL_free (ssl);
++	    (void) close (fd);
++	    return (-1);
++	}
++
++	/* caller can read response */
++	ssl_fd->fd = fd;
++	ssl_fd->ssl = ssl;
++	return (fd);
++}
++
++/* receive exactly n bytes from ssl connection ssl_fd into buf.
++ * return -1, 0 or n.
++ * N.B. with fallback to ordinary read from socket if ssl_fd->ssl is NULL
++ */
++int
++ssl_recvbytes (XE_SSL_FD *ssl_fd, unsigned char buf[], int n)
++{
++	int ns, tot;
++
++	for (tot = 0; tot < n; tot += ns) {
++	    if (tout (TOUT, ssl_fd->fd, 0) < 0)
++		return (-1);
++	    if (ssl_fd->ssl)
++		ns = SSL_read (ssl_fd->ssl, (void *)(buf+tot), n-tot);
++	    else
++		ns = read (ssl_fd->fd, (void *)(buf+tot), n-tot);
++	    if (ns <= 0)
++		return (ns);
++	}
++	return (n);
++}
++
++/* like read(2) except we time out and allow user to cancel.
++ * receive up to n bytes from ssl connection ssl_fd into buf.
++ * return count, or 0 on eof or -1 on error.
++ * N.B. with fallback to ordinary read from socket if ssl_fd->ssl is NULL
++ */
++int
++ssl_readbytes (XE_SSL_FD *ssl_fd, unsigned char buf[], int n)
++{
++	int ns;
++
++	if (tout (TOUT, ssl_fd->fd, 0) < 0)
++	    return (-1);
++	if (ssl_fd->ssl)
++	    ns = SSL_read (ssl_fd->ssl, (void *)buf, n);
++	else
++	    ns = read (ssl_fd->fd, (void *)buf, n);
++	return (ns);
++}
++
++/* read up to and including the next '\n' from ssl into buf[max].
++ * we silently ignore all '\r'. we add a trailing '\0'.
++ * return line length (not counting \0) if all ok, else -1.
++ * N.B. with fallback to ordinary read from socket if ssl_fd->ssl is NULL
++ */
++int
++ssl_recvline (XE_SSL_FD *ssl_fd, char buf[], int max)
++{
++	unsigned char c;
++	int n;
++
++	max--;	/* leave room for trailing \0 */
++
++	for (n = 0; n < max && ssl_recvbytes (ssl_fd, &c, 1) == 1; ) {
++	    if (c != '\r') {
++		buf[n++] = c;
++		if (c == '\n') {
++		    buf[n] = '\0';
++		    return (n);
++		}
++	    }
++	}
++
++	return (-1);
++}
++
++/* rather like ssl_recvline but reads ahead in big chunk for efficiency.
++ * return length if read a line ok, 0 if hit eof, -1 if error.
++ * N.B. we silently swallow all '\r'.
++ * N.B. we read ahead and can hide bytes after each call.
++ * N.B. with fallback to ordinary read from socket if ssl_fd->ssl is NULL
++ */
++int
++ssl_recvlineb (XE_SSL_FD *ssl_fd, char *buf, int size)
++{
++	char *origbuf = buf;		/* save to prevent overfilling buf */
++	char c = '\0';
++	int ok = 1;
++
++	/* always leave room for trailing \n */
++	size -= 1;
++
++	/* read and copy linebuf[next] to buf until buf fills or copied a \n */
++	do {
++
++	    if (rb_next >= rb_unk) {
++		/* linebuf is empty -- refill */
++
++		int nr;
++
++		if (tout (TOUT, ssl_fd->fd, 0) < 0) {
++		    nr = -1;
++		    break;
++		}
++		if (ssl_fd->ssl)
++		    nr = SSL_read (ssl_fd->ssl, rb_linebuf, sizeof(rb_linebuf));
++		else
++		    nr = read (ssl_fd->fd, rb_linebuf, sizeof(rb_linebuf));
++		if (nr <= 0) {
++		    ok = nr;
++		    rb_next = 0;
+ 		    rb_unk = 0;
+ 		    break;
+ 		}
+diff -Naur ./orig/xephem-3.7.7/GUI/xephem/sunmenu.c ./patched/xephem-3.7.7/GUI/xephem/sunmenu.c
+--- ./orig/xephem-3.7.7/GUI/xephem/sunmenu.c	2012-04-02 00:38:50.000000000 +0200
++++ ./patched/xephem-3.7.7/GUI/xephem/sunmenu.c	2018-01-08 22:09:43.585825210 +0100
+@@ -884,9 +884,11 @@
+ 	int isjpeg, jpegl;
+ 	int njpeg;
+ 	unsigned char *jpeg;
++	XE_SSL_FD ssl_fd;
+ 	int fd, nr;
+ 	struct tm tm;
+ 
++	memset(&ssl_fd, 0, sizeof(ssl_fd));
+ 	memset(&tm, 0, sizeof(struct tm));
+ 
+ 	/* get desired type and size */
+@@ -899,18 +901,18 @@
+ 
+ 	/* build GET command */
+ 	sprintf (get, "GET http://%s%s HTTP/1.0\r\nUser-Agent: xephem/%s\r\n\r\n", sohohost, fn, PATCHLEVEL);
+-
++	
+ 	/* query server */
+-	fd = httpGET (sohohost, get, buf);
++	fd = httpsGET (sohohost, get, buf, &ssl_fd);
+ 	if (fd < 0) {
+-	    xe_msg (1, "http get: %s", buf);
++	    xe_msg (1, "https get: %s", buf);
+ 	    return (-1);
+ 	}
+ 
+ 	/* read header (everything to first blank line), looking for jpeg */
+ 	isjpeg = 0;
+ 	jpegl = 0;
+-	while (recvline (fd, buf, sizeof(buf)) > 1) {
++	while (ssl_recvline (&ssl_fd, buf, sizeof(buf)) > 1) {
+ 	    xe_msg (0, "Rcv: %s", buf);
+ 	    if (strstr (buf, "Content-Type:") && strstr (buf, "image/jpeg"))
+ 		isjpeg = 1;
+@@ -923,15 +925,17 @@
+ 	    }
+ 	}
+ 	if (!isjpeg) {
+-	    while (recvline (fd, buf, sizeof(buf)) > 0)
++	    while (ssl_recvline (&ssl_fd, buf, sizeof(buf)) > 0)
+ 		xe_msg (0, "Rcv: %s", buf);
+ 	    xe_msg (1, "Error talking to SOHO .. see File->System log\n");
+-	    close (fd);
++	    SSL_free (ssl_fd.ssl);
++	    close (ssl_fd.fd);
+ 	    return (-1);
+ 	}
+ 	if (jpegl == 0) {
+ 	    xe_msg (1, "No Content-Length in header");
+-	    close (fd);
++	    SSL_free (ssl_fd.ssl);
++	    close (ssl_fd.fd);
+ 	    return (-1);
+ 	}
+ 
+@@ -941,20 +945,22 @@
+ 	for (njpeg = 0; njpeg < jpegl; njpeg += nr) {
+ 	    pm_set (100*njpeg/jpegl);
+ 	    jpeg = (unsigned char *) XtRealloc ((char*)jpeg, njpeg+NSREAD);
+-	    nr = readbytes (fd, jpeg+njpeg, NSREAD);
+-	    if (nr < 0) {
+-		xe_msg (1, "%s:\n%s", sohohost, syserrstr());
++	    nr = SSL_read (ssl_fd.ssl, jpeg+njpeg, NSREAD);
++	    if (nr <= 0) {
++		xe_msg (1, "%s: ssl read error code: %d", sohohost, SSL_get_error(ssl_fd.ssl, nr));
+ 		pm_down();
+-		close (fd);
++		SSL_free (ssl_fd.ssl);
++		close (ssl_fd.fd);
+ 		return (-1);
+ 	    }
+ 	    if (nr == 0)
+ 		break;
+ 	}
+ 	pm_down();
+-	close (fd);
++	SSL_free (ssl_fd.ssl);
++	close (ssl_fd.fd);
+ 
+-        sprintf (fn, "/%s_%s.jpg", filetime, filetype);
++	sprintf (fn, "/%s_%s.jpg", filetime, filetype);
+ 	/* display jpeg */
+ 	if (displayPic (fn, jpeg, njpeg) < 0)
+ 	    return (-1);
+diff -Naur ./orig/xephem-3.7.7/GUI/xephem/ucac.c ./patched/xephem-3.7.7/GUI/xephem/ucac.c
+--- ./orig/xephem-3.7.7/GUI/xephem/ucac.c	2013-03-02 03:41:37.000000000 +0100
++++ ./patched/xephem-3.7.7/GUI/xephem/ucac.c	2018-01-08 21:53:08.398538689 +0100
+@@ -18,15 +18,15 @@
+ 
+ #define	MAXFOV	15.0			/* max fov, degs */
+ 
+-typedef unsigned char UC;		/* byte */
+-typedef unsigned int UI;		/* unsigned integer */
++typedef unsigned char XE_UC;		/* byte */
++typedef unsigned int XE_UI;		/* unsigned integer */
+ 
+ /* access an I*2 or I*4 at offset i in UC array a in little-endian byte order.
+  * a bit slow but ultra portable.
+  */
+-#define	I2(a,i)		((int)(short)((((UI)(a)[i]) | (((UI)(a)[i+1])<<8))))
+-#define	I4(a,i)		((int)((((UI)(a)[i]) | (((UI)(a)[i+1])<<8) | \
+-				(((UI)(a)[i+2])<<16) | (((UI)(a)[i+3])<<24))))
++#define	I2(a,i)		((int)(short)((((XE_UI)(a)[i]) | (((XE_UI)(a)[i+1])<<8))))
++#define	I4(a,i)		((int)((((XE_UI)(a)[i]) | (((XE_UI)(a)[i+1])<<8) | \
++				(((XE_UI)(a)[i+2])<<16) | (((XE_UI)(a)[i+3])<<24))))
+ 
+ /* keep track of an array of ObjF */
+ typedef struct {
+@@ -48,9 +48,9 @@
+ 
+ #define	DPMAS	(1.0/3600000.0)		/* degrees per milliarcsecond */
+ 
+-typedef UC U2Star[44];			/* UCAC2 record */
+-typedef UC U3Star[84];			/* UCAC3 record */
+-typedef UC U4Star[78];			/* UCAC4 record */
++typedef XE_UC U2Star[44];		/* UCAC2 record */
++typedef XE_UC U3Star[84];		/* UCAC3 record */
++typedef XE_UC U4Star[78];		/* UCAC4 record */
+ static char *basedir;			/* full dir with zone files and index */
+ static FILE *indexfp;			/* index file handle */
+ 
+@@ -293,7 +293,7 @@
+ read4Index (int rz, int dz, int *nskip, int *nnew)
+ {
+ 	off_t offset;
+-	UC i4[4];
++	XE_UC i4[4];
+ 
+ 	offset = (rz*NZH4 + dz)*sizeof(i4);
+ 	if (fseek (indexfp, offset, SEEK_SET) < 0) {
+@@ -508,7 +508,7 @@
+ read3Index (int rz, int dz, int *nskip, int *nnew)
+ {
+ 	off_t offset;
+-	UC i4[4];
++	XE_UC i4[4];
+ 
+ 	offset = (rz*NZH + dz)*sizeof(i4);
+ 	if (fseek (indexfp, offset, SEEK_SET) < 0) {
+@@ -663,7 +663,7 @@
+ get2N (int rz, int dz, int *idp)
+ {
+ 	off_t offset;
+-	UC nat[4];
++	XE_UC nat[4];
+ 
+ 	offset = (dz*NZW + rz)*sizeof(nat);
+ 	if (fseek (indexfp, offset, SEEK_SET) < 0)
+diff -Naur ./orig/xephem-3.7.7/GUI/xephem/usno.c ./patched/xephem-3.7.7/GUI/xephem/usno.c
+--- ./orig/xephem-3.7.7/GUI/xephem/usno.c	2005-03-20 12:04:51.000000000 +0100
++++ ./patched/xephem-3.7.7/GUI/xephem/usno.c	2016-10-26 18:59:16.469149437 +0200
+@@ -14,8 +14,8 @@
+ #define	CATBPR	12	/* bytes per star record in .cat file */
+ #define	ACCBPR	30	/* bytes per record in .acc file */
+ 
+-typedef unsigned int UI;
+-typedef unsigned char UC;
++typedef unsigned int XE_UI;
++typedef unsigned char XE_UC;
+ 
+ /* One Field star */
+ typedef struct {
+@@ -36,7 +36,7 @@
+     double lr[2], int *nd, double fd[2], double ld[2], int zone[2], char msg[]);
+ static int fetchSwath (int zone, double maxmag, double fr, double lr,
+     double fd, double ld, StarArray *sap, char msg[]);
+-static int crackCatBuf (UC buf[CATBPR], FieldStar *fsp);
++static int crackCatBuf (XE_UC buf[CATBPR], FieldStar *fsp);
+ static int addGS (StarArray *sap, FieldStar *fsp);
+ 
+ static char *cdpath;		/* where CD rom is mounted */
+@@ -236,7 +236,7 @@
+ {
+ 	char fn[1024];
+ 	char buf[ACCBPR];
+-	UC catbuf[CATBPR];
++	XE_UC catbuf[CATBPR];
+ 	FieldStar fs;
+ 	long frec;
+ 	long os;
+@@ -314,13 +314,13 @@
+  * return 0 if ok, else -1.
+  */
+ static int
+-crackCatBuf (UC buf[CATBPR], FieldStar *fsp)
++crackCatBuf (XE_UC buf[CATBPR], FieldStar *fsp)
+ {
+-#define	BEUPACK(b) (((UI)((b)[0])<<24) | ((UI)((b)[1])<<16) | ((UI)((b)[2])<<8)\
+-							    | ((UI)((b)[3])))
++#define	BEUPACK(b) (((XE_UI)((b)[0])<<24) | ((XE_UI)((b)[1])<<16) | ((XE_UI)((b)[2])<<8)\
++							    | ((XE_UI)((b)[3])))
+ 	double ra, dec;
+ 	int red, blu;
+-	UI mag;
++	XE_UI mag;
+ 
+ 	/* first 4 bytes are packed RA, big-endian */
+ 	ra = BEUPACK(buf)/(100.0*3600.0*15.0);
+diff -Naur ./orig/xephem-3.7.7/GUI/xephem/webdbmenu.c ./patched/xephem-3.7.7/GUI/xephem/webdbmenu.c
+--- ./orig/xephem-3.7.7/GUI/xephem/webdbmenu.c	2012-11-23 06:22:09.000000000 +0100
++++ ./patched/xephem-3.7.7/GUI/xephem/webdbmenu.c	2018-01-08 21:58:01.975042039 +0100
+@@ -404,6 +404,10 @@
+ char *url;
+ {
+ 	static char http[] = "http://";
++	static char https[] = "https://";
++	char *transport = http;
++	int ltransport = strlen (transport);
++	int ishttp = 0;
+ 	char buf[512], msg[1024];
+ 	char l0[512], l1[512], l2[512];
+ 	char *l0p = l0, *l1p = l1, *l2p = l2;
+@@ -411,21 +415,31 @@
+ 	char *slash, *dot;
+ 	char filename[256];
+ 	FILE *fp;
++	XE_SSL_FD ssl_fd;
+ 	int sockfd;
+ 	int nfound;
+ 
++	memset(&ssl_fd, 0, sizeof(ssl_fd));
++
+ 	/* start */
+ 	watch_cursor(1);
+ 	l0[0] = l1[0] = l2[0] = '\0';
+ 
+ 	/* find transport and host */
+-	if (strncmp (url, http, 7)) {
+-	    xe_msg (1, "URL must begin with %s", http);
++	if (!strncmp (url, transport, ltransport)) {
++	    ishttp = 1;
++	} else {
++	    transport = https;
++	    ltransport = strlen (transport);
++	}
++
++	if ((!ishttp) && (strncmp (url, transport, ltransport))) {
++	    xe_msg (1, "URL must begin with %s or %s", http, https);
+ 	    watch_cursor (0);
+ 	    return;
+ 	}
+ 
+-	slash = strchr (url+7, '/');
++	slash = strchr (url+ltransport, '/');
+ 	dot = strrchr (url, '.');
+ 	if (!slash || !dot) {
+ 	    xe_msg (1, "Badly formed URL");
+@@ -434,11 +448,16 @@
+ 	}
+ 
+ 	/* connect to check url */
+-	sprintf (host, "%.*s", (int)(slash-url-7), url+7);
++	sprintf (host, "%.*s", (int)(slash-url-ltransport), url+ltransport);
+ 	sprintf (buf, "GET %s HTTP/1.1\r\nHost: %s\r\nConnection: close\r\nUser-Agent: xephem/%s\r\n\r\n",
+ 						url, host, PATCHLEVEL);
+ 	stopd_up();
+-	sockfd = httpGET (host, buf, msg);
++	if (ishttp) {
++	    sockfd = httpGET (host, buf, msg);
++	    ssl_fd.fd = sockfd;
++	} else {
++	    sockfd = httpsGET (host, buf, msg, &ssl_fd);
++	}
+ 	if (sockfd < 0) {
+ 	    xe_msg (1, "http GET to %s failed: %s%s\n", host, buf, msg);
+ 	    stopd_down();
+@@ -447,20 +466,22 @@
+ 	}
+ 
+ 	/* create local file */
+-	slash = strrchr (url+7, '/');
++	slash = strrchr (url+ltransport, '/');
+ 	sprintf (filename, "%s/%.*sedb", getPrivateDir(), (int)(dot-slash), slash+1);
+ 	fp = fopen (filename, "w");
+ 	if (!fp) {
+ 	    xe_msg (1, "%s:\n%s", filename, syserrstr());
+ 	    watch_cursor (0);
+-	    close (sockfd);
++	    if (!ishttp)
++		SSL_free (ssl_fd.ssl);
++	    close (ssl_fd.fd);
+ 	    return;
+ 	}
+ 
+ 	/* copy to file, insuring only .edb lines.
+ 	 */
+ 	nfound = 0;
+-	while (recvlineb (sockfd, l2p, sizeof(l2)) > 0) {
++	while (ssl_recvlineb (&ssl_fd, l2p, sizeof(l2)) > 0) {
+ 	    char *lrot;
+ 	    Obj o;
+ 
+@@ -484,7 +505,9 @@
+ 
+ 	/* tidy up and done */
+ 	fclose (fp);
+-	close (sockfd);
++	if (!ishttp)
++	    SSL_free (ssl_fd.ssl);
++	close (ssl_fd.fd);
+ 	if (!nfound) {
+ 	    xe_msg (1, "No objects in file");
+ 	    remove (filename);
+diff -Naur ./orig/xephem-3.7.7/GUI/xephem/xephem.h ./patched/xephem-3.7.7/GUI/xephem/xephem.h
+--- ./orig/xephem-3.7.7/GUI/xephem/xephem.h	2012-12-30 18:01:12.000000000 +0100
++++ ./patched/xephem-3.7.7/GUI/xephem/xephem.h	2016-10-26 20:09:47.000000000 +0200
+@@ -12,12 +12,12 @@
+ 
+ #include <stdarg.h>		/* be kind to those who don't use xe_msg() */
+ 
++#include "net.h"		/* has to be included before astro.h because of openssl */
+ #include "astro.h"
+ #include "ip.h"
+ 
+ /* local glue files */
+ #include "map.h"
+-#include "net.h"
+ #include "patchlevel.h"
+ #include "preferences.h"
+ #include "db.h"

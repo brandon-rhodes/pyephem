@@ -1,0 +1,597 @@
+<HTML>
+<HEAD>
+<TITLE>XEphem FAQ</TITLE>
+<LINK REV="made" HREF="MAILTO:ecdowney@ClearSkyInstitute.com">
+</HEAD>
+
+<BODY background="bg.png" TEXT="#000000" LINK="#004400" VLINK="#004400" ALINK="#000000">
+
+<center>
+<P>
+<H2>XEphem 3.7.7 Frequently Asked Questions and Answers
+</H2>
+
+<H3>
+Last updated December 29 , 2017
+</H3>
+</center>
+
+<blockquote>
+
+<font size="+1"><b>The questions are organized into the follow categories:</b></font>
+<p>
+<table>
+<tr>
+    <td width="30">
+    <td><a href="#UNIX">UNIX</a>
+    <td>getting XEphem up and running well on your UNIX (or Linux, etc) system.
+<tr>
+    <td>
+    <td><a href="#Mac">Mac</a>
+    <td>ditto for MacOS X
+<tr>
+    <td>
+    <td><a href="#Usage">Usage</a>
+    <td>tips, techniques and issues applicable to all platforms.
+<tr>
+    <td>
+    <td><a href="#bugs">Bugs</a>
+    <td>Known bugs in the current release.
+</table>
+
+<P>
+Can't find your question here? Try the 
+<a target="_blank" href="https://groups.io/g/xephem">Forum (off site)</a>
+or send an email to
+<a href="mailto:xephem@ClearSkyInstitute.com?subject=XEphem%20inFAQ">
+xephem@ClearSkyInstitute.com</a>
+<p>
+
+<! ------------------------------------------------------------------------- >
+
+<HR>
+
+<font size="+1">
+<a name="UNIX"><b>UNIX Installation Questions</b></a>
+</font>
+
+<ol>
+
+<p><li>
+    <b>I built from the downloaded source code and I am having problems with
+    XEphem GUI operation, such as windows not
+    closing properly using the title bar control. Any suggestions?
+    </b>
+    <p>
+
+<p><li>
+    <b>When I try to use Help I get the message "Error: No running window
+    found". I have
+    <span style="font-family: monospace;">Help &raquo; Configure </span>
+    set to mozilla. What's going on?
+    </b>
+    <p>
+
+    Try using firefox instead as follows:
+
+    <pre>
+    firefox --new-tab '%s'
+    </pre>
+    (contributed by <a href="mailto:nick@ukfsn.org">Nick Warne</a>)
+
+<p><li>
+    <b>
+    When I open Sky View I get the message "can not find classicfigs.csf" and
+    XEphem dies.
+    <br>
+    Or when I start XEphem I know there is supposed to be a logo
+    at the top but it is missing.
+    <br>
+    Or I can only find a few database files after I installed the commerical version.
+    <br>What's going on??
+    </b>
+    <p>
+
+    Sounds like there is a problem with the way XEphem support files are
+    configured. First some background. XEphem looks for support files in two
+    places in order, first XEphem.PrivateDir then XEphem.ShareDir. These terms
+    are X Window System resource names that refer to a per-user private
+    directory and a system-wide shared directory, respectively. By default
+    these are <code>$HOME/.xephem</code> and <code>.</code> (where
+    "<code>$HOME</code>" refers to the directory you are in when you first log
+    into your system and "dot" is UNIX parlance for the current directory),
+    respectively.
+
+    <p>
+    You can set a different value for XEphem.PrivateDir in the file named
+    <code>$HOME/.xephemrc</code>. For example, to use the directory
+    <code>/home/myhome/.myxephem</code>
+    for your private files add a line to this file as follows:
+    <pre>
+        XEphem.PrivateDir: /home/mylogin/.myxephem
+    </pre>
+
+    <p>
+    You can set a different value for XEphem.ShareDir using the standard X
+    Window System resource file mechanism. The default location for the global
+    version of this file for XEphem on Linux and MacOS X systems is
+    <code>/etc/XEphem</code>, and on other UNIX systems it is often
+    <code>/usr/lib/X11/app-defaults/XEphem</code>.
+    For example, to use the directory <code>/usr/local/xephem</code> for your
+    shared files add a line as follows:
+    <pre>
+        XEphem.ShareDir: /usr/local/xephem
+    </pre>
+
+    Now, to get back to the opening questions. The missing files in question
+    are located in the directories named <code>auxil</code> or 
+    <code>catalogs</code> under XEphem.ShareDir. So if these directories are
+    not set up correctly, such as from a previous installation of XEphem that
+    was installed differently or when trying to mix the free and commercial
+    versions of XEphem, they will not be found. With this explanation, you
+    now know how to check that your private and shared directories are set up
+    as desired and then things should work correctly.
+
+<p><li>
+    <b>I am running Linux and I get
+    errors about missing motif or X11 stuff. What can I do?
+    </b>
+
+    <p>
+
+    In short, you need to install more packages. For example, on Ubuntu 12.10, type
+    the following command to install them:
+    
+	<pre>
+	sudo apt-get install libmotif-dev libx11-dev libxmu-dev libxp-dev libxt-dev x11proto-print-dev
+	</pre>
+
+    It's easier on OpenSUSE, because it brings in everything else for you as
+    dependencies of openmotif:
+
+	<pre>
+	$ sudo zypper install openmotif-devel
+	</pre>
+
+    On Fedora 8, it is also just as simple:
+
+	<pre>
+	$ sudo yum install openmotif-devel
+	</pre>
+
+    On Ubuntu 64 bit, use the package manager to install <b>libmotif4</b>. To install disk2 and disk3,
+    install <b>tcsh</b>.
+
+    <p>
+    On Ubuntu 16.04, try
+    <pre>
+	apt-get install libmotif-dev libxmu-dev
+    </pre>
+
+    <p>
+    On Ubuntu and Debian you may also need to add the PPA for libXp. Further information is
+    available <a target="_blank" href="https://launchpad.net/~zeehio/+archive/ubuntu/libxp">here</a>.
+
+
+    <p>
+
+    If these packages still do not resolve all references, you can try using your
+    package management tools to search for the package that defines a missing file.
+    For example, on Ubuntu you can get apt-file as follows:
+
+	<pre>
+	sudo apt-get install apt-file
+	sudo apt-file update
+	</pre>
+
+    Then you can search for missing file x using
+    
+	<pre>
+	apt-file search x
+	</pre>
+
+    <p>
+    Comparable packages and package management tools are provided on other
+    linux flavors.
+
+<p><li>
+    <b>Can I use Google Chrome as the help system browser?
+    </b>
+    <p>
+    Yes. Open Help &raquo; Configure help
+    then make and select an entry that contains the following:
+    <blockquote>
+    <span style="font-family: monospace;">
+	google-chrome %s
+    </span>
+    </blockquote>
+    Test it. If it works, make it the default using Preferences &raquo; Save &raquo; Save now.
+
+</ol>
+
+<! ------------------------------------------------------------------------- >
+
+
+<HR>
+
+<font size="+1">
+<a name="Mac"><b>MacOS X Installation Questions</b></a>
+</font>
+
+<ol>
+<p><li>
+    <b>When I try to run the commercial version on Yosemite, I get an error about some library not being loaded. Any ideas?</b>
+    <p>
+
+    Yes. This is because Yosemite moved the location of the X Windows libraries.
+    The cure is very simple. Open a Terminal and type the following command and then XEphem will run fine:
+    <pre>
+	sudo ln -s /opt/X11 /usr
+    </pre>
+
+<p><li>
+    <b>When I try to build the free version on Yosemite using the instructions in the INSTALL file, I
+    get errors about not finding X11 files. Any ideas?</b>
+    <p>
+
+    Yes. The change above will also cure this issue.
+
+
+<p><li>
+    <b>I am having problems installing on Leopard and Lion. Any ideas?</b>
+    <p>
+
+    Follow these steps to install the CD images on Leopard (10.5), Snow
+    Leopard (10.6) and Lion (10.7):
+    <p></p>
+
+    <table border="1">
+    <tr>
+    <th>Step<th>Do this<th>Comments
+    <tr>
+    <td>1<td>Install Disk 1 package<td>If it says it was Successful, proceed to Step 2. If it almost
+    completes but then says it failed go to Step 1b.
+    <tr>
+    <td>1b<td>Start Terminal and type <i>exactly</i> the following at the
+    prompt <i>all on one line</i>:
+    <br><code>sudo sh -c "echo XEphem.ShareDir:/usr/local/xephem > /etc/XEphem" </code>
+    <td>
+    This creates a file telling XEphem where its supporting files are
+    installed. This must be done as root which the command "sudo" does
+    temporarily -- admin is not enough (this is why the install fails).
+    Proceed with Step 2.
+    <tr>
+    <td>2<td>Install Disk 2 package<td>It will say it completed successfully,
+    which it did.
+    <tr>
+    <td>3<td>Install Disk 3 package<td>It will say it completed successfully,
+    which it did but along the way it wiped out Disk 2.
+    <tr>
+    <td>4<td>Install Disk 2 package (yes, again!)<td>It will say it completed
+    successfully, which it did and it also did not effect Disk 3.
+    </table>
+
+<p><li>
+    <b>I am having problems installing on Mountain Lion. Any ideas?</b>
+    <p>
+
+    Follow these steps to install the CD images on Mountain Lion (10.8):
+    <p></p>
+
+    <table border="1">
+    <tr>
+	<th>Step<th>Do this<th>Comments
+    <tr>
+	<td>
+	    1
+	<td>
+	    Install Disk 1 package
+	<td>
+	    If it says it was Successful, proceed to Step 2. If it almost
+	    completes but then says it failed go to Step 1b.
+    <tr>
+	<td>
+	    1b
+	<td>
+	    Start Terminal and type <i>exactly</i> the following at the prompt <i>all on one line</i>:
+	    <br><code>sudo sh -c "echo XEphem.ShareDir:/usr/local/xephem > /etc/XEphem" </code>
+	<td>
+	    This creates a file telling XEphem where its supporting files are
+	    installed. This must be done as root which the command "sudo" does
+	    temporarily -- admin is not enough (this is why the install fails).
+	    Proceed with Step 2.
+    <tr>
+	<td>
+	    2
+	<td>
+	    Install Disk 2 package
+	<td>
+	    It will say it completed successfully, which it did.
+
+    <tr>
+	<td>
+	    3
+	<td>
+	    Start a Terminal session and type <i>exactly</i> (or better yet copy/paste):
+	    <br><code>sudo mv /usr/local/xephem/catalogs/GSC2201/*.xe3 /tmp </code>
+	<td>
+	    This command moves the database files installed from Disk2 to a temporary location so the next
+	    step does not trash them.
+
+    <tr>
+	<td>
+	    4
+	<td>
+	    Install Disk 3 package
+	<td>
+	    It will say it completed successfully, which it did but if
+	    Disk2 files had still been in place it would have wiped them out.
+
+    <tr>
+	<td>
+	    5
+	<td>
+	    Again in Terminal type <i>exactly</i>:
+	    <br><code>sudo mv /tmp/*.xe3 /usr/local/xephem/catalogs/GSC2201</code>
+	<td>
+	    This command moves the database files that came from Disk2 back where they should go.
+
+    </table>
+
+<p><li>
+    <b>How can I get my trackpad or mouse to emulate a three-button mouse?
+    </b>
+    <p>
+    Start XEphem, then click on the big X app in the dock. Open X11 -> Preferences.
+    In the Input tab, check on "Emulate three button mouse".
+    Now Option-click is like the middle button and Command-click is like the right button.
+
+<p><li>
+    <b>When I build from source I get errors like 'make: Command not found' or
+    about missing X11 files. Am I missing something?
+    </b>
+    <p>
+
+    Yes. You are missing XCode or X11. You can get XCode free from Apple's web site.
+
+    <p>
+    Note that as of
+    10.8 (Mountain Lion), installing XCode does not install the command line development tools. To
+    do that, just start XCode, open Preferences/Components and install the Command Line Tools. Also as 
+    of Mountain Lion, Apple no longer ships X11. You now get it from
+    <a target="_blank" href="http://xquartz.macosforge.org">http://xquartz.macosforge.org</a>.
+    <p>
+    Now that you have command line tools such as cc and make and X11 installed, read the INSTALL
+    file inside the XEphem tarball for the proper way to invoke the
+    <b>make</b> command when building on OS X.
+
+
+<p><li>
+    <b>Can I use my default browser as the help system browser?
+    </b>
+    <p>
+    Yes. To use your default browser for XEphem help on Mac OS X, enter
+    and select the following entry in Help &raquo; Configure help (contributed
+    by <a href="mailto:gavin@umich.edu">Gavin Eadie</a>)
+    <blockquote>
+    <span style="font-family: monospace;">
+	osascript -e 'open  location "%s"'
+    </span>
+    </blockquote>
+
+<p><li>
+    <b>I have created a file (such as a print, plot, list, etc) and would like
+    to see it outside XEphem but I can not find it. Where are they stored on OS X?
+    </b>
+
+    <p>
+    They are stored wherever your XEphem.PrivateDir resource is set. By default,
+    on OS X this is ~/Library/XEphem. Note you can see the Library folder
+    within Finder by clicking on the Go menu while holding down the Option key.
+    
+
+
+</ol>
+
+
+<! ------------------------------------------------------------------------- >
+
+<HR>
+
+<font size="+1">
+<a name="Usage"><b>Usage Questions (applicable to all platforms)</b></a>
+</font>
+
+<ol>
+
+<! ------------------------------------------------------------------------- >
+
+<p>
+<li><b>What's wrong with Help?</b>
+<p>
+
+It's probably not configured correctly. XEphem uses your Internet browser to
+display help, so it has to know how to talk to it.
+<p>
+Off the Main window, open 
+<span style="font-family: monospace;">Help &raquo; Configure help</span>.
+Look through the choices for your browser. If you find it, just click the
+button on the left and test with any XEphem Help entry. Note that some of
+these commands assume the browser is already open and do not work otherwise, so
+if the line for your browser is listed and activated but Help still does not
+work, try opening your browser first and trying again.
+
+<p>
+If Help still does not work, you'll have to figure out the command to issue to
+your browser to open a local file. The table entry is passed to a shell so you
+can do whatever you need to, but don't forget to quote sensitive characters.
+Enter your new command in any line of the table, using %s where the local file
+name should go, then click to activate the line and test again.
+
+<p>
+After you have it working, be sure to save the new configuration using
+<span style="font-family: monospace;">Preferences &raquo; Save</span> or
+you'll have to do it again each time you start XEphem.
+
+<p>
+We researched several browsers but there are certainly more we didn't try, and
+there might well be better ways to talk to them than we found. Please send
+your suggested commands to us at
+<a href="mailto:xephem@clearskyinstitute.com">xephem@clearskyinstitute.com</a>
+and we will post here for others to find.
+<p>
+
+
+<p>
+<li><b>Why does the Sky View Grid toolbar button act so weird?</b>
+<p>
+Perhaps the logic is only obvious to me! The Sky View uses
+two coordinate systems: RA/Dec and Alt/Az.
+The coordinate system for Display orientation is independent of that for the
+Grid. The rules for the control buttons are as follows:
+<table>
+<tr valign="middle">
+    <td size="100"></td>
+    <td><img width="26" height="26" src="coordsysbutton.gif"></td>
+    <td>
+    toggles Display coordinate system between RA/Dec and Alt/Az, but
+    never changes the coordinate system for the Grid.
+</tr>
+<tr valign="middle">
+    <td></td>
+    <td><img width="26" height="26" src="gridbutton.gif"></td>
+    <td>
+    turns the Grid off and on, <em> and when
+    it turns it on always sets the Grid coordinate system to match that
+    currently used for Display</em>.
+</tr>
+</table>
+In this way 6 combinations of coordinate systems
+(2 for Display [RA/Dec + Alt/Az] X 3 for Grid [RA/Dec + Alt/Az + off])
+can be controlled with just 2 buttons
+(although
+one can not switch among them in an arbitrary order).
+
+
+<p>
+<li><b>Why do Sky View grid lines have a small bump to them sometimes?</b>
+<p>
+Because of atmospheric refraction. Refraction raises everything to a greater
+extent as you look lower and lower, increasing rapidly near the end to about
+32' at horizontal. This effect is evident when displaying in one (ideal) 
+coordinate system and overlaying (refracted) grid lines in the opposite 
+coordinate system.
+<p>
+Suppose you are pointing near the horizon, are using Alt-Az display mode and
+are displaying RA-Dec grid lines. When projected onto the celestial sphere
+<em>as seen from your location under all that air</em>, this has the effect of
+curving the grid lines a little higher in the vicinity of the horizon than
+one would see without refraction. Indeed, because of refraction you actually
+see about 32' more than 90&#176; down from the zenith -- bonus!
+<p>
+Demonstrate this to yourself by going to the Main window and setting an
+Air Pressure value of 0 to effectively eliminate refraction. You will see the
+grid lines straighten out, and objects that were visible slightly above the
+horizon will drop below and go out of site.
+<P>
+What happens below the horizon? This is a bit problematic. In accord with
+standard models, XEphem gradually reduces refraction so that at about 5&#176;
+below the airless horizon the effect is gone and the grids return to their
+airless paths.
+
+
+<p>
+<li><b>What is the meaning of the red circles drawn on my sky chart at a
+certain point on the ecliptic?</b>
+<p>
+
+The anti-solar point is marked with a small open circle. The edges of
+the umbral and penumbral Earth shadow are marked with larger open circles. If
+<span style="font-family: monospace;">Preferences &raquo; Equatorial</span>
+is set to Topocentric, the projection is at the current distance of the Moon
+and corrected for parallax; if set to Geocentric the projection is at infinity.
+<p>
+If the moon is within the small circle you have a total lunar-eclipse; try
+2003-11-09 @ 01:00:00 UTC.
+
+<p>
+<li><b>May I use screen shots, Postscript files, listings or other stuff made
+using XEphem on my web site or publications?</b>
+    <p>
+    Regarding web sites, yes you may provided the following bit of HTML is
+    placed somewhere on each such page:
+    <p>
+    <pre>
+    &lt;a target="csiwin" href="http://www.ClearSkyInstitute.com/xephem/xephem.html"&gt;Created using &lt;b&gt;XEphem&lt;/b&gt;&lt;/a&gt;
+    </pre>
+    <p>
+    It should look and work like this:
+    <a target="csiwin" href="http://www.ClearSkyInstitute.com/xephem/xephem.html">
+    Created using <b>XEphem</b></a>.
+    <p>
+    Regarding publications, the Postscript files generated by XEphem already
+    contain sufficient boilerplate with regards to giving us due credit. If
+    these files are used intact as generated by XEphem, no further credits
+    are required.
+
+    <p>
+    What you may <em>not</em> do is cite isolated numbers that you pulled
+    off XEphem in your publications. There are too many contextual
+    circumstances surrounding astrometric quantities to make fair
+    representation of all that XEphem considered in its computation of
+    displayed values.
+
+<p>
+<li><b>Why do you use Motif? Will you ever change to something else?</b>
+<p>
+I suspect XEphem will forever be written in Motif for the following reasons:
+
+    <ol>
+	<li> First and foremost, I very deliberately make the decision to
+	focus my time and energy on features and accuracy, not aesthetics
+	because, frankly, it's the aspect of the project I enjoy the most. I
+	still have a long list of features to add in the coming years; this
+	effort, and my enjoyment, would be drastically diluted by a major
+	effort to change the L&F.  
+
+	<p>
+	<li> The effort to change widget sets would be large.
+	Not only is it "just" a matter of changing widgets in roughly 100k
+	lines of GUI code, but I make deep use of Motif-specific functionality
+	(after all, I was involved in creating Motif in the 80s) that do not
+	map well to other toolkits.  
+
+	<p>
+	<li> I know the entire API of Motif (about 3000 functions) completely
+	by heart and am very efficient using it. When adding a new window, I
+	see right through the widgets straight into the science. I am *almost*
+	this proficient with Qt and Java Swing but see #2 and #4.
+
+	<p>
+	<li> I must have no inherent artistic or aesthetic sense of my own
+	because, really, Motif still looks fine to me. To my mind, all buttons
+	look alike and drag-and-drop is silly. I have no personal appreciation
+	whatsoever of why one would pick one toolkit over another. I lived
+	through the great SunView/OpenLook/Motif GUI wars of the late 80s
+	wondering all along what the fuss was about.
+
+	<p>
+	<li> I feel no compulsion to compete or otherwise compare XEphem with
+	any other software. It is my own labor of love which I am happy to
+	share, it is not my intention to make it "successful" by any external
+	measure. I do hope you find XEphem useful, even if you find it ugly.
+    </ol>
+
+
+</ol>
+
+<! ------------------------------------------------------------------------- >
+
+<HR>
+
+<font size="+1">
+<a name="bugs"><b>Known bugs</b></a>
+</font>
+
+</BODY>
+</HTML>

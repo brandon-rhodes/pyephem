@@ -1,0 +1,166 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title>
+XEphem Contributions
+</title>
+</head>
+<BODY background="../bg.png" TEXT="#000000" LINK="#004400" VLINK="#004400" ALINK="#000000">
+
+
+<center>
+<h2>Contributions
+</h2>
+<p>
+Last updated 17 Feb 2019
+</center>
+
+<blockquote>
+<p>
+Follows is a random list of contributions of one sort or another related
+to XEphem. We have not necessarily tested these but are happy to serve as a
+central exchange for these efforts. If you have questions about these please
+contact the authors directly. Send your contribution ideas to
+<a href="mailto:xephem@clearskyinstitute.com">xephem@clearskyinstitute.com</a>.
+
+<p>
+
+<ul>
+
+    <p><li>
+    <a target="_blank" href="moon.fts">Here</a> is an alternative version of
+    moon.fts that was made using strips of LRO images with low sun angles. It 
+    is a much better match to what you see when viewing a given location while 
+    it is near the terminator. Thanks to Martin Federspiel, Martin.Federspiel at gmx.de.
+
+    <p><li>
+    <a target="_blank" href="xeseds2.1.pl-removethis">xeseds2.1.pl</a> is
+    a Perl script that can be used with the fifo interface. Once running, then
+    when you click on "Telescope GoTo" over many types of objects in Sky View,
+    a command is sent to put up a new browser window (konquerer by default) to
+    fetch a page of information about the object from various web sites. It's
+    quite nice. Thanks go to Tim Walker, twalker@bigpond.net.au.
+    <i>Note: due to a server config beyond my control, the file name can not end with
+    .pl so after downloading this file, please remove the "-removeme" portion.</i>
+
+    <p><li>
+    Catalogs contributed by Steve Mencinsky, SM310531 at Exchange.Australia.NCR.COM
+	<ul>
+	<li><a href="M31globulars.edb">M31globulars.edb</a> is a list of
+	principle globular clusters in galaxy M31.
+	<li><a href="SMC.edb">SMC.edb</a> is a list of
+	deep sky objects in the Magellanic Clouds.
+	<li><a href="recons100.edb">recons100.edb</a> is the complete census
+	as of January 1, 2000, of objects outside our solar system
+	known within 10 parsecs.
+	</ul>
+
+    <p><li>
+    Looking for Motif? Here are prebuilt libraries and include files suitable
+    for compiling XEphem from source on several systems. Right-click and
+    Save the desired file, explode, and set the MOTIFI and MOTIFL macros
+    in Makefile.smple in the XEphem source directory to point to the explode
+    directory.
+    <ul>
+	<li><a href="linux-x86-motif-dev.tar.gz">Linux on x86</a>
+	<li><a href="linux-alpha-motif-dev.tar.gz">Linux on Alpha</a>
+	<li><a href="freebsd-motif-dev.tar.gz">FreeBSD on x86</a>
+	<li><a href="osx-motif-dev.tar.gz">Mac OS X</a>
+    </ul>
+
+    <p><li>
+    Brandon Craig Rhodes has built an excellent astronomical Python library
+    called
+    <a target="PyEphem" href="http://rhodesmill.org/brandon/projects/pyephem.html">PyEphem</a>
+    based on XEphem's libraries. Even if you don't use Python check it out,
+    it's enough to make you switch.
+
+    <p><li>
+    XEphem runs very well under Windows using virtualization technologies such as
+    <a target="vbox" href="http://www.virtualbox.org">VirtualBox</a>. You
+    will need to load a linux distribution such as
+    <a target="ubuntu" href="http://www.ubuntu.com">Ubuntu</a>.
+
+    <p><li>
+    Here are four .fav files of favorite NGC objects for each season of the
+    year. Contributed by the late Guillermo Andrade, database contributor
+    <em>par excellent</em>.
+    <ul>
+	<li><a target="summer" href="RASC_NGC_SUMMER.fav">Summer</a>
+	<li><a target="autumn" href="RASC_NGC_AUTUMN.fav">Autumn</a>
+	<li><a target="winter" href="RASC_NGC_WINTER.fav">Winter</a>
+	<li><a target="spring" href="RASC_NGC_SPRING.fav">Spring</a>
+    </ul>
+
+    <p><li>
+    Here are two more Constellation Figures files inspired by popular sky
+    atlases used in Germany and England:
+    <a target='eurofigs_de' href='eurofigs_de.csf'>eurofigs_de.csf</a>
+    and
+    <a target='eurofigs_uk' href='eurofigs_uk.csf'>eurofigs_uk.csf</a>
+    Put them in your shared or private XEphem directory and it will
+    automatically become available as a choice in the Sky View -&gt; Options
+    -&gt; Constellation menu. Contributed by Georg Graf, georg.graf at gmx.de.
+
+    <p><li>
+    Bob Abraham has contributed an alterate image of Mars. It is made from
+    observations from Earth and so more closely matches what a visual observer
+    sees at the telescope than the Mars Orbiter map included with XEphem. The
+    image is not perfectly registered with the Martian coordinate system of
+    database objects but it is close enough for many purposes. Please see his
+    <a target="vismars" href="http://groups.yahoo.com/group/xephem/message/1933?threaded=1">forum posting</a>
+    for full details and to download the final image. To use the image in
+    XEphem, first save your current Mars map in
+    <code>ShareDir/auxil/marsmap.jpg</code> somewhere then copy in Bob's
+    image. Thanks Bob, this is a great idea.
+
+    <p><li>
+    Open SSL patch from Lutz Mändle < lmaendle at gmx dot net > available
+    <a target="_blank" href="xephem-3.7.7_openssl.patch">here</a>.
+    This is a new version dated Jan 2018 and replaces the previous one from Oct 2016.
+    Many thanks for Lutz continued interest in XEphem.
+
+    <p><li>
+    <a target="_blank" href="xephem-3.7.7_openssl_earthmenu.patch">Here is another patch</a>
+    from Mr. Mändel dated 2018 September.
+    This one fixes the weather map in the Earth view which also now requires https.
+
+    <p><li>
+    <a target="_blank" href="xephem-3.7.7_libastro_refract.patch">Here is another patch</a>
+    from Mr. Mändel dated 020 September.
+    This one makes the refraction algorithm more robust when handed an indeterminate altitude.
+
+    <p><li>
+    Drop-in replacement for <a target="_blank" href="vsop87.tgz"> VSOP </a> files in libastro.
+    Contributed by <a href="mailto:gcorrad@gmail.com">Gustavo A. Corradi</a> who claims improved accuracy.
+
+    <p><li>
+    Improved entries for telescopes on the Canary Islands for the <b>xephem_sites</b> file, contributed by 
+    Peter Suetterlin, pit at astro dot su dot se
+    <pre>
+	Isaac Newton Telescope (98-inch)        ;  28 46  0 N   ;  17 53  0 W   ;  2336 ; AST1ADT,M3.5.0,M10.5.0
+	Large Earth-based Solar Tel. (LEST)     ;  28 46  0 N   ;  17 53  0 W   ;  2400 ; AST1ADT,M3.5.0,M10.5.0
+	Nordic Optical Telescope                ;  28 45  0 N   ;  17 53  0 W   ;  2382 ; AST1ADT,M3.5.0,M10.5.0
+	Roque de los Muchachos, La Palma        ;  28 45 30 N   ;  17 52 48 W   ;  2327 ; AST1ADT,M3.5.0,M10.5.0
+	Telescopio Nazionale Galileo            ;  28 46  0 N   ;  17 53  0 W   ;  2400 ; AST1ADT,M3.5.0,M10.5.0
+	William Herschel Telescope              ;  28 46  0 N   ;  17 53  0 W   ;  2332 ; AST1ADT,M3.5.0,M10.5.0
+
+    </pre>
+
+    <p><li>
+    Richard Mather has posted
+    <a target="_blank" href='http://vixra.org/abs/1802.0035'>here</a>
+    a family of Java programs that convert several catalog formats to XEphem .edb format.
+
+    <p><li>
+    Here is an updated version of
+    <a target="_blank" href='wcs.c'>libip/wcs.c</a> 
+    that supports the CD martix headers from astrometry.net and elsewhere. Thanks to
+    Roman Tolesnikov, rtolesnikov@yahoo.com.
+
+</ul>
+
+<blockquote>
+
+</body>
+</html>

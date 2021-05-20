@@ -1,0 +1,15 @@
+diff -Naur ./orig/xephem-3.7.7/libastro/refract.c ./patched/xephem-3.7.7/libastro/refract.c
+--- ./orig/xephem-3.7.7/libastro/refract.c	2005-03-20 12:04:52.000000000 +0100
++++ ./patched/xephem-3.7.7/libastro/refract.c	2020-09-19 17:57:41.050022062 +0200
+@@ -62,6 +62,11 @@
+
+ 	double d, t, t0, a;
+
++	if (isnan (ta)) {
++	    *aa = ta;
++	    return;
++	}
++
+ 	/* first guess of error is to go backwards.
+ 	 * make use that we know delta-apparent is always < delta-true.
+ 	 */

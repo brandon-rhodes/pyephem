@@ -1,0 +1,832 @@
+<html>
+<head>
+</head>
+<BODY background="/bg.png" TEXT="#000000" LINK="#004400" VLINK="#004400" ALINK="#000000">
+
+<H3>Changes from 3.7.6 to 3.7.7</H3>
+
+Released August 9, 2015
+
+<blockquote>
+
+    <p>Bugs fixed:
+	<ul>
+	<li>Improved earth satellite range rate
+	<li>Fixed some typos in help file
+	<li>Updated magnetic declination model for 2015-2020
+	<li>Update Makefile for OS X.10 Yosemite to look for X11 in /opt/X11
+	<li>Magnetic declination tooltip was reversed
+	<li>Update Minor Planet Center donwloading script, mpcorb2edb.pl
+	<li>INDI was not sending all Switches as required by specification.
+	<li>Change astorb2edbl.pl to use curl and try both with and without EPSV.
+	</ul>
+
+    <p>New features:
+	<ul>
+	<li>Include new simpleINDI demo program.
+	<li>Add support for UCAC4
+	</ul>
+
+</blockquote>
+
+<H3>Changes from 3.7.5 to 3.7.6 </H3>
+
+Released January 20, 2013
+
+<blockquote>
+
+    <p>New features:
+	<ul>
+	<li>Show transit azimuth
+	<li>Plots now show coordinates under cursor.
+	<li>Improved Earth night lights file, nearth.gif.
+	<li>Update Jupiter Great Red Spot default longitude.
+	<li>Show satellite element age in Index.
+	<li>Add Curiosity landing coordinates to mars_db
+	<li>Separate Sky View horizon clipping option
+	<li>SOHO is back
+	<li>New daytime earth image with improved geography shading
+	<li>SkyView -> Favorites offers same controls as map right-click
+	<li>Telescope GoTo honors horizon map
+	</ul>
+
+    <p>Bugs fixed:
+	<ul>
+	<li>Improve Earth sunline in cyl graphic projection near equinox.
+	<li>Improve error handling downloading asteroid data.
+	<li>Improve accuracy of Earth satellite transits.
+	<li>Significantly improve speed of Earth satellite rise and set predictions.
+	<li>Significantly improve accuracy of Earth satellite transit predictions.
+	<li>Eliminate Earth satellite Objects table values flashing.
+	<li>Improve accuracy of Earth satellite ground footprint.
+	<li>Saving Favorites after downloading new elements now saves new values.
+	<li>Improved earth satellite height and solver stability.
+	<li>Improve INDI menu interactions for type ISwitchVectorProperty
+	<li>Sky view horizon clipping incorrectly in rare cases.
+	<li>Better isolation of applicable Sky View options in individual planet rendering.
+	<li>In Moon view: subearth, subsolar and anti-subsolar options moved from Grid to {Pen}Umbra.
+	<li>Show sun in moonview during solar eclipse
+	<li>Better handling of proxies and large files in web downloads
+	<li>Favorites menu updates when db that is also a favorite changes.
+	<li>Fixed crash if Earth view showing Favorite that is updated from file or download
+	</ul>
+
+</blockquote>
+
+<H3>Changes from 3.7.4 to 3.7.5 </H3>
+
+Released July 25, 2011
+
+<blockquote>
+
+<p>New features
+    <ul>
+    <li>Support UCAC catalog version 3
+    <li>Sky view shows PA in live report
+    <li>Favorites may now be edited in-place
+    <li>Earth view displays great circle distance and bearing
+    <li>Change Earth view cylindrical projection from cos to linear
+    <li>Earth Object table reports range rate for solar system objects.
+    <li>Eyepiece rotation depends on Alt/Az or RA/Dec placement context.
+    </ul>
+
+<p>Bugs fixed:
+    <ul>
+    <li>Change cfa.harvard.edu URLs to minorplanetcenter.org
+    <li>Improved accuracy for ecliptic coordinates
+    <li>New coords for ESO sites
+    <li>Check for fifos in PrivateDir then ShareDir
+    <li>Accommodate downloading web files containing very long lines.
+    <li>Solar system right-click info could be stale if it was the only view open.
+    <li>Better support for Max OS X ppc, i386 and x86_64 architectures
+    <li>Prevent placing Coordinate Tool Eyepiece before Sky View is up.
+    <li>Better protection from stale Earth satellite elements.
+    <li>Better support for HTTP 1.1 for celestrak.com
+    <li>Delta T updated through 2011
+    <li>Miranda elements now correct
+    <li>Sky View updates correctly while on alternate workspace
+    </ul>
+
+</blockquote>
+
+<H3>Changes from 3.7.3 to 3.7.4 </H3>
+
+Released July 3, 2009
+
+<blockquote>
+
+<p>New Features:
+    <ul>
+    <li>Several updates for European sites and time zones.
+    <li>Code tweaks for 64bit compilers.
+    <li>Add networking support for STScI GSC 2.3.
+    <li>Add simple support for FITS BITPIX=-32 (floating point images).
+    <li>Use cross cursor under magnifying glass.
+    <li>Add Phoenix to Mars features database.
+    <li>Updated Delta-T table
+    </ul>
+
+<p>Bugs fixed:
+    <ul>
+    <li>Updated CFA URLs.
+    <li>Made Sky View automag deeper to accommodate GSC 2.3.
+    <li>Sky View live report option now saved in preferences.
+    <li>Fix bug when Sun dip is set above rise/set threshold.
+    <li>Warn of attempt to write to a read-only INDI property.
+    <li>Better buffer managment in BDL moon model.
+    <li>Better guarding of old satellite elements.
+    <li>Fix problem with rise/set near terminator near poles.
+    <li>Fix bug in movie loop when there were no images yet.
+    <li>Better Sky View eyepiece culling.
+    <li>Fix INDI eventloop that could starve nested deferrals.
+    </ul>
+
+</blockquote>
+
+
+<H3>Changes from 3.7.2 to 3.7.3 </H3>
+
+Released March 24, 2008
+
+<blockquote>
+<p>New Features:
+    <ul>
+    <li>surround Earth satellite name with parentheses if eclipsed.
+    <li>move "Keep marker centered' to Sky View Telescope menu
+    </ul>
+
+<p>Bugs fixed:
+    <ul>
+    <li>improve handling of catalog errors, eg, when in part of sky with no UCAC
+    <li>improved Solver tool Min/Max stability
+    <li>use proper amount of precision when saving TLE as .edb
+    <li>use geometric elevation for Earth satellite conversion to RA/Dec
+    <li>fix Earth satellite transit info when up now
+    <li>fix possible rise/set infinite loop when object just barely rises or is geostationary
+    <li>arg of peri was listed in Earth Data Index table twice
+    <li>fclose could be called twice when saving preferences
+    <li>fix possible crash when updating db or Favorites when Earth Objects are up
+    <li>fix printed trail time zone (always said UTC even when local)
+    <li>SKY2000.edb RA PM was not multiplied by cos(Dec)
+    </ul>
+
+<p>INDI enhancements:
+    <ul>
+    <li>improve display of large Light properties
+    <li>parser missed decoding entity if first char in pcdata
+    <li>eventloop.c:rmTimer() resized array wrong
+    <li>fixed memory leak in getINDI.c
+    <li>getINDI now handles BLOBs
+    </ul>
+
+<p>Obsolete:
+    <ul>
+    <li>outdated AAVSO support removed
+    </ul>
+
+</blockquote>
+
+<H3>Changes from 3.7.1 to 3.7.2 </H3>
+
+Released November 12, 2006
+
+<blockquote>
+<p>New Features:
+    <ul>
+    <li>Data Table adds JD, HJD and PA columns.
+    <li>Earth View adds inertial reference frame option.
+    <li>Earth View allows picking earth satellite via orbit marker.
+    <li>Earth View shows altitude and range in satellite right-click data.
+    <li>Earth View shows satellite position in space.
+    <li>Earth View can draw orbits on cylindrical projection.
+    <li>Earth objects table has new column-wide toggles.
+    <li>Main menu can remember to start RT mode automatically.
+    <li>Makefiles now support building Mac OS X universal binaries.
+    <li>Object index search supports using glob patterns.
+    <li>Observing log adds JD, HJD and Airmass fields.
+    <li>Observing log replaces Search with List feature.
+    <li>Observing log search supports using glob patterns.
+    <li>Preferences can now remember and restore which views were open.
+    <li>Print adds new option to draw with thicker lines.
+    <li>Several improvements to XML and INDI tools.
+    <li>Shared app defaults file, XEphem, may now be in /etc.
+    <li>Sites list search supports using glob patterns.
+    <li>Sky View draws simplistic antialiased stars.
+    <li>Mars, Jupiter, Saturn and Uranus satellite models extended to 2021.
+    <li>Native binary support for Mac OSX Intel.
+    </ul>
+
+<p>Bugs fixed:
+    <ul>
+    <li>.fts added as default suffix when downloading DSS images.
+    <li>Data menu was not cutting spect field at 2 chars.
+    <li>Earth View uses unique names for satellite object listing fields.
+    <li>Fix logic to detect no natural satellite models.
+    <li>Main menu now only shows progress meter if using fewer than 1000 steps.
+    <li>Numbers like 2e-2 were considered negative in some situations.
+    <li>Sky View RADec grid was inaccurate in AA mode near celestial poles
+    <li>Sky View compass correct now when showing tilted/rotated FITS image.
+    <li>Sky View labels N and S ecliptic poles.
+    <li>Sky View no longer prevents panning below horizon.
+    <li>Sky View telescope marker turned off when manually point only if also recentering.
+    <li>Sky View was leaving constellation figure files open.
+    <li>Solver properly guards XML entity characters when saving functions.
+    <li>Support ISO 8601 in FITS DATE-OBS field.
+    <li>Support much longer edb entries when downloading from web.
+    <li>Updated Delta-T table.
+    <li>WCS solver window labels CDELT2 as pixels up, not down.
+    <li>astorb2edb.pl updated for longer object names.
+    </ul>
+
+<p>INDI enhancements:
+    <ul>
+    <li>add IEDeferLoop function for inline waiting.
+    <li>add IUCrackNumber and IUCrackText utility functions.
+    <li>change indiserver to use select(2) not threads (10-20% more efficient).
+    <li>command line tools can inherit socket from parent script to maintain a single session
+    <li>fix bug in very rapid timeouts.
+    <li>guarantee getProperties is first command sent to drivers.
+    <li>improve efficiency of traffic to remote drivers.
+    <li>indiserver sniffs client devices from all commands, not just getProperties.
+    <li>library sends doubles with more precision.
+    <li>merge stderr from drivers into indiserver's log with date stamp.
+    <li>more robust IUSaveText.
+    </ul>
+
+<p>Obsolete:
+    <ul>
+    <li>Remove old style Seti@Home
+    </ul>
+
+</blockquote>
+
+
+<H3>Changes from 3.7 to 3.7.1 </H3>
+
+Released November 19, 2005
+
+<blockquote>
+<p>New Features:
+    <ul>
+    <li>Add tool to align two or more FITS images and create motion movies.
+    <li>Add Control-m keyboard shortcut to add any view to the Movie loop.
+    <li>Upgrade to higher resolution Earth image.
+    <li>Put user annotations in a scrolled list to accommodate lengthy collections.
+    <li>Add Moonrise and Moonset to collection of Step size controls.
+    <li>Image gallery lookups now search against all names of data base objects.
+    </ul>
+
+<p>Bugs fixed:
+    <ul>
+    <li>Fix crashing when deleting all frames of a Movie.
+    <li>Fix antisolar point in Sky View when changing Equatorial preference.
+    <li>Fix pen/umbra position in Sky View when changing equinox.
+    <li>Fix problem when reading some Sky View history files.
+    <li>Fix large height of Progress meter seen on some systems.
+    <li>Fix crashing when starting any Animation demo.
+    <li>Fix mainmenu size jumping on some systems when moon not up.
+    <li>Fix mainmenu moon/sun/rise/set step bug when near a day without any such.
+    <li>Fix bug in reference manual describing earth satellite footprint.
+    <li>Fix crashing when make About window too small.
+    <li>Fix Sky View compass rose during display of FITS images.
+    <li>Fix a few entries in xephem_sites
+    </ul>
+</blockquote>
+
+<H3>Changes from 3.6.4 to 3.7 </H3>
+
+Released August 1, 2005
+
+<blockquote>
+<p>New Features:
+    <ul>
+    <li>Data
+	<ul>
+	<li>Includes Hubble GSC 2.2.0.1 catalog, 450 million stars complete to M18.5.
+	<li>New and updated catalogs: Messier, IC, NGC, COVBS, SKY2000,
+	HYPERLEDA, Supernova, WDSC, Open clusters, Henry-Draper, Pleiades and
+	asteroids.
+	<li>YBS replaced with Sky 2000 to magnitude 6.5.
+	<li>Can now display Gallery image directly from Data Index.
+	</ul>
+
+    <p></p>
+    <li>Earth View
+	<ul>
+	<li>Display satellite orbits in space.
+	<li>Zoom in to see better geography, or out to see high orbits.
+	<li>Quick-set button to set equator rotation.
+	<li>Display of surface footprint is now optional.
+	<li>Expanded range mouse panning allows continuous rotation.
+	</ul>
+
+    <p></p>
+    <li>Sky View
+	<ul>
+	<li>Save and restore sets of eyepiece definitions.
+	<li>Save and restore sets of eyepiece Sky positions.
+	<li>Constellation figure definitions now stored in editable files.
+	<li>WCS solver invoked automatically if header has seed but no solution.
+	<li>Shortcut button to set display aspect ratio to match image.
+	<li>FITS file blinking via new Movie frame function.
+	</ul>
+
+    <p></p>
+    <li>User Annotation
+	<ul>
+	<li>Anchor locations are now based on the view's world coordinates.
+	<li>Sets of annotations may be saved and loaded from files.
+	</ul>
+
+    <p></p>
+    <li>Other
+	<ul>
+	<li>Collect any number of View, NAAG or Plot frames into a movie, save as set of PNG files.
+	<li>Many tweaks for improved INDI support, including display FITS BLOBs.
+	</ul>
+
+    </ul>
+
+<p>Bugs fixed:
+    <ul>
+    <li>Negative years in some date formats.
+    <li>WCS solver could result in RA outside range 0..24 hours.
+    <li>Setting lat or long would reset elevation.
+    <li>Highly zoomed FITS images would show half-pixel offset.
+    <li>FITS images without WCS headers could generate bogus graphic overlays.
+    <li>Sky View compass rose rotation angle could be wrong near poles.
+    <li>Persistent labels on Earth trails in Sol System view were incorrect.
+    <li>Outdated magnetic declination model updated.
+    </ul>
+
+</blockquote>
+
+<H3>Changes from 3.6.3 to 3.6.4
+</H3>
+
+Released February 26, 2005
+
+<blockquote>
+
+    <ul>
+    <li>add Proper Motion columns to Data table
+    <li>update NAAG also when change horizon offset in Data Setup
+    <li>Favorites table now displays full .edb definition of each entry
+    <li>allow adding a new Favorite directly from the dialog
+    <li>Solver has separate Find Min and Find Max goals
+    </ul>
+
+</blockquote>
+
+<H3>Changes from 3.6.2 to 3.6.3
+</H3>
+
+Released January 8, 2005
+
+<blockquote>
+
+    <ul>
+    <li>All moon views: add boolean fields for casting shadow and transit
+    <li>Sun view: fix and make a configurable resource the SOHO network address
+    <li>Sky View: label galactic center
+    <li>Sky View: show rise/set for trailed objects
+    <li>Sky View: show position angle for roaming mouse coordinate
+    <li>Sky View: fix printing rectangular eyepieces
+    </ul>
+
+</blockquote>
+
+<H3>Changes from 3.6.1 to 3.6.2
+</H3>
+
+Released November 28, 2004
+
+<blockquote>
+
+    <ul>
+    <li>add support for linux and osx motif libs in source distro
+    <li>remove -ffast-math from all Makefiles
+    <li>add Hide and Toggle to User Annotation tool
+    <li>add User Annotation window tips
+    <li>add XE icon to Coordinate Converter window
+    <li>add XE icon to Earth Objects window
+    <li>show longitude at += 90 in Earth map
+    <li>fix sporadic dropped contour segments in Earth map
+    <li>fix spherical mode printing size in Earth map
+    <li>add spectral class L designation
+    <li>fix bug downloading from GSC 2.2 in Dec range -1..0 degs
+    <li>bump max download count for GSC 2.2
+    <li>fix eyepieces png in help
+    <li>remove extra @ before seti@home in help
+    <li>fix relativistic deflection if objects are nearer than sun
+    <li>allow for negative Earth satellite es_decay
+    <li>fix Sky View keyboard pan/zoom did not erase fits display
+    <li>put Sky View Mag in main popup, not in extra pullright
+    <li>only remove Internet downloaded asteroid files if fresh
+    <li>fix sending INDI goto coords to the marker properties
+    <li>better handling of INDI agent disconnect
+    <li>fix bug building INDI newTextVector property
+    <li>honor new*Vector commands seen from other INDI clients
+    <li>redraw each INDI light vector when remanaged
+    <li>new INDI getINDIproperty and setINDIproperty tools
+    </ul>
+</blockquote>
+
+<H3>Changes from 3.6 to 3.6.1
+</H3>
+
+Released August 13, 2004
+
+<blockquote>
+    <ul>
+    <li>improve approach to preventing screen blanking during right-clicks
+    <li>fix memory problem when closing Trails window
+    <li>planets should be On in the default Sky View History horizon entries
+    <li>improve drawing of thin crescents in Sky View
+    <li>faster Sky View depth sorting
+    <li>fix oversight preventing support of GSC 2.2 field stars
+    <li>fix binary orbit update problem
+    <li>fix Sky View Names toolbar button
+    <li>fix timezone problems in Trails
+    <li>improve compass rose accuracy in Sky View
+    <li>fix persistent label in Solar System view
+    <li>show mag+spectral class for Binary companion too in Sky View's More Info
+    <li>show size for planets too in Sky View's More Info
+    <li>eliminate use of tmpnam() for security reasons
+    <li>INDI tolerates other clients coming and going
+    <li>new or improved catalogs: asteroids, COVBS, CPIRSS, WDSC, aavso,
+	binary_calib, constant, loneos, sstar_calib
+    </ul>
+</blockquote>
+
+<H3>Changes from 3.5.2 to 3.6
+</H3>
+Released June 6, 2004
+
+<blockquote>
+<p>New Features:
+    <ul>
+    <li>Gallery
+	<ul>
+	<li>Gallery of over 300 color images, fully cross-linked with Sky View.
+	</ul>
+    <li>Sun
+	<ul>
+	<li>New Sun view downloads and saves live images from SOHO.
+	</ul>
+    <li>Moon
+	<ul>
+	<li>Lunar features can be loaded directly into More Info dialog.
+	<li>Fully integrated with Lunar Orbiter IV images, with and without
+	    annotation.
+	<li>Searchable list of Lunar features.
+	</ul>
+    <li>Earth
+	<ul>
+	<li>Use shaded relief maps and nightside light maps.
+	<li>Can display any number of simultaneous satellites.
+	</ul>
+    <li>Mars
+	<ul>
+	<li>Now uses a shaded relief map from Mars Global Surveyor.
+	<li>Seeing simulation can now be controlled to 1/10 arc second.
+	</ul>
+    <li>Saturn
+	<ul>
+	<li>Now uses real images.</li>
+	</ul>
+    <li>Sky View
+	<ul>
+	<li>Keyboard shortcuts for positioning and zooming.
+	<li>Constellation figures as defined by H. A. Rey.
+	<li>Orienting compass roses.
+	<li>Milky Way boundary.
+	<li>Rotatable eyepieces.
+	<li>Multiple horizon profiles and interactive editing.
+	<li>Field stars have their own labeling controls.
+	<li>Natural satellites drawn along with their parent planets.
+	<li>Planets drawn with proper phases.
+	<li>Displays galactic coordinates.
+	<li>More annotation point on principle coordinate planes.
+	<li>Accurate colors for all stellar spectral classes.
+	<li>Binary system orbits.
+	</ul>
+    <li>Other views
+	<ul>
+	<li>New annotation facility to overlay text and lines on any view.
+	<li>All planet views now show moon shadows on planet.
+	<li>Solar System has keyboard shortcuts for rotation, zooming and
+	    stereo.
+	</ul>
+    <li>Tools
+	<ul>
+	<li>New Observer's log book.
+	<li>Main window now displays local magnetic declination.
+	<li>Printing now supports A4 paper sizes.
+	<li>Trails can now extend Before as well as After the starting time.
+	<li>Plot and List now have Undo controls.
+	<li>Plot, List and Solver can now save and restore configurations.
+	<li>Telescope control now supports <a target="newwin"
+	href="http://www.clearskyinstitute.com/INDI/INDI.pdf">INDI</a>, a
+	highly flexible XML
+	protocol.
+	<li>More data options and crisper graphs in AAVSO plot tool.
+	<li>Close tool can now omit planet's own moons.
+	<li>Coordinate Converter supports arbitrary equinox, can directly
+	place Eyepieces.
+	</ul>
+    <li>GUI
+	<ul>
+	<li>Date and Time triad entry formats simpler yet more flexible.
+	<li>New Splash screen for instant feedback when launched.
+	<li>Help now written in html and triggers your favorite browser.
+	<li>Most unwieldy File Selection Boxes replaced by smart file popups.
+	<li>One-click Web catalog downloads automatically loaded into memory,
+	    as well as saved as a file.
+	</ul>
+    <li>Data management
+	<ul>
+	<li>New general purpose Favorites facility completely replaces ObjXYZ.
+	<li>.edb format extended to capture proper motion.
+	<li>.edb format extended to capture valid date ranges for orbital
+	elements.
+	<li>.edb extended to capture multiple names per object.
+	<li>.edb extended to capture binary system orbits.
+	<li>Add support for USNO CCD Astrographic Catalog as field stars.
+	<li>Data Index now displays .edb format.
+	<li>Data Index can now partition objects into basic categories.
+	<li>Data View contents can be sent to X11 selection buffer.
+	<li>Field stars can now populate up to 30&deg; FOV to support 35mm
+	    photography.
+	<li>Save Preferences can now automatically save Minor resources as
+	    well.
+	<li>Better Data menu organization.
+	</ul>
+    </ul>
+<p>Bug Fixes:
+    <ul>
+	<li>Printing has improved Adobe compliance and
+	    is immune to locale.
+	<li>Improved handling of scalable fonts, include fixing a memory leak.
+	<li>Improved printing in color, and changed Grey to genuine Black.
+	<li>Fixed Length-of-Night if dusk or dawn does not occur.
+	<li>Fixed Length-of-Night and NAAG when dawn or dusk cross midnight.
+	<li>Main window calendar pulldown menu could clip some month names.
+	<li>Mars moon view can finally print.
+	<li>Fix NAAG for "arctic" dusk and dawn.
+	<li>Fix NAAG for case of no rise today but rise tomorrow; ditto for set.
+	<li>Fix NAAG for earth satellite when current time is on right half-day.
+	<li>Num Lock key no longer required to be off.
+	<li>Sky View 1:1 and 2:1 shortcuts no longer fail in certain situations.
+	<li>Sky View grid labeling improved.
+	<li>Sky View better at not clipping large objects until fully off
+	    screen, not just their center.
+	<li>Sky View toolbuttons for constellations, planes and labeling
+	    improved.
+	<li>Sky View is better at avoiding overlapping labels.
+	<li>Improved stability in Solver tool seeking periodic extrema.
+	<li>Fixed problem with mag glass over image without WCS headers.
+    </ul>
+</blockquote>
+
+<H3>Changes from 3.5.1 to 3.5.2
+</H3>
+Released Jan 8, 2002
+
+<blockquote>
+<p>
+    New Features:
+<p>
+
+    <ul>
+	<li>add support for Uranometria 2000 sky atlas.
+	<li>add support for all three atlases in Data Table and Sky View listing.
+	<li>add "Auto list" so Close-pairs tool can print while looping.
+	<li>add GHA column to Data Table.
+	<li>add Spectral class column to Data Table and Sky View listing.
+	<li>add ability to store preferred position for more dialogs.
+	<li>add support for reading TLE-format satellite files directly.
+	<li>add Print option to Jupiter, Saturn and Uranus views.
+	<li>add support for 8-bit FITS format.
+	<li>add major upgrade to star finder and WCS solver.
+	<li>add image X,Y coords to Sky View corner info, when displaying image
+    </ul>
+
+<p>
+    Bug Fixes:
+<p>
+
+    <ul>
+	<li>fix a communication problem with LX200.
+	<li>fix minor problem with Earth view gray-scale printing.
+	<li>fix font problems occuring on some systems.
+	<li>fix crashing in Jup/Sat/Uranus seen with some window managers.
+	<li>fix saving Site preference when multiple abbreviated names match.
+	<li>fix rare crash when saving preferences.
+	<li>fix some incorrect XmForm attachments.
+	<li>fix crash if enter 0 eyepiece focal length.
+	<li>fix rare crash when refracting far below horizon.
+    </ul>
+</blockquote>
+
+
+<H3>Changes from 3.5 to 3.5.1
+</H3>
+Released Nov 9, 2001
+<ul>
+
+    <p><li>Image analysis:
+    <ul>
+	<li>fix ROI would not draw if no or bad wcs
+	<li>fix updating scales correctly if find a wcs solution
+    </ul>
+
+    <p><li>Sky View:
+    <ul>
+	<li>fix ROI Toggle button so it can be a saved resource
+	<li>fix check for center when window size is odd and flipped
+	<li>fix bomb when close if wcs had never been opened
+    </ul>
+
+    <p><li>Misc:
+    <ul>
+	<li>fix support for ~ in ShareDir
+    </ul>
+</ul>
+
+<p>
+<H3>Changes from 3.4 to 3.5
+</H3>
+Released Oct 13, 2001
+<ul>
+    <p><li>Cross-Platform:
+    <ul>
+	<li>Available for MS Win98/2000, MacOS X and all UNIX-like systems.
+    </ul>
+
+    <p><li>Image analysis:
+    <ul>
+	<li>Pattern match stars in an image against GSC to find RA/Dec WCS header.
+	<li>2D Guassian fit to star profiles for sub-pixel position accuracy.
+	<li>One-click relative and absolute aperture photometry.
+	<li>Pixel stats for entire image, region of interest or pixels under glass.
+	<li>Multiple settings for magnifying glass size and power.
+	<li>Unique "Monument" mode displays stars in pseudo-3D.
+	<li>Interactive cross-section slices.
+	<li>Multilevel crop and zoom stack.
+    </ul>
+
+    <p><li>Sky View:
+    <ul>
+	<li>Images resize to fit window (not the other way around as in 3.4).
+	<li>Toolbar down right side to control new imaging functions.
+	<li>Very simple interface for other programs to automatically display images.
+	<li>Popup date/time honors Preference time zone.
+	<li>Toolbar buttons now maintain current set of options thru off/on cycle.
+    </ul>
+
+    <p><li>LX200 Telescope control:
+    <ul>
+    
+	<li>Fully integrated into XEphem GUI.
+	<li>Smoother telescope marker motion.
+    </ul>
+
+    <p><li>Data:
+    <ul>
+
+	<li>Easy GUI to download MPC and Lowell asteroid element sets.
+	<li>Easy GUI to download CBAT comet elements.
+	<li>Easy GUI to download Earth satellite element sets.
+	<li>Improved engine for near-parabolic comet elements.
+	<li>Improved magnitudes for all planets.
+    </ul>
+
+    <p><li>Eyepieces:
+    <ul>
+
+	<li>Define and Save your favorite user-defined sizes and styles.
+	<li>Handy calculator to solve common optical formulae.
+	<li>Delete eyepieces individually.
+    </ul>
+
+    <p><li>Main window:
+    <ul>
+
+	<li>One click to automatically keep XEphem time in sync with computer.
+	<li>All Help text is now searchable, and keeps reusing one window.
+	<li>Handy Sun-up and Moon-phase icons.
+	<li>New bona fide Night Mode.
+    </ul>
+
+    <p><li>Night at a Glance:
+    <ul>
+
+	<li>Shows all satellite passes at once for a given day.
+	<li>Can click on graph to set time.
+	<li>New optional easier-to-read one-color scheme.
+    </ul>
+
+    <p><li>Coordinates:
+    <ul>
+
+	<li>New Spreadsheet to convert among equatorial/horizon/ecliptic/galactic.
+    </ul>
+
+    <p><li>Mars:
+    <ul>
+
+	<li>Greatly expanded set of Albedo features.
+    </ul>
+
+    <p><li>Networking:
+    <ul>
+
+	<li>Support for Authentication when going through proxies.
+    </ul>
+</ul>
+
+<p>
+<H3>Changes from 3.2.3 to 3.4
+</H3>
+Released Dec 4, 2000
+<ul>
+
+    <p> <li>Sky View:
+    <ul>
+	<li>Add Toolbars, including new Zoom in/back stack.
+	<li>Add all new History facility.
+	<li>Show {pen}umbra with Moon.
+	<li>Add direct eyepiece option for Telrad.
+	<li>Show delta coords when dragging zoom box.
+	<li>Add cylindrical projection.
+	<li>Greatly expanded Listing and Sorting.
+	<li>Completely automatic Field Star loading.
+	<li>Can now download DSS 2 blue and red images.
+	<li>Greatly speed up sky FITS image contrast control.
+	<li>Add shortcuts for common positions and aspect ratios.
+	<li>Add grid labels.
+    </ul>
+
+    <p><li>Data management:
+    <ul>
+	<li>Load/Delete by catalog.
+	<li>New unified format for PPM, Hipparcos and Tycho-2 catalogs.
+    </ul>
+
+    <p><li>Data Table:
+    <ul>
+	<li>Add Ecliptic coordinates.
+	<li>Improved airmass formula near horizon.
+    </ul>
+
+    <p><li>Jupiter View:
+    <ul>
+	<li>Morphs a real image.
+    </ul>
+
+    <p><li>Mars View:
+    <ul>
+	<li>2x better resolution image.
+	<li>Magnifying glass.
+	<li>Expanded features data base.
+    </ul>
+
+    <p><li>Moon View:
+    <ul>
+	<li>Add persistant labels.
+	<li>Add more spacecraft to database.
+	<li>Fix Moon {pen}umbra rotation.
+    </ul>
+
+    <p><li>Main window:
+    <ul>
+	<li>Most windows can now be stacked over or beneath the Main window.
+	<li>Can now change most colors and fonts on the fly.
+	<li>Can now Save just about every setting to disk.
+	<li>Can now step time Forward or Reverse.
+	<li>Fixed calendar NM and FM when outside current month.
+	<li>Improved Delta T model
+	<li>Improved Site selection mechanism.
+	<li>Simpler control over DST and Delta T.
+    </ul>
+
+    <p><li>Earth View:
+    <ul>
+	<li>Direct Internet update facilty for earth satellites.
+	<li>Can now display 3 objects simultaneously.
+	<li>Orbit propagator now based on NORAD SGP4/SDP4.
+    </ul>
+
+    <p><li>Brand new features:
+    <ul>
+	<li>Support for SETI@Home.
+	<li>New Night-at-a-Glance graphic.
+	<li>Direct Internet interface to AAVSO light curves.
+	<li>Includes control process for Meade LX200.
+    </ul>
+</ul>
+
+
+</body>
+</html>
