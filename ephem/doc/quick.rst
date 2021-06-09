@@ -658,7 +658,10 @@ other Observer methods
  >>> print('%s %s' % (ra, dec))
  12:05:35.12 40:17:49.8
 
- * Called like ``radec_of(az, alt)``.
+ * Both arguments to ``radec_of(az, alt)`` are interpreted as angles,
+   using PyEphem’s usual convention:
+   a float point number is interpreted as plain radians,
+   while a string is expected to give a number in degrees.
  * Returns the apparent topocentric coordinates
    behind the given point in the sky.
 
