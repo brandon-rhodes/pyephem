@@ -19,8 +19,7 @@ for line in open(path):
 # The 'ephem' module is built from every .c file in the libastro
 # directory plus ...
 
-libastro_version = '3.7.7'
-libastro_files = glob('libastro-%s/*.c' % libastro_version)
+libastro_files = glob('libastro/*.c')
 libastro_data = glob('extensions/data/*.c')
 
 here = os.path.dirname(__file__)
@@ -39,7 +38,7 @@ extensions = [
         ['extensions/_libastro.c', 'extensions/dtoa.c']
         + libastro_files + libastro_data,
         extra_compile_args=['-ffloat-store'],
-        include_dirs=['libastro-' + libastro_version, '.'],
+        include_dirs=['libastro', '.'],
         libraries = libraries,
     ),
 ]
