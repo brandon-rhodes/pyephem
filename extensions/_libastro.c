@@ -122,9 +122,7 @@ typedef struct {
      PyObject *catalog_number;	/* TLE catalog number */
 } EarthSatellite;
 
-/* A forward-reference function definition, so that C does not have to
-   do anything crazy like make two passes over its input file.  Keep it
-   cool, C, I will just repeat myself instead. */
+/* Forward declaration. */
 
 static int Body_obj_cir(Body *body, char *fieldname, unsigned topocentric);
 
@@ -143,6 +141,70 @@ static int PyNumber_AsDouble(PyObject *o, double *dp)
      if (!f) return -1;
      *dp = PyFloat_AsDouble(f);
      Py_DECREF(f);
+     return 0;
+}
+
+/* Convert a base-60 ("sexagesimal") string like "02:30:00" into a
+   double value like 2.5.  Uses Python split() and float(), which are
+   slower than raw C but are sturdy and robust and eliminate all of the
+   locale problems to which raw C calls are liable. */
+
+static PyObject *colon = 0;
+
+static int scansexa(PyObject *o, double *dp) {
+     if (!colon) {
+          colon = PyUnicode_FromString(":");  /* singleton string we need */
+     }
+     PyObject *list = PyUnicode_Split(o, colon, -1);
+     if (!list) {
+          return -1;
+     }
+     int length = PyList_Size(list);
+     double d = 0.0;
+     for (int i=length-1; i>=0; i--) {
+          d /= 60.0;
+          PyObject *item = PyList_GetItem(list, i);  /* borrowed reference! */
+          if (!item) {  /* should never happen, but just in case */
+               Py_DECREF(list);
+               return -1;
+          }
+          Py_ssize_t item_length = PyUnicode_GET_SIZE(item);
+          if (item_length == 0) {
+               continue;  /* accept empty string for 0 */
+          }
+          PyObject *float_obj = PyNumber_Float(item);
+          if (float_obj) {
+               double n = PyFloat_AsDouble(float_obj);
+               d = copysign(d, n);
+               d += n;
+               Py_DECREF(float_obj);
+               continue;
+          }
+          /* There might be a more efficient way to do this from C that
+             works in both Python 2 and Python 3, but for now let's go
+             for simple and robust: the Unicode isspace() method. */
+          PyObject *method = PyObject_GetAttrString(item, "isspace");
+          if (!method) {  /* shouldn't happen unless we're out of memory? */
+               Py_DECREF(list);
+               return -1;
+          }
+          PyObject *verdict = PyObject_CallObject(method, NULL);
+          Py_DECREF(method);
+          if (!verdict) {  /* shouldn't happen unless we're out of memory? */
+               Py_DECREF(list);
+               return -1;
+          }
+          int is_verdict_true = PyObject_IsTrue(verdict);
+          Py_DECREF(verdict);
+          if (!is_verdict_true) {
+               Py_DECREF(list);
+               return -1;  /* raise float coercion error from above */
+          }
+          /* clear float coercion error, since we accept whitespace for 0 */
+          PyErr_Clear();
+     }
+     *dp = d;
+     Py_DECREF(list);
      return 0;
 }
 
@@ -393,11 +455,10 @@ static int parse_mjd_from_string(PyObject *so, double *mjdp)
      }
 
      if (len >= 2) {
-          const char *t = PyUnicode_AsUTF8(PyList_GetItem(pieces, 1));
-	  double hours;
-          if (!t) goto fail;
-	  if (f_scansexa(t, &hours) == -1) {
-	       goto fail;
+          double hours;
+          int status = scansexa(PyList_GetItem(pieces, 1), &hours);
+          if (status == -1) {
+               goto fail;
           }
 	  day += hours / 24.;
      }
@@ -643,11 +704,7 @@ static int parse_angle(PyObject *value, double factor, double *result)
 	  return PyNumber_AsDouble(value, result);
      } else if (PyUnicode_Check3(value)) {
 	  double scaled;
-	  const char *s = PyUnicode_AsUTF8(value);
-          if (!s) return -1;
-          if (f_scansexa(s, &scaled) == -1) {
-               PyErr_Format(PyExc_ValueError, "your angle string '%s' does not "
-                            "have the format [number[:number[:number]]]", s);
+          if (scansexa(value, &scaled) == -1) {
                return -1;
 	  }
 	  *result = scaled / factor;
@@ -684,16 +741,7 @@ static double to_angle(PyObject *value, double efactor, int *status)
 	  return r;
      } else if (PyUnicode_Check3(value)) {
 	  double scaled;
-          const char *s = PyUnicode_AsUTF8(value);
-          if (!s) {
-               *status = -1;
-               return 0;
-          }
-          *status = f_scansexa(s, &scaled);
-          if (*status == -1) {
-              PyErr_Format(PyExc_ValueError, "your angle string '%s' does not "
-                           "have the format [number[:number[:number]]]", s);
-          }
+          *status = scansexa(value, &scaled);
 	  return scaled / efactor;
      } else {
 	  PyErr_SetString(PyExc_TypeError,
