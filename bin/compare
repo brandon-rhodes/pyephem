@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd "$(readlink -f $(dirname "${BASH_SOURCE[0]}"))"
+cd ..
+diff -uNr ~/XEphem/libastro libastro-*
