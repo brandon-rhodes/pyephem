@@ -172,36 +172,25 @@ static int scansexa(PyObject *o, double *dp) {
           if (item_length == 0) {
                continue;  /* accept empty string for 0 */
           }
-          PyObject *float_obj = PyNumber_Float(item);
-          if (float_obj) {
-               double n = PyFloat_AsDouble(float_obj);
-               d = copysign(d, n);
-               d += n;
-               Py_DECREF(float_obj);
-               continue;
-          }
-          /* There might be a more efficient way to do this from C that
-             works in both Python 2 and Python 3, but for now let's go
-             for simple and robust: the Unicode isspace() method. */
-          PyObject *method = PyObject_GetAttrString(item, "isspace");
-          if (!method) {  /* shouldn't happen unless we're out of memory? */
-               Py_DECREF(list);
-               return -1;
-          }
-          PyObject *verdict = PyObject_CallObject(method, NULL);
-          Py_DECREF(method);
+          PyObject *verdict = PyObject_CallMethod(item, "isspace", NULL);
           if (!verdict) {  /* shouldn't happen unless we're out of memory? */
                Py_DECREF(list);
                return -1;
           }
           int is_verdict_true = PyObject_IsTrue(verdict);
           Py_DECREF(verdict);
-          if (!is_verdict_true) {
-               Py_DECREF(list);
-               return -1;  /* raise float coercion error from above */
+          if (is_verdict_true) {
+               continue;  /* accept whitespace for 0 */
           }
-          /* clear float coercion error, since we accept whitespace for 0 */
-          PyErr_Clear();
+          PyObject *float_obj = PyNumber_Float(item);
+          if (!float_obj) {  /* can't parse nonempty string as float? error! */
+               Py_DECREF(list);
+               return -1;
+          }
+          double n = PyFloat_AsDouble(float_obj);
+          d = copysign(d, n);
+          d += n;
+          Py_DECREF(float_obj);
      }
      *dp = d;
      Py_DECREF(list);
