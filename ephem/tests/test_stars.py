@@ -27,13 +27,13 @@ class StarTests(unittest.TestCase):
 class Test57NavigationStars(unittest.TestCase):
     """Tests all 57 common navigation stars against the Nautical Almanac
     for the date 2018-01-01 00:00:00.
-    
+
     Reference data is from Her Majesty's Nautical Almanac Office Publication
     NP314-18 "The Nautical Almanac" (2017), ISBN 978-0-7077-41819.
-    
+
     A secondary source, online, is:
     http://www.tecepe.com.br/scripts/AlmanacPagesISAPI.dll/pages?date=1%2F1%2F2018
-    """ 
+    """
     NP314_DATE = '2018-01-01 00:00:00'
     # The resolution of NP314 is 0.1 minutes so we should only expect an error
     # of +/- 0.05 minutes.
@@ -45,25 +45,27 @@ class Test57NavigationStars(unittest.TestCase):
     # +/- 0.1 minutes     6
     # +/- 0.05 minutes   22
     MAX_ERROR_DEGREES = 0.3 * 1.0 / 60
-    
+
     def _test_body(self, name, sha, dec, date=NP314_DATE):
         obj = ephem.star(name)
         obs = ephem.Observer()
         obs.date = date
         obj.compute(obs)
-        exp_sha = ephem.degrees(sha)
+        exp_sha = ephem.degrees(sha.replace(' ', ':'))
         err_sha = math.degrees(2 * ephem.pi - obj.g_ra - exp_sha)
         self.assertTrue(
             abs(err_sha) < self.MAX_ERROR_DEGREES,
-            'SHA fail: {0!s:} !< {1!s:}'.format(abs(err_sha), self.MAX_ERROR_DEGREES) 
+            'SHA fail: {0!s:} !< {1!s:}'
+            .format(abs(err_sha), self.MAX_ERROR_DEGREES)
         )
-        exp_dec = ephem.degrees(dec)
+        exp_dec = ephem.degrees(dec.replace(' ', ':'))
         err_dec = math.degrees(obj.g_dec - exp_dec)
         self.assertTrue(
             abs(err_dec) < self.MAX_ERROR_DEGREES,
-            'Dec. fail: {0!s:} !< {1!s:}'.format(abs(err_dec), self.MAX_ERROR_DEGREES) 
+            'Dec. fail: {0!s:} !< {1!s:}'
+            .format(abs(err_dec), self.MAX_ERROR_DEGREES)
         )
-            
+
     def test_Acamar(self):
         self._test_body('Acamar', '315 15.8', '-40 14.3')
 
@@ -246,7 +248,7 @@ class Test57NavigationStars(unittest.TestCase):
     def test_number_tables_len(self):
         self.assertTrue(len(ephem.stars.STAR_NAME_NUMBER) == 57)
         self.assertTrue(len(ephem.stars.STAR_NUMBER_NAME) == 57)
-    
+
     def test_number_tables_range(self):
         self.assertEqual(sorted(ephem.stars.STAR_NAME_NUMBER.values()),
                          list(range(1, 58))
@@ -254,7 +256,7 @@ class Test57NavigationStars(unittest.TestCase):
         self.assertEqual(sorted(ephem.stars.STAR_NUMBER_NAME.keys()),
                          list(range(1, 58))
                          )
-    
+
     def test_number_tables_cross_reference(self):
         for name, number in ephem.stars.STAR_NAME_NUMBER.items():
             self.assertEqual(name, ephem.stars.STAR_NUMBER_NAME[number])
