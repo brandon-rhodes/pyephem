@@ -4,6 +4,10 @@ from ephem import Observer, city
 from unittest import TestCase
 
 class ObserverTests(TestCase):
+    def test_longitude_constructor_does_not_hang(self):  # GitHub #207
+        observer = Observer()
+        observer.lon = '-113.78401934344532'
+
     def test_lon_can_also_be_called_long(self):
         o = Observer()
         o.lon = 3.0
