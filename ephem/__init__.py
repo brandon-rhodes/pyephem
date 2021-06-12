@@ -9,7 +9,7 @@ from datetime import tzinfo as _tzinfo
 from math import pi
 from time import localtime as _localtime
 
-__version__ = '4.0.0'
+__version__ = '4.0.0.1'
 
 twopi = pi * 2.
 halfpi = pi / 2.

@@ -1,7 +1,7 @@
 include LICENSE
 include INSTALL
 include README.rst
-include libastro-3.7.7/*.h
+include libastro/*.h
 include ephem/doc/*
 include ephem/tests/jpl/*
 include ephem/tests/usno/*

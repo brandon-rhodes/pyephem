@@ -1,16 +1,31 @@
 PyEphem CHANGELOG
 =================
 
-Next
-----
+Version 4.0.0.1 (2020 June 12)
+------------------------------
+
+- Fix ``MANIFEST.in`` so the ``.tar.gz`` source distribution includes
+  all the header files necessary for compilation.
+
+Version 4.0.0 (2020 June 12)
+----------------------------
+
+- Upgraded to the MIT license following Elwood Downey’s generous
+  decision to open-source XEphem’s code.
+
+- Fix a bug where supplying a string with a decimal degree measurement
+  could send the parser into an infinite loop.
+
+- The ``FixedBody`` constructor, which accepts no arguments, now
+  correctly raises a ``TypeError`` if any are supplied.
+
+Version 3.7.7.1 (2020 February 22)
+----------------------------------
 
 - Fixed the body ``copy()`` method to correctly copy the extra
   attributes that some bodies have beyond those of a normal body, like
   the catalog number of an Earth satellite.  This bug had in some cases
   caused segmentation faults.
-
-Version 3.7.7.1 (2020 February 22)
-----------------------------------
 
 - GitHub issue #166: Fixed a memory leak in ``readdb()``.
 
