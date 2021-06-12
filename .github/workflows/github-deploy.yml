@@ -21,10 +21,6 @@ jobs:
         with:
           python-version: '3.8'
 
-      - name: Install Visual C++ for Python 2.7
-        if: runner.os == 'Windows'
-        run: choco install vcpython27 -f -y
-
       # https://cibuildwheel.readthedocs.io/en/stable/faq/#emulation
       # offers this stanza plus “CIBW_ARCHS_LINUX” below:
       - name: Set up QEMU
