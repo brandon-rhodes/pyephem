@@ -3,6 +3,7 @@
 # convenient Python types.
 
 import ephem._libastro as _libastro
+import re
 from datetime import datetime as _datetime
 from datetime import timedelta as _timedelta
 from datetime import tzinfo as _tzinfo
@@ -10,6 +11,17 @@ from math import pi
 from time import localtime as _localtime
 
 __version__ = '4.0.0.1'
+
+# As a favor, compile a regular expression that our C library would
+# really rather not compile for itself.
+
+_libastro._scansexa_split = re.compile(r'''
+    \s*:\s*         # A colon optionally surrounded by whitespace,
+    |               # or,
+    (?<!^)\s+(?!$)  # whitespace not at the start or end of the string.
+''', re.X).split
+
+# Various constants.
 
 twopi = pi * 2.
 halfpi = pi / 2.

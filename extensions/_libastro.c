@@ -68,6 +68,12 @@
 
 #define VALID_RINGS   FUSER4	/* saturn ring fields computed */
 
+/* Global access to the module, once initialized. */
+
+static PyObject *module = 0;
+
+/* Core data structures. */
+
 typedef struct {
      PyObject_HEAD
      Now now;
@@ -149,13 +155,15 @@ static int PyNumber_AsDouble(PyObject *o, double *dp)
    slower than raw C but are sturdy and robust and eliminate all of the
    locale problems to which raw C calls are liable. */
 
-static PyObject *colon = 0;
+static PyObject *scansexa_split = 0;
 
 static int scansexa(PyObject *o, double *dp) {
-     if (!colon) {
-          colon = PyUnicode_FromString(":");  /* singleton string we need */
+     if (!scansexa_split) {
+         scansexa_split = PyObject_GetAttrString(module, "_scansexa_split");
+         if (!scansexa_split)
+             return -1;
      }
-     PyObject *list = PyUnicode_Split(o, colon, -1);
+     PyObject *list = PyObject_CallFunction(scansexa_split, "O", o);
      if (!list) {
           return -1;
      }
@@ -3134,8 +3142,6 @@ static struct PyModuleDef libastro_module = {
 
 PyObject *PyInit__libastro(void)
 {
-     PyObject *module;
-
      PyDateTime_IMPORT;
 
      /* Initialize pointers to objects external to this module. */
