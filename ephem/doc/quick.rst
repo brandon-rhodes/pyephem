@@ -130,10 +130,11 @@ body.compute(date)
  * On artificial satellites, also sets:
 
    | Geographic point beneath satellite:
-   |  ``sublat`` — Latitude (+N)
-   |  ``sublong`` — Longitude (+E)
+   |  ``sublat`` — Geocentric latitude (+N)
+   |  ``sublong`` — Geocentric longitude (+E)
+   | ``elevation`` — Geocentric height above sea level,
+     measured from the surface of the WGS66 ellipsoid (m)
    |
-   | ``elevation`` — Geocentric height above sea level (m)
    | ``range`` — Distance from observer to satellite (m)
    | ``range_velocity`` — Range rate of change (m/s)
    | ``eclipsed`` — Whether satellite is in Earth's shadow
@@ -463,11 +464,13 @@ Observers
 
    | ``date`` — Date and time
    | ``epoch`` — Epoch for astrometric RA/dec
-
-   | ``lat`` — Latitude (+N)
-   | ``lon`` — Longitude (+E)
+   |
+   | Geographic coordinates, assuming the IERS 1989 ellipsoid
+     (flattening=1/298.257):
+   | ``lat`` — Geodetic latitude (+N)
+   | ``lon`` — Geodetic longitude (+E)
    | ``elevation`` — Elevation (m)
-
+   |
    | ``temp`` — Temperature (°C)
    | ``pressure`` — Atmospheric pressure (mBar)
 
