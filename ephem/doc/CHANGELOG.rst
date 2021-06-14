@@ -1,6 +1,14 @@
 PyEphem CHANGELOG
 =================
 
+Version 4.0.0.2 (2020 June 14)
+------------------------------
+
+- Restore PyEphem’s undocumented ability to parse angle strings like
+  ``'12 34 56'`` that are only separated with spaces, instead of
+  insisting on ``'12:34:56'`` for 12 degrees, 34 arcminutes, and 56
+  arcseconds.
+
 Version 4.0.0.1 (2020 June 12)
 ------------------------------
 
