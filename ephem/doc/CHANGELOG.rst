@@ -9,6 +9,9 @@ Version 4.0.0.2 (2020 June 14)
   insisting on ``'12:34:56'`` for 12 degrees, 34 arcminutes, and 56
   arcseconds.
 
+- Fix a compile error `‘for’ loop initial declarations are only allowed
+  in C99 mode` reported from a user on Oracle Linux.
+
 Version 4.0.0.1 (2020 June 12)
 ------------------------------
 
