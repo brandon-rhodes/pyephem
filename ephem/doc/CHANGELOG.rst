@@ -443,3 +443,12 @@ Version 3.6.1a  (2004 November 25)
   constellation in which the body lies.
 
 - Code should produce cleaner compiles on many platforms.
+
+Early History
+-------------
+
+- **27 Jul 1998**: the original PyEphem, an awkward SWIG wrapper around
+  the raw ``libastro`` C structures and functions, was ready to appear
+  on the “Contributed.html” page on the Python web site.  (With an
+  apology from the python.org webmaster, it was not actually posted
+  until 1998 August 26.)
