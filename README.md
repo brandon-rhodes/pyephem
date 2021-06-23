@@ -5,12 +5,15 @@ XEphem is an interactive astronomy program for all UNIX platforms.
 
 ![Sky view](/GUI/xephem/help/png/sky-view.png?raw=true)
 
-More screenshots are shown below.
+To see more screenshots, scroll to the bottom of this README.
 
-* Documentation lives at <https://www.clearskyinstitute.com/xephem/>
-  where Elwood Downey —
-  XEphem’s original author and its maintainer since the 1990s —
-  offers a manual, data files, and user contributed scripts.
+# Documentation
+
+* [Home Page](https://xephem.github.io/XEphem/Site/xephem.html)
+
+* [Reference Manual](https://xephem.github.io/XEphem/GUI/xephem/help/xephem.html)
+
+# Project Status
 
 * Elwood Downey has generously released XEphem under the MIT License!
   An “XEphem” organization has been created on GitHub
@@ -25,9 +28,9 @@ More screenshots are shown below.
 * If you want to get started immediately,
   a Docker image
   that successfully compiles and runs XEphem atop Ubuntu 14.04
-  is available in the “docker” branch on GitHub.
+  is available.
   It’s documented
-  [in this README file](https://github.com/XEphem/XEphem/blob/docker/container/README.md).
+  [in its own README file](https://github.com/XEphem/XEphem/blob/main/container/README.md).
 
 * The repository also includes a `.tito` directory
   and `xephem.spec` file for building an XEphem RPM package.
@@ -42,7 +45,7 @@ More screenshots are shown below.
   [GitHub Discussions](https://github.com/XEphem/XEphem/discussions)
   by clicking “New discussion” and writing up your question.
 
-A few more screenshots:
+# More Screenshots
 
 ![Sun view](/GUI/xephem/help/png/sun-view.png?raw=true)
 
