@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -ex
+
+if [ ! -f /usr/bin/docker ]
+then
+    echo 'Error: please "apt install docker.io"' >&2
+    exit 2
+fi
+
+# Change directory to the directory with this script and its Dockerfile.
+
+cd "$(dirname $0)"
+
+# Build the Docker image from the instructions in the Dockerfile.
+# Name the resulting image "xephem".
+
+docker build -t xephem . 1>&2
+
+# Run the "xephem" image, exposing several files from the host system
+# that together should let XEphem run and connect to X Windows:
+#
+# 1. This XEphem source tree, which gets mounted at "/src".
+# 2. The collection of X11 sockets in /tmp.
+# 3. Our X session's private authority file.
+
+exec docker run -ti \
+     --net=host \
+     -e DISPLAY=$DISPLAY \
+     -v ${PWD}/..:/src \
+     -v /tmp/.X11-unix:/tmp/.X11-unix \
+     -v ${XAUTHORITY}:/root/.Xauthority \
+     xephem \
+     "$@"
