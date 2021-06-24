@@ -15,7 +15,7 @@ cd "$(dirname $0)"
 # Build the Docker image from the instructions in the Dockerfile.
 # Name the resulting image "xephem".
 
-docker build -t xephem . 1>&2
+docker build -t xephem-ubuntu-14.04 . 1>&2
 
 # Run the "xephem" image, exposing several files from the host system
 # that together should let XEphem run and connect to X Windows:
@@ -27,8 +27,8 @@ docker build -t xephem . 1>&2
 exec docker run -ti \
      --net=host \
      -e DISPLAY=$DISPLAY \
-     -v ${PWD}/..:/src \
+     -v ${PWD}/../..:/src \
      -v /tmp/.X11-unix:/tmp/.X11-unix \
      -v ${XAUTHORITY}:/root/.Xauthority \
-     xephem \
+     xephem-ubuntu-14.04 \
      "$@"
