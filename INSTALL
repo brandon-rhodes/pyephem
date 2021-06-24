@@ -1,11 +1,15 @@
-How to install XEphem Version 4.0.0, either for just yourself or system-wide:
+How to install XEphem version 4.0.2, either for just yourself or system-wide:
 
 1) Build the executable:
 
-    Explode xephem-4.0.0.tar.gz and change to the build directory:
+    Download the tarfile.
 
-	$ tar xfz xephem-4.0.0.tar.gz
-	$ cd xephem-4.0.0/GUI/xephem
+        https://github.com/XEphem/XEphem/archive/refs/tags/4.0.2.tar.gz
+
+    Extract it and change directory:
+
+	$ tar xfz xephem-4.0.2.tar.gz
+	$ cd xephem-4.0.2/GUI/xephem
 
     On a Linux similar to Ubuntu or Debian, do this (on other Linux
     distributions, look for Motif packages equivalent to the ones
@@ -29,7 +33,6 @@ How to install XEphem Version 4.0.0, either for just yourself or system-wide:
     using your package manager to search for it, for exampe:
         $ yum search openmotif
         $ zypper search openmotif
-	$ apt-file search openmotif
     or look for binary kits at http://motif.ics.com/motif or build from
     source from http://sourceforge.net/projects/motif. You'll also need
     a bunch of supporting X11 Windows stuff too, but decent package
@@ -61,7 +64,7 @@ Next do either 3a or 3b, not both:
     just one line in it as follows:
 
 	XEphem.ShareDir: <dir>
-    
+
     where <dir> is the full path of the directory containing the directories
     auxil, catalogs, fifos, fits, gallery, help, and lo. These are in the
     source directory of the original tar kit which is where you are now, if
@@ -86,7 +89,7 @@ Next do either 3a or 3b, not both:
 	$ cp -R gallery /usr/local/xephem	# copy gallery images
 	$ cp -R help /usr/local/xephem		# copy help files
 	$ cp -R lo /usr/local/xephem		# copy lunar db
-    
+
     3b.3 Do the same as step 3a.3 above but create the new file in a place
     where XEphem can find it from anywhere:
 
@@ -105,9 +108,7 @@ Next do either 3a or 3b, not both:
 
 	$ xephem
 
-
 Thanks for using XEphem!
-
 
 Elwood Downey
 ecdowney@ClearSkyInstitute.com
