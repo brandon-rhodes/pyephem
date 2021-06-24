@@ -7,6 +7,18 @@ XEphem is an interactive astronomy program for all UNIX platforms.
 
 To see more screenshots, scroll to the bottom of this README.
 
+# Installing XEphem
+
+There are XEphem packages available for several operating systems.
+
+* [Gentoo](https://packages.gentoo.org/packages/sci-astronomy/xephem)
+* [openSUSE](https://build.opensuse.org/package/show/Application:Geo/xephem)
+* [Slack](https://slackbuilds.org/repository/13.37/academic/xephem/)
+
+If none of these packages is appropriate for your system,
+the [INSTALL file](https://github.com/XEphem/XEphem/blob/main/INSTALL)
+explains how you can compile XEphem yourself from its source code.
+
 # Documentation
 
 * [Home Page](https://xephem.github.io/XEphem/Site/xephem.html)
