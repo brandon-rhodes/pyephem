@@ -1,0 +1,3 @@
+# Exclude several megabytes from GitHub release .zip/.tar.gz bundles.
+.git*                   export-ignore
+Site                    export-ignore
