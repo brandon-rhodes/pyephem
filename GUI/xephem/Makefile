@@ -3,7 +3,6 @@
 # Sample compile and link flags for a few systems. Find your system or similar
 # and uncomment as required. The default is for linux or Mac OS X systems.
 # The only real challenge usually is to set the MOTIFI and MOTIFL macros.
-# Note that some Motif libraries use the printing frame buffer and so need -lXp.
 
 # The basic idea to build XEphem is to first go compile the libraries in
 # ../../lib* then come back here and compile and link all the *.c files into
@@ -34,7 +33,7 @@ CC = gcc
 CLDFLAGS = -g
 CFLAGS = $(LIBINC) $(CLDFLAGS) -O2 -Wall -I$(MOTIFI) -I/opt/X11/include
 LDFLAGS = $(LIBLNK) $(CLDFLAGS) -L$(MOTIFL) -L/opt/X11/lib
-XLIBS = -lXm -lXp -lXt -lXext -lXmu -lX11
+XLIBS = -lXm -lXt -lXext -lXmu -lX11
 LIBS = $(XLIBS) $(LIBLIB) -lm
 
 # static linking on Apple using X11 libs from ports

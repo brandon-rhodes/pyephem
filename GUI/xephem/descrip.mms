@@ -7,7 +7,6 @@
 # idea to build xephem is to first go compile the libraries in ../../libastro,
 # ../../libip, ../../liblilxml and ../../libjpegd then come back here and
 # compile and link all the *.c files into one executable, xephem. 
-# Note: some motif libraries now use the printing frame buffer and need -lXp
 
 # -I and -L flags to find required supporting libraries
 
@@ -25,7 +24,7 @@ CC = cc
 #CLDFLAGS = -ffast-math
 CFLAGS = $(LIBINC) 
 LDFLAGS = 
-#XLIBS = -lXm -lXp -lXt -lXext -lSM -lICE -lXmu -lX11
+#XLIBS = -lXm -lXt -lXext -lSM -lICE -lXmu -lX11
 #LIBS = $(XLIBS) $(LIBLIB) -lm
 
 # MKS Enterprise toolkit
