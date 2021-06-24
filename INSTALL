@@ -7,9 +7,12 @@ How to install XEphem Version 4.0.0, either for just yourself or system-wide:
 	$ tar xfz xephem-4.0.0.tar.gz
 	$ cd xephem-4.0.0/GUI/xephem
 
-    On Intel x86_32 linux just do this:
+    On a Linux similar to Ubuntu or Debian, do this (on other Linux
+    distributions, look for Motif packages equivalent to the ones
+    installed here):
 
-	$ make MOTIF=../../libXm/linux86
+	$ sudo apt install build-essential groff-base libmotif-dev libxext-dev libxmu-dev libxt-dev
+	$ make
 
     On Mac OS X just do this:
 
