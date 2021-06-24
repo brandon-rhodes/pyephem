@@ -25,6 +25,8 @@ explains how you can compile XEphem yourself from its source code.
 
 * [Reference Manual](https://xephem.github.io/XEphem/GUI/xephem/help/xephem.html)
 
+* [Changelog](https://xephem.github.io/XEphem/Site/changes.html)
+
 # Project Status
 
 * Elwood Downey has generously released XEphem under the MIT License!
