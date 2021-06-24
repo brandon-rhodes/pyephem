@@ -32,5 +32,5 @@ RUN echo 'make -C /src/GUI/xephem && (cd /src/GUI/xephem; ./xephem)' \
 
 # Start the user in the /src directory.
 
-WORKDIR /src
+WORKDIR /src/GUI/xephem
 CMD /bin/bash
