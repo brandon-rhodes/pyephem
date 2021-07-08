@@ -251,6 +251,9 @@ class NeverUpError(CircumpolarError): pass
 class AlwaysUpError(CircumpolarError): pass
 
 def describe_riset_search(method):
+    if method.__doc__ is None:
+        return method
+
     method.__doc__ += """, returning its date.
 
     The search starts at the `date` of this `Observer` and is limited to
