@@ -134,6 +134,8 @@ MoonData md[U_NMOONS])	/* fill md[1..NM-1].x/y/z for each moon */
 	    fn = "uranus.9910";
 	else if (JD < 2459215.5)	/* Jan 1 2021 UTC */
 	    fn = "uranus.1020";
+	else if (JD < 2466520.5)	/* Jan 1 2041 UTC */
+	    fn = "uranus.2040";
 	else
 	    return (-1);
 
