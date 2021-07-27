@@ -45,17 +45,17 @@ pluto_ell (
 double mj,	/* epoch */
 double *ret)	/* ecliptic coordinates {l,b,r} at equinox of date */
 {
-	/* mean orbital elements of Pluto.
-	 * The origin of these is somewhat obscure.
+	/* Mean orbital elements of Pluto.
+	 * Astronomical Almanac 2020 page G3.
 	 */
-	double	a = 39.543,			/* semimajor axis, au */
-		e = 0.2490,			/* excentricity */
-		inc0 = 17.140,			/* inclination, deg */
-		Om0 = 110.307,			/* long asc node, deg */
-		omeg0 = 113.768,		/* arg of perihel, deg */
-		mjp = 2448045.539 - MJD0,	/* epoch of perihel */
+	double	a = 39.789,			/* semimajor axis, au */
+		e = 0.252,			/* excentricity */
+		inc0 = 17.097,			/* inclination, deg */
+		Om0 = 110.297,			/* long asc node, deg */
+		omeg0 = 115.058,		/* arg of perihel, deg */
+		mjp = 2459000.5 - MJD0,		/* epoch of perihel */
 		mjeq = J2000,			/* equinox of elements */
-		n = 144.9600/36525.;            /* daily motion, deg */
+		n = 0.0039;			/* daily motion, deg */
 
 	double inc, Om, omeg;	/* orbital elements at epoch of date */
 	double ma, ea, nu;	/* mean, excentric and true anomaly */
