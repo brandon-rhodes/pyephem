@@ -5,9 +5,15 @@ PyEphem CHANGELOG
 Version 4.1 (2021 September 25)
 -------------------------------
 
-- Improve ``Date`` objects so that the return values of ``str(d)``,
+- Improved ``Date`` objects so that the return values of ``str(d)``,
   ``d.datetime()``, and ``d.tuple()`` always agree, and are always
   rounded to the nearest microsecond.
+
+- Updated Pluto’s long-term orbital elements
+  to match the Astronomical Almanac 2020.
+
+- Expanded the ∆T table so that it now runs through 2018,
+  with data from the Astronomical Almanac 2020.
 
 - PyEphem should now be able to compile for pypy3.
 
