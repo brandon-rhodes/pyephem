@@ -10,7 +10,7 @@
  * from The Astronomical Almanac and current IERS reports.
  * A table of values for the pre-telescopic period was taken from
  * Morrison and Stephenson (2004).  The overall tabulated range is
- * -1000.0 through 2011.0.  Values at intermediate times are interpolated
+ * -1000.0 through 2018.0.  Values at intermediate times are interpolated
  * from the tables.
  *
  * For dates earlier and later than the tabulated range, the program
@@ -47,7 +47,7 @@
 #include "astro.h"
 
 #define TABSTART 1620
-#define TABEND 2011
+#define TABEND 2018
 #define TABSIZ (TABEND - TABSTART + 1)
 
 /* Morrison and Stephenson (2004)
@@ -73,7 +73,7 @@ short m_s[MS_SIZ] = {
 
 
 /* Entries prior to 1955 in the following table are from
- * the 1984 Astronomical Almanac and assume ndot = -26.0.
+ * the 2020 Astronomical Almanac and assume ndot = -26.0.
  * For dates prior to 1700, the above table is used instead of this one.
  */
 short dt[TABSIZ] = {
@@ -133,11 +133,11 @@ short dt[TABSIZ] = {
     3315, 3359, 3400, 3447, 3503, 3573, 3654, 3743, 3829, 3920,
     4018, 4117, 4223, 4337, 4449, 4548, 4646, 4752, 4853, 4959,
 
-    /* 1980.0 thru 2011.0 */
+    /* 1980.0 thru 2018.0 */
     5054, 5138, 5217, 5296, 5379, 5434, 5487, 5532, 5582, 5630,
     5686, 5757, 5831, 5912, 5998, 6078, 6163, 6230, 6297, 6347,
     6383, 6409, 6430, 6447, 6457, 6469, 6485, 6515, 6546, 6578,
-    6607, 6632,
+    6607, 6632, 6660, 6691, 6728, 6764, 6810, 6859, 6897,
 };
 
 
