@@ -38,5 +38,3 @@ mm_mjed (Now *np)
 	return (mjd + deltat(mjd)/86400.0);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: auxil.c,v $ $Date: 2003/05/04 04:41:57 $ $Revision: 1.8 $ $Name:  $"};

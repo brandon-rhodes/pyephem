@@ -422,5 +422,3 @@ double *alp, double *azp)	/* max altitude and transit az at said time */
 #undef	MAXLOOPS
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: riset_cir.c,v $ $Date: 2013/01/06 01:12:57 $ $Revision: 1.18 $ $Name:  $"};

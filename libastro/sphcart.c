@@ -39,5 +39,3 @@ double *l, double *b, double *r)	/* result: spherical coordinates */
 	}
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: sphcart.c,v $ $Date: 2006/08/28 00:20:27 $ $Revision: 1.4 $ $Name:  $"};

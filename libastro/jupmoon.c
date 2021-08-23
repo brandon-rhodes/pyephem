@@ -366,5 +366,3 @@ moonTrans (MoonData md[J_NMOONS])
 	}
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: jupmoon.c,v $ $Date: 2006/08/29 03:16:47 $ $Revision: 1.7 $ $Name:  $"};

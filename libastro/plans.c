@@ -223,5 +223,3 @@ double *rho0, double *lam, double *bet, double *dia, double *mag)
 	}
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: plans.c,v $ $Date: 2003/11/15 04:07:36 $ $Revision: 1.5 $ $Name:  $"};

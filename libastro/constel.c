@@ -1799,5 +1799,3 @@ cns_figure (int id, double e, double ra[], double dec[], int dcodes[])
 	return (cfp - figmap[id]);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: constel.c,v $ $Date: 2005/03/05 06:55:22 $ $Revision: 1.13 $ $Name:  $"};

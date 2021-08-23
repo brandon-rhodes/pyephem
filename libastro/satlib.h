@@ -201,6 +201,3 @@ void sdp4(SatData *sat, Vec3 *pos, Vec3 *dpos, double TSINCE);
 
 #endif /* __SATLIB_H */
 
-/* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: satlib.h,v $ $Date: 2000/09/25 17:21:25 $ $Revision: 1.1 $ $Name:  $
- */

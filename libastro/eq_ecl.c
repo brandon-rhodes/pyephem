@@ -68,5 +68,3 @@ double *p, double *q)	/* sw==1: p==lg, q==lt. sw==-1: p==ra, q==dec. */
 	range (p, 2*PI);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: eq_ecl.c,v $ $Date: 2003/03/20 08:51:37 $ $Revision: 1.4 $ $Name:  $"};

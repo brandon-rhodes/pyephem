@@ -88,6 +88,3 @@ extern int vn_neptune[][3];
 extern int vsop87 (double mj, int obj, double prec, double *ret);
 
 
-/* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: vsop87.h,v $ $Date: 2003/03/20 08:51:37 $ $Revision: 1.2 $ $Name:  $
- */

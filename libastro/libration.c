@@ -2209,5 +2209,3 @@ llibration (double JD, double *llatp, double *llonp)
 	*llatp = degrad (lt/3600.0);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: libration.c,v $ $Date: 2003/03/20 08:51:37 $ $Revision: 1.4 $ $Name:  $"};

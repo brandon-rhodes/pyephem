@@ -73,5 +73,3 @@ double *p, double *q)
 	*q = PI/2 - acos(cap);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: aa_hadec.c,v $ $Date: 2003/03/20 08:51:37 $ $Revision: 1.3 $ $Name:  $"};

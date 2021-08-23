@@ -192,5 +192,3 @@ u2k_atlas(double ra, double dec)
 }
 
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: atlas.c,v $ $Date: 2003/03/20 08:51:37 $ $Revision: 1.8 $ $Name:  $"};

@@ -27,6 +27,3 @@ extern int pref_set (Preferences p, int newp);
 
 #endif /* _PREFERENCES_H */
 
-/* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: preferences.h,v $ $Date: 2003/03/20 08:51:37 $ $Revision: 1.6 $ $Name:  $
- */

@@ -3,10 +3,6 @@
 extern int read_bdl (FILE *fp, double jd, double *xp, double *yp, double *zp,
     char ynot[]);
 
-/* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: bdl.h,v $ $Date: 2003/03/20 08:56:31 $ $Revision: 1.1 $ $Name:  $
- */
-
 typedef struct {
      double t0; /* start time of this set of coefficients */
      double cmx[6], cfx[4], cmy[6], cfy[4], cmz[6], cfz[4]; /* coefficients */

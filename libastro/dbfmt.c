@@ -1046,5 +1046,3 @@ write_P (Obj *op, char lp[])
 	lp += sprintf (lp, "%s,P", op->o_name);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: dbfmt.c,v $ $Date: 2009/10/09 21:28:11 $ $Revision: 1.45 $ $Name:  $"};

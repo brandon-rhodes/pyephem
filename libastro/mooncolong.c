@@ -232,5 +232,3 @@ main (int ac, char *av[])
 
 #endif
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: mooncolong.c,v $ $Date: 2004/05/05 17:45:49 $ $Revision: 1.4 $ $Name:  $"};

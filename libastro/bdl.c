@@ -66,5 +66,3 @@ do_bdl (BDL_Dataset *dataset, double jd, double *xp, double *yp, double *zp)
 	}
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: bdl.c,v $ $Date: 2008/04/20 08:11:35 $ $Revision: 1.6 $ $Name:  $"};

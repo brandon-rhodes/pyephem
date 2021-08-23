@@ -65,5 +65,3 @@ m (double t, double k, double *mj)
 	*mj = a + b;
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: moonnf.c,v $ $Date: 2003/03/20 08:50:15 $ $Revision: 1.1 $ $Name:  $"};

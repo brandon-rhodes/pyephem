@@ -96,5 +96,3 @@ double *lsts, double *azr, double *azs, int *status)
 	*status = 0;
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: riset.c,v $ $Date: 2003/03/20 08:51:37 $ $Revision: 1.3 $ $Name:  $"};

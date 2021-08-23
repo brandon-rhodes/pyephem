@@ -377,5 +377,3 @@ float *dec, float *mdp, float *ti, float *gv)
      return (E0000(wmmdat,1,NULL,alt,glat,glon,t,dec,mdp,ti,gv));
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: magdecl.c,v $ $Date: 2004/10/12 15:21:48 $ $Revision: 1.6 $ $Name:  $"};

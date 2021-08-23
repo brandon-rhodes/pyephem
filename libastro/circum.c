@@ -856,6 +856,3 @@ h_albsize (double H)
 {
 	return (3600*raddeg(.707*1500*pow(2.51,(18-H)/2)/MAU));
 }
-
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: circum.c,v $ $Date: 2004/11/25 20:49:44 $ $Revision: 1.18 $ $Name:  $"};

@@ -47,5 +47,3 @@ heliocorr (double jd, double ra, double dec, double *hcp)
 	*hcp = 0.0057755 * (cdec*cra*X + (cdec*sra + tan(e)*sdec)*Y);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: helio.c,v $ $Date: 2003/03/20 08:51:37 $ $Revision: 1.3 $ $Name:  $"};

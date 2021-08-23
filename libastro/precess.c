@@ -138,5 +138,3 @@ double *ra, double *dec)	/* ra/dec for mjd1 in, for mjd2 out */
 }
 #endif
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: precess.c,v $ $Date: 2003/03/20 08:51:37 $ $Revision: 1.4 $ $Name:  $"};
