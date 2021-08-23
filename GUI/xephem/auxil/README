@@ -34,6 +34,3 @@ uranus.9910	BDL Uranus moon model, 1999-2010
 wmm.cof		magnetic declination model
 xephem_sites	Earth sites table
 xephem_skyhist	sample sky view history
-
-! For RCS Only -- Do Not Edit
-! @(#) $RCSfile: README,v $ $Date: 2005/08/02 02:04:09 $ $Revision: 1.8 $ $Name:  $

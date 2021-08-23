@@ -169,6 +169,3 @@ true ephemerides and is intended primarily to be easy to parse and be
 
 * Only if outputmode includes 2 or 4 (requires lat/long/elev with input)
 ^ Blank unless Class is G or H for galaxy.
-
-For RCS Only -- Do Not Edit
-@(#) $RCSfile: README,v $ $Date: 2003/12/05 06:27:38 $ $Revision: 1.6 $ $Name:  $
