@@ -91,5 +91,3 @@ if ($E < 1) {
 	$name, $MN, $DY+$HR/24, $YR, $i, $o, $q, $O, $D, $g, $k;
 }
 
-# For RCS Only -- Do Not Edit
-# @(#) $RCSfile: encke2edb.pl,v $ $Date: 1996/10/11 14:47:17 $ $Revision: 1.1 $ $Name:  $

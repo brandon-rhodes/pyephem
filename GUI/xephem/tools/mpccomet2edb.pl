@@ -132,5 +132,3 @@ sub usage
     exit 1;
 }
 
-# For RCS Only -- Do Not Edit
-# @(#) $RCSfile: mpccomet2edb.pl,v $ $Date: 2000/06/30 17:14:43 $ $Revision: 1.3 $ $Name:  $

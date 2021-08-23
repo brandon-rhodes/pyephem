@@ -67,5 +67,3 @@ clean :
 	 del *.o;*
 	del *.olb;*
 
-# For RCS Only -- Do Not Edit
-# @(#) $RCSfile: descrip.mms,v $ $Date: 2005/07/27 21:29:35 $ $Revision: 1.1 $ $Name:  $

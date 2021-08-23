@@ -261,5 +261,3 @@ sub fetch
     $fetchok = 1;
 }
 
-# For RCS Only -- Do Not Edit
-# @(#) $RCSfile: mpcorb2edb.pl,v $ $Date: 2014/07/11 02:46:32 $ $Revision: 1.3 $ $Name:  $

@@ -456,5 +456,3 @@ $cgi_lib'filepre    =  $cgi_lib'filepre;
 1; #return true 
 
 
-# For RCS Only -- Do Not Edit
-# @(#) $RCSfile: cgi-lib.pl,v $ $Date: 1998/03/12 02:30:12 $ $Revision: 1.1 $ $Name:  $

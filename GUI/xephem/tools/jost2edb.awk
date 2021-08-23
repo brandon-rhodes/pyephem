@@ -55,5 +55,3 @@
 	}
 }
 
-# For RCS Only -- Do Not Edit
-# @(#) $RCSfile: jost2edb.awk,v $ $Date: 1998/04/30 02:19:21 $ $Revision: 1.1 $ $Name:  $

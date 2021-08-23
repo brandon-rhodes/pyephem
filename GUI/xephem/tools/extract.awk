@@ -638,5 +638,3 @@ rm $AWKTYPEOUT
 
 
 
-# For RCS Only -- Do Not Edit
-# @(#) $RCSfile: extract.awk,v $ $Date: 1996/08/26 19:40:53 $ $Revision: 1.1 $ $Name:  $

@@ -40,5 +40,3 @@ clobber:
 	touch x.o x.a
 	rm -f *.o *.a core liltest
 
-# For RCS Only -- Do Not Edit
-# @(#) $RCSfile: Makefile,v $ $Date: 2006/02/24 03:37:19 $ $Revision: 1.11 $ $Name:  $

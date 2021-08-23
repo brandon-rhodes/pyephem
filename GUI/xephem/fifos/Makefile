@@ -17,5 +17,3 @@ xephem_in_fifo:
 xephem_out_fifo:
 	mkfifo -m 0666 $@
 
-# For RCS Only -- Do Not Edit
-# @(#) $RCSfile: Makefile,v $ $Date: 2000/12/03 00:24:35 $ $Revision: 1.2 $ $Name:  $

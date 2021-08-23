@@ -168,5 +168,3 @@ clean :
 	del *.obj;*
 
 
-# For RCS Only -- Do Not Edit
-# @(#) $RCSfile: descrip.mms,v $ $Date: 2006/02/08 09:12:15 $ $Revision: 1.5 $ $Name:  $

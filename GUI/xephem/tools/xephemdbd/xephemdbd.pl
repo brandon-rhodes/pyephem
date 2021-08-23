@@ -268,5 +268,3 @@ sub afon {
     select ((select(@_[0]), $| = 1)[0]);
 }
 
-# For RCS Only -- Do Not Edit
-# @(#) $RCSfile: xephemdbd.pl,v $ $Date: 2003/12/05 06:27:38 $ $Revision: 1.5 $ $Name:  $

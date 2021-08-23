@@ -88,5 +88,3 @@ libastro.olb : $(OBJS)
 clean :
 	del *.o;*
 
-# For RCS Only -- Do Not Edit
-# @(#) $RCSfile: descrip.mms,v $ $Date: 2005/07/27 21:28:40 $ $Revision: 1.1 $ $Name:  $

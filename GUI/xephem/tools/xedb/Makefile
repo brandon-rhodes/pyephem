@@ -23,5 +23,3 @@ clean:
 	touch x.o
 	rm -f *.o xedb
 
-# For RCS Only -- Do Not Edit
-# @(#) $RCSfile: Makefile,v $ $Date: 2002/03/07 18:47:58 $ $Revision: 1.6 $ $Name:  $

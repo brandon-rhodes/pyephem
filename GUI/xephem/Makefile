@@ -207,5 +207,3 @@ clean:
 clobber: clean
 	rm -fr xephem xephem.1
 
-# For RCS Only -- Do Not Edit
-# @(#) $RCSfile: Makefile,v $ $Date: 2015/08/09 21:36:36 $ $Revision: 1.54 $ $Name:  $

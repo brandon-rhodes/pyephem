@@ -257,5 +257,3 @@ sub fetch
     $fetchok = 1;
 }
 
-# For RCS Only -- Do Not Edit
-# @(#) $RCSfile: astorb2edb.pl,v $ $Date: 2014/07/07 01:45:10 $ $Revision: 1.1 $ $Name:  $

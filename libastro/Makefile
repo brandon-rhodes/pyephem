@@ -92,5 +92,3 @@ libastro.so: $(HS) $(OBJS)
 clobber:
 	rm -f *.o libastro.a
 
-# For RCS Only -- Do Not Edit
-# @(#) $RCSfile: Makefile,v $ $Date: 2006/02/24 03:37:19 $ $Revision: 1.30 $ $Name:  $

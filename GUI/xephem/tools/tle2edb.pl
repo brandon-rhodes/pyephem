@@ -136,5 +136,3 @@ sub chksum
     return (($sum % 10) == $c);
 }
 
-# For RCS Only -- Do Not Edit
-# @(#) $RCSfile: tle2edb.pl,v $ $Date: 2000/09/26 23:33:09 $ $Revision: 1.3 $ $Name:  $

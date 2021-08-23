@@ -21,5 +21,3 @@ lx200xed.tar.gz: $(TARS)
 clobber:
 	rm -f $(OBJS) lx200xed
 
-# For RCS Only -- Do Not Edit
-# @(#) $RCSfile: Makefile,v $ $Date: 2000/11/27 21:55:46 $ $Revision: 1.1 $ $Name:  $

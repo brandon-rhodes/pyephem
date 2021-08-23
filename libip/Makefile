@@ -45,5 +45,3 @@ libip.so:    $(OBJS)
 clobber:
 	rm -f *.o libip.a
 
-# For RCS Only -- Do Not Edit
-# @(#) $RCSfile: Makefile,v $ $Date: 2006/02/27 13:24:29 $ $Revision: 1.11 $ $Name:  $

@@ -35,5 +35,3 @@ clobber:
 	rm -f *.o xephemdbd
 
 
-# For RCS Only -- Do Not Edit
-# @(#) $RCSfile: Makefile,v $ $Date: 2003/12/05 06:27:38 $ $Revision: 1.5 $ $Name:  $
