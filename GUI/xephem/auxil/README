@@ -12,10 +12,10 @@ dearth.gif	daytime earth image
 eyepieces.epl	sample eyepiece placement file
 eyepieces.eyp	sample eyepiece definition file
 favorites.fav	sample favorite objects file
-jupiter.9910	BDL Jupiter moon model, 1999-2010
+jupiter.*	BDL Jupiter moon model files
 jupitermap.gif	Jupiter image
 logo.gif	banner logo image
-mars.9910	BDL Mars moon model, 1999-2010
+mars.*		BDL Mars moon model files
 mars_db		Martian surface features
 marsmap.jpg	Mars image
 moon.fts	Full moon image
@@ -28,9 +28,9 @@ saturn10.gif	Saturn image with rings tilted 10 degrees
 saturn16.gif	Saturn image with rings tilted 16 degrees
 saturn20.gif	Saturn image with rings tilted 20 degrees
 saturn24.gif	Saturn image with rings tilted 24 degrees
-saturne.9910	BDL Saturn moon model, 1999-2010
+saturne.*	BDL Saturn moon model files
 starcensus.txt	AAVSO star names list
-uranus.9910	BDL Uranus moon model, 1999-2010
+uranus.*	BDL Uranus moon model files
 wmm.cof		magnetic declination model
 xephem_sites	Earth sites table
 xephem_skyhist	sample sky view history
