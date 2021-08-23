@@ -77,6 +77,3 @@ extern XPoint *XRotTextExtents();
 
 
 
-/* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: rotated.h,v $ $Date: 2003/03/17 07:26:21 $ $Revision: 1.2 $ $Name:  $
- */

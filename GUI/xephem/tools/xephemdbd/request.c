@@ -427,5 +427,3 @@ edb_report (Now *np, Obj *op)
 	printf ("%s\n", line);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: request.c,v $ $Date: 2006/12/24 20:08:26 $ $Revision: 1.8 $ $Name:  $"};

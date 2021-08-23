@@ -86,5 +86,3 @@ void main(int argc, char **argv) {
 }
 #endif
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: thetag.c,v $ $Date: 2000/10/07 05:12:17 $ $Revision: 1.3 $ $Name:  $"};

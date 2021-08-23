@@ -544,5 +544,3 @@ int m, f, nd;
 	    f_showit (d_w[di], fms);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: calmenu.c,v $ $Date: 2009/01/05 20:55:54 $ $Revision: 1.21 $ $Name:  $"};

@@ -445,5 +445,3 @@ int nnew;
 	return (0);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: gscnet.c,v $ $Date: 2010/10/06 21:12:16 $ $Revision: 1.22 $ $Name:  $"};

@@ -3380,5 +3380,3 @@ xmlv1()
         fprintf (swfp, "<?xml version='1.0'?>\n");
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: indimenu.c,v $ $Date: 2014/02/03 01:41:23 $ $Revision: 1.83 $ $Name:  $"};

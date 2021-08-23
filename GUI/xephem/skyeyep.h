@@ -24,8 +24,4 @@ extern int se_isOneHere (int aamode, double azra, double altdec);
 extern void se_del (int aamode, double azra, double altdec);
 
 
-/* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: skyeyep.h,v $ $Date: 2011/05/16 02:32:23 $ $Revision: 1.6 $ $Name:  $
- */
-
 #endif /* _SKYEPEP_H */

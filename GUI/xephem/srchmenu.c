@@ -1115,5 +1115,3 @@ double *tmincp;
 	}
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: srchmenu.c,v $ $Date: 2008/01/31 16:40:52 $ $Revision: 1.25 $ $Name:  $"};

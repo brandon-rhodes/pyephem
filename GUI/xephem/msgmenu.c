@@ -326,5 +326,3 @@ XtPointer call;
 	XtPopdown (alert_w);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: msgmenu.c,v $ $Date: 2012/11/23 05:36:46 $ $Revision: 1.15 $ $Name:  $"};

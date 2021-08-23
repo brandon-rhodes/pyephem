@@ -437,5 +437,3 @@ nut_eq (double mj, double *ra, double *dec)
 	if (*ra < 0.) *ra += 2.*PI;		/* make positive for display */
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: nutation.c,v $ $Date: 2003/03/20 08:51:37 $ $Revision: 1.4 $ $Name:  $"};

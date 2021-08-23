@@ -221,6 +221,3 @@ int lx200_set_lib_emulate(int, int);
 
 
 
-/* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: liblx200.h,v $ $Date: 2001/12/09 08:18:09 $ $Revision: 1.3 $ $Name:  $
- */

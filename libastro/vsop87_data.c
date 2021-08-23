@@ -6984,5 +6984,3 @@ int vn_venus[][3] = {
 };
 
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: vsop87_data.c,v $ $Date: 1997/05/19 18:21:42 $ $Revision: 1.1 $ $Name:  $"};

@@ -488,5 +488,3 @@ doreg()
 	sf_newFITS (d, "registered.fts", 0);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: imregmenu.c,v $ $Date: 2005/11/27 16:19:25 $ $Revision: 1.6 $ $Name:  $"};

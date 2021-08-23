@@ -220,5 +220,3 @@ txt_riset (Now *np, Obj *op)
 }
 
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: print.c,v $ $Date: 2003/04/18 07:36:48 $ $Revision: 1.2 $ $Name:  $"};

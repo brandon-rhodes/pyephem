@@ -914,5 +914,3 @@ char *how;
 	return (fp);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: skyhist.c,v $ $Date: 2012/07/07 18:04:42 $ $Revision: 1.40 $ $Name:  $"};

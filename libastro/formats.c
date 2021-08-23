@@ -208,5 +208,3 @@ int *y)
 	}
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: formats.c,v $ $Date: 2006/04/10 09:00:06 $ $Revision: 1.17 $ $Name:  $"};

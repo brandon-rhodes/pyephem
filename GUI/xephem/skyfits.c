@@ -1649,5 +1649,3 @@ char *fn;
 	return (!stat (fn, &st) && (st.st_mode & S_IFIFO));
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: skyfits.c,v $ $Date: 2010/10/23 02:59:13 $ $Revision: 1.66 $ $Name:  $"};

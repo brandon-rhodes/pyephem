@@ -50,5 +50,3 @@ parallacticLHD (double lt, double ha, double dec)
 	return (B);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: parallactic.c,v $ $Date: 2003/06/30 04:23:36 $ $Revision: 1.4 $ $Name:  $"};

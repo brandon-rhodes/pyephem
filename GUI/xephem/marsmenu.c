@@ -2989,5 +2989,3 @@ double *pap;
 						* cos(marsop->s_gaera-POLE_RA));
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: marsmenu.c,v $ $Date: 2009/01/05 20:55:54 $ $Revision: 1.78 $ $Name:  $"};

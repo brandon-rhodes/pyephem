@@ -1779,5 +1779,3 @@ se_loadPos(char *fn)
 	sv_all (mm_get_now());
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: skyeyep.c,v $ $Date: 2011/05/16 02:32:23 $ $Revision: 1.32 $ $Name:  $"};

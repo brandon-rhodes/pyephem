@@ -1235,5 +1235,3 @@ lx200_set_lib_emulate(int fEmulate, int iMode)
    return(LX200_TRUE);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: liblx200.c,v $ $Date: 2002/01/04 17:36:52 $ $Revision: 1.8 $ $Name:  $"};

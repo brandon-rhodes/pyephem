@@ -907,5 +907,3 @@ writePNG (char *fn, unsigned char *raster, unsigned int w, unsigned int h)
 	return (0);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: moviemenu.c,v $ $Date: 2009/01/05 20:55:54 $ $Revision: 1.10 $ $Name:  $"};

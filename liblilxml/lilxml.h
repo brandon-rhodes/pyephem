@@ -109,8 +109,4 @@ extern void xmlMalloc (void *(*newmalloc)(size_t size),
 	delLilXML (lp);
  */
 
-/* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: lilxml.h,v $ $Date: 2006/05/27 17:37:34 $ $Revision: 1.21 $ $Name:  $
- */
-
 #endif	/* LILXML_H */

@@ -46,5 +46,3 @@ brightWalk (ImRegion *rp, int walk[8], int *bx, int *by)
 	*by = (im - rp->im)/rp->iw;
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: walk.c,v $ $Date: 2001/10/03 08:26:37 $ $Revision: 1.2 $ $Name:  $"};

@@ -27,8 +27,4 @@ extern int dm_colHeader (DMCol c, char str[]);
 extern int dm_colFormat (Now *np, Obj *op, RiseSet *rp, DMCol c, char *str);
 
 
-/* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: dm.h,v $ $Date: 2013/01/06 01:27:18 $ $Revision: 1.10 $ $Name:  $
- */
-
 #endif /* _DM_H */

@@ -756,5 +756,3 @@ double *ypix;
   return 0;
 }  /* end xypix */
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: wcs.c,v $ $Date: 2005/04/09 21:13:22 $ $Revision: 1.4 $ $Name:  $"};

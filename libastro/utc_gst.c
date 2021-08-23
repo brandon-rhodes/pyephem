@@ -91,5 +91,3 @@ main(argc, argv)
 }
 #endif
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: utc_gst.c,v $ $Date: 2003/03/20 08:51:37 $ $Revision: 1.3 $ $Name:  $"};

@@ -483,5 +483,3 @@ XtPointer call;
 	}
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: preferences.c,v $ $Date: 2009/01/05 20:55:54 $ $Revision: 1.20 $ $Name:  $"};

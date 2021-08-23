@@ -387,5 +387,3 @@ DBMem *dmp;
 	dmp->nmem = 0;
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: db.c,v $ $Date: 2004/06/21 02:48:15 $ $Revision: 1.5 $ $Name:  $"};

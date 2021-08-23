@@ -74,5 +74,3 @@ double *om)	/* resultant long of ascending node, rads */
 	    *inc = 1.570796327-asin((cinc*ceta)+(sinc*seta*cot));
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: reduce.c,v $ $Date: 2003/03/28 10:23:35 $ $Revision: 1.4 $ $Name:  $"};

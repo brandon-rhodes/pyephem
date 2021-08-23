@@ -1012,5 +1012,3 @@ main (int ac, char *av[])
 }
 #endif
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: lilxml.c,v $ $Date: 2007/01/03 07:26:12 $ $Revision: 1.44 $ $Name:  $"};

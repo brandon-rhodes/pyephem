@@ -191,5 +191,3 @@ unsigned char g[256], unsigned char b[256], char why[])
 	return (retBuffer);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: jpeg2pm.c,v $ $Date: 2004/01/10 05:33:23 $ $Revision: 1.3 $ $Name:  $"};

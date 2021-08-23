@@ -731,5 +731,3 @@ Widget w;
 	block_vchg--;
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: coordsmenu.c,v $ $Date: 2011/05/16 02:32:23 $ $Revision: 1.20 $ $Name:  $"};

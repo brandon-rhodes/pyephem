@@ -864,5 +864,3 @@ fromINDIValue (double indiv, Widget m_w, Widget b_w)
 	return (localv);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: scope.c,v $ $Date: 2011/09/23 01:52:39 $ $Revision: 1.28 $ $Name:  $"};

@@ -1183,5 +1183,3 @@ FITS32to16 (FImage *fip)
 	setIntFITS (fip, "BITPIX", fip->bitpix, "Bits per pixel");
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: fits.c,v $ $Date: 2009/03/26 02:24:24 $ $Revision: 1.8 $ $Name:  $"};

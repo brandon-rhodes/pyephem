@@ -628,5 +628,3 @@ setTrLevel()
 	    trlevel = atoi (ev);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: fsmatch.c,v $ $Date: 2009/01/05 20:55:16 $ $Revision: 1.13 $ $Name:  $"};

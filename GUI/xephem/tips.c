@@ -397,5 +397,3 @@ tip_sort ()
 	tips_sorted = 1;
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: tips.c,v $ $Date: 2009/01/05 20:55:54 $ $Revision: 1.14 $ $Name:  $"};

@@ -663,5 +663,3 @@ trace(int iLevel, char *szpFormat, char *szpArg)
    }
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: lx200xed.c,v $ $Date: 2004/04/20 03:58:44 $ $Revision: 1.18 $ $Name:  $"};

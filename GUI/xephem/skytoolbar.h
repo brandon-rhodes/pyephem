@@ -65,8 +65,4 @@ extern void si_updateContrast (int on);
 extern void si_updateSlice (int on);
 extern void si_updateGlass (int on);
 
-/* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: skytoolbar.h,v $ $Date: 2008/08/17 20:18:31 $ $Revision: 1.21 $ $Name:  $
- */
-
 #endif /* _SKYTOOLBAR_H */

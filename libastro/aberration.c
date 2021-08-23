@@ -157,5 +157,3 @@ ab_aux (double mj, double *x, double *y, double lsn, int mode)
 	} /* switch (mode) */
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: aberration.c,v $ $Date: 2006/08/28 00:22:26 $ $Revision: 1.6 $ $Name:  $"};

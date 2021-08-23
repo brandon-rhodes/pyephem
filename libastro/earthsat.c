@@ -788,5 +788,3 @@ InitOrbitRoutines(double EpochDay, int AtEod)
     CosPenumbra = sqrt(1-SQR(SinPenumbra));
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: earthsat.c,v $ $Date: 2015/04/08 23:36:35 $ $Revision: 1.14 $ $Name:  $"};

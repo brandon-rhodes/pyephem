@@ -23,8 +23,4 @@ extern void sites_abbrev (char *full, char ab[], int maxn);
 
 
 
-/* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: sites.h,v $ $Date: 2003/05/28 23:56:19 $ $Revision: 1.8 $ $Name:  $
- */
-
 #endif /* _SITES_H */

@@ -239,5 +239,3 @@ ellipse_hyperbola:
  
 } /* vrc */
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: twobody.c,v $ $Date: 2004/04/20 04:17:08 $ $Revision: 1.3 $ $Name:  $"};

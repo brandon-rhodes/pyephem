@@ -1224,5 +1224,3 @@ FILE *fp;
 	watch_cursor(0);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: closemenu.c,v $ $Date: 2004/03/16 18:44:38 $ $Revision: 1.19 $ $Name:  $"};

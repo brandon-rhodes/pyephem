@@ -187,5 +187,3 @@ clampRegion (ImRegion *rp)
 	return (0);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: stats.c,v $ $Date: 2004/05/20 06:02:24 $ $Revision: 1.6 $ $Name:  $"};

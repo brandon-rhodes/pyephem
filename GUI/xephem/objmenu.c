@@ -1114,5 +1114,3 @@ obj_setnames()
 	}
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: objmenu.c,v $ $Date: 2013/03/02 02:57:08 $ $Revision: 1.55 $ $Name:  $"};

@@ -52,8 +52,4 @@ extern void svh_add_current(void);
 extern int svh_nhist(void);
 
 
-/* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: skyhist.h,v $ $Date: 2012/07/07 18:04:42 $ $Revision: 1.13 $ $Name:  $
- */
-
 #endif /* _SKYHIST_H */

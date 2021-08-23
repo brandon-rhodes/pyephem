@@ -995,5 +995,3 @@ x_quit()
 	}
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: xephem.c,v $ $Date: 2013/01/14 01:04:24 $ $Revision: 1.114 $ $Name:  $"};

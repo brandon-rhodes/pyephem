@@ -63,5 +63,3 @@ void main() {
 
 #endif /* 0 */
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: actan.c,v $ $Date: 2001/01/10 16:32:21 $ $Revision: 1.3 $ $Name:  $"};

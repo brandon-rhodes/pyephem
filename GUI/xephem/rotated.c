@@ -1577,5 +1577,3 @@ XPoint *XRotTextExtents(dpy, font, angle, x, y, text, align)
 
 
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: rotated.c,v $ $Date: 2003/10/08 03:17:57 $ $Revision: 1.5 $ $Name:  $"};

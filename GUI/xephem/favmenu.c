@@ -856,5 +856,3 @@ srchRealDB (char *name)
 	return (op);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: favmenu.c,v $ $Date: 2012/10/06 02:19:35 $ $Revision: 1.29 $ $Name:  $"};

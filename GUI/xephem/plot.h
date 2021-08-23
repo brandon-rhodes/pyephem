@@ -27,6 +27,3 @@ typedef struct {
     int win_minx, win_maxx, win_miny, win_maxy;
 } DrawInfo;
 
-/* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: plot.h,v $ $Date: 2012/12/30 17:01:02 $ $Revision: 1.2 $ $Name:  $
- */

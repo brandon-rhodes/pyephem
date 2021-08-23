@@ -1112,5 +1112,3 @@ help_cb (Widget w, XtPointer client, XtPointer call)
 
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: fsmenu.c,v $ $Date: 2009/01/05 20:55:54 $ $Revision: 1.33 $ $Name:  $"};

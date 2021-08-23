@@ -233,5 +233,3 @@ int nl,nh;
 	free((char*) (v+nl));
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: lstsqr.c,v $ $Date: 2001/12/19 21:29:48 $ $Revision: 1.3 $ $Name:  $"};

@@ -4095,5 +4095,3 @@ skyview_newres()
 	svbs_newres();
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: saveres.c,v $ $Date: 2012/08/17 01:53:59 $ $Revision: 1.129 $ $Name:  $"};

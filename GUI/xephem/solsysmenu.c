@@ -2376,5 +2376,3 @@ mk_gcs()
 	get_views_font (XtD, &efsp);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: solsysmenu.c,v $ $Date: 2009/08/04 03:04:42 $ $Revision: 1.47 $ $Name:  $"};

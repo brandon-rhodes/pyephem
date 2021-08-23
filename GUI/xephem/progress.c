@@ -311,5 +311,3 @@ make_gc()
 	get_something (pm_da, XmNbackground, (XtArgVal)&pm_bgpix);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: progress.c,v $ $Date: 2009/01/05 20:55:54 $ $Revision: 1.17 $ $Name:  $"};

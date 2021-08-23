@@ -533,5 +533,3 @@ v_define_gc()
 	v_gc = XCreateGC (dsp, win, 0L, NULL);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: versionmenu.c,v $ $Date: 2005/08/24 21:30:19 $ $Revision: 1.35 $ $Name:  $"};

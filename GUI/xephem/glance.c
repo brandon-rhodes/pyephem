@@ -1212,5 +1212,3 @@ ng_ano (double *fracx, double *fracy, int *xp, int *yp, int w2x, int arg)
 	return (1);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: glance.c,v $ $Date: 2013/01/06 01:27:18 $ $Revision: 1.50 $ $Name:  $"};

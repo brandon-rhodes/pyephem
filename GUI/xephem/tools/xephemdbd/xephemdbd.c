@@ -405,5 +405,3 @@ new_process (char *req)
 	/* parent just resumes */
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: xephemdbd.c,v $ $Date: 2003/12/05 06:27:38 $ $Revision: 1.6 $ $Name:  $"};

@@ -1280,5 +1280,3 @@ int x, y;
 	XPSRotDrawAlignedString (dsp, tr_fs, a, mag, win, gc, x, y, bp, align);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: trailmenu.c,v $ $Date: 2008/03/25 01:16:16 $ $Revision: 1.29 $ $Name:  $"};

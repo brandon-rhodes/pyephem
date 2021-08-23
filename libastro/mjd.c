@@ -252,5 +252,3 @@ radecrange (double *ra, double *dec)
 	range (ra, 2*PI);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: mjd.c,v $ $Date: 2003/03/20 08:51:37 $ $Revision: 1.6 $ $Name:  $"};

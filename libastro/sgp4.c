@@ -397,5 +397,3 @@ sgp4(SatData *sat, Vec3 *pos, Vec3 *dpos, double TSINCE)
    dpos->z = RDOTK * UZ + RFDOTK * VZ;
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: sgp4.c,v $ $Date: 2012/10/01 00:05:23 $ $Revision: 1.5 $ $Name:  $"};

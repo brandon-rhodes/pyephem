@@ -166,8 +166,4 @@ extern void brightWalk (ImRegion *rp, int scan[8], int *bx, int *by);
 extern int RADec2xy(FImage *fip, double ra, double dec, double *xp, double *yp);
 extern int xy2RADec(FImage *fip, double x, double y, double *rap, double *decp);
 
-/* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: ip.h,v $ $Date: 2005/11/18 13:42:24 $ $Revision: 1.11 $ $Name:  $
- */
-
 #endif /* _IP_H */

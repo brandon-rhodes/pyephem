@@ -64,8 +64,4 @@ extern void toRGB (double h, double s, double v, double *rp, double *gp,
 				 */
 #define	AROWY(r)	(72 + (ANNOT_PTSZ+1)*(r))
 
-/* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: ps.h,v $ $Date: 2006/05/07 02:11:52 $ $Revision: 1.11 $ $Name:  $
- */
-
 #endif /* _PS_H */

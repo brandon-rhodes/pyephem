@@ -38,5 +38,3 @@ double *aha, double *adec)
 	range (aha, 2*PI);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: parallax.c,v $ $Date: 2003/03/20 08:51:37 $ $Revision: 1.3 $ $Name:  $"};

@@ -8363,5 +8363,3 @@ MRegion ereg[] = {
 
 int nereg = (sizeof(ereg)/sizeof(ereg[0]));
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: earthmap.c,v $ $Date: 1999/02/22 05:14:13 $ $Revision: 1.2 $ $Name:  $"};

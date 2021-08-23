@@ -320,5 +320,3 @@ gauss2d (Gaussian *hgp, Gaussian *vgp, int x, int y)
 	                                 sqr((y-vgp->m)/vgp->s))));
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: stars.c,v $ $Date: 2002/01/15 19:48:27 $ $Revision: 1.7 $ $Name:  $"};

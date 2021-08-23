@@ -1244,5 +1244,3 @@ oll_info_eh (Widget w, XtPointer client, XEvent *ev, Boolean *c_to_dispatch)
 	sv_point(&o);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: obslog.c,v $ $Date: 2015/08/09 21:47:00 $ $Revision: 1.24 $ $Name:  $"};

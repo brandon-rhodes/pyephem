@@ -671,5 +671,3 @@ static int gifError(pinfo, st)
   return 0;
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: explodegif.c,v $ $Date: 2009/01/05 20:55:16 $ $Revision: 1.3 $ $Name:  $"};

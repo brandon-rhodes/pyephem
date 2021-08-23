@@ -64,5 +64,3 @@ as_ap (Now *np, double Mjd, double *rap, double *decp)
 	*decp = o.s_dec;
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: ap_as.c,v $ $Date: 2006/08/28 00:20:58 $ $Revision: 1.8 $ $Name:  $"};

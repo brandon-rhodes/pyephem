@@ -786,5 +786,3 @@ dpper(SatData *sat, double *EM, double *XINC, double *OMGASM,
 }
 /*       END */
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: deep.c,v $ $Date: 2000/09/25 19:43:03 $ $Revision: 1.2 $ $Name:  $"};

@@ -2333,5 +2333,3 @@ haloCache (Display *dsp, Pixel p)
 	return (hcache[nhcache++].hp);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: ps.c,v $ $Date: 2006/08/21 09:18:56 $ $Revision: 1.67 $ $Name:  $"};

@@ -1209,5 +1209,3 @@ GSCEntry *ep;
 	fwrite (buf, 1, 2, fp);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: gsc.c,v $ $Date: 2004/05/14 02:14:28 $ $Revision: 1.11 $ $Name:  $"};

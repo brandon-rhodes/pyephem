@@ -941,5 +941,3 @@ dupsort (void)
 }
 
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: db.c,v $ $Date: 2010/01/18 01:47:02 $ $Revision: 1.46 $ $Name:  $"};

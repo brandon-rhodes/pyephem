@@ -3615,5 +3615,3 @@ XtPointer call;
 	hlp_dialog ("SkyIP_WCS", msg, sizeof(msg)/sizeof(msg[0]));
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: skyip.c,v $ $Date: 2012/11/23 04:14:01 $ $Revision: 1.43 $ $Name:  $"};

@@ -39,7 +39,6 @@
 
 #ifdef REV_INFO
 #ifndef lint
-static char *rcsidRowColumnIH = "$XConsortium: RowColumnI.h /main/6 1996/08/15 17:26:22 pascale $";
 #endif
 #endif
 

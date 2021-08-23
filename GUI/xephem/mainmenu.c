@@ -2730,5 +2730,3 @@ static char *hlp[] = {
         hlp_dialog ("ExternalInput", hlp, XtNumber(hlp));
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: mainmenu.c,v $ $Date: 2014/07/15 02:11:33 $ $Revision: 1.91 $ $Name:  $"};

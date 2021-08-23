@@ -827,5 +827,3 @@ lst_hdr ()
 	fflush (lst_fp); /* to allow monitoring */
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: listmenu.c,v $ $Date: 2009/01/05 20:55:54 $ $Revision: 1.23 $ $Name:  $"};

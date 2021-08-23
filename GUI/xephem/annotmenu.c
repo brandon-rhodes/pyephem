@@ -1086,5 +1086,3 @@ ano_save (char *fn)
 	fclose (fp);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: annotmenu.c,v $ $Date: 2015/04/09 00:19:20 $ $Revision: 1.22 $ $Name:  $"};

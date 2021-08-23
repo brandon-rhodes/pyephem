@@ -114,5 +114,3 @@ main (int ac, char *av[])
 }
 #endif
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: median.c,v $ $Date: 2001/12/04 00:45:54 $ $Revision: 1.3 $ $Name:  $"};

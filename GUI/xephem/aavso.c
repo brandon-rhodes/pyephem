@@ -847,5 +847,3 @@ fetchAndShow()
 	XtSetValues (avgrl_w, args, n);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: aavso.c,v $ $Date: 2010/10/06 21:12:16 $ $Revision: 1.21 $ $Name:  $"};

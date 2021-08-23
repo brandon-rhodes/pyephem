@@ -216,5 +216,3 @@ any_ison()
 	return (srch_ison() || plot_ison() || listing_ison());
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: broadcast.c,v $ $Date: 2007/07/09 18:22:45 $ $Revision: 1.31 $ $Name:  $"};

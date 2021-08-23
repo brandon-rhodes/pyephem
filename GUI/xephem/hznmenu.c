@@ -786,5 +786,3 @@ main (int ac, char *av[])
 
 #endif	/* TEST_MAIN */
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: hznmenu.c,v $ $Date: 2004/05/10 23:36:34 $ $Revision: 1.21 $ $Name:  $"};

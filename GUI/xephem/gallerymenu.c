@@ -675,6 +675,4 @@ trimws (char *s)
 	return (s0);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: gallerymenu.c,v $ $Date: 2005/10/15 13:12:59 $ $Revision: 1.25 $ $Name:  $"};
 

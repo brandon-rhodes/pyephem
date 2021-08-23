@@ -1052,5 +1052,3 @@ moreSites()
 	return (&sites[nsites++]);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: sites.c,v $ $Date: 2006/08/21 20:04:30 $ $Revision: 1.27 $ $Name:  $"};

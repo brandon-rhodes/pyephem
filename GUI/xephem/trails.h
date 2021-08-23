@@ -112,8 +112,4 @@ extern void tr_newres (void);
 extern void tr_setres (char *name, TrState *state);
 extern void tr_getres (char *name, TrState *state);
 
-/* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: trails.h,v $ $Date: 2008/03/21 20:12:11 $ $Revision: 1.6 $ $Name:  $
- */
-
 #endif /* _TRAILS_H */

@@ -212,5 +212,3 @@ gauss2fit (ImRegion *rp, Gaussian *hgp, Gaussian *vgp)
 	return (0);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: gaussfit.c,v $ $Date: 2002/01/03 19:34:12 $ $Revision: 1.4 $ $Name:  $"};

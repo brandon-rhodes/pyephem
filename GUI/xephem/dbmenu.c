@@ -795,5 +795,3 @@ dbhdr_close_cb (Widget w, XtPointer client, XtPointer call)
 	    XtUnmanageChild (dbf_w);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: dbmenu.c,v $ $Date: 2005/04/27 17:04:59 $ $Revision: 1.48 $ $Name:  $"};

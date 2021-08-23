@@ -50,8 +50,4 @@ extern void si_win2im (int winx, int winy, int winw, int winh,
 extern void siwcs_manage (void);
 extern void siwcs_unmanage (void);
 
-/* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: skyip.h,v $ $Date: 2005/11/18 13:42:59 $ $Revision: 1.4 $ $Name:  $
- */
-
 #endif /* _SKYIP_H */

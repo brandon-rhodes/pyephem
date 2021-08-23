@@ -597,5 +597,3 @@ bs_annotate (Now *np)
 	XtFree (tcpy);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: skybinary.c,v $ $Date: 2004/06/17 15:19:53 $ $Revision: 1.12 $ $Name:  $"};

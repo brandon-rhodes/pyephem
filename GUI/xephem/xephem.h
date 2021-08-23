@@ -456,6 +456,3 @@ extern void wtip (Widget w, char *tip);
 
 #endif /* _XEPHEM_H */
 
-/* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: xephem.h,v $ $Date: 2012/12/30 17:01:02 $ $Revision: 1.63 $ $Name:  $
- */

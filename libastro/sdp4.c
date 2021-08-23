@@ -426,5 +426,3 @@ sdp4 (SatData *sat, Vec3 *pos, Vec3 *dpos, double TSINCE)
       END */
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: sdp4.c,v $ $Date: 2002/12/26 05:43:07 $ $Revision: 1.5 $ $Name:  $"};

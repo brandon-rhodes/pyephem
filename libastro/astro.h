@@ -805,6 +805,3 @@ extern int vsop87 (double m, int obj, double prec, double *ret);
 
 #endif /* _ASTRO_H */
 
-/* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: astro.h,v $ $Date: 2013/01/06 01:12:57 $ $Revision: 1.33 $ $Name:  $
- */

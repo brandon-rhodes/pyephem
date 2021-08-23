@@ -16,8 +16,4 @@
 extern void sl_manage(void);
 extern void sl_unmanage(void);
 
-/* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: skylist.h,v $ $Date: 2003/05/02 04:36:21 $ $Revision: 1.6 $ $Name:  $
- */
-
 #endif /* _SKYLIST_H */

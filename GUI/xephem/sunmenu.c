@@ -1208,6 +1208,4 @@ carrington(Now *np)
 	return ((1./27.2753)*((mjd+MJD0)-2398167.0) + 1.0);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: sunmenu.c,v $ $Date: 2012/03/07 01:10:15 $ $Revision: 1.23 $ $Name:  $"};
 

@@ -1210,5 +1210,3 @@ XtPointer call;
 	si_updateSlice(slice_on);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: skytoolbar.c,v $ $Date: 2008/08/17 20:18:31 $ $Revision: 1.57 $ $Name:  $"};

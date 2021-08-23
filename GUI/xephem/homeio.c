@@ -245,5 +245,3 @@ return (sys_errlist[errno]);
 #endif
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: homeio.c,v $ $Date: 2005/03/05 06:55:58 $ $Revision: 1.24 $ $Name:  $"};

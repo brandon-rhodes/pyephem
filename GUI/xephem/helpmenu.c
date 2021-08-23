@@ -284,5 +284,3 @@ runCmd (char *cmd)
 	/* N.B. we depend on SIGCHLD/reapchildren() in main to avoid zombies */
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: helpmenu.c,v $ $Date: 2004/03/16 18:44:38 $ $Revision: 1.25 $ $Name:  $"};

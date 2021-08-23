@@ -420,5 +420,3 @@ int w;
 	return (ovl.width);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: plot_aux.c,v $ $Date: 2012/12/30 17:01:02 $ $Revision: 1.12 $ $Name:  $"};

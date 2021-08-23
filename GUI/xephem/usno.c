@@ -412,5 +412,3 @@ addGS (StarArray *sap, FieldStar *fsp)
 	return (0);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: usno.c,v $ $Date: 2004/05/05 17:43:32 $ $Revision: 1.15 $ $Name:  $"};

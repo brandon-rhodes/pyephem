@@ -15,8 +15,4 @@ typedef struct {
     int nmcp;		/* number of entries in mcp[] */
 } MRegion;
 
-/* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: map.h,v $ $Date: 2003/03/17 07:26:21 $ $Revision: 1.2 $ $Name:  $
- */
-
 #endif /* _MAP_H */

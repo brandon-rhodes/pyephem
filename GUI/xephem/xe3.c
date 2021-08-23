@@ -460,5 +460,3 @@ fopenh (char *name, char *how)
 
 #endif
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: xe3.c,v $ $Date: 2009/01/05 21:44:18 $ $Revision: 1.5 $ $Name:  $"};

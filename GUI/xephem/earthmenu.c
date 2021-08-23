@@ -5403,5 +5403,3 @@ e_plotGreatCircle (unsigned d, unsigned wb, unsigned hb, double lt, double lg)
 }
 
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: earthmenu.c,v $ $Date: 2012/11/23 04:15:23 $ $Revision: 1.116 $ $Name:  $"};

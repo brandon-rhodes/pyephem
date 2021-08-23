@@ -123,5 +123,3 @@ int rtcflag;	/* relative since set mjd0 */
 	}
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: time.c,v $ $Date: 2005/07/09 02:11:56 $ $Revision: 1.9 $ $Name:  $"};

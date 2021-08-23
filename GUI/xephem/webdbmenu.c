@@ -496,5 +496,3 @@ char *url;
 	watch_cursor(0);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: webdbmenu.c,v $ $Date: 2012/11/23 05:22:03 $ $Revision: 1.26 $ $Name:  $"};

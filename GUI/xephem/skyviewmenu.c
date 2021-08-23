@@ -10440,5 +10440,3 @@ XtIntervalId *id;
 	fs_to = XtAppAddTimeOut (xe_app, FSTO, chkFS_to, 0);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: skyviewmenu.c,v $ $Date: 2015/04/09 00:23:02 $ $Revision: 1.351 $ $Name:  $"};

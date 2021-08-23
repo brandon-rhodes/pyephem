@@ -1588,5 +1588,3 @@ plt_ano (double *sx, double *sy, int *xp, int *yp, int w2x, int arg)
 	return (1);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: plotmenu.c,v $ $Date: 2012/12/30 17:01:02 $ $Revision: 1.38 $ $Name:  $"};

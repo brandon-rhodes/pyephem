@@ -235,5 +235,3 @@ main (int ac, char *av[])
 	return (0);
 }
 #endif
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: base64.c,v $ $Date: 2005/03/14 20:25:43 $ $Revision: 1.2 $ $Name:  $"};

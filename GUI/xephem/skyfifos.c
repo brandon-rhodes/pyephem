@@ -186,5 +186,3 @@ ififo_cb (XtPointer client, int *fdp, XtInputId *idp)
 	}
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: skyfifos.c,v $ $Date: 2011/09/23 01:52:39 $ $Revision: 1.8 $ $Name:  $"};

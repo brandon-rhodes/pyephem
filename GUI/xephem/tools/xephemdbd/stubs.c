@@ -60,5 +60,3 @@ syserrstr ()
 	return (strerror(errno));
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: stubs.c,v $ $Date: 2004/06/21 02:48:15 $ $Revision: 1.6 $ $Name:  $"};

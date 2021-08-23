@@ -29,6 +29,3 @@
 
 #endif /* _CONST_H */
 
-/* For RCS Only -- Do Not Edit
- * @(#) $RCSfile: deepconst.h,v $ $Date: 2000/09/25 17:21:25 $ $Revision: 1.1 $ $Name:  $
- */

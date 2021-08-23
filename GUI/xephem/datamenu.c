@@ -1906,5 +1906,3 @@ char buf[];
 	bufl += sprintf (buf+bufl, "Pres: %gmB\n", pressure);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: datamenu.c,v $ $Date: 2013/03/02 02:57:08 $ $Revision: 1.61 $ $Name:  $"};

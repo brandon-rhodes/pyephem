@@ -499,5 +499,3 @@ is_deepsky (Obj *op)
 	return (deepsky);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: misc.c,v $ $Date: 2005/03/11 16:47:46 $ $Revision: 1.18 $ $Name:  $"};

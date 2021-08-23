@@ -346,5 +346,3 @@ process1edb (Now *np, char edbline[])
 	txt_report (np, op, wanttopo);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: xedb.c,v $ $Date: 2003/11/05 01:47:59 $ $Revision: 1.6 $ $Name:  $"};

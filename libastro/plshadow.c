@@ -46,5 +46,3 @@ double y, double z, float *sxp, float *syp)
 	return (0);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: plshadow.c,v $ $Date: 2004/12/17 20:53:43 $ $Revision: 1.3 $ $Name:  $"};

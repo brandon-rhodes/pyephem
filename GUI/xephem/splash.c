@@ -378,5 +378,3 @@ wantSplash()
 	return (!fp);
 }
 
-/* For RCS Only -- Do Not Edit */
-static char *rcsid[2] = {(char *)rcsid, "@(#) $RCSfile: splash.c,v $ $Date: 2006/04/02 12:56:47 $ $Revision: 1.27 $ $Name:  $"};
