@@ -1,6 +1,6 @@
 .TH XEphem 1X
 .SH Name
-XEphem 3.7 \- an interactive astronomical ephemeris for X11
+XEphem \- an interactive astronomical ephemeris for X11
 .SH Syntax
 \fBxephem [-prfb] [-install {yes|no|guess}] [-resfile <resourcefile>] [-[no]splash]\fP
 .SH Description
