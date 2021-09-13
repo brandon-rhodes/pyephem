@@ -1,5 +1,5 @@
 Name:		xephem
-Version:	4.0.1
+Version:	4.1.0
 Release:        1
 Summary:        XEphem is an interactive astronomy program for all UNIX platforms.
 License:	MIT

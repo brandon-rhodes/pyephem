@@ -1,15 +1,15 @@
-How to install XEphem version 4.0.2, either for just yourself or system-wide:
+How to install XEphem, either for just yourself or system-wide:
 
 1) Build the executable:
 
     Download the tarfile.
 
-        https://github.com/XEphem/XEphem/archive/refs/tags/4.0.2.tar.gz
+        https://github.com/XEphem/XEphem/archive/refs/tags/4.1.0.tar.gz
 
     Extract it and change directory:
 
-	$ tar xfz xephem-4.0.2.tar.gz
-	$ cd xephem-4.0.2/GUI/xephem
+	$ tar xfz xephem-4.1.0.tar.gz
+	$ cd xephem-4.1.0/GUI/xephem
 
     On a Linux similar to Ubuntu or Debian, do this (on other Linux
     distributions, look for Motif packages equivalent to the ones
