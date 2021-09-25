@@ -120,7 +120,7 @@ Datetime objects
 
     >>> d = ephem.Date('2000/12/25 12:41:16')
     >>> d.datetime()
-    datetime.datetime(2000, 12, 25, 12, 41, 15, 999999)
+    datetime.datetime(2000, 12, 25, 12, 41, 16)
 
   In those last two commands,
   note that slight round-off error has converted sixteen seconds
@@ -154,7 +154,7 @@ Tuples
 
     >>> d = ephem.Date('2001/12/14 16:07:57')
     >>> print(d.tuple())
-    (2001, 12, 14, 16, 7, 57.00000002514571)
+    (2001, 12, 14, 16, 7, 57.0)
 
   Several functions in the Python standard module ``time``
   will accept the time formatted as one of these six-element tuples.

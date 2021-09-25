@@ -80,7 +80,12 @@ class DateTests(unittest.TestCase):
 
     def test_date_tuple_value(self):
         self.assertEqual(self.date.tuple(),
-                         (2004, 9, 4, 0, 17, 15.799999977461994))
+                         (2004, 9, 4, 0, 17, 15.8))
+
+    def test_another_tuple_value(self):
+        #d = Date((1994, 7, 16, 20, 15, 0))
+        d = Date(34530.34375)
+        self.assertEqual(d.tuple(), (1994, 7, 16, 20, 15, 0))
 
     def test_localtime_modern(self):
         if time.timezone == 18000: # test only works in Eastern time zone

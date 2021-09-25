@@ -1,6 +1,13 @@
 PyEphem CHANGELOG
 =================
 
+Future
+------
+
+- Improve ``Date`` objects so that the return values of ``str(d)``,
+  ``d.datetime()``, and ``d.tuple()`` always agree, and are always
+  rounded to the nearest microsecond.
+
 Version 4.0.0.2 (2020 June 14)
 ------------------------------
 

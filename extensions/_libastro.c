@@ -528,14 +528,19 @@ static int parse_mjd(PyObject *value, double *mjdp)
 static void mjd_six(double mjd, int *yearp, int *monthp, int *dayp,
 		    int *hourp, int *minutep, double *secondp)
 {
-     double fday, fhour, fminute;
-     mjd_cal(mjd, monthp, &fday, yearp);
-     *dayp = (int) fday;
-     fhour = fmod(fday, 1.0) * 24;
-     *hourp = (int) fhour;
-     fminute = fmod(fhour, 1.0) * 60;
-     *minutep = (int) fminute;
-     *secondp = fmod(fminute, 1.0) * 60;
+     mjd += 0.5 / 8.64e+10;  /* half microsecond, so floor() becomes "round" */
+     mjd_cal(mjd, monthp, &mjd, yearp);
+
+     double day = floorf(mjd);
+     double fraction = mjd - day;
+     *dayp = (int) day;
+
+     long us = (long) floor(fraction * 8.64e+10);  /* microseconds per day */
+     long minute = us / 60000000;
+     us -= minute * 60000000;
+     *secondp = ((double) us) / 1e6;
+     *hourp = minute / 60;
+     *minutep = minute - *hourp * 60;
 }
 
 static PyObject* build_Date(double mjd)
@@ -564,8 +569,8 @@ static char *Date_format_value(double value)
      static char buffer[64];
      int year, month, day, hour, minute;
      double second;
-     /* Note the offset, which makes us round instead of truncate. */
-     mjd_six(value + 0.5 / 24.0 / 60.0 / 60.0,
+     /* Note the offset, which makes us round to the nearest second. */
+     mjd_six(value + 0.5 / (24.0 * 60.0 * 60.0),
              &year, &month, &day, &hour, &minute, &second);
      sprintf(buffer, "%d/%d/%d %02d:%02d:%02d",
 	     year, month, day, hour, minute, (int) second);
