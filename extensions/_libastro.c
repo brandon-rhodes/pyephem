@@ -6,11 +6,15 @@
 #define PyLong_AsLong PyInt_AsLong
 #define PyLong_FromLong PyInt_FromLong
 #define PyUnicode_Check3 PyString_Check
+#undef PyUnicode_FromFormat
+#undef PyUnicode_FromString
+#undef PyUnicode_FromStringAndSize
 #define PyUnicode_FromFormat PyString_FromFormat
 #define PyUnicode_FromString PyString_FromString
 #define PyUnicode_FromStringAndSize PyString_FromStringAndSize
 #define PyUnicode_Type PyString_Type
 #define PyUnicode_AsUTF8 PyString_AsString
+#undef PyVarObject_HEAD_INIT
 #define PyVarObject_HEAD_INIT(p, b) PyObject_HEAD_INIT(p) 0,
 #define OB_REFCNT ob_refcnt
 #else
