@@ -30,6 +30,34 @@ class SatelliteTests(unittest.TestCase):
                 method = getattr(self.atlanta, method_name)
                 self.assertRaises(TypeError, method, self.iss)
 
+    def test_attribute_values_and_roundtrips(self):
+        def check():
+            self.assertEqual(self.iss.epoch, 39931.27864163)
+            self.assertEqual(self.iss.n, 15.72498628)
+            self.assertEqual(self.iss.inc, 51.63970184326172)
+            self.assertEqual(self.iss.raan, 195.12429809570312)
+            self.assertEqual(self.iss.e, 0.0008905999711714685)
+            self.assertEqual(self.iss.ap, 304.8273010253906)
+            self.assertEqual(self.iss.M, 151.9344024658203)
+            self.assertEqual(self.iss.decay, 9.788999886950478e-05)
+            self.assertEqual(self.iss.drag, 7.60890034143813e-05)
+            self.assertEqual(self.iss.orbit, 59833)
+
+        check()
+
+        self.iss.epoch = self.iss.epoch
+        self.iss.n = self.iss.n
+        self.iss.inc = self.iss.inc
+        self.iss.raan = self.iss.raan
+        self.iss.e = self.iss.e
+        self.iss.ap = self.iss.ap
+        self.iss.M = self.iss.M
+        self.iss.decay = self.iss.decay
+        self.iss.drag = self.iss.drag
+        self.iss.orbit = self.iss.orbit
+
+        check()
+
     def test_next_pass(self):
         iss = self.iss
         self.atlanta.date = '2009/4/30'

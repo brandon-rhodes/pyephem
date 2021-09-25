@@ -315,16 +315,16 @@ bodies with orbital elements
 
  * ``EarthSatellite`` elements of man-made satellites:
 
-   | ``_epoch`` — Reference epoch
-   | ``_n`` — Mean motion, in revolutions per day
-   | ``_inc`` — Inclination (°)
-   | ``_raan`` — Right Ascension of ascending node (°)
-   | ``_e`` — Eccentricity
-   | ``_ap`` — Argument of perigee at epoch (°)
-   | ``_M`` — Mean anomaly from perigee at epoch (°)
-   | ``_decay`` — Orbit decay rate in revolutions per day, per day
-   | ``_drag`` — Object drag coefficient in per earth radii
-   | ``_orbit`` — Integer orbit number of epoch
+   | ``epoch`` — Reference epoch
+   | ``n`` — Mean motion, in revolutions per day
+   | ``inc`` — Inclination (°)
+   | ``raan`` — Right Ascension of ascending node (°)
+   | ``e`` — Eccentricity
+   | ``ap`` — Argument of perigee at epoch (°)
+   | ``M`` — Mean anomaly from perigee at epoch (°)
+   | ``decay`` — Orbit decay rate in revolutions per day, per day
+   | ``drag`` — Object drag coefficient in per earth radii
+   | ``orbit`` — Integer orbit number of epoch
 
 ------------
 
