@@ -95,11 +95,11 @@ class GitHubIssues(TestCase):
                          "0.6897594,1.72051182,0.5475395,"
                          "195.80709,10/10/2014,2000,H26.4,0.15")
         t.compute('2014/10/27')
-        self.assertAlmostEqual(t.earth_distance, 0.0296238418669, 10)
+        self.assertAlmostEqual(t.earth_distance, 0.0296238474547863, 10)
         self.assertAlmostEqual(t.mag, 20.23, 2)
         self.assertAlmostEqual(t.phase, 91.1195, 2)
         self.assertAlmostEqual(t.radius, 0, 2)
-        self.assertAlmostEqual(t.size, 0.00103452138137, 12)
+        self.assertAlmostEqual(t.size, 0.0010345211485400796, 12)
 
     def test_github_64(self):
         sun = ephem.Sun()
