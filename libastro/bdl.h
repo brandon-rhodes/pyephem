@@ -26,7 +26,7 @@ extern void do_bdl (BDL_Dataset *dataset, double jd,
 
 /* Data sets */
 
-extern BDL_Dataset mars_9910, mars_1020;
-extern BDL_Dataset jupiter_9910, jupiter_1020;
-extern BDL_Dataset saturne_9910, saturne_1020;
-extern BDL_Dataset uranus_9910, uranus_1020;
+extern BDL_Dataset mars_9910, mars_1020, mars_2040;
+extern BDL_Dataset jupiter_9910, jupiter_1020, jupiter_2040;
+extern BDL_Dataset saturne_9910, saturne_1020, saturne_2040;
+extern BDL_Dataset uranus_9910, uranus_1020, uranus_2040;

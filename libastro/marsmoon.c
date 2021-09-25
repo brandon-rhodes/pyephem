@@ -127,6 +127,8 @@ MoonData md[M_NMOONS])	/* fill md[1..NM-1].x/y/z for each moon */
             dataset = & mars_9910;
 	else if (JD < 2459215.5)	/* Jan 1 2021 UTC */
 	    dataset = & mars_1020;
+        else if (JD < 2466520.5)        /* Jan 1 2041 UTC */
+            dataset = & mars_2040;
 	else
 	    return (-1);
 

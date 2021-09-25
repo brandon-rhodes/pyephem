@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 #
 # Convert the planetary moon datasets from text into C arrays of
 # structs.
@@ -85,5 +86,4 @@ BDL_Dataset %s = {
      freq_list,
      delt_list,
      moonrecords
-};
-""" % (os.path.basename(path).replace('.', '_'), nsat, djj)
+};""" % (os.path.basename(path).replace('.', '_'), nsat, djj)

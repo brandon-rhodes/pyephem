@@ -2,12 +2,12 @@
 # Building data sets
 #
 
-D=./extensions/data
-G=./generate
-BDLS=$(patsubst $G/%, %, $(wildcard $G/*.9910 $G/*.1020))
-BDLSRCS=$(patsubst %, $D/%.c, $(BDLS))
+D=./data
+E=./extensions/data
+BDLS=$(patsubst $D/%, %, $(wildcard $D/*.9910 $D/*.1020 $D/*.2040))
+BDLSRCS=$(patsubst %, $E/%.c, $(BDLS))
 
 data: $(BDLSRCS)
 
-$(BDLSRCS): $D/%.c: $G/% bin/rebuild-plmoon-data
-	bin/rebuild-plmoon-data $G/$* > $@
+$(BDLSRCS): $E/%.c: $D/% bin/rebuild-plmoon-data
+	bin/rebuild-plmoon-data $D/$* > $@
