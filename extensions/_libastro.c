@@ -535,8 +535,9 @@ static void mjd_six(double mjd, int *yearp, int *monthp, int *dayp,
      double fraction = mjd - day;
      *dayp = (int) day;
 
-     long us = (long) floor(fraction * 8.64e+10);  /* microseconds per day */
-     long minute = us / 60000000;
+     /* Turns out a Windows "long" is only 32 bits, so "long long". */
+     long long us = floor(fraction * 8.64e+10);  /* microseconds per day */
+     long long minute = us / 60000000;
      us -= minute * 60000000;
      *secondp = ((double) us) / 1e6;
      *hourp = (int) (minute / 60);
