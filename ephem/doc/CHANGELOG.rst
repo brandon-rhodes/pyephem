@@ -8,6 +8,8 @@ Future
   ``d.datetime()``, and ``d.tuple()`` always agree, and are always
   rounded to the nearest microsecond.
 
+- PyEphem should now be able to compile for pypy3.
+
 Version 4.0.0.2 (2020 June 14)
 ------------------------------
 
