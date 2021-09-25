@@ -300,6 +300,8 @@ class Observer(_libastro.Observer):
         o.pressure = self.pressure
         return o
 
+    __copy__ = copy
+
     def __repr__(self):
         """Return a useful textual representation of this Observer."""
         return ('<ephem.Observer date=%r epoch=%r'

@@ -512,6 +512,8 @@ Observers
 
  * A ``ValueError`` signals a non-existent place.
 
+ * You can make a copy of an ``Observer`` with its ``copy()`` method.
+
 .. _transit-rising-setting:
 
 transit, rising, and setting

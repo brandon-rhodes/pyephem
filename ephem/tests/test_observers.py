@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from copy import copy
 from ephem import Observer, city
 from unittest import TestCase
 
@@ -31,6 +32,11 @@ class ObserverTests(TestCase):
         c = city('Boston')
         c.date = '2015/5/30 10:09'
         d = c.copy()
+        self._check_observer(c, d)
+        d = copy(c)
+        self._check_observer(c, d)
+
+    def _check_observer(self, c, d):
         assert c is not d
         self.assertEqual(c.date, d.date)
         self.assertEqual(c.lat, d.lat)

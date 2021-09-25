@@ -18,6 +18,10 @@ Version 4.1 (2021 September 25)
 - Expanded the ∆T table so that it now runs through 2018,
   with data from the Astronomical Almanac 2020.
 
+- The ``Observer.copy()`` method is now documented,
+  and (after a user requested it)
+  the class also now works with Python’s ``copy`` module.
+
 - PyEphem should now be able to compile for pypy3.
 
 Version 4.0.0.2 (2020 June 14)
