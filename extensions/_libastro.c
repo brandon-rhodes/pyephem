@@ -539,8 +539,8 @@ static void mjd_six(double mjd, int *yearp, int *monthp, int *dayp,
      long minute = us / 60000000;
      us -= minute * 60000000;
      *secondp = ((double) us) / 1e6;
-     *hourp = minute / 60;
-     *minutep = minute - *hourp * 60;
+     *hourp = (int) (minute / 60);
+     *minutep = (int) (minute - *hourp * 60);
 }
 
 static PyObject* build_Date(double mjd)
