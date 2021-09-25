@@ -13,11 +13,9 @@
 #define PyUnicode_AsUTF8 PyString_AsString
 #define PyVarObject_HEAD_INIT(p, b) PyObject_HEAD_INIT(p) 0,
 #define OB_REFCNT ob_refcnt
-#define OB_TYPE ob_type
 #else
 #define PyUnicode_Check3 PyUnicode_Check
 #define OB_REFCNT ob_base.ob_refcnt
-#define OB_TYPE ob_base.ob_type
 #if PY_MINOR_VERSION == 0 || PY_MINOR_VERSION == 1 || PY_MINOR_VERSION == 2
 #define PyUnicode_AsUTF8 _PyUnicode_AsString
 #endif
@@ -1204,7 +1202,7 @@ static void Body_dealloc(PyObject *self)
 {
      Body *body = (Body*) self;
      Py_XDECREF(body->name);
-     self->ob_type->tp_free(self);
+     Py_TYPE(self)->tp_free(self);
 }
 
 /* The user-configurable body types also share symmetric
@@ -1362,7 +1360,7 @@ void Body__copy_struct(Body *, Body *);
 static PyObject* Body_copy(PyObject *self)
 {
      Body *body = (Body *) self;
-     Body *newbody = (Body*) self->ob_type->tp_alloc(self->ob_type, 0);
+     Body *newbody = (Body*) Py_TYPE(self)->tp_alloc(Py_TYPE(self), 0);
      if (!newbody) return 0;
      Body__copy_struct(body, newbody);
      return (PyObject*) newbody;
@@ -1383,16 +1381,16 @@ static PyObject* Body_repr(PyObject *body_object)
                return 0;
           }
 	  result = PyUnicode_FromFormat("<%s %s at %p>",
-				       body->OB_TYPE->tp_name, name, body);
+                                        Py_TYPE(body)->tp_name, name, body);
 	  Py_DECREF(repr);
 	  return result;
      } else if (body->obj.o_name[0])
 	  return PyUnicode_FromFormat("<%s \"%s\" at %p>",
-				     body->OB_TYPE->tp_name,
-				     body->obj.o_name, body);
+                                      Py_TYPE(body)->tp_name,
+                                      body->obj.o_name, body);
      else
 	  return PyUnicode_FromFormat("<%s at %p>",
-				     body->OB_TYPE->tp_name, body);
+                                      Py_TYPE(body)->tp_name, body);
 }
 
 static PyMethodDef Body_methods[] = {
