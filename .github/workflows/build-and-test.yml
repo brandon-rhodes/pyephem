@@ -14,7 +14,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-20.04, windows-2019, macos-10.15]
+        os: [windows-2019]
 
     steps:
       - uses: actions/checkout@v2
@@ -23,4 +23,4 @@ jobs:
         uses: pypa/cibuildwheel@v1.11.1.post1
         env:
           CIBW_SKIP: pp*
-          CIBW_TEST_COMMAND: python -m unittest discover ephem
+          CIBW_TEST_COMMAND: python -m unittest discover -f ephem

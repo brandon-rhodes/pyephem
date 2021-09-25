@@ -530,13 +530,17 @@ static void mjd_six(double mjd, int *yearp, int *monthp, int *dayp,
 {
      mjd += 0.5 / 8.64e+10;  /* half microsecond, so floor() becomes "round" */
      mjd_cal(mjd, monthp, &mjd, yearp);
+     printf("mjd %.16f\n", mjd);
 
      double day = floorf(mjd);
      double fraction = mjd - day;
      *dayp = (int) day;
 
+     printf("fr  %.16f\n", fraction);
      long us = (long) floor(fraction * 8.64e+10);  /* microseconds per day */
+     printf("us  %ld\n", us);
      long minute = us / 60000000;
+     printf("min %ld\n", minute);
      us -= minute * 60000000;
      *secondp = ((double) us) / 1e6;
      *hourp = (int) (minute / 60);
