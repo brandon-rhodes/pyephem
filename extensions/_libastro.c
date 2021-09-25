@@ -539,9 +539,9 @@ static void mjd_six(double mjd, int *yearp, int *monthp, int *dayp,
      printf("fr  %.16f\n", fraction);
      printf("    %.16f\n", fraction * 8.64e+10);
      printf("    %.16f\n", floor(fraction * 8.64e+10));
-     long us = (long) floor(fraction * 8.64e+10);  /* microseconds per day */
+     long long us = floor(fraction * 8.64e+10);  /* microseconds per day */
      printf("us  %ld\n", us);
-     long minute = us / 60000000;
+     long long minute = us / 60000000;
      printf("min %ld\n", minute);
      us -= minute * 60000000;
      *secondp = ((double) us) / 1e6;
