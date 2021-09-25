@@ -5,6 +5,9 @@ PyEphem CHANGELOG
 Version 4.1 (2021 September 25)
 -------------------------------
 
+- Planetary moon positions are now available through 2040
+  (previously, asking for a position past 2020 returned zeroes).
+
 - Improved ``Date`` objects so that the return values of ``str(d)``,
   ``d.datetime()``, and ``d.tuple()`` always agree, and are always
   rounded to the nearest microsecond.
