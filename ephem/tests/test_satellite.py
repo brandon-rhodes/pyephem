@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 
-import ephem, warnings, unittest
-
-# Prevent the use of "assertRaisesRegexp" below from causing noise; we
-# cannot upgrade to "assertRaisesRegex" without breaking older Pythons.
-warnings.filterwarnings("ignore",category=DeprecationWarning)
+import ephem, unittest
 
 tle_lines = (
     'ISS (ZARYA)             ',
     '1 25544U 98067A   09119.77864163  .00009789  00000-0  76089-4 0  7650',
     '2 25544  51.6397 195.1243 0008906 304.8273 151.9344 15.72498628598335',
     )
+
+if not hasattr(unittest.TestCase, 'assertRaisesRegex'):
+    setattr(unittest.TestCase, 'assertRaisesRegex',
+            unittest.TestCase.assertRaisesRegexp)
 
 class SatelliteTests(unittest.TestCase):
     def setUp(self):
@@ -21,7 +21,7 @@ class SatelliteTests(unittest.TestCase):
         lines = list(tle_lines)
         lines[1] = lines[1][:-1] + '1'
         expected = 'incorrect TLE checksum at end of line'
-        self.assertRaisesRegexp(ValueError, expected, ephem.readtle, *lines)
+        self.assertRaisesRegex(ValueError, expected, ephem.readtle, *lines)
 
     def test_normal_methods(self):
         for which in ['previous', 'next']:
