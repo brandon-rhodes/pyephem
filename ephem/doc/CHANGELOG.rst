@@ -1,8 +1,9 @@
+=================
 PyEphem CHANGELOG
 =================
 
-Future
-------
+Version 4.1 (2021 September 25)
+-------------------------------
 
 - Improve ``Date`` objects so that the return values of ``str(d)``,
   ``d.datetime()``, and ``d.tuple()`` always agree, and are always

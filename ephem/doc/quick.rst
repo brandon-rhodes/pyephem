@@ -191,8 +191,9 @@ body.compute(observer)
    |  ``dec`` — Declination
    |
    | `Apparent position`_ relative to horizon
-   |  ``az`` — Azimuth east of north
-   |  ``alt`` — Altitude above horizon
+   |  ``az`` — Azimuth 0°–360° east of north
+   |  ``alt`` — Altitude ±90° relative to the horizon’s great circle
+      (unaffected by the rise/set setting ``horizon``)
 
  * These apparent positions
    include an adjustment to simulate atmospheric refraction
