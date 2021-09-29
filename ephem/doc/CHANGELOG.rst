@@ -2,22 +2,22 @@
 PyEphem CHANGELOG
 =================
 
-Version 4.1 (2021 September 25)
+Version 4.1 (2021 September 29)
 -------------------------------
 
-- Planetary moon positions are now available through 2040
+- Planetary moon positions are now available through the year 2040
   (previously, asking for a position past 2020 returned zeroes).
 
 - The ``Date`` object is improved such that the return values of
   ``str(d)``, ``d.datetime()``, and ``d.tuple()`` always agree and are
   always rounded to the nearest microsecond.
 
-- Replaced the Earth Satellite orbit parameter attributes.  The old
-  names started awkwardly with underscores, and had inconsistent getters
-  and setters that would change the satellite if you attempted a round
-  trip like ``sat.inc = sat.inc``.  The new attributes (see the list in
-  the Quick Reference) have simple names and the same units when both
-  getting and setting.
+- Earth satellites offer new orbit parameter attributes.  The old names
+  (which are still present, but no longer documented) started awkwardly
+  with underscores, and had inconsistent getters and setters that would
+  change the satellite if you attempted a round trip like ``sat._inc =
+  sat._inc``.  The new attributes (see the list in the Quick Reference)
+  have simple names and use the same units when getting and setting.
 
 - Updated Pluto’s long-term orbital elements
   to match the Astronomical Almanac 2020.
