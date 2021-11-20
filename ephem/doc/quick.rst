@@ -655,21 +655,33 @@ other Observer methods
  >>> print(madrid.sidereal_time())
  12:04:28.09
 
- * Called without arguments.
- * Returns the sidereal time for the observer's circumstances.
+ * Takes no arguments.
+ * Computes the Local Apparent Sidereal Time (LAST)
+   for the observer’s latitude, longitude, date, and time.
+ * The return value is a floating point angle measured in radians
+   that prints as hours, minutes, and seconds
+   where there are 24 hours in a full Earth rotation.
 
 ..
 
- >>> ra, dec = madrid.radec_of(0, '90')
+ >>> ra, dec = madrid.radec_of(0, '90')  # altitude=90°: the zenith
  >>> print('%s %s' % (ra, dec))
  12:05:35.12 40:17:49.8
 
- * Both arguments to ``radec_of(az, alt)`` are interpreted as angles,
+ * Both of the arguments ``az`` and ``alt`` are interpreted as angles,
    using PyEphem’s usual convention:
-   a float point number is interpreted as plain radians,
-   while a string is expected to give a number in degrees.
- * Returns the apparent topocentric coordinates
-   behind the given point in the sky.
+   a float point number is radians,
+   while a string is interpreted as degrees.
+ * Returns the astrometric right ascension and declination
+   of the point on the celestial sphere
+   that lies at the apparent azimuth and altitude provided as arguments.
+ * Returns J2000 star chart coordinates
+   if the observer’s ``.epoch`` is left at its default value of J2000.
+   To instead return equinox-of-date coordinates,
+   which are measured against where the Earth’s pole
+   is actually pointing on that date,
+   override the default
+   with an assignment like ``madrid.epoch = madrid.date``.
 
 ---------------------
 
