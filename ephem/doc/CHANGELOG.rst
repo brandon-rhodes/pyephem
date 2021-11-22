@@ -2,6 +2,14 @@
 PyEphem CHANGELOG
 =================
 
+Next Version
+------------
+
+- Fixed how the underlying “libastro” library computes whether a body’s
+  image is deflected by its light passing close to the Sun’s gravity.
+  Previously, users would see coordinates jump unexpectedly as
+  deflection turned on and off.
+
 Version 4.1 (2021 September 29)
 -------------------------------
 

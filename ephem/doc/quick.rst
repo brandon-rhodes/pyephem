@@ -73,7 +73,7 @@ body.compute(date)
  >>> j = ephem.Jupiter()
  >>> j.compute('1986/2/8')
  >>> print('%s %s' % (j.ra, j.dec))
- 21:57:50.46 -13:17:37.2
+ 21:57:50.47 -13:17:37.2
  >>> j.compute('1986/2/9', epoch='1950')
  >>> print('%s %s' % (j.a_ra, j.a_dec))
  21:56:50.83 -13:22:54.3
@@ -174,7 +174,7 @@ body.compute(observer)
  >>> gatech.date = '1984/5/30 16:22:56'
  >>> v = ephem.Venus(gatech)
  >>> print('%s %s' % (v.alt, v.az))
- 72:19:44.8 134:14:25.3
+ 72:19:45.1 134:14:25.4
 
  * Computes the position of the ``Body``.
  * Uses the ``date`` of the observer.

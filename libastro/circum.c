@@ -4,6 +4,7 @@
  * Michael Sternberg <sternberg@physik.tu-chemnitz.de>
  *  3/11/98: deflect was using op->s_hlong before being set in cir_pos().
  *  4/19/98: just edit a comment
+ * 11/22/21: un-swapped arguments "rsn, lsn" in both calls to deflect().
  */
 
 #include <stdio.h>
@@ -261,7 +262,7 @@ obj_fixed (Now *np, Obj *op)
 	sunpos (mjed, &lsn, &rsn, NULL);
 
 	/* allow for relativistic light bending near the sun */
-	deflect (mjed, lam, bet, lsn, rsn, 1e10, &ra, &dec);
+	deflect (mjed, lam, bet, rsn, lsn, 1e10, &ra, &dec);
 
 	/* TODO: correction for annual parallax would go here */
 
@@ -703,7 +704,7 @@ Obj *op)	/* object to set s_ra/dec as per equinox */
 	 * (avoid calling deflect() for the sun itself).
 	 */
 	if (!is_planet(op,SUN) && !is_planet(op,MOON))
-	    deflect (mjed, op->s_hlong, op->s_hlat, lsn, rsn, *rho, &ra, &dec);
+	    deflect (mjed, op->s_hlong, op->s_hlat, rsn, lsn, *rho, &ra, &dec);
 
 	/* correct ra/dec to form geocentric apparent */
 	nut_eq (mjed, &ra, &dec);
