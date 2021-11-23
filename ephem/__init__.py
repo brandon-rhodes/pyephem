@@ -525,13 +525,14 @@ class Observer(_libastro.Observer):
 
     def next_pass(self, body, singlepass=True):
         """Return the next rising, culmination, and setting of a satellite.
-        
-        If singlepass is True, return next consecutive set of
-            (rising, culmination, setting).
-        If singlepass is False, return 
-            (next_rising, next_culmination, next_setting)
-        """
 
+        If singlepass is True, return next consecutive set of
+        ``(rising, culmination, setting)``.
+
+        If singlepass is False, return
+        ``(next_rising, next_culmination, next_setting)``.
+
+        """
         if not isinstance(body, EarthSatellite):
             raise TypeError(
                 'the next_pass() method is only for use with'
@@ -541,7 +542,7 @@ class Observer(_libastro.Observer):
         result = _libastro._next_pass(self, body)
         # _libastro behavior is singlepass=False
         if ((not singlepass)
-                or (None in result) 
+                or (None in result)
                 or (result[4] >= result[0])):
             return result
         # retry starting just before next_rising
@@ -554,7 +555,7 @@ class Observer(_libastro.Observer):
         if result[0] <= result[2] <= result[4]:
             return result
         raise ValueError("this software is having trouble with those satellite parameters")
-        
+
 
 del describe_riset_search
 
