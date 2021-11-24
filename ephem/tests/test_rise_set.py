@@ -8,11 +8,6 @@ METHODS = (
     ephem.Observer.next_setting,
 )
 
-def call_methods(o, s, **kw):
-    for method in METHODS:
-        d = method(o, s, **kw)
-        yield '{} {}\n'.format(d, method.__name__)
-
 class RiseSetTests(unittest.TestCase):
     maxDiff = 10000
 
@@ -22,18 +17,7 @@ class RiseSetTests(unittest.TestCase):
         o.lat = '36.4072'
         o.lon = '-105.5734'
         o.date = '2021/11/24'
-
-        lines = []
-        for horizon in 0.0, '-0.8333':
-            for pressure in 0.0, 1010.0:
-                for use_center in False, True:
-                    o.horizon = horizon
-                    o.pressure = pressure
-                    lines.extend('\n{} {} {}\n'.format(
-                        horizon, pressure, use_center))
-                    lines.extend(call_methods(o, s, use_center=use_center))
-
-        self.assertEqual(''.join(lines), """
+        expected = """\
 0.0 0.0 False
 2021/11/23 13:51:09 previous_rising
 2021/11/23 23:46:11 previous_setting
@@ -81,26 +65,19 @@ class RiseSetTests(unittest.TestCase):
 2021/11/23 23:53:35 previous_setting
 2021/11/24 13:44:43 next_rising
 2021/11/24 23:53:12 next_setting
-""")
+"""
+        expected = expected.splitlines()
+        actual = self._generate_report(o, s)
+        for n, (expected, actual) in enumerate(zip(expected, actual), 1):
+            self.assertEqual(expected, actual, 'Line {}'.format(n))
 
     def test_moon(self):
-        s = ephem.Moon()
+        m = ephem.Moon()
         o = ephem.Observer()
         o.lat = '36.4072'
         o.lon = '-105.5734'
         o.date = '2021/11/24'
-
-        lines = []
-        for horizon in 0.0, '-0.8333':
-            for pressure in 0.0, 1010.0:
-                for use_center in False, True:
-                    o.horizon = horizon
-                    o.pressure = pressure
-                    lines.extend('\n{} {} {}\n'.format(
-                        horizon, pressure, use_center))
-                    lines.extend(call_methods(o, s, use_center=use_center))
-
-        self.assertEqual(''.join(lines), """
+        expected = """\
 0.0 0.0 False
 2021/11/23 02:21:39 previous_rising
 2021/11/23 17:34:47 previous_setting
@@ -148,4 +125,20 @@ class RiseSetTests(unittest.TestCase):
 2021/11/23 17:43:11 previous_setting
 2021/11/24 03:07:21 next_rising
 2021/11/24 18:26:56 next_setting
-""")
+"""
+        expected = expected.splitlines()
+        actual = self._generate_report(o, m)
+        for n, (expected, actual) in enumerate(zip(expected, actual), 1):
+            self.assertEqual(expected, actual, 'Line {}'.format(n))
+
+    def _generate_report(self, o, body):
+        for horizon in 0.0, '-0.8333':
+            for pressure in 0.0, 1010.0:
+                for use_center in False, True:
+                    o.horizon = horizon
+                    o.pressure = pressure
+                    yield '{} {} {}'.format(horizon, pressure, use_center)
+                    for method in METHODS:
+                        d = method(o, body, use_center=use_center)
+                        yield '{} {}'.format(d, method.__name__)
+                    yield ''
