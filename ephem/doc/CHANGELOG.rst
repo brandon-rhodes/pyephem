@@ -5,6 +5,9 @@ PyEphem CHANGELOG
 Next Version 4.1.1
 ------------------
 
+- When you provide a Python ``datetime`` with a time zone attached,
+  PyEphem now detects the time zone and converts it to UTC automatically.
+
 - A new search routine had been written and tested
   to power the :ref:`transit-rising-setting` methods
   ``previous_rising()``,
