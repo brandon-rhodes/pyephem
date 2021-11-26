@@ -2,8 +2,8 @@
 PyEphem CHANGELOG
 =================
 
-Next Version
-------------
+Next Version 4.1.1
+------------------
 
 - A new search routine had been written and tested
   to power the :ref:`transit-rising-setting` methods

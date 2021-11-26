@@ -873,31 +873,59 @@ Dates
 
  * For more details see the Date_ document.
 
-local time
-----------
+to your local time zone
+-----------------------
 
  >>> d = ephem.Date('1997/3/9 5:13')
- >>> ephem.localtime(d)
+ >>> local = ephem.localtime(d)
+ >>> local
  datetime.datetime(1997, 3, 9, 0, 13)
- >>> print(ephem.localtime(d))
+ >>> print(local)
  1997-03-09 00:13:00
 
  * The ``localtime()`` function converts a PyEphem date
    into a Python ``datetime`` object expressed in your local time zone.
 
-to timezone
------------
+to a specific timezone
+----------------------
 
- >>> d = ephem.Date('1997/3/9 5:13')
- >>> ephem.to_timezone(d, ephem.UTC)
- datetime.datetime(1997, 3, 9, 5, 13, tzinfo=<ephem.UTC>)
- >>> print(ephem.to_timezone(d, ephem.UTC))
- 1997-03-09 05:13:00+00:00
+ >>> from zoneinfo import ZoneInfo
+ >>> zone = ZoneInfo('US/Eastern')
+ >>> local = ephem.to_timezone(d, zone)
+ >>> local
+ datetime.datetime(1997, 3, 9, 0, 13, tzinfo=zoneinfo.ZoneInfo(key='US/Eastern'))
+ >>> print(local)
+ 1997-03-09 00:13:00-05:00
 
  * The ``to_timezone()`` function converts a PyEphem date
    into a Python ``datetime`` object expressed in the provided time zone.
    The timezone needs to be ``datetime.tzinfo``-compliant.
    For simplicity an own implementation for UTC is provided.
+
+ * Python 3.9 and later offer world time zones in the
+   `zoneinfo <https://docs.python.org/3/library/zoneinfo.html>`_ module.
+   Previous versions of Python can load world time zones by installing
+   the third-party `pytz <https://pypi.org/project/pytz/>`_ module.
+
+from a specific timezone
+------------------------
+
+ >>> from datetime import datetime
+ >>> from zoneinfo import ZoneInfo
+ >>> zone = ZoneInfo('US/Eastern')
+ >>> local = datetime(2021, 11, 26, 10, 17, tzinfo=zone)
+ >>> d = ephem.Date(local)
+ >>> print(d)
+ 2021/11/26 15:17:00
+
+ * *New in PyEphem 4.1.1:*
+   If you pass PyEphem a Python ``datetime`` that specifies a time zone,
+   then PyEphem will automatically convert the date into UTC for you.
+
+ * Python 3.9 and later offer world time zones in the
+   `zoneinfo <https://docs.python.org/3/library/zoneinfo.html>`_ module.
+   Previous versions of Python can load world time zones by installing
+   the third-party `pytz <https://pypi.org/project/pytz/>`_ module.
 
 ----
 

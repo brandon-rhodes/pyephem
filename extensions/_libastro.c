@@ -503,13 +503,38 @@ static int parse_mjd_from_datetime(PyObject *value, double *mjdp)
              PyDateTime_GET_DAY(value),
              PyDateTime_GET_YEAR(value),
              mjdp);
-     if (PyDateTime_Check(value)) {
-          *mjdp += PyDateTime_DATE_GET_HOUR(value) / 24.;
-          *mjdp += PyDateTime_DATE_GET_MINUTE(value) / (24. * 60.);
-          *mjdp += PyDateTime_DATE_GET_SECOND(value) / (24. * 60. * 60.);
-          *mjdp += PyDateTime_DATE_GET_MICROSECOND(value)
-               / (24. * 60. * 60. * 1000000.);
+
+     if (!PyDateTime_Check(value))
+          return 0;  // the value is a mere Date
+
+     *mjdp += PyDateTime_DATE_GET_HOUR(value) / 24.;
+     *mjdp += PyDateTime_DATE_GET_MINUTE(value) / (24. * 60.);
+     *mjdp += PyDateTime_DATE_GET_SECOND(value) / (24. * 60. * 60.);
+     *mjdp += PyDateTime_DATE_GET_MICROSECOND(value)
+          / (24. * 60. * 60. * 1000000.);
+
+     PyObject *offset = PyObject_CallMethod(value, "utcoffset", NULL);
+     if (!offset)
+          return -1;
+
+     if (offset == Py_None) {
+          Py_DECREF(offset);
+          return 0;  // no time zone information: assume UTC
      }
+
+     PyObject *seconds = PyObject_CallMethod(offset, "total_seconds", NULL);
+     Py_DECREF(offset);
+     if (!seconds)
+          return -1;
+
+     double seconds_double;
+     if (PyNumber_AsDouble(seconds, &seconds_double)) {
+          Py_DECREF(seconds);
+          return -1;
+     }
+     Py_DECREF(seconds);
+
+     *mjdp -= seconds_double / (24. * 60. * 60.);
      return 0;
 }
 
