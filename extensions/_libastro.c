@@ -1330,7 +1330,7 @@ static PyObject* Body_compute(PyObject *self, PyObject *args, PyObject *kwds)
 	       if (parse_mjd(epoch_arg, &epoch_mjd) == -1) goto fail;
 	  } else
 	       epoch_mjd = J2000;
-     
+
 	  /* Since libastro always does topocentric computation, we
 	     need to provide a reasonable location and weather. */
 	  body->now.n_mjd = when_mjd;
@@ -2865,11 +2865,11 @@ static PyObject* constellation
      PyObject *s0 = 0, *s1 = 0, *ora = 0, *odec = 0, *oepoch = 0;
      PyObject *result;
      double ra, dec, epoch = J2000;
-     
+
      if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|O:constellation", kwlist,
 				      &position_arg, &epoch_arg))
 	  return 0;
-     
+
      if (PyObject_IsInstance(position_arg, (PyObject*) &BodyType)) {
 	  Body *b = (Body*) position_arg;
 	  if (epoch_arg) {
@@ -2905,7 +2905,7 @@ static PyObject* constellation
 	  }
 	  if (epoch_arg)
 	       if (parse_mjd(epoch_arg, &epoch) == -1) goto fail;
-	  
+
 	  s0 = PySequence_GetItem(position_arg, 0);
 	  if (!s0) goto fail;
 	  s1 = PySequence_GetItem(position_arg, 1);
@@ -2916,20 +2916,20 @@ static PyObject* constellation
 	  if (!odec) goto fail;
 	  ra = PyFloat_AsDouble(ora);
 	  dec = PyFloat_AsDouble(odec);
-	  
+
 	  if (epoch_arg) {
 	       oepoch = PyNumber_Float(epoch_arg);
 	       if (!oepoch) goto fail;
 	       epoch = PyFloat_AsDouble(oepoch);
 	  }
      }
-     
+
      {
 	  char *s = cns_name(cns_pick(ra, dec, epoch));
 	  result = Py_BuildValue("s#s", s, 3, s+5);
 	  goto leave;
      }
-     
+
 fail:
      result = 0;
 leave:
