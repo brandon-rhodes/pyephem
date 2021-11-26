@@ -441,7 +441,7 @@ leaving you to simply ask:
 >>> print(gatech.next_setting(sun))
 1984/5/31 00:42:22
 >>> print("%s %s" % (sun.alt, sun.az))
--0:15:46.4 297:20:44.3
+-0:15:45.8 297:20:43.7
 
 Functions also exist for finding risings, transits, and —
 just for completeness —

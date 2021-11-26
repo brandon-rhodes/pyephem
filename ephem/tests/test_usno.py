@@ -56,13 +56,13 @@ def standard_parse(line):
     dec = ephem.degrees(sign + ':'.join(mag.split()))
     return date, ra, dec
 
-def is_near(n, m, error = ephem.arcsecond):
+def is_near(n, m, error=ephem.arcsecond, move=None):
     """Raise an exception if two values are not within an arcsecond."""
 
     if abs(n - m) > error:
-        raise AssertionError('the USNO asserts the value %s'
-                             ' but PyEphem instead returns %s'
-                             % (n, m))
+        at = '' if move is None else '%s at ' % move
+        msg = 'the USNO says %s%s but PyEphem says %s' % (at, n, m)
+        raise AssertionError(msg)
 
 class Trial(object):
     def select_body(self, name):
@@ -103,9 +103,11 @@ class Trial(object):
 
     def run(self, content):
         def report_error():
-            return RuntimeError(
-                'USNO Test file %r line %d raised exception:%s\n'
+            exc = RuntimeError(
+                'USNO Test file %r line %d raised exception:\n%s'
                 % (self.path, self.lineno + 1, traceback.format_exc()))
+            exc.__cause__ = None
+            return exc
 
         self.content = content
         self.lines = content.split('\n')
@@ -119,7 +121,7 @@ class Trial(object):
                     raise report_error()
         try:
             self.finish()
-        except:
+        except Exception as e:
             raise report_error()
 
 # Check an "Astrometric Positions" file.
@@ -254,14 +256,14 @@ The file looks something like:
         # the named transit attributes say they should be.
 
         def check(attr):
-            is_near(getattr(datum, attr), observer.date, ephem.minute)
+            is_near(getattr(datum, attr), observer.date, ephem.minute, attr)
             if attr == 'transit':
-                datum_angle = datum.transit_alt
+                attr += '_alt'
                 our_angle = body.alt
             else:
-                datum_angle = getattr(datum, attr + '_az')
+                attr += '_az'
                 our_angle = body.az
-            is_near(datum_angle, our_angle, ephem.degree)
+            is_near(getattr(datum, attr), our_angle, ephem.degree, attr)
 
         # Make sure that, from both the midnight starting the day and
         # the midnight ending the day, we can move to the events that
@@ -480,7 +482,7 @@ class Mixin(object):
 # Auto-detect files
 #
 
-i = 1
 for path in glob.glob(os.path.dirname(__file__) + '/usno/*.txt'):
-    exec('class T%d(unittest.TestCase, Mixin): path = %r' % (i, path))
-    i += 1
+    name = os.path.basename(path).replace('.txt', '')
+    exec('class Test_%s(unittest.TestCase, Mixin): path = %r' % (name, path))
+del path, name

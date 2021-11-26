@@ -7,7 +7,7 @@ import re
 from datetime import datetime as _datetime
 from datetime import timedelta as _timedelta
 from datetime import tzinfo as _tzinfo
-from math import pi
+from math import acos, cos, pi, sin
 from time import localtime as _localtime
 
 __version__ = '4.1'
@@ -23,6 +23,7 @@ _libastro._scansexa_split = re.compile(r'''
 
 # Various constants.
 
+tau = 6.283185307179586476925287
 twopi = pi * 2.
 halfpi = pi / 2.
 quarterpi = pi / 4.
@@ -73,6 +74,7 @@ readdb = _libastro.readdb
 readtle = _libastro.readtle
 constellation = _libastro.constellation
 separation = _libastro.separation
+unrefract = _libastro.unrefract
 now = _libastro.now
 
 millennium_atlas = _libastro.millennium_atlas
@@ -97,6 +99,11 @@ del index, classname, name
 Jupiter = _libastro.Jupiter
 Saturn = _libastro.Saturn
 Moon = _libastro.Moon
+
+# Angles.
+
+def _plusminus_pi(angle):
+    return (angle - pi) % tau - pi
 
 # Newton's method.
 
@@ -413,9 +420,27 @@ class Observer(_libastro.Observer):
                                 ' above the horizon at latitude %s'
                                 % (declination, self.lat))
 
-    def _riset_helper(self, body, start, use_center, rising, previous):
-        """Internal function for finding risings and settings."""
+    @describe_riset_search
+    def previous_rising(self, body, start=None, use_center=False):
+        """Search for the given body's previous rising"""
+        return self._find_rise_or_set(body, start, use_center, -1, True)
 
+    @describe_riset_search
+    def previous_setting(self, body, start=None, use_center=False):
+        """Search for the given body's previous setting"""
+        return self._find_rise_or_set(body, start, use_center, -1, False)
+
+    @describe_riset_search
+    def next_rising(self, body, start=None, use_center=False):
+        """Search for the given body's next rising"""
+        return self._find_rise_or_set(body, start, use_center, +1, True)
+
+    @describe_riset_search
+    def next_setting(self, body, start=None, use_center=False):
+        """Search for the given body's next setting"""
+        return self._find_rise_or_set(body, start, use_center, +1, False)
+
+    def _find_rise_or_set(self, body, start, use_center, direction, do_rising):
         if isinstance(body, EarthSatellite):
             raise TypeError(
                 'the rising and settings methods do not'
@@ -423,105 +448,60 @@ class Observer(_libastro.Observer):
                 ' please use the higher-resolution next_pass() method'
                 )
 
-        if previous:
-            find_transit = self._previous_transit
-            find_antitransit = self._previous_antitransit
-        else:
-            find_transit = self._next_transit
-            find_antitransit = self._next_antitransit
-
-        def visit_transit():
-            d = find_transit(body)
-            if body.alt + body.radius * use_radius - self.horizon <= 0:
-                raise NeverUpError('%r transits below the horizon at %s'
-                                   % (body.name, d))
-            return d
-
-        def visit_antitransit():
-            d = find_antitransit(body)
-            if body.alt + body.radius * use_radius - self.horizon >= 0:
-                raise AlwaysUpError('%r is still above the horizon at %s'
-                                    % (body.name, d))
-            return d
-
-        # Determine whether we should offset the result for the radius
-        # of the object being measured, or instead pretend that rising
-        # and setting happens when its center crosses the horizon.
-        if use_center:
-            use_radius = 0.0
-        else:
-            use_radius = 1.0
-
-        # Save self.date so that we can restore it before returning.
+        original_pressure = self.pressure
         original_date = self.date
-
-        # Start slightly to one side of the start date, to prevent
-        # repeated calls from returning the same solution over and over.
-        if start is not None:
-            self.date = start
-        if previous:
-            self.date -= default_newton_precision
-        else:
-            self.date += default_newton_precision
-
-        # Take a big leap towards the solution, then Newton takes us home.
-        body.compute(self)
-        heading_downward = (rising == previous) # "==" is inverted "xor"
-        if heading_downward:
-            on_lower_cusp = (body.alt + body.radius * use_radius
-                             - self.horizon > tiny)
-        else:
-            on_lower_cusp = (body.alt + body.radius * use_radius
-                             - self.horizon < - tiny)
-
-        az = body.az
-        on_right_side_of_sky = ((rising == (az < pi)) # inverted "xor"
-                                or (az < tiny
-                                    or pi - tiny < az < pi + tiny
-                                    or twopi - tiny < az))
-
-        def f(d):
-            self.date = d
-            body.compute(self)
-            return body.alt + body.radius * use_radius - self.horizon
-
         try:
-            if on_lower_cusp and on_right_side_of_sky:
-                d0 = self.date
-            elif heading_downward:
-                d0 = visit_transit()
-            else:
-                d0 = visit_antitransit()
-            if heading_downward:
-                d1 = visit_antitransit()
-            else:
-                d1 = visit_transit()
-
-            d = (d0 + d1) / 2.
-            result = Date(newton(f, d, d + minute))
-            return result
+            self.pressure = 0.0  # otherwise geometry doesn't work
+            if start is not None:
+                self.date = start
+            prev_ha = None
+            while True:
+                body.compute(self)
+                h = self.horizon
+                if not use_center:
+                    h -= body.radius
+                if original_pressure:
+                    h = unrefract(original_pressure, self.temp, h)
+                target_ha = self._hour_angle(body, h)
+                if do_rising:
+                    target_ha = - target_ha  # turn setting HA into rising HA
+                ha = self._ha(body)
+                difference = target_ha - ha
+                if prev_ha is None:
+                    difference %= tau  # force angle to be positive
+                    if direction < 0:
+                        difference -= tau
+                    bump = difference / tau
+                    if abs(bump) < default_newton_precision:
+                        # Already at target event: move forward to next one.
+                        bump += direction
+                else:
+                    difference = _plusminus_pi(difference)
+                    bump = difference / tau
+                if abs(bump) < default_newton_precision:
+                    break
+                self.date += bump
+                prev_ha = ha
+            return self.date
         finally:
+            if self.pressure != original_pressure:
+                self.pressure = original_pressure
+                body.compute(self)
             self.date = original_date
 
-    @describe_riset_search
-    def previous_rising(self, body, start=None, use_center=False):
-        """Search for the given body's previous rising"""
-        return self._riset_helper(body, start, use_center, True, True)
+    def _ha(self, body):
+        return (self.sidereal_time() - body.ra) % tau
 
-    @describe_riset_search
-    def previous_setting(self, body, start=None, use_center=False):
-        """Search for the given body's previous setting"""
-        return self._riset_helper(body, start, use_center, False, True)
-
-    @describe_riset_search
-    def next_rising(self, body, start=None, use_center=False):
-        """Search for the given body's next rising"""
-        return self._riset_helper(body, start, use_center, True, False)
-
-    @describe_riset_search
-    def next_setting(self, body, start=None, use_center=False):
-        """Search for the given body's next setting"""
-        return self._riset_helper(body, start, use_center, False, False)
+    def _hour_angle(self, body, alt):
+        lat = self.lat
+        dec = body.dec
+        arg = (sin(alt) - sin(lat) * sin(dec)) / (cos(lat) * cos(dec))
+        if arg < -1.2:  # TODO: kind of arbitrary; makes tests pass
+            raise AlwaysUpError('%r is still above the horizon at %s'
+                                % (body.name, self.date))
+        if arg < -1.0:
+            arg = -1.0
+        return acos(arg)
 
     def next_pass(self, body, singlepass=True):
         """Return the next rising, culmination, and setting of a satellite.

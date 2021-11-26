@@ -179,9 +179,10 @@ body.compute(observer)
  * Computes the position of the ``Body``.
  * Uses the ``date`` of the observer.
  * Uses the ``epoch`` of the observer.
- * Sets all of the ``Body`` attributes listed in the previous section
-   (but ``ra`` and ``dec`` will get different values;
-   see below).
+ * Sets all of the ``Body`` attributes listed in the previous section.
+ * For earth satellite objects,
+   the astrometric coordinates ``a_ra`` and ``a_dec`` are topocentric
+   instead of geocentric.
  * Also computes where the body appears in the sky
    (or below the horizon) for the observer,
    and sets four more ``Body`` attributes:
@@ -200,12 +201,26 @@ body.compute(observer)
    for the observer's ``temp`` and ``pressure``;
    set the observer's ``pressure`` to zero to ignore refraction.
 
- * For earth satellite objects,
-   the astrometric coordinates ``a_ra`` and ``a_dec`` are topocentric
-   instead of geocentric,
-   since there is little point in figuring out where the satellite
-   would appear on a J2000 (or whatever epoch you are using) star chart
-   for an observer sitting at the center of the earth.
+ * If you are curious about how big an effect
+   atmospheric refraction had on a position,
+   the most comprehensive approach is to re-run your calculation
+   with the body’s ``.pressure`` set to zero,
+   which turns refraction off.
+   You can then compare to see how refraction affected not only its ``.alt``
+   but also its apparent ``.ra`` and ``.dec``.
+
+ >>> print(v.alt)
+ 72:19:45.1
+ >>> u = ephem.unrefract(gatech.pressure, gatech.temp, v.alt)
+ >>> print(u)
+ 72:19:26.9
+
+ * But if you simply want to perform a quick check
+   of how much a body’s altitude was affected by refraction,
+   you can call ``unrefract()`` and pass it an altitude.
+   It will return the true altitude at which the body would appear
+   if its image were not affected by atmospheric refraction.
+   The effect of refraction will only be large near the horizon.
 
 catalog format
 --------------
@@ -484,7 +499,7 @@ Observers
  >>> lowell.compute_pressure()
  >>> lowell.pressure
  775.6025138640499
- 
+
  * Computes the pressure at the observer's current elevation,
    using the International Standard Atmosphere.
 

@@ -2638,6 +2638,15 @@ static int separation_arg(PyObject *arg, double *lngi, double *lati)
      }
 }
 
+static PyObject* py_unrefract(PyObject *self, PyObject *args)
+{
+     double pr, tr, aa, ta;
+     if (!PyArg_ParseTuple(args, "ddd:py_unrefract", &pr, &tr, &aa))
+          return 0;
+     unrefract(pr, tr, aa, &ta);
+     return new_Angle(ta, raddeg(1));
+}
+
 static PyObject* separation(PyObject *self, PyObject *args)
 {
      double plat, plng, qlat, qlng;
@@ -3113,6 +3122,7 @@ static PyMethodDef libastro_methods[] = {
      {"now", (PyCFunction) build_now, METH_NOARGS, "Return the current time"},
      {"readdb", readdb, METH_VARARGS, "Read an ephem database entry"},
      {"readtle", readtle, METH_VARARGS, "Read TLE-format satellite elements"},
+     {"unrefract", py_unrefract, METH_VARARGS, "Reverse angle of refraction"},
      {"separation", separation, METH_VARARGS,
       "Return the angular separation between two objects or positions" D},
 

@@ -5,10 +5,22 @@ PyEphem CHANGELOG
 Next Version
 ------------
 
+- A new search routine had been written and tested
+  to power the :ref:`transit-rising-setting` methods
+  ``previous_rising()``,
+  ``previous_setting()``,
+  ``next_rising()``, and
+  ``next_setting()``.
+  They should no longer be susceptible to getting hung up in a loop.
+  You should also find them substantially faster.
+
 - Fixed how the underlying “libastro” library computes whether a body’s
   image is deflected by its light passing close to the Sun’s gravity.
   Previously, users would see coordinates jump unexpectedly as
   deflection turned on and off.
+
+- A new routine ``unrefract()`` lets you compute the real altitude
+  of a body that you observe in the sky at a given apparent altitude.
 
 Version 4.1 (2021 September 29)
 -------------------------------
