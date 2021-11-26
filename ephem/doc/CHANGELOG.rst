@@ -5,8 +5,9 @@ PyEphem CHANGELOG
 Next Version 4.1.1
 ------------------
 
-- When you provide a Python ``datetime`` with a time zone attached,
-  PyEphem now detects the time zone and converts it to UTC automatically.
+- When you provide PyEphem with a Python ``datetime`` that has a time
+  zone attached, PyEphem now detects the time zone and converts the date
+  and time to UTC automatically.
 
 - A new search routine had been written and tested
   to power the :ref:`transit-rising-setting` methods
@@ -16,6 +17,10 @@ Next Version 4.1.1
   ``next_setting()``.
   They should no longer be susceptible to getting hung up in a loop.
   You should also find them substantially faster.
+
+- Fixed the ``constellation()`` routine so that it uses astrometric,
+  rather than apparent, right ascension and declination.  This should
+  make it more accurate along the borders of each constellation.
 
 - Fixed how the underlying “libastro” library computes whether a body’s
   image is deflected by its light passing close to the Sun’s gravity.

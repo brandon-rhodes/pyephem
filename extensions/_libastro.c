@@ -2888,8 +2888,8 @@ static PyObject* constellation
 	  }
 	  if (Body_obj_cir(b, "ra", 0) == -1)
 	       goto fail;
-	  ra = b->obj.s_ra;
-	  dec = b->obj.s_dec;
+	  ra = b->obj.s_astrora;
+	  dec = b->obj.s_astrodec;
 	  epoch = b->now.n_epoch;
      } else {
 	  if (!PySequence_Check(position_arg)) {

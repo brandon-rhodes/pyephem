@@ -113,6 +113,12 @@ class GitHubIssues(TestCase):
             pole.previous_rising(sun)
         self.assertEqual(str(pole.date), '2009/4/30 00:00:00')
 
+    def test_github_193(self):
+        ic = ephem.readdb('IC1101,f,15:10:56.10,+05:44:41.2,0,2000')
+        ic.compute()
+        c = ephem.constellation(ic)
+        self.assertEqual(c, ('Vir', 'Virgo'))
+
     def test_github_196(self):
         line = ('2010 LG61,e,123.8859,317.3744,352.1688,7.366687,'
                 '0.0492942,0.81371070,163.4277,04/27.0/2019,2000,H,0.15')
