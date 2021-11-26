@@ -25,6 +25,9 @@ Next Version 4.1.1
 - A new routine ``unrefract()`` lets you compute the real altitude
   of a body that you observe in the sky at a given apparent altitude.
 
+- The old ``cities.lookup()`` function is now officially deprecated.
+  Because of a Google API restriction, it stopped working in 2018.
+
 Version 4.1 (2021 September 29)
 -------------------------------
 
