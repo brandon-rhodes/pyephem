@@ -32,7 +32,7 @@ def load_tests(loader, tests, pattern):
 
     datetime.datetime = FakeDatetime
 
-    if sys.version_info >= (2, 7):
+    if sys.version_info >= (3, 9):
         tests.extend([
             doctest.DocFileSuite('../doc/%s' % os.path.basename(path))
             for path in glob(os.path.dirname(__file__) + '/../doc/*.rst')
