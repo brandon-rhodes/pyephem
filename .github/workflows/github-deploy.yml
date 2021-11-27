@@ -30,12 +30,13 @@ jobs:
           platforms: all
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v1.11.1.post1
+        uses: pypa/cibuildwheel@v2.3.0
         env:
           #CIBW_ARCHS_LINUX: auto aarch64 ppc64le s390x
           CIBW_ARCHS_LINUX: auto aarch64 s390x
           CIBW_SKIP: pp*
           CIBW_TEST_COMMAND: python -m unittest discover ephem
+          CIBW_TEST_REQUIRES: tzdata
 
       - uses: actions/upload-artifact@v2
         with:
