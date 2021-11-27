@@ -10,7 +10,7 @@ from datetime import tzinfo as _tzinfo
 from math import acos, cos, pi, sin
 from time import localtime as _localtime
 
-__version__ = '4.1'
+__version__ = '4.1.1'
 
 # As a favor, compile a regular expression that our C library would
 # really rather not compile for itself.

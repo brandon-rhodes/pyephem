@@ -2,8 +2,8 @@
 PyEphem CHANGELOG
 =================
 
-Next Version 4.1.1
-------------------
+Version 4.1.1 (2021 November 27)
+--------------------------------
 
 - When you provide PyEphem with a Python ``datetime`` that has a time
   zone attached, PyEphem now detects the time zone and converts the date
@@ -23,9 +23,9 @@ Next Version 4.1.1
   make it more accurate along the borders of each constellation.
 
 - Fixed how the underlying “libastro” library computes whether a body’s
-  image is deflected by its light passing close to the Sun’s gravity.
-  Previously, users would see coordinates jump unexpectedly as
-  deflection turned on and off.
+  image is deflected by gravity when its light passes close to the Sun.
+  Previously, users would see coordinates jump unexpectedly as the
+  deflection formula turned on and off haphazardly.
 
 - Fixed the star positions in the ``ephem.stars`` star catalog by adding
   8.75 years of proper motion to each star.  Previously, each 1991.25
