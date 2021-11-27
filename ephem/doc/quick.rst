@@ -917,7 +917,7 @@ Stars and Cities
 
  >>> rigel = ephem.star('Rigel')
  >>> print('%s %s' % (rigel._ra, rigel._dec))
- 5:14:32.30 -8:12:06.0
+ 5:14:32.27 -8:12:05.9
 
  * PyEphem provides a catalog of bright stars.
  * Each call to ``star()`` returns a new ``FixedBody``

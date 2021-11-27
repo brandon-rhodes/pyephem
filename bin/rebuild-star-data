@@ -1,0 +1,123 @@
+#!/usr/bin/env python
+
+from skyfield import api
+from skyfield.api import Star, load
+from skyfield.data import hipparcos
+
+# These are the star names PyEphem is historically committed to
+# supporting, including in some cases multiple names for a single star.
+
+NAMES = """
+
+Acamar, Achernar, Acrux, Adara, Adhara, Agena, Albereo, Alcaid, Alcor,
+Alcyone, Aldebaran, Alderamin, Alfirk, Algenib, Algieba, Algol, Alhena,
+Alioth, Alkaid, Almach, Alnair, Alnilam, Alnitak, Alphard, Alphecca,
+Alpheratz, Alshain, Altair, Ankaa, Antares, Arcturus, Arkab Posterior,
+Arkab Prior, Arneb, Atlas, Atria, Avior, Bellatrix, Betelgeuse, Canopus,
+Capella, Caph, Castor, Cebalrai, Deneb, Denebola, Diphda, Dubhe,
+Electra, Elnath, Eltanin, Enif, Etamin, Fomalhaut, Formalhaut, Gacrux,
+Gienah Corvi, Gienah, Hadar, Hamal, Izar, Kaus Australis, Kochab, Maia,
+Markab, Megrez, Menkalinan, Menkar, Menkent, Merak, Merope, Miaplacidus,
+Mimosa, Minkar, Mintaka, Mirach, Mirfak, Mirzam, Mizar, Naos, Nihal,
+Nunki, Peacock, Phecda, Polaris, Pollux, Procyon, Rasalgethi,
+Rasalhague, Regulus, Rigel, Rigil Kentaurus, Rukbat, Sabik, Sadalmelik,
+Sadr, Saiph, Scheat, Schedar, Shaula, Sheliak, Sirius, Sirrah, Spica,
+Suhail, Sulafat, Tarazed, Taygeta, Thuban, Unukalhai, Vega,
+Vindemiatrix, Wezen, Zaurak, Zubenelgenubi
+
+"""
+
+NAMES = [name.strip() for name in NAMES.split(',')]
+
+EXTRAS = {
+    'Minkar': 59316,
+}
+
+ALIASES = {
+    'Adara': 'Adhara',
+    'Agena': 'Hadar',
+    'Albereo': 'Albireo',
+    'Alcaid': 'Alkaid',
+    'Etamin': 'Eltanin',
+    'Formalhaut': 'Fomalhaut',
+    'Gienah Corvi': 'Gienah',
+    'Sirrah': 'Alpheratz',
+}
+
+# Load up the official "IAU Catalog of Star Names (IAU-CSN)" despite the
+# low quality of some of its choices, as it will at least map names to
+# HIP numbers for us.
+
+name_to_hip = {}
+
+f = api.load.open('http://www.pas.rochester.edu/~emamajek/WGSN/IAU-CSN.txt')
+for line in f:
+    line = line.decode('utf-8')
+    if line.startswith('#'):
+        continue
+    name = line[0:18].strip()
+    hip = line[86:93].strip()
+    if hip == '_':
+        continue
+    name_to_hip[name] = int(hip)
+
+# Load Hipparcos twice, the second time so we can get supplementary data
+# that Skyfield doesn't normally load: the spectral classification.
+
+from pandas import read_csv
+
+with load.open(hipparcos.URL) as f:
+    df = hipparcos.load_dataframe(f)
+
+with load.open(hipparcos.URL) as f:
+    df_raw = read_csv(
+        f, sep='|', names=hipparcos._COLUMN_NAMES,
+        na_values=['     ', '       ', '        ', '            '],
+        low_memory=False,
+    )
+    df_raw = df_raw.set_index('HIP')
+
+ts = load.timescale()
+eph = load('de421.bsp')
+sun = eph['Sun']
+sun_at = sun.at(ts.J(2000.0))
+
+lines = []
+
+# For each star, advance its position to 2000.0 and then print it out
+# for PyEphem.  We cheat and pretend that we don't need to rotate its
+# angular velocity to match its new position; hopefully the resulting
+# error is small.
+
+for name in NAMES:
+    lookup_name = ALIASES.get(name, name)
+    try:
+        hip = name_to_hip[lookup_name]
+    except KeyError:
+        hip = EXTRAS[lookup_name]
+    row = df.loc[hip]
+    raw_row = df_raw.loc[hip]
+    star = Star.from_dataframe(row)
+    pos = sun_at.observe(star)
+    ra, dec, _ = pos.radec()
+    line = ','.join(str(item) for item in [
+        name, 'f|S|' + raw_row['SpType'][:2],
+        '%.8f' % ra.hours + '|' + str(star.ra_mas_per_year),
+        '%.8f' % dec.degrees + '|' + str(star.dec_mas_per_year),
+        row['magnitude'],
+    ])
+    lines.append(line)
+
+lines.sort()
+for line in lines:
+    print(line)
+
+#print(len(lines))  # goal: 115
+
+# import ephem
+# star = ephem.readdb(line)
+# o = ephem.Observer()
+# o.date = '2000'
+# star.compute(o)
+# print(star.a_ra, '=', star.a_ra / ephem.pi * 12)
+# print(star.a_dec, '=', star.a_dec / ephem.pi * 180)

@@ -5,6 +5,12 @@ import unittest
 import ephem
 
 class StarTests(unittest.TestCase):
+    def test_Arcturus(self):
+        s = ephem.star('Arcturus')
+        s.compute(ephem.date('2017/1/1 12:00'))
+        self.assertEqual(str(s.ra), '14:16:25.12')
+        self.assertEqual(str(s.dec), '19:05:39.8')
+
     def test_Fomalhaut(self):
         s = ephem.star('Fomalhaut')
         self.assertEqual(s.name, 'Fomalhaut')
@@ -14,12 +20,16 @@ class StarTests(unittest.TestCase):
         s = ephem.star('Fomalhaut')
         s.compute()
         self.assertEqual(s.name, 'Fomalhaut')
-        self.assertEqual(str(s._ra), '22:57:38.80')
+        self.assertEqual(str(s._ra), '22:57:39.05')
 
     def test_Fomalhaut_autocompute(self):
         s = ephem.star('Fomalhaut', '1971/1/1')
         self.assertEqual(s.name, 'Fomalhaut')
-        self.assertEqual(str(s._ra), '22:57:38.80')
+        self.assertEqual(str(s._ra), '22:57:39.05')
+
+    def test_catalog_size(self):
+        # Prevent catalog from changing size accidentally during editing.
+        self.assertEqual(len(ephem.stars.stars), 115)
 
     def test_unknown_star(self):
         self.assertRaises(KeyError, ephem.star, 'Alpha Centauri')
