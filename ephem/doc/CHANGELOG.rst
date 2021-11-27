@@ -27,6 +27,11 @@ Next Version 4.1.1
   Previously, users would see coordinates jump unexpectedly as
   deflection turned on and off.
 
+- Fixed the star positions in the ``ephem.stars`` star catalog by adding
+  8.75 years of proper motion to each star.  Previously, each 1991.25
+  position from the Hipparcos catalog was being incorrectly treated as a
+  2000.0 position.
+
 - A new routine ``unrefract()`` lets you compute the real altitude
   of a body that you observe in the sky at a given apparent altitude.
 
