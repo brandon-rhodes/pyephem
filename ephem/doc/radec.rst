@@ -178,7 +178,7 @@ used in the `XEphem`_ graphical astronomy application.
   depending both on its temperature
   and on the amount of moisture the air is holding!
   PyEphem does its best to estimate the result,
-  using the ``Observer`` attributes ``temp`` and ``pressure``.
+  using the ``Observer`` attributes ``temperature`` and ``pressure``.
   These default to 25°C and 1010 millibar
   if you do not specify more specific values;
   set the ``pressure`` to zero

@@ -198,7 +198,7 @@ body.compute(observer)
 
  * These apparent positions
    include an adjustment to simulate atmospheric refraction
-   for the observer's ``temp`` and ``pressure``;
+   for the observer's ``temperature`` and ``pressure``;
    set the observer's ``pressure`` to zero to ignore refraction.
 
  * If you are curious about how big an effect
@@ -211,7 +211,7 @@ body.compute(observer)
 
  >>> print(v.alt)
  72:19:45.1
- >>> u = ephem.unrefract(gatech.pressure, gatech.temp, v.alt)
+ >>> u = ephem.unrefract(gatech.pressure, gatech.temperature, v.alt)
  >>> print(u)
  72:19:26.9
 
@@ -487,14 +487,15 @@ Observers
    | ``lon`` — Geodetic longitude (+E)
    | ``elevation`` — Elevation (m)
    |
-   | ``temp`` — Temperature (°C)
+   | ``temperature`` — Temperature (°C)
    | ``pressure`` — Atmospheric pressure (mBar)
 
  * The ``date`` defaults to ``now()``.
  * The ``epoch`` defaults to ``'2000'``.
- * The ``temp`` defaults to 25°C.
+ * The ``temperature`` defaults to 25°C.
  * The ``pressure`` defaults to 1010mBar.
  * Other attributes default to zero.
+ * You can also refer to temperature by its old name ``temp``.
  * You can make a copy of an ``Observer`` with its ``copy()`` method.
 
  >>> lowell.compute_pressure()
@@ -579,7 +580,7 @@ transit, rising, and setting
    (that is, when the body's ``alt`` plus ``radius`` equals zero).
  * Rising and setting
    are sensitive to atmospheric refraction at the horizon,
-   and therefore to the observer's ``temp`` and ``pressure``;
+   and therefore to the observer's ``temperature`` and ``pressure``;
    set the ``pressure`` to zero to turn off refraction.
  * Rising and setting pay attention
    to the observer's ``horizon`` attribute;
@@ -635,7 +636,7 @@ observer.horizon
    uses a constant estimate of 34' of refraction at the horizon.
    So in the above example,
    rather than attempting to jury-rig values
-   for ``temp`` and ``pressure``
+   for ``temperature`` and ``pressure``
    that yield the magic 34',
    we turn off PyEphem refraction entirely
    and define the horizon itself as being at 34' altitude instead.

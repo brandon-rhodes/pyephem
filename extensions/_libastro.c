@@ -1089,6 +1089,8 @@ static PyGetSetDef Observer_getset[] = {
 
 static PyMemberDef Observer_members[] = {
      {"temp", T_DOUBLE, OFF(n_temp), 0,
+      "alias for 'temperature' attribute"},
+     {"temperature", T_DOUBLE, OFF(n_temp), 0,
       "atmospheric temperature in degrees Celsius"},
      {"pressure", T_DOUBLE, OFF(n_pressure), 0,
       "atmospheric pressure in millibar"},

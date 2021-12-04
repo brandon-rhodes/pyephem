@@ -9,6 +9,9 @@ Version 4.1.2 (unreleased)
   body is always below the horizon and raise a ``NeverUpError`` instead
   of a plain ``ValueError``.
 
+- Renamed the observer attribute ``temp`` to ``temperature``, leaving an
+  alias behind to support the old spelling.
+
 Version 4.1.1 (2021 November 27)
 --------------------------------
 
