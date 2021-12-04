@@ -15,7 +15,9 @@
    <img src="_static/pyephem-logo-short.png"/>
    <p>Home Page!<br>Documentation:</p>
    <p>
-     <a href="toc.html">Table of Contents</a>
+     <a href="toc.html">Table of Contents</a><br>
+     <a href="quick.html">Quick Reference</a><br>
+     <a href="CHANGELOG.html">Changelog</a>
    </p>
    </td>
    <td>
