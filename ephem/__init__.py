@@ -501,6 +501,10 @@ class Observer(_libastro.Observer):
                                 % (body.name, self.date))
         if arg < -1.0:
             arg = -1.0
+
+        if arg > 1.0:
+            raise NeverUpError('%r is below the horizon at %s'
+                               % (body.name, self.date))
         return acos(arg)
 
     def next_pass(self, body, singlepass=True):

@@ -11,6 +11,24 @@ METHODS = (
 class RiseSetTests(unittest.TestCase):
     maxDiff = 10000
 
+    def test_never_up(self):
+        m = ephem.Moon()
+        o = ephem.Observer()
+        o.lat = '+80'
+        o.lon = '0'
+        o.date = '2021/12/4'
+        m.compute(o)
+        self.assertRaises(ephem.NeverUpError, o.next_rising, m)
+
+    def test_always_up(self):
+        m = ephem.Moon()
+        o = ephem.Observer()
+        o.lat = '-80'
+        o.lon = '0'
+        o.date = '2021/12/4'
+        m.compute(o)
+        self.assertRaises(ephem.AlwaysUpError, o.next_rising, m)
+
     def test_sun(self):
         s = ephem.Sun()
         o = ephem.Observer()
