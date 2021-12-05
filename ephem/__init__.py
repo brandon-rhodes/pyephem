@@ -45,7 +45,8 @@ B1900 = 2415020.3135 - _libastro.MJD0
 B1950 = 2433282.4235 - _libastro.MJD0
 J2000 = _libastro.J2000
 
-_refract_error = 0.1 / 3600.0 / 360.0 * tau  # see refract.c "MAXRERR"
+_slightly_less_than_zero = -1e-15
+_slightly_more_than_pi = pi + 1e-15
 
 # We make available several basic types from _libastro.
 
@@ -464,9 +465,11 @@ class Observer(_libastro.Observer):
                     horizon -= body.radius
                 if original_pressure:
                     horizon = unrefract(original_pressure, self.temp, horizon)
-                target_ha = self._hour_angle(body, horizon)
+                abs_target_ha = self._target_hour_angle(body, horizon)
                 if do_rising:
-                    target_ha = - target_ha  # turn setting HA into rising HA
+                    target_ha = - abs_target_ha  # rises in east (az 0-180)
+                else:
+                    target_ha = abs_target_ha    # sets in west (az 180-360)
                 ha = self._ha(body)
                 difference = target_ha - ha
                 if prev_ha is None:
@@ -484,18 +487,15 @@ class Observer(_libastro.Observer):
                     break
                 self.date += bump
                 prev_ha = ha
-            self.pressure = original_pressure
-            body.compute(self)
-            alt = body.alt
-            if not use_center:
-                alt += body.radius
-            threshold = _refract_error + default_newton_precision
-            if alt < - threshold:
+
+            if abs_target_ha == _slightly_more_than_pi:
+                raise AlwaysUpError('%r is above the horizon at %s'
+                                    % (body.name, self.date))
+
+            if abs_target_ha == _slightly_less_than_zero:
                 raise NeverUpError('%r is below the horizon at %s'
                                    % (body.name, self.date))
-            if alt > threshold:
-                raise AlwaysUpError('%r is above the horizon at %s'
-                                   % (body.name, self.date))
+
             return self.date
         finally:
             if self.pressure != original_pressure:
@@ -506,15 +506,15 @@ class Observer(_libastro.Observer):
     def _ha(self, body):
         return (self.sidereal_time() - body.ra) % tau
 
-    def _hour_angle(self, body, alt):
+    def _target_hour_angle(self, body, alt):
         lat = self.lat
         dec = body.dec
         arg = (sin(alt) - sin(lat) * sin(dec)) / (cos(lat) * cos(dec))
 
         if arg < -1.0:
-            arg = -1.0
+            return _slightly_more_than_pi
         elif arg > 1.0:
-            arg = 1.0
+            return _slightly_less_than_zero
 
         return acos(arg)
 
