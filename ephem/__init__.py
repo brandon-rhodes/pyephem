@@ -470,7 +470,7 @@ class Observer(_libastro.Observer):
                     target_ha = - abs_target_ha  # rises in east (az 0-180)
                 else:
                     target_ha = abs_target_ha    # sets in west (az 180-360)
-                ha = self._ha(body)
+                ha = body.ha
                 difference = target_ha - ha
                 if prev_ha is None:
                     difference %= tau  # force angle to be positive
@@ -502,9 +502,6 @@ class Observer(_libastro.Observer):
                 self.pressure = original_pressure
                 body.compute(self)
             self.date = original_date
-
-    def _ha(self, body):
-        return (self.sidereal_time() - body.ra) % tau
 
     def _target_hour_angle(self, body, alt):
         lat = self.lat

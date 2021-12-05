@@ -246,6 +246,7 @@ obj_earthsat (Now *np, Obj *op)
 	    now_lst (np, &lst);
 	    ra = hrrad(lst) - ha;
 	    range (&ra, 2*PI);
+            op->s_ha = ha;
 	} else {
 	    ra = op->s_gaera;
 	    dec = op->s_gaedec;

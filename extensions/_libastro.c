@@ -1616,6 +1616,7 @@ static int Saturn_satrings(Saturn *saturn, char *fieldname)
 #define CARGS ,0
 
 GET_FIELD(epoch, now.n_epoch, build_Date)
+GET_FIELD(ha, obj.s_ha, build_hours)
 GET_FIELD(ra, obj.s_ra, build_hours)
 GET_FIELD(dec, obj.s_dec, build_degrees)
 GET_FIELD(gaera, obj.s_gaera, build_hours)
@@ -1818,6 +1819,7 @@ static int Set_gk(PyObject *self, PyObject *value, void *v)
 static PyGetSetDef Body_getset[] = {
      {"name", Get_name, 0, "object name (read-only string)"},
 
+     {"ha", Get_ha, 0, "hour angle" H},
      {"ra", Get_ra, 0, "right ascension" H},
      {"dec", Get_dec, 0, "declination" D},
      {"g_ra", Get_gaera, 0, "apparent geocentric right ascension" H},

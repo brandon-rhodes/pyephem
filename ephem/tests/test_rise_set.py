@@ -8,6 +8,37 @@ METHODS = (
     ephem.Observer.next_setting,
 )
 
+tle_lines = (
+    'ISS (ZARYA)',
+    '1 25544U 98067A   21339.43187394  .00003128  00000+0  65063-4 0  9994',
+    '2 25544  51.6429 215.9885 0004097 274.3592 259.8366 15.48933952315130',
+)
+
+class HourAngleTests(unittest.TestCase):
+    # Yes, maybe an odd place to put a body attribute test; but HA was
+    # added to support the new rising and setting logic, so here it is.
+
+    o = ephem.Observer()
+    o.date = '2021/12/5 13:56'
+
+    def test_fixed_ha(self):  # obj_fixed() in circum.c
+        b = ephem.star('Rigel')
+        b.compute(self.o)
+        self.assertNotEqual(b.ha, 0.0)
+
+    def test_cir_pos_ha(self):  # cir_pos() in circum.c
+        b = ephem.Mars()
+        b.compute(self.o)
+        self.assertNotEqual(b.ha, 0.0)
+
+    def test_earth_satellite_ha(self):  # earthsat.c
+        b = ephem.readtle(*tle_lines)
+        b.compute(self.o)
+        self.assertNotEqual(b.ha, 0.0)
+
+    # Ignoring "plmoon.c" case for now, as PyEphem objects like
+    # Callisto() seem to lack the new "ha" attribute anyway.
+
 class RiseSetTests(unittest.TestCase):
     maxDiff = 10000
 

@@ -188,6 +188,7 @@ body.compute(observer)
    and sets four more ``Body`` attributes:
 
    | `Apparent topocentric position`_
+   |  ``ha`` — Hour angle
    |  ``ra`` — Right ascension
    |  ``dec`` — Declination
    |

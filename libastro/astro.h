@@ -141,6 +141,7 @@ typedef unsigned char byte;
     byte co_flags;	/* FUSER*... used by others */			\
     ObjAge_t co_age;	/* update aging code; see db.c */		\
     char co_name[MAXNM];/* name, including \0 */			\
+    double co_ha;	/* geo/topo app/mean ha, rads */		\
     double co_ra;	/* geo/topo app/mean ra, rads */		\
     double co_dec;	/* geo/topo app/mean dec, rads */		\
     double co_gaera;	/* geo apparent ra, rads */			\
@@ -370,6 +371,7 @@ typedef union {
 #define	o_name		any.co_name
 #define	o_flags		any.co_flags
 #define	o_age		any.co_age
+#define	s_ha		any.co_ha
 #define	s_ra		any.co_ra
 #define	s_dec		any.co_dec
 #define	s_gaera		any.co_gaera

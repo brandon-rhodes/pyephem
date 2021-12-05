@@ -9,6 +9,9 @@ Version 4.1.2 (unreleased)
   body is always below the horizon and raise a ``NeverUpError`` instead
   of a plain ``ValueError``.
 
+- Gave bodies a new ``ha`` Hour Angle attribute, since the quantity was
+  computed internally but then discarded.
+
 - Renamed the observer attribute ``temp`` to ``temperature``, leaving an
   alias behind to support the old spelling.
 

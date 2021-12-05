@@ -293,6 +293,7 @@ obj_fixed (Now *np, Obj *op)
 	ha = hrrad(lst) - ra;
 	hadec_aa (lat, ha, dec, &alt, &az);
 	refract (pressure, temp, alt, &alt);
+	op->s_ha = ha;
 	op->s_alt = alt;
 	op->s_az = az;
 
@@ -722,6 +723,7 @@ Obj *op)	/* object to set s_ra/dec as per equinox */
 	/* transform into alt/az and apply refraction */
 	hadec_aa (lat, ha_out, dec_out, &alt, &az);
 	refract (pressure, temp, alt, &alt);
+	op->s_ha = ha_out;
 	op->s_alt = alt;
 	op->s_az = az;
 
