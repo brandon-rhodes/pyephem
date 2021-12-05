@@ -2,8 +2,8 @@
 PyEphem CHANGELOG
 =================
 
-Version 4.1.2 (unreleased)
---------------------------
+Version 4.1.2 (2021 December 5)
+-------------------------------
 
 - Fixed the new rising and setting routines so they properly detect if a
   body is always below the horizon and raise a ``NeverUpError`` instead
