@@ -14,19 +14,33 @@ class RiseSetTests(unittest.TestCase):
     def test_never_up(self):
         m = ephem.Moon()
         o = ephem.Observer()
-        o.lat = '+80'
         o.lon = '0'
-        o.date = '2021/12/4'
-        m.compute(o)
+        o.date = '2021/11/11'
+
+        # First, two clear-cut cases.
+        o.lat = '+40'
+        self.assertEqual(str(o.next_rising(m)), '2021/11/11 13:22:31')
+
+        o.lat = '+80'
         self.assertRaises(ephem.NeverUpError, o.next_rising, m)
+
+        # Now, an edge case: although the Moon starts the day too far
+        # south to rise, it moves north over the first few hours and
+        # winds up rising.
+        o.lat = '+70'
+        t = o.next_rising(m)
+        self.assertEqual(str(o.next_rising(m)), '2021/11/11 17:13:03')
 
     def test_always_up(self):
         m = ephem.Moon()
         o = ephem.Observer()
-        o.lat = '-80'
         o.lon = '0'
-        o.date = '2021/12/4'
-        m.compute(o)
+        o.date = '2022/9/7'
+
+        o.lat = '-60'
+        self.assertEqual(str(o.next_rising(m)), '2022/9/7 12:11:26')
+
+        o.lat = '-70'
         self.assertRaises(ephem.AlwaysUpError, o.next_rising, m)
 
     def test_sun(self):

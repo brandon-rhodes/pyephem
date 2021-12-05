@@ -45,6 +45,8 @@ B1900 = 2415020.3135 - _libastro.MJD0
 B1950 = 2433282.4235 - _libastro.MJD0
 J2000 = _libastro.J2000
 
+_refract_error = 0.1 / 3600.0 / 360.0 * tau  # see refract.c "MAXRERR"
+
 # We make available several basic types from _libastro.
 
 Angle = _libastro.Angle
@@ -457,12 +459,12 @@ class Observer(_libastro.Observer):
             prev_ha = None
             while True:
                 body.compute(self)
-                h = self.horizon
+                horizon = self.horizon
                 if not use_center:
-                    h -= body.radius
+                    horizon -= body.radius
                 if original_pressure:
-                    h = unrefract(original_pressure, self.temp, h)
-                target_ha = self._hour_angle(body, h)
+                    horizon = unrefract(original_pressure, self.temp, horizon)
+                target_ha = self._hour_angle(body, horizon)
                 if do_rising:
                     target_ha = - target_ha  # turn setting HA into rising HA
                 ha = self._ha(body)
@@ -482,6 +484,18 @@ class Observer(_libastro.Observer):
                     break
                 self.date += bump
                 prev_ha = ha
+            self.pressure = original_pressure
+            body.compute(self)
+            alt = body.alt
+            if not use_center:
+                alt += body.radius
+            threshold = _refract_error + default_newton_precision
+            if alt < - threshold:
+                raise NeverUpError('%r is below the horizon at %s'
+                                   % (body.name, self.date))
+            if alt > threshold:
+                raise AlwaysUpError('%r is above the horizon at %s'
+                                   % (body.name, self.date))
             return self.date
         finally:
             if self.pressure != original_pressure:
@@ -496,15 +510,12 @@ class Observer(_libastro.Observer):
         lat = self.lat
         dec = body.dec
         arg = (sin(alt) - sin(lat) * sin(dec)) / (cos(lat) * cos(dec))
-        if arg < -1.2:  # TODO: kind of arbitrary; makes tests pass
-            raise AlwaysUpError('%r is still above the horizon at %s'
-                                % (body.name, self.date))
+
         if arg < -1.0:
             arg = -1.0
+        elif arg > 1.0:
+            arg = 1.0
 
-        if arg > 1.0:
-            raise NeverUpError('%r is below the horizon at %s'
-                               % (body.name, self.date))
         return acos(arg)
 
     def next_pass(self, body, singlepass=True):
