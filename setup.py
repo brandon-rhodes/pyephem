@@ -12,7 +12,7 @@ if 'bdist_wheel' in sys.argv:
 # Read the current version from ephem/__init__.py itself.
 
 path = os.path.join(os.path.dirname(__file__), 'ephem', '__init__.py')
-for line in open(path):
+for line in open(path, encoding='utf8'):
     if line.startswith('__version__'):
         __version__ = eval(line.split(None, 2)[2]) # skip '__version__', '='
 
@@ -23,7 +23,7 @@ libastro_files = glob('libastro/*.c')
 libastro_data = glob('extensions/data/*.c')
 
 here = os.path.dirname(__file__)
-with open(os.path.join(here, 'README.rst')) as f:
+with open(os.path.join(here, 'README.rst'), encoding='utf8') as f:
     README = f.read()
 
 libraries = []
