@@ -10,6 +10,9 @@ Version 4.1.3 (2021 December ?)
   small negative number of seconds, which caused Python’s ``datetime``
   type to complain ``ValueError: second must be in 0..59``.
 
+- Users installing from source on Windows are now protected against a
+  possible encoding error as ``setup.py`` reads in two text files.
+
 Version 4.1.2 (2021 December 5)
 -------------------------------
 
