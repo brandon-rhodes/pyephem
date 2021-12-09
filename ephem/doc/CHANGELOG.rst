@@ -2,6 +2,14 @@
 PyEphem CHANGELOG
 =================
 
+Version 4.1.3 (2021 December ?)
+-------------------------------
+
+- Fixed an inadvertent loss of precision in the routine that computes a
+  date’s hours, minutes, and seconds.  It was sometimes returning a
+  small negative number of seconds, which caused Python’s ``datetime``
+  type to complain ``ValueError: second must be in 0..59``.
+
 Version 4.1.2 (2021 December 5)
 -------------------------------
 

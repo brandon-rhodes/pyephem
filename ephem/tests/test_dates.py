@@ -87,6 +87,10 @@ class DateTests(unittest.TestCase):
         d = Date(34530.34375)
         self.assertEqual(d.tuple(), (1994, 7, 16, 20, 15, 0))
 
+    def test_tuple_that_rounded_to_negative_seconds(self):  # Github issue 223
+        d = Date(44417.49999991596)
+        self.assertEqual(d.tuple(), (2021, 8, 10, 23, 59, 59.992739))
+
     def test_localtime_modern(self):
         if time.timezone == 18000: # test only works in Eastern time zone
             self.assertEqual(localtime(Date('2009/6/23 8:47')),

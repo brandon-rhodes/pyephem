@@ -559,7 +559,7 @@ static void mjd_six(double mjd, int *yearp, int *monthp, int *dayp,
      mjd += 0.5 / 8.64e+10;  /* half microsecond, so floor() becomes "round" */
      mjd_cal(mjd, monthp, &mjd, yearp);
 
-     double day = floorf(mjd);
+     double day = floor(mjd);
      double fraction = mjd - day;
      *dayp = (int) day;
 
