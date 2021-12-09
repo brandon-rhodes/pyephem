@@ -9,10 +9,14 @@ if 'bdist_wheel' in sys.argv:
     del setup, Extension
     from setuptools import setup, Extension
 
+open_kw = {}
+if sys.version_info >= (3,):
+    open_kw['encoding'] = 'utf-8'
+
 # Read the current version from ephem/__init__.py itself.
 
 path = os.path.join(os.path.dirname(__file__), 'ephem', '__init__.py')
-for line in open(path, encoding='utf8'):
+for line in open(path, **open_kw):
     if line.startswith('__version__'):
         __version__ = eval(line.split(None, 2)[2]) # skip '__version__', '='
 
@@ -23,7 +27,7 @@ libastro_files = glob('libastro/*.c')
 libastro_data = glob('extensions/data/*.c')
 
 here = os.path.dirname(__file__)
-with open(os.path.join(here, 'README.rst'), encoding='utf8') as f:
+with open(os.path.join(here, 'README.rst'), **open_kw) as f:
     README = f.read()
 
 libraries = []
