@@ -21,7 +21,7 @@ jobs:
         uses: pypa/cibuildwheel@v2.3.0
         env:
           CIBW_SKIP: pp*
-          CIBW_TEST_COMMAND: python -m unittest discover ephem
+          CIBW_TEST_COMMAND: python -m unittest discover -v ephem
           CIBW_TEST_REQUIRES: tzdata
 
   build_wheels_python2:
@@ -39,5 +39,5 @@ jobs:
         env:
           CIBW_BUILD: cp27-*
           CIBW_SKIP: pp*
-          CIBW_TEST_COMMAND: python -m unittest discover ephem
+          CIBW_TEST_COMMAND: python -m unittest discover -v ephem
           CIBW_TEST_REQUIRES: tzdata

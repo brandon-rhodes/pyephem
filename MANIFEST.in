@@ -3,6 +3,7 @@ include INSTALL
 include README.rst
 include libastro/*.h
 include ephem/doc/*
+include ephem/tests/*
 include ephem/tests/jpl/*
 include ephem/tests/usno/*
 include astro_export.h
