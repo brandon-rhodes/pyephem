@@ -2,8 +2,8 @@
 PyEphem CHANGELOG
 =================
 
-Version 4.1.3 (2021 December ?)
--------------------------------
+Version 4.1.3 (2021 December 13)
+--------------------------------
 
 - Fixed an inadvertent loss of precision in the routine that computes a
   date’s hours, minutes, and seconds.  It was sometimes returning a
