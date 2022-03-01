@@ -56,6 +56,9 @@ setup(name = 'ephem',
       author = 'Brandon Rhodes',
       author_email = 'brandon@rhodesmill.org',
       url = 'http://rhodesmill.org/pyephem/',
+      project_urls = {
+          'Source': 'https://github.com/brandon-rhodes/pyephem',
+      },
       classifiers = [
         'Development Status :: 6 - Mature',
         'Intended Audience :: Science/Research',
