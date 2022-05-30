@@ -74,6 +74,13 @@ class RiseSetTests(unittest.TestCase):
         o.lat = '-70'
         self.assertRaises(ephem.AlwaysUpError, o.next_rising, m)
 
+    def test_raises_error_for_NaN(self):
+        m = ephem.Moon()
+        o = ephem.Observer()
+        o.date = float('nan')
+        with self.assertRaises(ValueError):
+            o.next_rising(m)
+
     def test_sun(self):
         s = ephem.Sun()
         o = ephem.Observer()

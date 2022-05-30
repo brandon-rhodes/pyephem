@@ -7,7 +7,7 @@ import re
 from datetime import datetime as _datetime
 from datetime import timedelta as _timedelta
 from datetime import tzinfo as _tzinfo
-from math import acos, cos, pi, sin
+from math import acos, cos, isnan, pi, sin
 from time import localtime as _localtime
 
 __version__ = '4.1.3'
@@ -459,6 +459,9 @@ class Observer(_libastro.Observer):
                 self.date = start
             prev_ha = None
             while True:
+                if isnan(self.date):
+                    raise ValueError('cannot find a next rising or setting'
+                                     ' if the date is NaN')
                 body.compute(self)
                 horizon = self.horizon
                 if not use_center:

@@ -237,6 +237,9 @@ deltat(double mj)
 	 * See AA page K11.
 	 */
 
+        /* Avoid Segmentation fault if year is NaN. */
+        if (Y != Y)
+            return 0.0;
 	/* Index into the table.  */
 	p = floor(Y);
 	iy = (int) (p - TABSTART);
