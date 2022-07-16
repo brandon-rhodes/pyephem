@@ -174,11 +174,7 @@ int vrc( double *v, double *r, double tp, double e, double q )
                  * the orbit of Pluto.  For any reasonable orbit this will
                  * never happen in practice.
                  *
-                 * You might want to code a more graceful error exit here though.
-                 *
                  */
-                printf( "\nNear-parabolic orbit: inaccurate result."
-                        "\n  e = %f, lambda = %f, w = %f", e, lambda, w );
 		return -1;
             }
             else

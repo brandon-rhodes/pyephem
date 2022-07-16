@@ -1489,9 +1489,17 @@ static int Body_obj_cir(Body *body, char *fieldname, unsigned topocentric)
 	  return 0;
      pref_set(PREF_EQUATORIAL, body->obj.o_flags & VALID_TOPO ?
 	      PREF_TOPO : PREF_GEO);
-     if (obj_cir(& body->now, & body->obj) == -1) {
+
+     int is_error = obj_cir(& body->now, & body->obj) == -1;
+     int is_inaccurate = body->obj.o_flags & NOCIRCUM;
+
+     if (is_error || is_inaccurate) {
+          char *extra = "";
+          if (is_inaccurate)
+               extra = " with any accuracy because its orbit is nearly"
+                    " parabolic and it is very far from the Sun";
 	  PyErr_Format(PyExc_RuntimeError, "cannot compute the body's position"
-                       " at %s", Date_format_value(body->now.n_mjd));
+                       " at %s%s", Date_format_value(body->now.n_mjd), extra);
 	  return -1;
      }
      body->obj.o_flags |= VALID_OBJ;

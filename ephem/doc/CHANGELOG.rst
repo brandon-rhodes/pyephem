@@ -2,6 +2,18 @@
 PyEphem CHANGELOG
 =================
 
+Version 4.1.4 (?)
+-----------------
+
+- In previous versions, if you asked for the position of a body
+  (a) whose elliptical or hyperbolic orbit has an eccentricity very
+  close to 1.0 and (b) which is very far from perihelion, then the
+  underlying C library would print a warning ``Near-parabolic orbit:
+  inaccurate result`` but let your Python script continue on unawares.
+  Now, no message is printed directly to the screen, and instead a
+  ``RuntimeError`` will tell you why PyEphem can’t compute the body’s
+  position.
+
 Version 4.1.3 (2021 December 13)
 --------------------------------
 

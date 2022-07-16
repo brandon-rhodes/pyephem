@@ -71,7 +71,7 @@ def predict_attributes(body, was_computed, was_given_observer):
 # Determine whether each kind of body supports the set of attributes
 # we believe it should.
 
-class BodyTests(unittest.TestCase):
+class BodyBuilderTests(unittest.TestCase):
     def setUp(self):
         self.date = Date('2004/05/21')
 
@@ -289,6 +289,18 @@ class BodyTests(unittest.TestCase):
                           ' 00000-0  59688-4 0  1902',
                           '2 20580  28.4694  17.3953 0004117 265.2946  '
                           '94.7172 14.99359833594524')
+
+
+class BodyFailureTests(unittest.TestCase):
+    def test_nearly_parabolic_EllipticalBody_and_far_from_Sun(self):
+        line = (
+            "C/1980 Y1 (Bradfield),e,138.5850,115.3515,358.2941,945.0557,"
+            "0.0000339,0.999725,359.9999,12/27.0/1980,2000,g  9.0,4.0"
+        )
+        b = readdb(line)
+        b.compute('2022/7/15')
+        with self.assertRaises(RuntimeError):
+            b.ra
 
 # A user reported that Saturn's ring tilt was misbehaving, and there was
 # indeed a major error occuring in its calculation.  This small test
