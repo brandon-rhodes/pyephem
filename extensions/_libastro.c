@@ -372,7 +372,11 @@ static PyTypeObject AngleType = {
      sizeof(AngleObject),
      0,
      0,				/* tp_dealloc */
+#if PY_MAJOR_VERSION < 3
      Angle_print,		/* tp_print */
+#else
+     0,				/* reserved in 3.x */
+#endif
      0,				/* tp_getattr */
      0,				/* tp_setattr */
      0,				/* tp_compare */
@@ -669,7 +673,11 @@ static PyTypeObject DateType = {
      sizeof(PyFloatObject),
      0,
      0,				/* tp_dealloc */
+#if PY_MAJOR_VERSION < 3
      Date_print,		/* tp_print */
+#else
+     0,				/* tp_print slot is reserved and unused in Python 3 */
+#endif
      0,				/* tp_getattr */
      0,				/* tp_setattr */
      0,				/* tp_compare */
