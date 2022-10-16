@@ -1293,6 +1293,14 @@ static int EarthSatellite_init(PyObject* self, PyObject* args, PyObject *kw)
      return 0;
 }
 
+static void EarthSatellite_dealloc(PyObject *self)
+{
+     EarthSatellite *e = (EarthSatellite*) self;
+     Py_XDECREF(e->name);
+     Py_XDECREF(e->catalog_number);
+     Py_TYPE(self)->tp_free(self);
+}
+
 #undef INIT
 
 /* This compute() method does not actually compute anything, since
@@ -2591,7 +2599,7 @@ static PyTypeObject EarthSatelliteType = {
      "ephem.EarthSatellite",
      sizeof(EarthSatellite),
      0,
-     0,				/* tp_dealloc */
+     EarthSatellite_dealloc,    /* tp_dealloc */
      0,				/* tp_print */
      0,				/* tp_getattr */
      0,				/* tp_setattr */
@@ -2719,7 +2727,9 @@ static PyObject* separation(PyObject *self, PyObject *args)
      return new_Angle(acos(cosine), raddeg(1));
 }
 
-/* Read various database formats, with strings as input. */
+/* Read various database formats, with strings as input.  Note that
+   `build_body_from_obj()` operates on a pair of borrowed references;
+   the caller should DECREF `name` when the caller is done with it. */
 
 static PyObject *build_body_from_obj(PyObject *name, Obj *op)
 {
@@ -2745,21 +2755,16 @@ static PyObject *build_body_from_obj(PyObject *name, Obj *op)
 	  PyErr_Format(PyExc_ValueError,
 		       "cannot build object of unexpected type %d",
 		       op->o_type);
-	  Py_DECREF(name);
 	  return 0;
      }
      body = (Body*) PyType_GenericNew(type, 0, 0);
-     if (!body) {
-	  Py_DECREF(name);
+     if (!body)
 	  return 0;
-     }
      body->obj = *op;
      if (Set_name((PyObject*) body, name, 0) == -1) {
           Py_DECREF(body);
-          Py_DECREF(name);
           return 0;
      }
-     Py_DECREF(name);
      return (PyObject*) body;
 }
 
@@ -2782,7 +2787,9 @@ static PyObject* readdb(PyObject *self, PyObject *args)
 	  name = PyUnicode_FromString(line);
      if (!name)
 	  return 0;
-     return build_body_from_obj(name, &obj);
+     PyObject *body = build_body_from_obj(name, &obj);
+     Py_DECREF(name);
+     return body;
 }
 
 static PyObject* readtle(PyObject *self, PyObject *args)
@@ -2809,11 +2816,14 @@ static PyObject* readtle(PyObject *self, PyObject *args)
      if (!stripped_name)
 	  return 0;
      body = build_body_from_obj(stripped_name, &obj);
+     Py_DECREF(stripped_name);
      if (!body)
 	  return 0;
      catalog_number = PyLong_FromLong((long) strtod(l1+2, 0));
-     if (!catalog_number)
+     if (!catalog_number) {
+          Py_DECREF(body);
 	  return 0;
+     }
      ((EarthSatellite*) body)->catalog_number = catalog_number;
      return body;
 }
