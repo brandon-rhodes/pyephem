@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -e
+
+cd "$(readlink -f $(dirname "${BASH_SOURCE[0]}"))"
+cd ..
+
+make -C ephem/doc clean
+make -C ephem/doc html
+if [ -n "$1" ]
+then
+    make -C ephem/doc sync
+fi
