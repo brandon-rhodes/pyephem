@@ -598,6 +598,10 @@ transit, rising, and setting
 
  * The ``next_pass()`` method takes an ``EarthSatellite`` body
    and determines when it will next cross above the horizon.
+ * The ``next_pass()`` method is implemented
+   by the C library that’s wrapped by PyEphem,
+   so it unfortunately ignores the ``horizon`` attribute
+   that controls PyEphem’s own rising and setting routines.
  * It returns a six-element tuple giving::
 
     0  Rise time
