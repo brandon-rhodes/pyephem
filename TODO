@@ -1,5 +1,0 @@
-PyEphem TODO list
-
- - Add functions for perihelion and aphelion.
- - Make Jupiter's GRS available.
- - Error should be raised if degrees() or hours() ignores end of string.
