@@ -2,8 +2,12 @@
 PyEphem CHANGELOG
 =================
 
-Version 4.1.4 (?)
------------------
+Version 4.1.4 (2022 December 21)
+--------------------------------
+
+- A memory leak has been resolved, that was failing to free the storage
+  for the satellite name (a Python string) and catalog number (a Python
+  integer) when the satellite object itself was freed.
 
 - In previous versions, if you asked for the position of a body
   (a) whose elliptical or hyperbolic orbit has an eccentricity very
@@ -13,6 +17,13 @@ Version 4.1.4 (?)
   Now, no message is printed directly to the screen, and instead a
   ``RuntimeError`` will tell you why PyEphem can’t compute the body’s
   position.
+  `#239 <https://github.com/brandon-rhodes/pyephem/issues/239>`_
+
+- The underlying C library should no longer produce a segmentation fault
+  if given the floating point number ``NaN`` as a date.  The Python
+  rising and setting logic now also watches out for ``NaN`` dates, and
+  raises a ``ValueError`` when one is detected.
+  `#237 <https://github.com/brandon-rhodes/pyephem/issues/237>`_
 
 Version 4.1.3 (2021 December 13)
 --------------------------------
