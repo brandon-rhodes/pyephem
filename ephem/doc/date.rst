@@ -114,7 +114,7 @@ Datetime objects
   You can also ask a PyEphem date to convert itself the other direction
   by calling its ``datetime()`` method.
 
-    >>> from datetime import date, datetime
+    >>> from datetime import date, datetime, timezone
     >>> print(ephem.Date(datetime(2005, 4, 18, 22, 15)))
     2005/4/18 22:15:00
 
@@ -138,7 +138,7 @@ Datetime objects
     >>> d = datetime.utcnow()
     >>> print(ephem.Date(d))
     2015/12/14 15:42:14
-    >>> d = datetime.utcfromtimestamp(1450107734)
+    >>> d = datetime.fromtimestamp(1450107734, tz=timezone.utc)
     >>> print(ephem.Date(d))
     2015/12/14 15:42:14
 

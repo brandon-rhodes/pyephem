@@ -3,6 +3,8 @@
 #define PY_SSIZE_T_CLEAN
 #include "Python.h"
 
+#define PyUnicode_GetSize(o) PyUnicode_GET_SIZE(o)
+
 #if PY_MAJOR_VERSION == 2
 #define PyLong_AsLong PyInt_AsLong
 #define PyLong_FromLong PyInt_FromLong
@@ -23,6 +25,9 @@
 #define OB_REFCNT ob_base.ob_refcnt
 #if PY_MINOR_VERSION == 0 || PY_MINOR_VERSION == 1 || PY_MINOR_VERSION == 2
 #define PyUnicode_AsUTF8 _PyUnicode_AsString
+# elif PY_MINOR_VERSION >= 3
+#undef PyUnicode_GetSize
+#define PyUnicode_GetSize PyUnicode_GET_LENGTH
 #endif
 #endif
 
@@ -180,7 +185,7 @@ static int scansexa(PyObject *o, double *dp) {
                Py_DECREF(list);
                return -1;
           }
-          Py_ssize_t item_length = PyUnicode_GET_SIZE(item);
+          Py_ssize_t item_length = PyUnicode_GetSize(item);
           if (item_length == 0) {
                continue;  /* accept empty string for 0 */
           }
