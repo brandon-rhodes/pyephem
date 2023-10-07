@@ -11,12 +11,12 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-20.04, windows-2019, macos-10.15]
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         name: Install Python
         with:
           python-version: '3.8'
@@ -30,7 +30,7 @@ jobs:
           platforms: all
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.12.1
+        uses: pypa/cibuildwheel@v2.16.2
         env:
           #CIBW_ARCHS_LINUX: auto aarch64 ppc64le s390x
           CIBW_ARCHS_LINUX: auto aarch64 s390x
@@ -46,9 +46,9 @@ jobs:
     name: Build source distribution
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         name: Install Python
         with:
           python-version: '3.8'
@@ -56,7 +56,7 @@ jobs:
       - name: Build sdist
         run: python setup.py sdist
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           path: dist/*.tar.gz
 
@@ -64,7 +64,7 @@ jobs:
     needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: artifact
           path: dist
