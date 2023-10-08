@@ -2,6 +2,12 @@
 PyEphem CHANGELOG
 =================
 
+Version 4.1.5 (2023 October 8)
+------------------------------
+
+- Add support for Python 3.12.
+  `#259 <https://github.com/brandon-rhodes/pyephem/pull/259>`_
+
 Version 4.1.4 (2022 December 21)
 --------------------------------
 
