@@ -2,6 +2,12 @@
 PyEphem CHANGELOG
 =================
 
+Version 4.1.6 (2024 October 6)
+------------------------------
+
+- Build wheels for Python 2.7 again.
+  `#263 <https://github.com/brandon-rhodes/pyephem/pull/263>`_
+
 Version 4.1.5 (2023 October 8)
 ------------------------------
 
