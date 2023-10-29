@@ -103,4 +103,4 @@ that mark the solstices and equinoxes
     # 2015/6/16 15:03:15 0:00:00.0
     # 2015/12/31 21:12:07 90:00:00.0
 
-.. _a Stack Overflow question: http://stackoverflow.com/questions/25538926/solar-longitude-from-pyephem/
+.. _a Stack Overflow question: https://stackoverflow.com/questions/25538926/solar-longitude-from-pyephem/

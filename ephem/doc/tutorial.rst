@@ -13,9 +13,9 @@ for PyEphem to be built upon his work.
 After installing the module,
 you can use it in Python with the statement:
 
-.. _PyEphem library: http://rhodesmill.org/pyephem/
-.. _XEphem: http://www.clearskyinstitute.com/xephem/
-.. _Elwood Charles Downey: http://www.clearskyinstitute.com/resumes/ecdowney/resume.html
+.. _PyEphem library: https://rhodesmill.org/pyephem/
+.. _XEphem: https://xephem.github.io/XEphem/Site/xephem.html
+.. _Elwood Charles Downey: https://www.clearskyinstitute.com/
 
 >>> import ephem
 
@@ -485,7 +485,7 @@ C/2002 Y1 (Juels-Holvorcem)
 >>> print("%s %s" % (ephem.constellation(yh), yh.mag))
 ('And', 'Andromeda') 5.96
 
-.. _ephem database format: http://www.clearskyinstitute.com/xephem/help/xephem.html#mozTocId468501
+.. _ephem database format: https://xephem.github.io/XEphem/Site/help/xephem.html#mozTocId468501
 
 (Unfortunately, the library upon which PyEphem is build
 truncates object names to twenty characters, as you can see.)

@@ -9,7 +9,7 @@ PyEphem Quick Reference
 .. _Apparent geocentric: radec
 .. _Apparent topocentric position: radec
 .. _Apparent position: radec
-.. _XEphem format: http://www.clearskyinstitute.com/xephem/help/xephem.html#mozTocId468501
+.. _XEphem format: https://xephem.github.io/XEphem/Site/help/xephem.html#mozTocId468501
 
 Those experienced with both Python and astronomy
 should be able to start using PyEphem
