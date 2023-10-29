@@ -120,7 +120,7 @@ But be warned that it has some rough edges!
   you get a list of ``None`` objects.
 
 * PyEphem generates positions using the 1980s techniques
-  popularized in |Meeus|_,
+  popularized in Jean Meeus’s *Astronomical Algorithms*,
   like the IAU 1980 model of Earth nutation
   and VSOP87 planetary theory.
   These make PyEphem faster and more compact
@@ -130,8 +130,6 @@ But be warned that it has some rough edges!
   but users needing higher precision should investigate
   a more modern Python astronomy library like Skyfield or AstroPy.
 
-.. |Meeus| replace::  Jean Meeus’s *Astronomical Algorithms*
-.. _Meeus: https://www.willbell.com/math/mc1.htm
 .. _XEphem: http://www.clearskyinstitute.com/xephem/
 
 Here’s more example code to illustrate how PyEphem works:
