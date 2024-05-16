@@ -570,7 +570,8 @@ moon_cir (Now *np, Obj *op)
 	double el;		/* elongation, rads east */
 	double ms;		/* sun's mean anomaly */
 	double md;		/* moon's mean anomaly */
-	double i;
+     double pang;        /* moon's geocentric phase angle */
+	double i, p;
 
 	moon (mjed, &lam, &bet, &edistau, &ms, &md);	/* mean ecliptic & EOD*/
 	sunpos (mjed, &lsn, &rsn, NULL);		/* mean ecliptic & EOD*/
@@ -586,14 +587,31 @@ moon_cir (Now *np, Obj *op)
 	op->s_sdist = (float) sqrt (edistau*edistau + rsn*rsn
 						    - 2.0*edistau*rsn*cos(el));
 
-	/* TODO: improve mag; this is based on a flat moon model. */
-	i = -12.7 + 2.5*(log10(PI) - log10(PI/2*(1+1.e-6-cos(el)))) 
-					+ 5*log10(edistau/.0025) /* dist */;
-	set_smag (op, i);
-
 	/* find phase -- allow for projection effects */
 	i = 0.1468*sin(el)*(1 - 0.0549*sin(md))/(1 - 0.0167*sin(ms));
 	op->s_phase = (float)((1+cos(PI-el-degrad(i)))/2*100);
+
+     /* moon's geocentric magnitude based on methodology described in Lane,
+        Adair P.; Irvine, William M. 1973. Monochromatic phase curves and
+        albedos for the lunar disk. Astronomical Journal, Vol. 78, pp. 267-277.
+        Using V band data from their Table V. */
+     pang = raddeg(acos(op->s_phase / 50.0 - 1.0)); /* need range 0-180 degrees */ 
+     if (pang <= 40.0) {
+         p = pang - 20.0; 
+         i = -12.72 + 0.0267 * p + 0.534;
+     } else {
+         p = pang - 80.0;
+         i = -12.72 + p * (0.03188 + p * (1.9621e-4 + p * 1.7256e-6)) + 2.14;
+     }
+
+#define mean_em_dist (60.2665 * ERAD / MAU) /* mean earth-moon distance in AU
+                                             (factor from above reference). */
+     /* correct for earth-moon distance. */
+     i += 5.0 * log10(edistau / mean_em_dist);
+     /* correct for moon-sun distance */
+     i += 5.0 * log10(op->s_sdist);
+
+	set_smag (op, i);
 
 	/* fill moon's ra/dec, alt/az in op and update for topo dist */
 	cir_pos (np, bet, lam, &edistau, op);
