@@ -52,11 +52,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
-        name: Install Python
-        with:
-          python-version: '3.8'
-
       - name: Generate build name for artifact upload
         id: build-name
         run: |
@@ -101,11 +96,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
-        name: Install Python
-        with:
-          python-version: '3.8'
 
       # https://cibuildwheel.readthedocs.io/en/stable/faq/#emulation
       # offers this stanza plus “CIBW_ARCHS_LINUX” below:
