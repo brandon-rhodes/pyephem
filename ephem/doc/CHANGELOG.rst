@@ -5,6 +5,9 @@ PyEphem CHANGELOG
 Version 4.1.6 (2024 October 6)
 ------------------------------
 
+- Add support for Python 3.13.
+  `#278 <https://github.com/brandon-rhodes/pyephem/pull/278>`_
+
 - Build wheels for Python 2.7 again.
   `#263 <https://github.com/brandon-rhodes/pyephem/pull/263>`_
 
