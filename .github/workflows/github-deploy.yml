@@ -153,6 +153,9 @@ jobs:
           path: dist
           merge-multiple: true
 
+      - name: List files to upload
+        run: ls -1 dist/
+
       - uses: pypa/gh-action-pypi-publish@release/v1
         with:
           skip-existing: true
