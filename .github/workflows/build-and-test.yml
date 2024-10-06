@@ -41,3 +41,24 @@ jobs:
           CIBW_SKIP: pp*
           CIBW_TEST_COMMAND: python -m unittest discover ephem
           CIBW_TEST_REQUIRES: tzdata
+
+  twine_check:
+    name: Run twine check
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        name: Install Python
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: python -m pip install build twine
+
+      - name: Build sdist and wheel
+        run: python -m build
+
+      - name: Run twine check
+        run: ls dist/* | xargs twine check

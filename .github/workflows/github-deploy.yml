@@ -130,10 +130,13 @@ jobs:
       - uses: actions/setup-python@v5
         name: Install Python
         with:
-          python-version: '3.8'
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: python -m pip install build
 
       - name: Build sdist
-        run: python setup.py sdist
+        run: python -m build --sdist
 
       - uses: actions/upload-artifact@v4
         with:
@@ -150,6 +153,9 @@ jobs:
           pattern: wheels-*
           path: dist
           merge-multiple: true
+
+      - name: List files to upload
+        run: ls -1 dist/
 
       - uses: pypa/gh-action-pypi-publish@release/v1
         with:
