@@ -54,6 +54,7 @@ jobs:
 
       - name: Generate build name for artifact upload
         id: build-name
+        if: runner.os == 'Linux'
         run: |
           name=""
           if [[ -n "${{ matrix.build }}" ]]; then
