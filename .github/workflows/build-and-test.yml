@@ -25,7 +25,7 @@ jobs:
           CIBW_TEST_REQUIRES: tzdata
 
   build_wheels_python2:
-    name: Build wheels on ${{ matrix.os }}
+    name: Build wheels on ${{ matrix.os }} (Python 2.7)
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
