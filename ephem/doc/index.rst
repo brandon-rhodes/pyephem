@@ -130,7 +130,7 @@ But be warned that it has some rough edges!
   but users needing higher precision should investigate
   a more modern Python astronomy library like Skyfield or AstroPy.
 
-.. _XEphem: http://www.clearskyinstitute.com/xephem/
+.. _XEphem: https://xephem.github.io/XEphem/Site/xephem
 
 Here’s more example code to illustrate how PyEphem works:
 
