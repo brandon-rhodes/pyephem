@@ -2,7 +2,7 @@
 Right Ascension and Declination
 ===============================
 
-.. _XEphem: http://www.clearskyinstitute.com/xephem/
+.. _XEphem: https://xephem.github.io/XEphem/Site/xephem
 
 There are several different ways
 of specifying the position of an object

@@ -10,7 +10,7 @@ astronomical computations.  You can find the most recent version at
 
 The computation routines behind PyEphem are from the "XEphem" program
 by Elwood Charles Downey (ecdowney@ClearSkyInstitute.com), available
-from http://www.clearskyinstitute.com/xephem/.  See the COPYING file
+from https://xephem.github.io/XEphem/Site/xephem.  See the COPYING file
 in this directory for licensing information.
 
 INSTALLING

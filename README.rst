@@ -4,7 +4,7 @@ PyEphem README
 
 .. _ephem: http://pypi.python.org/pypi/ephem/
 .. _pyephem: http://pypi.python.org/pypi/pyephem/
-.. _XEphem: http://www.clearskyinstitute.com/xephem/
+.. _XEphem: https://xephem.github.io/XEphem/Site/xephem
 .. _Quick Reference: http://rhodesmill.org/pyephem/quick
 .. _Tutorial: http://rhodesmill.org/pyephem/tutorial
 .. _PyEphem web site: http://rhodesmill.org/pyephem/
