@@ -424,7 +424,6 @@ obj_hyperbolic (Now *np, Obj *op)
 	double e;		/* fast eccentricity */
 	double ll=0, sll, cll;	/* helio angle between object and earth */
 	double mag;		/* magnitude */
-	double a;		/* mean distance */
 	double tp;		/* time from perihelion (days) */
 	double rpd=0;
 	double y;
@@ -435,7 +434,6 @@ obj_hyperbolic (Now *np, Obj *op)
 
 	lg = lsn + PI;
 	e = op->h_e;
-	a = op->h_qp/(e - 1.0);
 
 	/* correct for light time by computing position at time mjd, then
 	 *   again at mjd-dt, where
