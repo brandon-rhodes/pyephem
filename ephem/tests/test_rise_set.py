@@ -81,6 +81,21 @@ class RiseSetTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             o.next_rising(m)
 
+    def test_avoids_infinite_loop(self):
+        observer = ephem.Observer()
+        observer.lat = '69.043'
+        observer.lon = '20.851'
+        observer.elev = 1009
+        observer.date = '2023/5/20 22:20'
+        sun = ephem.Sun()
+        t = observer.next_rising(sun)  # used to be an infinite loop
+
+        # This is probably not an accurate value, as we broke out of the
+        # loop without a solution, but let's at include it in the test
+        # anyway, so that we don't change the result in the future
+        # without at least knowing it.
+        self.assertEqual(str(t), '2023/5/20 22:33:50')
+
     def test_sun(self):
         s = ephem.Sun()
         o = ephem.Observer()
