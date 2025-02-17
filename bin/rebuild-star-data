@@ -53,10 +53,10 @@ name_to_hip = {}
 f = api.load.open('http://www.pas.rochester.edu/~emamajek/WGSN/IAU-CSN.txt')
 for line in f:
     line = line.decode('utf-8')
-    if line.startswith('#'):
+    if line.startswith('#') or line.startswith('$') or line.isspace():
         continue
-    name = line[0:18].strip()
-    hip = line[86:93].strip()
+    name = line[0:17].strip() # 1 - 17 -> 0 - 16 -> 0 - 17
+    hip = line[90:96].strip() # 91 - 96 -> 90 - 95 -> 90 - 96
     if hip == '_':
         continue
     name_to_hip[name] = int(hip)
