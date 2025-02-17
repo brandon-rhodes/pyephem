@@ -1,0 +1,187 @@
+*******************************************************************************
+ Revised: July 31, 2013             Moon / (Earth)                          301
+ 
+ GEOPHYSICAL DATA (updated 2018-Aug-15):
+  Vol. mean radius, km  = 1737.53+-0.03    Mass, x10^22 kg       =    7.349
+  Radius (gravity), km  = 1738.0           Surface emissivity    =    0.92
+  Radius (IAU), km      = 1737.4           GM, km^3/s^2          = 4902.800066
+  Density, g/cm^3       =    3.3437        GM 1-sigma, km^3/s^2  =  +-0.0001  
+  V(1,0)                =   +0.21          Surface accel., m/s^2 =    1.62
+  Earth/Moon mass ratio = 81.3005690769    Farside crust. thick. = ~80 - 90 km
+  Mean crustal density  = 2.97+-.07 g/cm^3 Nearside crust. thick.= 58+-8 km 
+  Heat flow, Apollo 15  = 3.1+-.6 mW/m^2   Mean angular diameter = 31'05.2"
+  Heat flow, Apollo 17  = 2.2+-.5 mW/m^2   Sid. rot. rate, rad/s = 0.0000026617
+  Geometric Albedo      = 0.12             Mean solar day        = 29.5306 d
+  Obliquity to orbit    = 6.67 deg         Orbit period          = 27.321582 d
+  Semi-major axis, a    = 384400 km        Eccentricity          = 0.05490
+  Mean motion, rad/s    = 2.6616995x10^-6  Inclination           = 5.145 deg
+  Apsidal period        = 3231.50 d        Nodal period          = 6798.38 d
+                                 Perihelion  Aphelion    Mean
+  Solar Constant (W/m^2)         1414+-7     1323+-7     1368+-7
+  Maximum Planetary IR (W/m^2)   1314        1226        1268
+  Minimum Planetary IR (W/m^2)      5.2         5.2         5.2
+********************************************************************************
+
+
+*******************************************************************************
+Ephemeris / WWW_USER Mon Feb 17 13:35:08 2025 Pasadena, USA      / Horizons    
+*******************************************************************************
+Target body name: Moon (301)                      {source: DE441}
+Center body name: Earth (399)                     {source: DE441}
+Center-site name: GEOCENTRIC
+*******************************************************************************
+Start time      : A.D. 2025-Jan-01 00:00:00.0000 UT      
+Stop  time      : A.D. 2025-Feb-28 00:00:00.0000 UT      
+Step-size       : 1440 minutes
+*******************************************************************************
+Target pole/equ : MOON_ME                         {East-longitude positive}
+Target radii    : 1737.4, 1737.4, 1737.4 km       {Equator_a, b, pole_c}       
+Center geodetic : 0.0, 0.0, -6378.137             {E-lon(deg),Lat(deg),Alt(km)}
+Center cylindric: 0.0, 0.0, 0.0                   {E-lon(deg),Dxy(km),Dz(km)}
+Center pole/equ : ITRF93                          {East-longitude positive}
+Center radii    : 6378.137, 6378.137, 6356.752 km {Equator_a, b, pole_c}       
+Target primary  : Earth
+Vis. interferer : MOON (R_eq= 1737.400) km        {source: DE441}
+Rel. light bend : Sun                             {source: DE441}
+Rel. lght bnd GM: 1.3271E+11 km^3/s^2                                          
+Atmos refraction: NO (AIRLESS)
+RA format       : HMS
+Time format     : CAL 
+Calendar mode   : Mixed Julian/Gregorian
+EOP file        : eop.250214.p250513                                           
+EOP coverage    : DATA-BASED 1962-JAN-20 TO 2025-FEB-14. PREDICTS-> 2025-MAY-12
+Units conversion: 1 au= 149597870.700 km, c= 299792.458 km/s, 1 day= 86400.0 s 
+Table cut-offs 1: Elevation (-90.0deg=NO ),Airmass (>38.000=NO), Daylight (NO )
+Table cut-offs 2: Solar elongation (  0.0,180.0=NO ),Local Hour Angle( 0.0=NO )
+Table cut-offs 3: RA/DEC angular rate (     0.0=NO )                           
+*******************************************************************************
+ Date__(UT)__HR:MN       APmag   S-brt
+**************************************
+$$SOE
+ 2025-Jan-01 00:00      -5.416   6.106
+ 2025-Jan-02 00:00      -6.540   6.343
+ 2025-Jan-03 00:00      -7.529   6.202
+ 2025-Jan-04 00:00      -8.376   5.956
+ 2025-Jan-05 00:00      -9.097   5.689
+ 2025-Jan-06 00:00      -9.713   5.428
+ 2025-Jan-07 00:00     -10.242   5.180
+ 2025-Jan-08 00:00     -10.703   4.941
+ 2025-Jan-09 00:00     -11.113   4.703
+ 2025-Jan-10 00:00     -11.485   4.461
+ 2025-Jan-11 00:00     -11.830   4.207
+ 2025-Jan-12 00:00     -12.154   3.938
+ 2025-Jan-13 00:00     -12.457   3.657
+ 2025-Jan-14 00:00     -12.646   3.458
+ 2025-Jan-15 00:00     -12.389   3.678
+ 2025-Jan-16 00:00     -12.064   3.942
+ 2025-Jan-17 00:00     -11.737   4.186
+ 2025-Jan-18 00:00     -11.410   4.409
+ 2025-Jan-19 00:00     -11.079   4.618
+ 2025-Jan-20 00:00     -10.739   4.817
+ 2025-Jan-21 00:00     -10.380   5.013
+ 2025-Jan-22 00:00      -9.992   5.211
+ 2025-Jan-23 00:00      -9.562   5.419
+ 2025-Jan-24 00:00      -9.071   5.639
+ 2025-Jan-25 00:00      -8.498   5.871
+ 2025-Jan-26 00:00      -7.816   6.105
+ 2025-Jan-27 00:00      -6.994   6.299
+ 2025-Jan-28 00:00      -5.998   6.311
+ 2025-Jan-29 00:00      -4.830   5.520
+ 2025-Jan-30 00:00      -4.754   5.356
+ 2025-Jan-31 00:00      -6.015   6.304
+ 2025-Feb-01 00:00      -7.138   6.294
+ 2025-Feb-02 00:00      -8.082   6.067
+ 2025-Feb-03 00:00      -8.867   5.793
+ 2025-Feb-04 00:00      -9.519   5.523
+ 2025-Feb-05 00:00     -10.066   5.268
+ 2025-Feb-06 00:00     -10.530   5.028
+ 2025-Feb-07 00:00     -10.934   4.796
+ 2025-Feb-08 00:00     -11.294   4.564
+ 2025-Feb-09 00:00     -11.625   4.326
+ 2025-Feb-10 00:00     -11.935   4.077
+ 2025-Feb-11 00:00     -12.231   3.814
+ 2025-Feb-12 00:00     -12.511   3.540
+ 2025-Feb-13 00:00     -12.547   3.487
+ 2025-Feb-14 00:00     -12.246   3.751
+ 2025-Feb-15 00:00     -11.938   4.002
+ 2025-Feb-16 00:00     -11.633   4.232
+ 2025-Feb-17 00:00     -11.326   4.447
+ 2025-Feb-18 00:00     -11.014   4.650
+ 2025-Feb-19 00:00     -10.688   4.847
+ 2025-Feb-20 00:00     -10.338   5.045
+ 2025-Feb-21 00:00      -9.951   5.248
+ 2025-Feb-22 00:00      -9.510   5.465
+ 2025-Feb-23 00:00      -8.994   5.697
+ 2025-Feb-24 00:00      -8.373   5.945
+ 2025-Feb-25 00:00      -7.613   6.188
+ 2025-Feb-26 00:00      -6.673   6.353
+ 2025-Feb-27 00:00      -5.507   6.138
+ 2025-Feb-28 00:00      -4.182   2.883
+$$EOE
+*******************************************************************************
+Column meaning:
+ 
+TIME
+
+  Times PRIOR to 1962 are UT1, a mean-solar time closely related to the
+prior but now-deprecated GMT. Times AFTER 1962 are in UTC, the current
+civil or "wall-clock" time-scale. UTC is kept within 0.9 seconds of UT1
+using integer leap-seconds for 1972 and later years.
+
+  Conversion from the internal Barycentric Dynamical Time (TDB) of solar
+system dynamics to the non-uniform civil UT time-scale requested for output
+has not been determined for UTC times after the next July or January 1st.
+Therefore, the last known leap-second is used as a constant over future
+intervals.
+
+  Time tags refer to the UT time-scale conversion from TDB on Earth
+regardless of observer location within the solar system, although clock
+rates may differ due to the local gravity field and no analog to "UT"
+may be defined for that location.
+
+  Any 'b' symbol in the 1st-column denotes a B.C. date. First-column blank
+(" ") denotes an A.D. date.
+ 
+CALENDAR SYSTEM
+
+  Mixed calendar mode was active such that calendar dates after AD 1582-Oct-15
+(if any) are in the modern Gregorian system. Dates prior to 1582-Oct-5 (if any)
+are in the Julian calendar system, which is automatically extended for dates
+prior to its adoption on 45-Jan-1 BC.  The Julian calendar is useful for
+matching historical dates. The Gregorian calendar more accurately corresponds
+to the Earth's orbital motion and seasons. A "Gregorian-only" calendar mode is
+available if such physical events are the primary interest.
+
+  NOTE: "n.a." in output means quantity "not available" at the print-time.
+ 
+ 'APmag   S-brt' =
+   Moon's approximate apparent visual magnitude and surface brightness. When
+phase angle < 7 deg (within ~1 day of full Moon), computed magnitude tends to
+be about 0.12 too small.
+
+   For Earth-based observers, the estimated dimming due to atmospheric
+absorption (extinction) is available as a separate, requestable quantity.
+
+   Surface brightness is the average airless visual magnitude of a
+square-arcsecond of the illuminated portion of the apparent disk.
+
+   Units: MAGNITUDES & MAGNITUDES PER SQUARE ARCSECOND
+
+Computations by ...
+
+    Solar System Dynamics Group, Horizons On-Line Ephemeris System
+    4800 Oak Grove Drive, Jet Propulsion Laboratory
+    Pasadena, CA  91109   USA
+
+    General site: https://ssd.jpl.nasa.gov/
+    Mailing list: https://ssd.jpl.nasa.gov/email_list.html
+    System news : https://ssd.jpl.nasa.gov/horizons/news.html
+    User Guide  : https://ssd.jpl.nasa.gov/horizons/manual.html
+    Connect     : browser        https://ssd.jpl.nasa.gov/horizons/app.html#/x
+                  API            https://ssd-api.jpl.nasa.gov/doc/horizons.html
+                  command-line   telnet ssd.jpl.nasa.gov 6775
+                  e-mail/batch   https://ssd.jpl.nasa.gov/ftp/ssd/hrzn_batch.txt
+                  scripts        https://ssd.jpl.nasa.gov/ftp/ssd/SCRIPTS
+    Author      : Jon.D.Giorgini@jpl.nasa.gov
+
+*******************************************************************************
