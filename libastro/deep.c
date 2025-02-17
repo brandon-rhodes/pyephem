@@ -162,7 +162,7 @@ dpinit(SatData *sat, double EQSQ, double SINIQ, double COSIQ,
 	S3, S4, S5, S6, S7, SE, SGH, SH, SI, SINI2, SINQ, SL, STEM, TEMP,
 	TEMP1, X1, X2, X3, X4, X5, X6, X7, X8, XMAO, XNO2, XNODCE, XNOI,
 	XPIDOT, Z1, Z11, Z12, Z13, Z2, Z21, Z22, Z23, Z3, Z31, Z32, Z33,
-	ZCOSG, ZCOSGL, ZCOSH, ZCOSHL, ZCOSI, ZCOSIL, ZE, ZMO, ZN, ZSING,
+	ZCOSG, ZCOSGL, ZCOSH, ZCOSHL, ZCOSI, ZCOSIL, ZE, ZN, ZSING,
 	ZSINGL, ZSINH, ZSINHL, ZSINI, ZSINIL, ZX, ZY;
 
     int c;
@@ -242,7 +242,6 @@ dpinit(SatData *sat, double EQSQ, double SINIQ, double COSIQ,
     CC = C1SS;
     ZN = ZNS;
     ZE = ZES;
-    ZMO = ZMOS;
     XNOI = 1.0 / XNQ;
 
     for(c = 0; c < 2; c++) {
@@ -345,7 +344,6 @@ dpinit(SatData *sat, double EQSQ, double SINIQ, double COSIQ,
 	    ZN = ZNL;
 	    CC = C1L;
 	    ZE = ZEL;
-	    ZMO = ZMOL;
 	}
     }
 
