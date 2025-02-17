@@ -60,6 +60,7 @@ minute = hour / 60.
 second = minute / 60.
 
 default_newton_precision = second / 10.
+rise_set_iterations = tuple(range(7))
 
 delta_t = _libastro.delta_t
 julian_date = _libastro.julian_date
@@ -458,7 +459,7 @@ class Observer(_libastro.Observer):
             if start is not None:
                 self.date = start
             prev_ha = None
-            while True:
+            for _ in rise_set_iterations:
                 if isnan(self.date):
                     raise ValueError('cannot find a next rising or setting'
                                      ' if the date is NaN')
