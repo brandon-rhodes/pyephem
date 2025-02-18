@@ -2,6 +2,16 @@
 PyEphem CHANGELOG
 =================
 
+Version 4.2 (2024 February 18)
+------------------------------
+
+- The Moon’s visual magnitude formula has been upgraded, so its ``.mag``
+  should more closely match other modern estimates of its brightness.
+
+- Fix: the routines to find risings and settings would on rare occasion
+  run forever (usually for sunrises or sunsets at very high latitude).
+  They now limit their running time and refuse to run forever.
+
 Version 4.1.6 (2024 October 6)
 ------------------------------
 
