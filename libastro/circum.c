@@ -14,6 +14,9 @@
 #include "astro.h"
 #include "preferences.h"
 
+/* Mean earth-moon distance in AU, a factor used in the Moon visual
+   magnitude formula from Lane & Irvin (see below). */
+#define mean_em_dist (60.2665 * ERAD / MAU)
 
 static int obj_planet (Now *np, Obj *op);
 static int obj_binary (Now *np, Obj *op);
@@ -266,7 +269,7 @@ obj_fixed (Now *np, Obj *op)
 
 	/* TODO: correction for annual parallax would go here */
 
-	/* correct EOD equatoreal for nutation/aberation to form apparent 
+	/* correct EOD equatoreal for nutation/aberation to form apparent
 	 * geocentric
 	 */
 	nut_eq(mjed, &ra, &dec);
@@ -589,22 +592,20 @@ moon_cir (Now *np, Obj *op)
 	i = 0.1468*sin(el)*(1 - 0.0549*sin(md))/(1 - 0.0167*sin(ms));
 	op->s_phase = (float)((1+cos(PI-el-degrad(i)))/2*100);
 
-	/* moon's geocentric magnitude based on methodology described in Lane,
-	 * Adair P.; Irvine, William M. 1973. Monochromatic phase curves and
-	 * albedos for the lunar disk. Astronomical Journal, Vol. 78, pp. 267-277.
-	 * Using V band data from their Table V.
+	/* Moon's geocentric magnitude based on methodology described in
+	 * Lane, Adair P.; Irvine, William M. 1973. Monochromatic phase
+	 * curves and albedos for the lunar disk. Astronomical Journal,
+	 * Vol. 78, pp. 267-277.  Using V band data from their Table V.
 	 */
-	pang = raddeg(acos(op->s_phase / 50.0 - 1.0)); /* need range 0-180 degrees */ 
+	pang = raddeg(acos(op->s_phase / 50.0 - 1.0)); /* need 0-180 degrees */
 	if (pang <= 40.0) {
-	    p = pang - 20.0; 
+	    p = pang - 20.0;
 	    i = -12.72 + 0.0267 * p + 0.534;
 	} else {
 	    p = pang - 80.0;
 	    i = -12.72 + p * (0.03188 + p * (1.9621e-4 + p * 1.7256e-6)) + 2.14;
 	}
 
-#define mean_em_dist (60.2665 * ERAD / MAU) /* mean earth-moon distance in AU
-                                             (factor from above reference). */
 	/* correct for earth-moon distance. */
 	i += 5.0 * log10(edistau / mean_em_dist);
 	/* correct for moon-sun distance */
@@ -663,7 +664,7 @@ Obj *op)
 /* fill equatoreal and horizontal op-> fields; stern
  *
  *    input:          lam/bet/rho geocentric mean ecliptic and equinox of day
- * 
+ *
  * algorithm at EOD:
  *   ecl_eq	--> ra/dec	geocentric mean equatoreal EOD (via mean obliq)
  *   deflect	--> ra/dec	  relativistic deflection
@@ -788,8 +789,8 @@ elongation (double lam, double bet, double lsn, double *el)
 /* apply relativistic light bending correction to ra/dec; stern
  *
  * The algorithm is from:
- * Mean and apparent place computations in the new IAU 
- * system. III - Apparent, topocentric, and astrometric 
+ * Mean and apparent place computations in the new IAU
+ * system. III - Apparent, topocentric, and astrometric
  * places of planets and stars
  * KAPLAN, G. H.;  HUGHES, J. A.;  SEIDELMANN, P. K.;
  * SMITH, C. A.;  YALLOP, B. D.
@@ -861,7 +862,7 @@ double *ra, double *dec)/* geocentric equatoreal */
 	g1 /= g2;
 	for(i=0; i<=2; ++i)
 	    u[i] += g1*(uq*e[i] - eu*q[i]);
-	
+
 	/* back to spherical */
 	cartsph(u[0], u[1], u[2], ra, dec, &rho);	/* rho thrown away */
 }
