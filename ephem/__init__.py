@@ -85,17 +85,39 @@ millennium_atlas = _libastro.millennium_atlas
 uranometria = _libastro.uranometria
 uranometria2000 = _libastro.uranometria2000
 
-# We also create a Python class ("Mercury", "Venus", etcetera) for
-# each planet and moon for which _libastro offers specific algorithms.
+# These classes used to be generated dynamically from the list of tuples
+# returned by _libastro.builtin_planets() but that made the list of
+# classes invisible to both IDEs and real-life readers of the code.
 
-for index, classname, name in _libastro.builtin_planets():
-    exec('''
-class %(name)s(_libastro.%(classname)s):
-    "Create a Body instance representing %(name)s"
-    __planet__ = %(index)r
-''' % dict(name=name, classname=classname, index=index))
-
-del index, classname, name
+class Mercury(_libastro.Planet): __planet__ = 0
+class Venus(_libastro.Planet): __planet__ = 1
+class Mars(_libastro.Planet): __planet__ = 2
+class Jupiter(_libastro.Planet): __planet__ = 3
+class Saturn(_libastro.Planet): __planet__ = 4
+class Uranus(_libastro.Planet): __planet__ = 5
+class Neptune(_libastro.Planet): __planet__ = 6
+class Pluto(_libastro.Planet): __planet__ = 7
+class Sun(_libastro.Planet): __planet__ = 8
+class Moon(_libastro.Planet): __planet__ = 9
+class Phobos(_libastro.PlanetMoon): __planet__ = 10
+class Deimos(_libastro.PlanetMoon): __planet__ = 11
+class Io(_libastro.PlanetMoon): __planet__ = 12
+class Europa(_libastro.PlanetMoon): __planet__ = 13
+class Ganymede(_libastro.PlanetMoon): __planet__ = 14
+class Callisto(_libastro.PlanetMoon): __planet__ = 15
+class Mimas(_libastro.PlanetMoon): __planet__ = 16
+class Enceladus(_libastro.PlanetMoon): __planet__ = 17
+class Tethys(_libastro.PlanetMoon): __planet__ = 18
+class Dione(_libastro.PlanetMoon): __planet__ = 19
+class Rhea(_libastro.PlanetMoon): __planet__ = 20
+class Titan(_libastro.PlanetMoon): __planet__ = 21
+class Hyperion(_libastro.PlanetMoon): __planet__ = 22
+class Iapetus(_libastro.PlanetMoon): __planet__ = 23
+class Ariel(_libastro.PlanetMoon): __planet__ = 24
+class Umbriel(_libastro.PlanetMoon): __planet__ = 25
+class Titania(_libastro.PlanetMoon): __planet__ = 26
+class Oberon(_libastro.PlanetMoon): __planet__ = 27
+class Miranda(_libastro.PlanetMoon): __planet__ = 28
 
 # We now replace two of the classes we have just created, because
 # _libastro actually provides separate types for two of the bodies.
