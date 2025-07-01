@@ -29,7 +29,7 @@ class StarTests(unittest.TestCase):
 
     def test_catalog_size(self):
         # Prevent catalog from changing size accidentally during editing.
-        self.assertEqual(len(ephem.stars.stars), 115)
+        self.assertEqual(len(ephem.stars.stars), 116)
 
     def test_unknown_star(self):
         self.assertRaises(KeyError, ephem.star, 'Alpha Centauri')
