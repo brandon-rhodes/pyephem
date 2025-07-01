@@ -1,9 +1,12 @@
 .ipynb_checkpoints
+IAU-CSN.txt
 MANIFEST
 build
+de421.bsp
 dist
 ephem/_libastro*.so
 ephem/doc/_build
+hip_main.dat
 tmp*.py
 *.py[co]
 *.egg-info
