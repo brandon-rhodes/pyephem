@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from pandas import read_csv
 from skyfield import api
 from skyfield.api import Star, load
 from skyfield.data import hipparcos
@@ -27,7 +28,7 @@ Vindemiatrix, Wezen, Zaurak, Zubenelgenubi
 
 """
 
-NAMES = [name.strip() for name in NAMES.split(',')]
+NAMES = {name.strip() for name in NAMES.split(',')}
 
 EXTRAS = {
     'Minkar': 59316,
@@ -43,6 +44,10 @@ ALIASES = {
     'Gienah Corvi': 'Gienah',
     'Sirrah': 'Alpheratz',
 }
+
+# Include both spellings of stars that the IAU spells differently.
+
+NAMES.update(ALIASES.values())
 
 # Load up the official "IAU Catalog of Star Names (IAU-CSN)" despite the
 # low quality of some of its choices, as it will at least map names to
@@ -63,8 +68,6 @@ for line in f:
 
 # Load Hipparcos twice, the second time so we can get supplementary data
 # that Skyfield doesn't normally load: the spectral classification.
-
-from pandas import read_csv
 
 with load.open(hipparcos.URL) as f:
     df = hipparcos.load_dataframe(f)
