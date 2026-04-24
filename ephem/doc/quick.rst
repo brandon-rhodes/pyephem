@@ -145,7 +145,7 @@ body.compute(date)
    |  ``libration_lat`` — in Latitude
    |  ``libration_long`` — in Longitude
    |
-   | ``colong`` — Selenographic colongiude
+   | ``colong`` — Selenographic colongitude
    | ``moon_phase`` — Percent of surface illuminated
    | ``subsolar_lat`` — Lunar latitude that the Sun is standing above
 
