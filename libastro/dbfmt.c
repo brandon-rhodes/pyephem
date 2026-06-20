@@ -5,6 +5,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
 
 #include "astro.h"
 #include "preferences.h"
@@ -18,6 +19,18 @@ int get_fields (char *s, int delim, char *fields[]);
 #define SUBFLD          '|'     /* subfield separator */
 #define MAXFLDS 20              /* must be more than on any expected line */
 #define	MAXESGOOD	100	/* max earth satellite good, days */
+
+/* Format error messages safely into whynot[]. */
+#define WHYNOTLEN	256
+
+static void
+set_whynot (char whynot[], const char *fmt, ...)
+{
+	va_list ap;
+	va_start (ap, fmt);
+	vsnprintf (whynot, WHYNOTLEN, fmt, ap);
+	va_end (ap);
+}
 
 static char *enm (char *flds[MAXFLDS]);
 static int crack_f (Obj *op, char *flds[MAXFLDS], int nf, char whynot[]);
@@ -85,7 +98,7 @@ db_crack_line (char s[], Obj *op, char nm[][MAXNM], int nnm, char whynot[])
 	/* need at least 2: name and type */
 	if (nf < 2) {
 	    if (whynot)
-		sprintf (whynot, "Bogus: %s", s);
+		set_whynot (whynot, "Bogus: %s", s);
 	    return (-1);
 	}
 
@@ -129,7 +142,7 @@ db_crack_line (char s[], Obj *op, char nm[][MAXNM], int nnm, char whynot[])
 
 	default:
 	    if (whynot)
-		sprintf (whynot, "%s: Unknown type %c for %s", enm(flds),
+		set_whynot (whynot, "%s: Unknown type %c for %s", enm(flds),
 							flds[1][0], flds[0]);
 	    return (-1);
 	}
@@ -392,7 +405,7 @@ crack_f (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 
 	if (nf < 5 || nf > 7) {
 	    if (whynot)
-		sprintf (whynot, "%s: type f needs 5-7 fields, not %d",
+		set_whynot (whynot, "%s: type f needs 5-7 fields, not %d",
 								enm(flds),nf);
 	    return (-1);
 	}
@@ -413,7 +426,7 @@ crack_f (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 		break;
 	    default:
 		if (whynot)
-		    sprintf (whynot, "%s: Bad f class: %c", enm(flds),
+		    set_whynot (whynot, "%s: Bad f class: %c", enm(flds),
 		    						sflds[1][0]);
 		return (-1);
 	    }
@@ -431,7 +444,7 @@ crack_f (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 	status = f_scansexa (sflds[0], &tmp);
 	if (status < 0) {
 		if (whynot)
-		sprintf (whynot, "%s: Invalid angle string '%s'", enm(flds), sflds[0]);
+		set_whynot (whynot, "%s: Invalid angle string '%s'", enm(flds), sflds[0]);
 		return (-1);
 	}
 	op->f_RA = hrrad(tmp);
@@ -442,7 +455,7 @@ crack_f (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 	status = f_scansexa (sflds[0], &tmp);
 	if (status < 0) {
 		if (whynot)
-		sprintf (whynot, "%s: Invalid angle string '%s'", enm(flds), sflds[0]);
+		set_whynot (whynot, "%s: Invalid angle string '%s'", enm(flds), sflds[0]);
 		return (-1);
 	}
 	op->f_dec = degrad(tmp);
@@ -482,7 +495,7 @@ crack_e (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 {
 	if (nf != 13 && nf != 14) {
 	    if (whynot)
-		sprintf (whynot, "%s: type e needs 13 or 14 fields, not %d",
+		set_whynot (whynot, "%s: type e needs 13 or 14 fields, not %d",
 								enm(flds), nf);
 	    return (-1);
 	}
@@ -523,7 +536,7 @@ crack_h (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 {
 	if (nf != 11 && nf != 12) {
 	    if (whynot)
-		sprintf (whynot, "%s: type h needs 11 or 12 fields, not %d",
+		set_whynot (whynot, "%s: type h needs 11 or 12 fields, not %d",
 								enm(flds), nf);
 	    return (-1);
 	}
@@ -553,7 +566,7 @@ crack_p (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 {
 	if (nf != 10 && nf != 11) {
 	    if (whynot)
-		sprintf (whynot, "%s: type p needs 10 or 11 fields, not %d",	
+		set_whynot (whynot, "%s: type p needs 10 or 11 fields, not %d",	
 								enm(flds), nf);
 	    return (-1);
 	}
@@ -582,7 +595,7 @@ crack_E (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 {
 	if (nf != 11 && nf != 12) {
 	    if (whynot)
-		sprintf (whynot, "%s: type E needs 11 or 12 fields, not %d",
+		set_whynot (whynot, "%s: type E needs 11 or 12 fields, not %d",
 							    enm(flds), nf);
 	    return (-1);
 	}
@@ -635,7 +648,7 @@ crack_P (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 	}
 
 	if (whynot)
-	    sprintf (whynot, "%s: Unknown planet or moon", enm(flds));
+	    set_whynot (whynot, "%s: Unknown planet or moon", enm(flds));
 	return (-1);
 }
 
@@ -648,7 +661,7 @@ crack_B (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 
 	if (nf != 7) {
 	    if (whynot)
-		sprintf (whynot, "%s: B need 7 fields, not %d", enm(flds), nf);
+		set_whynot (whynot, "%s: B need 7 fields, not %d", enm(flds), nf);
 	    return (-1);
 	}
 
@@ -665,7 +678,7 @@ crack_B (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 		break;
 	    default:
 		if (whynot)
-		    sprintf (whynot, "%s: Bad B class: %c", enm(flds),
+		    set_whynot (whynot, "%s: Bad B class: %c", enm(flds),
 		    						sflds[1][0]);
 		return (-1);
 	    }
@@ -689,7 +702,7 @@ crack_B (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 	status = f_scansexa (sflds[0], &tmp);
 	if (status < 0) {
 		if (whynot)
-		sprintf (whynot, "%s: Invalid angle string '%s'", enm(flds), sflds[0]);
+		set_whynot (whynot, "%s: Invalid angle string '%s'", enm(flds), sflds[0]);
 		return (-1);
 	}
 	op->f_RA = hrrad(tmp);
@@ -700,7 +713,7 @@ crack_B (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 	status = f_scansexa (sflds[0], &tmp);
 	if (status < 0) {
 		if (whynot)
-		sprintf (whynot, "%s: Invalid angle string '%s'", enm(flds), sflds[0]);
+		set_whynot (whynot, "%s: Invalid angle string '%s'", enm(flds), sflds[0]);
 		return (-1);
 	}
 	op->f_dec = degrad(tmp);
@@ -738,13 +751,13 @@ crack_B (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 	    /* reject some weird entries actually seen in real lists */
 	    if (op->b_bo.bo_a <= 0) {
 		if (whynot)
-		    sprintf (whynot, "%s: Bogus B semi major axis: %g",
+		    set_whynot (whynot, "%s: Bogus B semi major axis: %g",
 						    enm(flds), op->b_bo.bo_a);
 		return (-1);
 	    }
 	    if (op->b_bo.bo_P <= 0) {
 		if (whynot)
-		    sprintf (whynot, "%s: Bogus B period: %g", enm(flds),
+		    set_whynot (whynot, "%s: Bogus B period: %g", enm(flds),
 		    						op->b_bo.bo_P);
 		return (-1);
 	    }
@@ -764,7 +777,7 @@ crack_B (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 	    default:
 		if (c != ' ' && !isdigit(c)) {
 		    if (whynot)
-			sprintf (whynot,"%s: B period suffix not Y, D or H: %c",
+			set_whynot (whynot,"%s: B period suffix not Y, D or H: %c",
 								enm(flds), c);
 		    return (-1);
 		}
@@ -785,7 +798,7 @@ crack_B (Obj *op, char *flds[MAXFLDS], int nf, char whynot[])
 	    }
 	} else {
 	    if (whynot)
-		sprintf (whynot,
+		set_whynot (whynot,
 		       "%s: type B needs 3,6 or 7 subfields in field 7, not %d",
 								enm(flds), nsf);
 	    return (-1);
