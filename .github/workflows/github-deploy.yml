@@ -38,6 +38,12 @@ jobs:
           - os: ubuntu-latest
             arch: s390x
             build: "*-musllinux_*"
+          - os: ubuntu-latest
+            arch: riscv64
+            build: "*-manylinux_*"
+          - os: ubuntu-latest
+            arch: riscv64
+            build: "*-musllinux_*"
 
           - os: windows-latest
             arch: AMD64
