@@ -316,8 +316,8 @@ get_fields (char *s, int delim, char *fields[])
 	    c = *s++;
 	    if (c == delim || c == '\0') {
 		s[-1] = '\0';
-		*++fields = s;
-		n++;
+		if (++n < MAXFLDS)
+		    *++fields = s;
 	    }
 	} while (c);
 

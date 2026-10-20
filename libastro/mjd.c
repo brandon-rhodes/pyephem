@@ -14,8 +14,9 @@ cal_mjd (int mn, double dy, int yr, double *mjp)
 {
 	static double last_mjd, last_dy;
 	static int last_mn, last_yr;
-	int b, d, m, y;
+	int b, m, y;
 	long c;
+	double d;
 
 	if (mn == last_mn && yr == last_yr && dy == last_dy) {
 	    *mjp = last_mjd;
@@ -42,7 +43,7 @@ cal_mjd (int mn, double dy, int yr, double *mjp)
 	else
 	    c = (long)(365.25*y) - 694025L;
 
-	d = (int)(30.6001*(m+1));
+	modf(30.6001*(m+1.0), &d);
 
 	*mjp = b + c + d + dy - 0.5;
 
