@@ -297,9 +297,14 @@ static PyObject* new_Angle(double radians, double factor)
 static char *Angle_format(PyObject *self)
 {
      AngleObject *ea = (AngleObject*) self;
-     static char buffer[13];
-     fs_sexa(buffer, ea->f.ob_fval * ea->factor, 3,
-             ea->factor == radhr(1) ? 360000 : 36000);
+     static char buffer[32];
+     double value = ea->f.ob_fval * ea->factor;
+     int fracbase = ea->factor == radhr(1) ? 360000 : 36000;
+     if (!(fabs(value) < INT_MAX && fabs(value) * fracbase + 0.5 < (double) ULONG_MAX)) {
+          sprintf(buffer, "%g", value);
+          return buffer;
+     }
+     fs_sexa(buffer, value, 3, fracbase);
      return buffer[0] != ' ' ? buffer
 	  : buffer[1] != ' ' ? buffer + 1
 	  : buffer + 2;

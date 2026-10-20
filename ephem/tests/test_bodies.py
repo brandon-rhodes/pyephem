@@ -292,6 +292,10 @@ class BodyBuilderTests(unittest.TestCase):
 
 
 class BodyFailureTests(unittest.TestCase):
+    def test_readdb_with_too_many_fields(self):
+        with self.assertRaises(ValueError):
+            readdb(','.join(['x'] * 60))
+
     def test_nearly_parabolic_EllipticalBody_and_far_from_Sun(self):
         line = (
             "C/1980 Y1 (Bradfield),e,138.5850,115.3515,358.2941,945.0557,"

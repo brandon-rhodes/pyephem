@@ -55,6 +55,13 @@ class AngleTests(unittest.TestCase):
         self.assertAlmostEqual(self.h, 1.6)
     def test_hours_string_value(self):
         self.assertEqual(str(self.h), '6:06:41.58')
+    def test_large_angle_string_value(self):
+        self.assertEqual(str(degrees(200)), '11459:09:21.2')
+        self.assertEqual(str(degrees(-200)), '-11459:09:21.2')
+        self.assertEqual(str(hours(300)), '1145:54:56.12')
+    def test_nonfinite_angle_string_value(self):
+        self.assertEqual(str(degrees(float('nan'))), 'nan')
+        self.assertEqual(str(hours(float('inf'))), 'inf')
 
     def test_angle_addition(self):
         self.assertAlmostEqual(degrees('30') + degrees('90'), degrees('120'))
