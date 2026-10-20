@@ -302,6 +302,21 @@ class BodyFailureTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             b.ra
 
+    # Make sure malformed database entries raise ValueError instead
+    # of crashing the interpreter.
+
+    def test_readdb_does_not_overflow_on_long_line_with_no_comma(self):
+        with self.assertRaises(ValueError):
+            readdb('x' * 400)
+
+    def test_readdb_does_not_overflow_on_long_name(self):
+        with self.assertRaises(ValueError):
+            readdb('n' * 400 + ',Z')
+
+    def test_readdb_does_not_overflow_on_long_angle_field(self):
+        with self.assertRaises(ValueError):
+            readdb('Test,f|S,' + 'y' * 400 + ',10:00:00,5.0,2000')
+
 # A user reported that Saturn's ring tilt was misbehaving, and there was
 # indeed a major error occuring in its calculation.  This small test
 # should assure that reasonable values are returned from now on.
