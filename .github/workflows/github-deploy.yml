@@ -43,6 +43,8 @@ jobs:
             arch: AMD64
           - os: windows-latest
             arch: x86
+          - os: windows-11-arm
+            arch: ARM64
 
           - os: macos-latest
             arch: x86_64
